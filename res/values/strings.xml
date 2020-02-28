@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">KSM_2_course</string>
+    <string name="Alg_and_metod">Алгоритми та методи обчислень</string>
+    <string name="Arch_Comp">Архітектура комп ютерів</string>
+    <string name="CompScheme">Комп ютерна схемотехніка</string>
+    <string name="DataBase">Організація баз данних</string>
+    <string name="OBG">Основи безпеки життєдіяльності</string>
+    <string name="S_metod_prog">Сучасні методи програмування</string>
+    <string name="Overall">Загалом</string>
+    <string name="course_2">2 курс</string>
+    <string name="subjects">Дисципліни :</string>
+    <string name="lector">Викладач:</string>
+    <string name="valueOfSubject">Цінність :</string>
+    <string name="lectorAMO">Вадим Вікторович Шкарупило</string>
+    <string name="Exam">Іспит</string>
+    <string name="Lessons_schedule">Розклад занять</string>
+    <string name="Passed">Сдано</string>
+    <string name="Protection">Защита</string>
+    <string name="Progress"> Прогрес :</string>
+    <string name="Laboratory">Викладач лабораторних :</string>
+    <string name="LaboratoryAMO">Ольга Володимирівна Польська</string>
+    <string name="type">Вид</string>
+    <string name="number">№</string>
+    <string name="lec">ЛК</string>
+    <string name="lab">ЛР</string>
+    <string name="room">Аудиторія</string>
+    <string name="subject">Предмет</string>
+    <string name="denominator">ЗНАМЕННИК</string>
+    <string name="numerator">ЧИСЕЛЬНИК</string>
+    <string name="monday">ПОНЕДІЛОК</string>
+    <string name="tuesday">ВІВТОРОК</string>
+    <string name="wednesday">СЕРЕДА</string>
+    <string name="thursday">ЧЕТВЕР</string>
+
+
+
+    </resources>

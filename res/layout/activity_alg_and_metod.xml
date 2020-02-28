@@ -61,29 +61,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button6_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#ABF4FD"
-                android:clickable="false"
-                android:text="@string/Laboratory"
-                android:textSize="10sp" />
-
-            <Button
-                android:id="@+id/button5_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#FFF54B"
-                android:clickable="false"
-                android:text="@string/LaboratoryAMO"
-                android:textSize="10sp" />
-
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"

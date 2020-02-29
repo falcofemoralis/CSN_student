@@ -123,7 +123,7 @@ public class Lessons_schedule extends AppCompatActivity {
             //gson
             Gson gson = new Gson();
             Type listType = new TypeToken<List<Lessons_schedule_Items>>() {}.getType();
-            List<Lessons_schedule_Items> list = gson.fromJson(loadJSONFromAsset(this,FILE_NAME), listType);
+            List<Lessons_schedule_Items> list = gson.fromJson(JSONHelper.loadJSONFromAsset(this,FILE_NAME), listType);
 
             //выбираем неделю
             Lessons_schedule_Items day = list.get(week);
@@ -191,17 +191,6 @@ public class Lessons_schedule extends AppCompatActivity {
             ex.printStackTrace();
         }
 
-    }
-
-    public static String loadJSONFromAsset(Context context, String jsonFileName)
-            throws IOException {
-        AssetManager manager = context.getAssets();
-        InputStream is = manager.open(jsonFileName);
-        int size = is.available();
-        byte[] buffer = new byte[size];
-        is.read(buffer);
-        is.close();
-        return new String(buffer, "UTF-8");
     }
 }
 

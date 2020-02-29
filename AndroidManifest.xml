@@ -9,14 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OBG"></activity>
-        <activity android:name=".S_metod_prog" />
-        <activity android:name=".DataBase" />
-        <activity android:name=".Arch_Comp" />
-        <activity android:name=".CompScheme" />
-        <activity android:name=".Alg_and_metod" />
+        <activity android:name=".Disciplines"></activity>
         <activity android:name=".Lessons_schedule" />
-        <activity android:name=".Lessons_schedule_2" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

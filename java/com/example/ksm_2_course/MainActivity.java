@@ -64,13 +64,15 @@ public class MainActivity extends AppCompatActivity {
             radioButton_knt518.setChecked(false);
         }
         StatusButton=1;
-    }
 
+    }
+    public  void OnClickLessons_schedule(View v){
+        Intent intent;
+        intent = new Intent(this, Lessons_schedule.class);
+        startActivity(intent);
+    }
    public void OnClick(View v)
     {
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
         Intent intent;
         intent = new Intent(this, Disciplines.class);
         intent.putExtra("Name", ((Button) v).getText());

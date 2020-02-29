@@ -1,19 +1,16 @@
 package com.example.ksm_2_course;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import java.util.Calendar;
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 
 public class MainActivity extends AppCompatActivity {
 
     Button res;
-    int RES,first_day=3;
+    int RES;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void OnClick(View v)
     {
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         Intent intent;
         switch ((v.getId()))
@@ -67,14 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.LS:
-                if(((day-first_day)/7)%2==0){
-                    intent = new Intent(this, Lessons_schedule.class);
-                    startActivity(intent);
-                }else{
-                    intent = new Intent(this, Lessons_schedule_2.class);
-                    startActivity(intent);
-                }
-
+                intent = new Intent(this, Lessons_schedule.class);
+                startActivity(intent);
                 break;
         }
         SetText();

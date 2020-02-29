@@ -21,7 +21,7 @@ public class Lessons_schedule extends AppCompatActivity {
     TextView textViewTuesday[][] = new TextView[4][4];
     TextView textViewWednesday[][] = new TextView[4][4];
     TextView textViewThursday[][] = new TextView[4][4];
-    private static final String FILE_NAME = "knt528.json";
+    static  String FILE_NAME;
     int first_day=3;
 
     @Override
@@ -57,6 +57,13 @@ public class Lessons_schedule extends AppCompatActivity {
         //////////////////////////////////////////////
                         //Данные в таблице//
         //////////////////////////////////////////////
+
+       //выбираю базу данных
+        if(MainActivity.StatusButton==0){
+            FILE_NAME = "knt518.json";
+        }else if(MainActivity.StatusButton==1){
+            FILE_NAME = "knt528.json";
+        }
 
         //создаю обьекты таблицы
         int id;
@@ -183,6 +190,7 @@ public class Lessons_schedule extends AppCompatActivity {
         catch (IOException ex){
             ex.printStackTrace();
         }
+
     }
 
     public static String loadJSONFromAsset(Context context, String jsonFileName)

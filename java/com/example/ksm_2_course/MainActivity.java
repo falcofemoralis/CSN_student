@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.RadioButton;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int StatusButton=1;
     Button res;
     int RES;
     @Override
@@ -31,9 +32,27 @@ public class MainActivity extends AppCompatActivity {
         res.setText(Integer.toString(RES / 6) + "%");
     }
 
+
+    public void  OnClickRadioButton(View v){
+         RadioButton radioButton_knt528 = (RadioButton) findViewById(R.id.radioButton_knt528);
+
+         if(radioButton_knt528.isChecked()){
+             radioButton_knt528.setChecked(false);
+         }
+        StatusButton=0;
+
+    }
+
+    public void  OnClickRadioButton2(View v){
+        RadioButton radioButton_knt518 = (RadioButton) findViewById(R.id.radioButton_knt518);
+        if(radioButton_knt518.isChecked()){
+            radioButton_knt518.setChecked(false);
+        }
+        StatusButton=1;
+    }
+
     public void OnClick(View v)
     {
-
         Intent intent;
         switch ((v.getId()))
         {

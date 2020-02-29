@@ -1,0 +1,200 @@
+[
+  {
+    "complete": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "labs": 5,
+    "progress": 0,
+    "name": "Алгоритми та методи обчислень",
+    "teacher": "Кудерметов Равіль Камілович",
+    "value": "Іспит"
+  },
+  {
+    "complete": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "labs": 6,
+    "progress": 0,
+    "name": "Архітектура комп'ютерів",
+    "teacher": "Скрупський Степан Юрійович",
+    "value": "Залік"
+  },
+  {
+    "complete": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "labs": 6,
+    "progress": 0,
+    "name": "Комп'ютерна схемотехніка",
+    "teacher": "Сгадов Сергій Олександрович",
+    "value": "Іспит"
+  },
+  {
+    "complete": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "labs": 7,
+    "progress": 0,
+    "name": "Організація баз данних",
+    "teacher": "Паромова Тетяна Олександрівна",
+    "value": "Залік/Іспит"
+  },
+  {
+    "complete": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "labs": 7,
+    "progress": 0,
+    "name": "Основи безпеки життєдіяльності",
+    "teacher": "Скуйбіда Олена Леонідівна",
+    "value": "Диф. Залік"
+  },
+  {
+    "complete": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "labs": 5,
+    "progress": 0,
+    "name": "Сучасні методи програмування",
+    "teacher": "Кудерметов Равіль Камілович",
+    "value": "Іспит"
+  }
+]

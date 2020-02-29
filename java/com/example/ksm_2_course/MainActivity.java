@@ -6,30 +6,45 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    final String FILE_NAME = "data_disc.json";
     public static int StatusButton=1;
     Button res;
     int RES;
+    ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         res = (Button) findViewById(R.id.res);
-        SetText();
+        setProgress();
     }
 
-    public void SetText()
+   public void setProgress()
     {
-        RES = getSharedPreferences("RESAlg", MODE_PRIVATE).getInt("RESAlg", 0)
-                + getSharedPreferences("RESArch", MODE_PRIVATE).getInt("RESArch", 0)
-                + getSharedPreferences("RESCS", MODE_PRIVATE).getInt("RESCS", 0)
-                + getSharedPreferences("RESDB", MODE_PRIVATE).getInt("RESDB", 0)
-                + getSharedPreferences("RESSMP", MODE_PRIVATE).getInt("RESSMP", 0)
-                + getSharedPreferences("RESOBG", MODE_PRIVATE).getInt("RESOBG", 0)
-        ;
-        res.setText(Integer.toString(RES / 6) + "%");
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
+
+        int sum = 0, all = 0;
+        for (int i = 0; i < discs.size(); ++i)
+        {
+            Discipline temp = discs.get(i);
+            sum += temp.getProgress();
+            all += temp.getLabs();
+        }
+        all *= 2;
+
+        ((Button)findViewById(R.id.res)).setText(Integer.toString(sum * 100 / all) + "%");
     }
 
 
@@ -51,41 +66,17 @@ public class MainActivity extends AppCompatActivity {
         StatusButton=1;
     }
 
-    public void OnClick(View v)
+   public void OnClick(View v)
     {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
         Intent intent;
-        switch ((v.getId()))
-        {
-            case R.id.Alg:
-                intent = new Intent(this, Alg_and_metod.class);
-                startActivity(intent);
-                break;
-            case R.id.Arch:
-                intent = new Intent(this, Arch_Comp.class);
-                startActivity(intent);
-                break;
-            case R.id.CS:
-                intent = new Intent(this, CompScheme.class);
-                startActivity(intent);
-                break;
-            case R.id.OBD:
-                intent = new Intent(this, DataBase.class);
-                startActivity(intent);
-                break;
-            case R.id.OBG:
-                intent = new Intent(this, OBG.class);
-                startActivity(intent);
-                break;
-            case R.id.SMP:
-                intent = new Intent(this, S_metod_prog.class);
-                startActivity(intent);
-                break;
-            case R.id.LS:
-                intent = new Intent(this, Lessons_schedule.class);
-                startActivity(intent);
-                break;
-        }
-        SetText();
+        intent = new Intent(this, Disciplines.class);
+        intent.putExtra("Name", ((Button) v).getText());
+        startActivity(intent);
+
+        setProgress();
     }
 }
 

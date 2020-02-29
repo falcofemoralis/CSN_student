@@ -2,7 +2,105 @@
   {
     "types": [
       {
-        "room": "TEST1",
+        "room": "-",
+        "subject": "-",
+        "type": "-"
+      },
+      {
+        "room": "-",
+        "subject": "Фіз.вихов",
+        "type": "-"
+      },
+      {
+        "room": "54",
+        "subject": "ОБД",
+        "type": "ЛК"
+      },
+      {
+        "room": "-",
+        "subject": "-",
+        "type": "-"
+      },
+
+
+
+
+
+      {
+        "room": "54",
+        "subject": "АК",
+        "type": "ЛК"
+      },
+      {
+        "room": "54",
+        "subject": "СМП",
+        "type": "ЛК"
+      },
+      {
+        "room": "353",
+        "subject": "ОБД",
+        "type": "ЛР"
+      },
+      {
+        "room": "-",
+        "subject": "-",
+        "type": "-"
+      },
+
+
+
+
+      {
+        "room": "-",
+        "subject": "-",
+        "type": "-"
+      },
+      {
+        "room": "51",
+        "subject": "СМП",
+        "type": "ЛР"
+      },
+      {
+        "room": "51",
+        "subject": "АМО",
+        "type": "ЛР"
+      },
+      {
+        "room": "353",
+        "subject": "АК",
+        "type": "ЛР"
+      },
+
+
+
+
+
+      {
+        "room": "-",
+        "subject": "Фіз.вихов",
+        "type": "-"
+      },
+      {
+        "room": "54",
+        "subject": "АМО",
+        "type": "ЛК"
+      },
+      {
+        "room": "-",
+        "subject": "-",
+        "type": "-"
+      },
+      {
+        "room": "-",
+        "subject": "-",
+        "type": "-"
+      }
+    ]
+  },
+  {
+    "types": [
+      {
+        "room": "-",
         "subject": "-",
         "type": "-"
       },
@@ -37,32 +135,27 @@
         "type": "ЛК"
       },
       {
-        "room": "20",
+        "room": "353",
+        "subject": "ОБД",
+        "type": "ЛР"
+      },
+      {
+        "room": "22",
         "subject": "БЖД",
         "type": "ЛР"
       },
+
+
+
+
       {
         "room": "-",
         "subject": "-",
         "type": "-"
       },
-
-
-
-
       {
         "room": "51",
         "subject": "СМП",
-        "type": "ЛР"
-      },
-      {
-        "room": "353",
-        "subject": "ОБД",
-        "type": "ЛР"
-      },
-      {
-        "room": "353",
-        "subject": "АК",
         "type": "ЛР"
       },
       {
@@ -70,102 +163,9 @@
         "subject": "АМО",
         "type": "ЛР"
       },
-
-
-
-
-
-      {
-        "room": "-",
-        "subject": "Фіз.вихов",
-        "type": "-"
-      },
-      {
-        "room": "54",
-        "subject": "АМО",
-        "type": "ЛК"
-      },
-      {
-        "room": "-",
-        "subject": "-",
-        "type": "-"
-      },
-      {
-        "room": "-",
-        "subject": "-",
-        "type": "-"
-      }
-    ]
-  },
-  {
-    "types": [
-      {
-        "room": "TEST2",
-        "subject": "-",
-        "type": "-"
-      },
-      {
-        "room": "-",
-        "subject": "Фіз.вихов",
-        "type": "-"
-      },
-      {
-        "room": "54",
-        "subject": "ОБД",
-        "type": "ЛК"
-      },
-      {
-        "room": "-",
-        "subject": "-",
-        "type": "-"
-      },
-
-
-
-
-
-      {
-        "room": "54",
-        "subject": "АК",
-        "type": "ЛК"
-      },
-      {
-        "room": "54",
-        "subject": "СМП",
-        "type": "ЛК"
-      },
-      {
-        "room": "-",
-        "subject": "-",
-        "type": "-"
-      },
-      {
-        "room": "-",
-        "subject": "-",
-        "type": "-"
-      },
-
-
-
-
-      {
-        "room": "51",
-        "subject": "СМП",
-        "type": "ЛР"
-      },
-      {
-        "room": "353",
-        "subject": "ОБД",
-        "type": "ЛР"
-      },
       {
         "room": "353",
         "subject": "АК",
-        "type": "ЛР"
-      },
-      {
-        "room": "51",
-        "subject": "АМО",
         "type": "ЛР"
       },
 

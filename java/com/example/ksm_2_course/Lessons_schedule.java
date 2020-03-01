@@ -1,18 +1,18 @@
 package com.example.ksm_2_course;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import com.google.gson.Gson;
-import java.io.InputStream;
 import java.util.Calendar;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import android.content.Context;
+
 
 public class Lessons_schedule extends AppCompatActivity {
 
@@ -22,7 +22,8 @@ public class Lessons_schedule extends AppCompatActivity {
     TextView textViewWednesday[][] = new TextView[4][4];
     TextView textViewThursday[][] = new TextView[4][4];
     static  String FILE_NAME;
-    int first_day=3;
+    int first_day=2 ;
+    static int week;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,17 +107,43 @@ public class Lessons_schedule extends AppCompatActivity {
 
 
         //узнаю тип недели (числитель или знаменатель)
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH),week;
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         TextView nameOfWeek = (TextView) findViewById(R.id.nameOfWeek);
-
-        if(((dayOfMonth-first_day)/7)%2==0){
+        Button changeScheduleButton = (Button) findViewById(R.id.changeScheduleButton);
+        if(dayOfMonth==1){
+            week=1;
+            nameOfWeek.setText("ЧИСЕЛЬНИК");
+            changeScheduleButton.setText("ЗНАМЕННИК");
+        }else if(((dayOfMonth-first_day)/7)%2==0){
             week=0;
             nameOfWeek.setText("ЗНАМЕННИК");
+            changeScheduleButton.setText("ЧИСЕЛЬНИК");
         }else{
             week=1;
             nameOfWeek.setText("ЧИСЕЛЬНИК");
+            changeScheduleButton.setText("ЗНАМЕННИК");
         }
 
+        setDataBase();
+    }
+
+    public void OnClick(View v)
+    {
+        TextView nameOfWeek = (TextView) findViewById(R.id.nameOfWeek);
+        Button changeScheduleButton = (Button) findViewById(R.id.changeScheduleButton);
+       if(week == 1) {
+           nameOfWeek.setText("ЗНАМЕННИК");
+           changeScheduleButton.setText("ЧИСЕЛЬНИК");
+           week = 0;
+       } else if(week == 0) {
+           nameOfWeek.setText("ЧИСЕЛЬНИК");
+           changeScheduleButton.setText("ЗНАМЕННИК");
+           week = 1;
+       }
+       setDataBase();
+    }
+
+    public void setDataBase(){
         //открываю файл и загружаю данные с базы
         try{
 
@@ -139,6 +166,8 @@ public class Lessons_schedule extends AppCompatActivity {
                     textViewMonday[i][j].setBackgroundColor(getResources().getColor(R.color.green));
                 }else if(lesson.getType().equals("ЛР")){
                     textViewMonday[i][j].setBackgroundColor(getResources().getColor(R.color.orange));
+                }else if(lesson.getType().equals("-")){
+                    textViewMonday[i][j].setBackgroundColor(getResources().getColor(R.color.blue));
                 }
                 j=1;
                 count++;
@@ -153,6 +182,8 @@ public class Lessons_schedule extends AppCompatActivity {
                     textViewTuesday[i][j].setBackgroundColor(getResources().getColor(R.color.green));
                 }else if(lesson.getType().equals("ЛР")){
                     textViewTuesday[i][j].setBackgroundColor(getResources().getColor(R.color.orange));
+                }else if(lesson.getType().equals("-")){
+                    textViewTuesday[i][j].setBackgroundColor(getResources().getColor(R.color.blue));
                 }
                 j=1;
                 count++;
@@ -167,6 +198,8 @@ public class Lessons_schedule extends AppCompatActivity {
                     textViewWednesday[i][j].setBackgroundColor(getResources().getColor(R.color.green));
                 }else if(lesson.getType().equals("ЛР")){
                     textViewWednesday[i][j].setBackgroundColor(getResources().getColor(R.color.orange));
+                }else if(lesson.getType().equals("-")){
+                    textViewWednesday[i][j].setBackgroundColor(getResources().getColor(R.color.blue));
                 }
                 j=1;
                 count++;
@@ -181,6 +214,8 @@ public class Lessons_schedule extends AppCompatActivity {
                     textViewThursday[i][j].setBackgroundColor(getResources().getColor(R.color.green));
                 }else if(lesson.getType().equals("ЛР")){
                     textViewThursday[i][j].setBackgroundColor(getResources().getColor(R.color.orange));
+                }else if(lesson.getType().equals("-")){
+                    textViewThursday[i][j].setBackgroundColor(getResources().getColor(R.color.blue));
                 }
                 j=1;
                 count++;
@@ -190,7 +225,6 @@ public class Lessons_schedule extends AppCompatActivity {
         catch (IOException ex){
             ex.printStackTrace();
         }
-
     }
 }
 

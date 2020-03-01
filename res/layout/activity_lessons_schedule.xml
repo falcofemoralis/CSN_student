@@ -12,11 +12,23 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/nameOfWeek"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:textSize="24sp" />
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/nameOfWeek"
+            android:layout_width="229dp"
+            android:layout_height="36dp"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/changeScheduleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#DFFFBF"
+            android:onClick="OnClick" />
+    </TableRow>
 
 
     <TableLayout
@@ -26,11 +38,13 @@
 
         <TextView
             android:id="@+id/mon"
-            android:layout_width="wrap_content"
+            android:layout_width="379dp"
             android:layout_height="36dp"
             android:text="@string/monday"
             android:textSize="24sp" />
+
         <TableRow
+            android:layout_width="343dp"
             android:layout_height="75dp">
 
 
@@ -50,9 +64,10 @@
                 android:text="@string/room"
                 android:textSize="18dp" />
 
+
             <TextView
                 android:id="@+id/subject1"
-                android:layout_width="196dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:background="#DFFFBF"
                 android:text="@string/subject"
@@ -60,7 +75,7 @@
 
             <TextView
                 android:id="@+id/type1"
-                android:layout_width="match_parent"
+                android:layout_width="84dp"
                 android:layout_height="wrap_content"
                 android:background="#DFFFBF"
                 android:text="@string/type"
@@ -252,7 +267,7 @@
 
         <TextView
             android:id="@+id/subject2"
-            android:layout_width="196dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:background="#DFFFBF"
             android:text="@string/subject"
@@ -260,7 +275,7 @@
 
         <TextView
             android:id="@+id/type2"
-            android:layout_width="match_parent"
+            android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:background="#DFFFBF"
             android:text="@string/type"
@@ -448,7 +463,7 @@
 
         <TextView
             android:id="@+id/subject3"
-            android:layout_width="196dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:background="#DFFFBF"
             android:text="@string/subject"
@@ -456,7 +471,7 @@
 
         <TextView
             android:id="@+id/type3"
-            android:layout_width="match_parent"
+            android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:background="#DFFFBF"
             android:text="@string/type"
@@ -642,7 +657,7 @@
 
         <TextView
             android:id="@+id/subject4"
-            android:layout_width="196dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:background="#DFFFBF"
             android:text="@string/subject"
@@ -650,7 +665,7 @@
 
         <TextView
             android:id="@+id/type4"
-            android:layout_width="match_parent"
+            android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:background="#DFFFBF"
             android:text="@string/type"

@@ -51,7 +51,7 @@
                     android:id="@+id/radioButton_knt528"
                     android:layout_width="198dp"
                     android:layout_height="wrap_content"
-                    android:checked="true"
+                    android:checked="false"
                     android:onClick="OnClickRadioButton2"
                     android:text="КНТ-528" />
 

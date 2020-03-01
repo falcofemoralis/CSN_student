@@ -2,9 +2,9 @@ package com.example.ksm_2_course;
 
 public class Discipline
 {
-    private String name, teacher, value;
-    private boolean[][] complete;
-    private int labs, progress;
+    private String name, teacher, value; // name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
+    private boolean[][] complete; // состояние сдачи лабораторных работ
+    private int labs, progress; // labs - количество лабораторных , progress - суммарное количество сданных и защищенных работ
 
     public Discipline()
     { }

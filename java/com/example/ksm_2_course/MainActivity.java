@@ -31,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
         restore();
     }
 
+    @Override
+    protected void onResume()
+    {
+        setProgress();
+        super.onResume();
+    }
+    
    public void setProgress()
     {
         Gson gson = new Gson();

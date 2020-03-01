@@ -21,11 +21,10 @@ import java.util.List;
 
 public class Disciplines extends AppCompatActivity
 {
-    final String FILE_NAME = "data_disc.json";
-    final int FALSE = 0xFFF56D6D, TRUE = 0xFFDFFFBF;
+    final String FILE_NAME = "data_disc.json"; 
+    final int FALSE = 0xFFF56D6D, TRUE = 0xFFDFFFBF; // FALSE(Не сдано) - красный, TRUE(Сдано) - светозеленый
 
     Button res; // Кнопка результата
-    SharedPreferences Pref;
     Button buts[][] = new Button[7][2]; // Кнопки "Сдано" и "Защита"
     int complete = 0, Labs; // complete - подсчет сданих лаб, Labs - хранит количество лабораторних
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
@@ -79,7 +78,7 @@ public class Disciplines extends AppCompatActivity
         }
         res = (Button) findViewById(R.id.res); // результат в процентах
 
-        RestoreAll(discs.get(num));
+        RestoreAll(discs.get(num)); // Загрузка данных
     }
 
     // Загрузка информации о дисциплине
@@ -87,7 +86,8 @@ public class Disciplines extends AppCompatActivity
     {
         boolean[][] compl_but = current.getComplete();
         int color;
-
+        
+        // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
         complete = current.getProgress();
         for (int i = 0, size = Labs; i < size; ++i)
         {
@@ -98,24 +98,18 @@ public class Disciplines extends AppCompatActivity
             buts[i][1].setBackgroundColor(color);
         }
 
-        ((Button)(findViewById(R.id.Disc))).setText(current.getName());
-        ((Button)(findViewById(R.id.val))).setText(current.getValue());
-        ((Button)(findViewById(R.id.teach))).setText(current.getTeacher());
+        ((Button)(findViewById(R.id.Disc))).setText(current.getName()); // Установка имени дисциплины
+        ((Button)(findViewById(R.id.val))).setText(current.getValue()); // Установка стоимости дисциплины
+        ((Button)(findViewById(R.id.teach))).setText(current.getTeacher()); // Установка ФИО преподавателя
 
-        res.setText(Integer.toString(complete * 50 / Labs) + "%");
-    }
-
-    @Override
-    protected  void onDestroy()
-    {
-        SaveAll();
-        super.onDestroy();
+        res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка среднего прогресса по дисциплине
     }
 
     protected void SaveAll()
     {
         boolean[][] compl_but = new boolean[Labs][2];
 
+        // Сохранение состояния кнопок Сдано и Защита 
         for (int i = 0; i < Labs; ++i)
         {
             if (((ColorDrawable)buts[i][0].getBackground()).getColor() == 0xFFDFFFBF)
@@ -129,31 +123,37 @@ public class Disciplines extends AppCompatActivity
                 compl_but[i][1] = false;
         }
 
-        current.setComplete(compl_but);
+        // Обновить содержимое текущей дисциплины
+        current.setComplete(compl_but); 
         current.setProgress(complete);
 
+        // Сохранение данных о дисциплинах с json
         Gson gson = new Gson();
         String jsonString = gson.toJson(discs);
         JSONHelper.create(this, FILE_NAME, jsonString);
     }
-
+    
+    //Смена статуса полей Сдано и Защита
     public void OnClick(View v)
     {
         Button but = (Button) v;
-
-        if (((ColorDrawable) but.getBackground()).getColor() == 0xFFF56D6D)
+        
+        //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
+        if (((ColorDrawable) but.getBackground()).getColor() == FALSE)
         {
             ++complete;
-            but.setBackgroundColor(0xFFDFFFBF);
+            but.setBackgroundColor(TRUE);
         } else
         {
             --complete;
-            but.setBackgroundColor(0xFFF56D6D);
+            but.setBackgroundColor(FALSE);
         }
 
-        res.setText(Integer.toString(complete * 50 / Labs) + "%");
+        res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка поля среднего прогресса по дисциплине
+         SaveAll(); // Сохраняем изменения
     }
 
+    // Функция получения кода текущей дисциплины
     private int GetCode(String name)
     {
         switch(name)

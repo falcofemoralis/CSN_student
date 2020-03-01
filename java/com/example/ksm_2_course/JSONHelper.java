@@ -14,10 +14,11 @@ import java.io.OutputStream;
 
 public class JSONHelper
 {
-
+    // Приватный конструктор запрещающий создание экземпляром класса
     private JSONHelper()
     {}
 
+    //Чтение содержимого json файла с assets
     public static String loadJSONFromAsset(Context context, String jsonFileName)
             throws IOException {
         AssetManager manager = context.getAssets();
@@ -29,6 +30,8 @@ public class JSONHelper
         return new String(buffer, "UTF-8");
     }
 
+    // Чтение json файла из files
+    // Если файл будет не найден - будет произведено чтения файла json из assets
     public static String read(Context context, String fileName) {
         try {
             FileInputStream fis = context.openFileInput(fileName);
@@ -53,8 +56,10 @@ public class JSONHelper
         }
     }
 
-    public static void create(Context context, String fileName, String jsonString){
-        String FILENAME = "storage.json";
+    // Запись в json файл
+    // Если файд не будет найден - создастся новый json файл в директории files 
+    public static void create(Context context, String fileName, String jsonString)
+    {
         try {
             FileOutputStream fos = context.openFileOutput(fileName,Context.MODE_PRIVATE);
             if (jsonString != null) {

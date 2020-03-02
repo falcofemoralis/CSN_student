@@ -146,6 +146,62 @@
                 android:text="0 %" />
         </LinearLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/timeUntil"
+                    android:layout_width="187dp"
+                    android:layout_height="36dp"
+                    android:text="До кінця пари:"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/timerH"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/timerM"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="MM"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/timerS"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="SS"
+                    android:textSize="24sp" />
+            </TableRow>
+
+        </TableLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

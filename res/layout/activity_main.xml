@@ -172,7 +172,7 @@
                     android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/twoCommas2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=":"
@@ -182,11 +182,10 @@
                     android:id="@+id/timerM"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
-                    android:text="MM"
                     android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/twoCommas1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=":"
@@ -196,7 +195,6 @@
                     android:id="@+id/timerS"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
-                    android:text="SS"
                     android:textSize="24sp" />
             </TableRow>
 

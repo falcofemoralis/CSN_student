@@ -129,8 +129,10 @@
                 for (int i = 1; i < 5; ++i) {
                     if (currentTime < lessons[i][0]) {
                         if (currentTime < lessons[i - 1][1])
+                        {
                             endTime = lessons[i - 1][1] - currentTime;
-                        else {
+                            timeUntil.setText("До кінця пари:");
+                        } else {
                             endTime = lessons[i][0] - currentTime;
                             timeUntil.setText("Початок " + romeNum[i] + " пари:");
                         }

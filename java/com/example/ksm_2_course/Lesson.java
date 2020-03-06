@@ -20,7 +20,7 @@ class ItemType {
     }
 }
 
-public class Lessons_schedule_Items {
+public class Lesson {
     public List<ItemType> types;
 
 }

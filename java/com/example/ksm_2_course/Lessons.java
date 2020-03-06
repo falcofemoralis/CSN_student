@@ -13,8 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
-
-public class Lessons_schedule extends AppCompatActivity {
+public class Lessons extends AppCompatActivity {
 
     TableLayout tableLayout_r[] = new TableLayout[4];
     TextView textViewMonday[][] = new TextView[4][4];
@@ -24,40 +23,13 @@ public class Lessons_schedule extends AppCompatActivity {
     static  String FILE_NAME;
     int first_day=2 ;
     static int week;
+    Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
-
-        //////////////////////////////////////////////
-        //Обводка//
-        //////////////////////////////////////////////
-
-        //получаем день недели (пн,вт и пр)
-        Calendar calendar = Calendar.getInstance();
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
-        //создаем обьект для обводки
-        tableLayout_r[0] = (TableLayout) findViewById(R.id.tableLayout_mon);
-        tableLayout_r[1] = (TableLayout) findViewById(R.id.tableLayout_tue);
-        tableLayout_r[2] = (TableLayout) findViewById(R.id.tableLayout_wed);
-        tableLayout_r[3] = (TableLayout) findViewById(R.id.tableLayout_thur);
-
-        //при совпадении дней делаем обводку красной (т.е меняем файл с noborders на borders)
-        if (dayOfWeek == 2) {
-            tableLayout_r[0].setBackground(getResources().getDrawable(R.drawable.borders));
-        } else if (dayOfWeek == 3) {
-            tableLayout_r[1].setBackground(getResources().getDrawable(R.drawable.borders));
-        } else if (dayOfWeek == 4) {
-            tableLayout_r[2].setBackground(getResources().getDrawable(R.drawable.borders));
-        } else if (dayOfWeek == 5) {
-            tableLayout_r[3].setBackground(getResources().getDrawable(R.drawable.borders));
-        }
-
-        //////////////////////////////////////////////
-        //Данные в таблице//
-        //////////////////////////////////////////////
+        setBorders();
 
         //выбираю базу данных
         if (MainActivity.StatusButton == 0) {
@@ -128,6 +100,28 @@ public class Lessons_schedule extends AppCompatActivity {
 
     }
 
+    public void setBorders(){
+        //получаем день недели (пн,вт и пр)
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        //создаем обьект для обводки
+        tableLayout_r[0] = (TableLayout) findViewById(R.id.tableLayout_mon);
+        tableLayout_r[1] = (TableLayout) findViewById(R.id.tableLayout_tue);
+        tableLayout_r[2] = (TableLayout) findViewById(R.id.tableLayout_wed);
+        tableLayout_r[3] = (TableLayout) findViewById(R.id.tableLayout_thur);
+
+        //при совпадении дней делаем обводку красной (т.е меняем файл с noborders на borders)
+        if (dayOfWeek == 2) {
+            tableLayout_r[0].setBackground(getResources().getDrawable(R.drawable.borders));
+        } else if (dayOfWeek == 3) {
+            tableLayout_r[1].setBackground(getResources().getDrawable(R.drawable.borders));
+        } else if (dayOfWeek == 4) {
+            tableLayout_r[2].setBackground(getResources().getDrawable(R.drawable.borders));
+        } else if (dayOfWeek == 5) {
+            tableLayout_r[3].setBackground(getResources().getDrawable(R.drawable.borders));
+        }
+    }
+
     public void OnClick(View v)
     {
         TextView nameOfWeek = (TextView) findViewById(R.id.nameOfWeek);
@@ -150,11 +144,11 @@ public class Lessons_schedule extends AppCompatActivity {
 
             //gson
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Lessons_schedule_Items>>() {}.getType();
-            List<Lessons_schedule_Items> list = gson.fromJson(JSONHelper.loadJSONFromAsset(this,FILE_NAME), listType);
+            Type listType = new TypeToken<List<Lesson>>() {}.getType();
+            List<Lesson> list = gson.fromJson(JSONHelper.loadJSONFromAsset(this,FILE_NAME), listType);
 
             //выбираем неделю
-            Lessons_schedule_Items day = list.get(week);
+            Lesson day = list.get(week);
 
             //выбираем номер пары в неделе
             int count = 0,j=1;

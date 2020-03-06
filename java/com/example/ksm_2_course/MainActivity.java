@@ -1,11 +1,10 @@
-        package com.example.ksm_2_course;
+    package com.example.ksm_2_course;
 
     import androidx.appcompat.app.AppCompatActivity;
     import android.content.Intent;
     import android.os.Bundle;
     import android.os.CountDownTimer;
     import android.view.View;
-    import android.view.ViewGroup;
     import android.widget.Button;
     import android.widget.RadioButton;
     import android.widget.TextView;
@@ -19,11 +18,11 @@
 
     public class MainActivity extends AppCompatActivity {
 
-        final String FILE_NAME = "data_disc.json",FILE="defaultRadioButton.json";
+        final String FILE_NAME = "data_disc.json",SETTINGS_FILE="defaultSettings.json";
         public static int StatusButton;
         Button res;
         ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
-
+        Setting setting = new Setting();
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -32,6 +31,7 @@
             setProgress();
             restore();
             time();
+            checkRegistration();
         }
 
         @Override
@@ -81,7 +81,7 @@
 
         public  void OnClickLessons_schedule(View v){
             Intent intent;
-            intent = new Intent(this, Lessons_schedule.class);
+            intent = new Intent(this, Lessons.class);
             startActivity(intent);
         }
 
@@ -96,18 +96,21 @@
         }
 
         public void save(){
-            JSONHelper.create(this, FILE , Integer.toString(StatusButton));
+            Gson gson = new Gson();
+            Setting setting = gson.fromJson(JSONHelper.read(this,SETTINGS_FILE), Setting.class);
+            setting.setDefaultGroup(StatusButton);
+            String jsonString = gson.toJson(setting);
+            JSONHelper.create(this, SETTINGS_FILE , jsonString);
         }
 
         public void restore(){
             RadioButton radioButton_knt518 = (RadioButton) findViewById(R.id.radioButton_knt518);
             RadioButton radioButton_knt528 = (RadioButton) findViewById(R.id.radioButton_knt528);
             Gson gson = new Gson();
-                String StatusButtonString = gson.fromJson(JSONHelper.read(this,FILE),String.class);
-                StatusButton = Integer.parseInt(StatusButtonString);
-                if(StatusButton==0){
+                Setting setting = gson.fromJson(JSONHelper.read(this,SETTINGS_FILE), Setting.class);
+                if(setting.getDefaultGroup()==0){
                     radioButton_knt518.setChecked(true);
-                }else if(StatusButton ==1){
+                }else if(setting.getDefaultGroup() ==1){
                     radioButton_knt528.setChecked(true);
                 }
         }
@@ -132,7 +135,8 @@
                         {
                             endTime = lessons[i - 1][1] - currentTime;
                             timeUntil.setText("До кінця пари:");
-                        } else {
+                        }
+                        else {
                             endTime = lessons[i][0] - currentTime;
                             timeUntil.setText("Початок " + romeNum[i] + " пари:");
                         }
@@ -194,5 +198,22 @@
                 }.start();
             }
 
+        public void checkRegistration( ){
+            Gson gson = new Gson();
+            Setting setting = gson.fromJson(JSONHelper.read(this,SETTINGS_FILE), Setting.class);
+            if(setting.getIsRegistered()==0){
+                Intent intent;
+                intent = new Intent(this, Registration.class);
+                startActivity(intent);
+            }else{
+                return;
+            }
+        }
+
+        public void OnClickSettings(){
+            Intent intent;
+            intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
     }
 

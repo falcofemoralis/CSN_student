@@ -38,6 +38,12 @@ public class Registration extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
     }
 
+    public void OnClickLogin(View view){
+        Intent intent;
+        intent = new Intent(this, Login.class);
+        startActivity(intent);
+    }
+
     public void OnClick(View view)
     {
         String name = nickName.getText().toString();

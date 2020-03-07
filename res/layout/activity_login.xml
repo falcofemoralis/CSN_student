@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="Зарегайся!"
+        android:text="Увійди!"
         android:textAlignment="center"
         android:textSize="36sp" />
 
@@ -32,14 +32,6 @@
         android:ems="10"
         android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/checkPass"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/button4"
@@ -48,8 +40,8 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="30dp"
         android:background="#00FFFFFF"
-        android:onClick="OnClickLogin"
-        android:text="Вже є акаунт?" />
+        android:onClick="OnClickRegistration"
+        android:text="Вже зареєстровані?" />
 
     <Button
         android:id="@+id/button2"
@@ -58,5 +50,5 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="30dp"
         android:onClick="OnClick"
-        android:text="Зареєструватись" />
+        android:text="Увійти" />
 </LinearLayout>

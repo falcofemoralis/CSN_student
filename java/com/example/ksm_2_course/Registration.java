@@ -30,7 +30,7 @@ public class Registration extends AppCompatActivity {
     Button registration;
     RequestQueue requestQueue;
     String url = "http://192.168.0.105/registr/InsertNewUser.php",getUserURL = "http://192.168.0.105/registr/getUser.php";
-    static boolean isTrue;
+    public static boolean isTrue=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +42,10 @@ public class Registration extends AppCompatActivity {
         nickName = (EditText) findViewById(R.id.Nick);
         registration = (Button) findViewById(R.id.button2);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        Save();
-
     }
 
     public void OnClick(View view)
     {
-
         String name = nickName.getText().toString();
         if(name.equals("")){
             Toast.makeText(Registration.this, "Please enter nickname", Toast.LENGTH_SHORT).show();
@@ -57,6 +54,7 @@ public class Registration extends AppCompatActivity {
 
         getUser();
         if(isTrue) return;
+
 
         String pass = password.getText().toString();
         String checkpass = checkPassword.getText().toString();
@@ -83,7 +81,7 @@ public class Registration extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", nickName.getText().toString());
+                parameters.put("NickName", nickName.getText().toString().toLowerCase());
                 parameters.put("Password", password.getText().toString());
                 return parameters;
             }
@@ -110,9 +108,9 @@ public class Registration extends AppCompatActivity {
                     JSONObject student = user.getJSONObject(0);
                     String nm = student.getString("NickName");
 
-                    if (nm.equals(nickName.getText().toString())){
-                        Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
+                    if (nm.equals(nickName.getText().toString().toLowerCase())){
                         isTrue=true;
+                        Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -126,7 +124,6 @@ public class Registration extends AppCompatActivity {
             }
         });
         requestQueue.add(jsonObjectRequest);
-
     }
 
     public void Save(){
@@ -139,4 +136,5 @@ public class Registration extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
 }

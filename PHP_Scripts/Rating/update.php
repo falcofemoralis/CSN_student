@@ -3,10 +3,10 @@
 if ($_SERVER["REQUEST_METHOD"]=="POST")
 {
     require 'connection.php';
-    createStudent();
+    UpdateRating();
 }
 
-function createStudent()
+function UpdateRating()
 {
     global $connect;
     
@@ -14,8 +14,8 @@ function createStudent()
     $Code = $_POST["Code_discp"];
     $Status = $_POST["Status"];
     
-    $query = "UPDATE `ratings` SET `NickName`=$NickName,`Code_discp`=$Code,`Status`=$Status";
-    
+    $query = "UPDATE `ratings` SET `Status`='$Status' WHERE `NickName` = '$NickName' AND `Code_discp` ='$Code'";
+
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     mysqli_close($connect);
 }

@@ -82,7 +82,7 @@ public class Registration extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", nickName.getText().toString());
+                parameters.put("NickName", nickName.getText().toString().toLowerCase());
                 parameters.put("Password", password.getText().toString());
                 return parameters;
             }

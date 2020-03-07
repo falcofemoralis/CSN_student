@@ -1,6 +1,8 @@
 package com.example.ksm_2_course;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,10 +33,12 @@ public class Lessons extends AppCompatActivity {
         setContentView(R.layout.activity_lessons_schedule);
         setBorders();
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String text = sharedPreferences.getString(SettingsActivity.KEY_GROUP,"knt_528");
         //выбираю базу данных
-        if (MainActivity.StatusButton == 0) {
+        if (text.equals("knt_518")) {
             FILE_NAME = "knt518.json";
-        } else if (MainActivity.StatusButton == 1) {
+        } else if (text.equals("knt_528")) {
             FILE_NAME = "knt528.json";
         }
 

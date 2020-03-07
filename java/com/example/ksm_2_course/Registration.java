@@ -1,7 +1,9 @@
 package com.example.ksm_2_course;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.preference.PreferenceManager;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,24 +17,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class Registration extends AppCompatActivity {
 
-    JSONArray user;
     EditText password, checkPassword, nickName;
     Button registration;
     RequestQueue requestQueue;
-    String url = "http://192.168.0.103/registr/InsertNewUser.php",getUserURL = "http://192.168.0.103/registr/getUser.php";
-    Setting setting = new Setting();
+    String url = "http://192.168.0.105/registr/InsertNewUser.php",getUserURL = "http://192.168.0.105/registr/getUser.php";
+    static boolean isTrue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,22 +49,26 @@ public class Registration extends AppCompatActivity {
     public void OnClick(View view)
     {
 
-        getUser();
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-
         String name = nickName.getText().toString();
         if(name.equals("")){
             Toast.makeText(Registration.this, "Please enter nickname", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        getUser();
+        if(isTrue) return;
+
         String pass = password.getText().toString();
         String checkpass = checkPassword.getText().toString();
        if (!pass.equals(checkpass)){
            Toast.makeText(Registration.this, "Incorrect password", Toast.LENGTH_SHORT).show();
            return;
+       }else if(pass.equals("") || checkpass.equals("")) {
+           Toast.makeText(Registration.this, "Enter password", Toast.LENGTH_SHORT).show();
+           return;
        }
 
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
@@ -86,52 +88,51 @@ public class Registration extends AppCompatActivity {
                 return parameters;
             }
         };
-        Save();
         requestQueue.add(request);
-
+        Save();
+        Intent intent;
+        intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 
-    public void getUser()
-    {
+    public void getUser() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("NickName", nickName.getText().toString() );
 
-        Map<String, String> params = new HashMap();
-        params.put("NickName", nickName.getText().toString());
-        JSONObject parameters = new JSONObject(params);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                getUserURL, parameters, new Response.Listener<JSONObject>() {
+        JSONObject parameters = new JSONObject(map);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getUserURL, parameters, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    user = response.getJSONArray("students");
+                    JSONArray user = response.getJSONArray("students");
+                    JSONObject student = user.getJSONObject(0);
+                    String nm = student.getString("NickName");
 
-                    if (user.length() != 0)
-                        nickName.setText("GG");
-                    //Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
+                    if (nm.equals(nickName.getText().toString())){
+                        Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
+                        isTrue=true;
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    isTrue=false;
                 }
             }
-        }, new Response.ErrorListener()
-        {
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            { }
-        }
-
-        );
-
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
         requestQueue.add(jsonObjectRequest);
+
     }
 
     public void Save(){
-        setting.setIsRegistered(1);
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(setting);
-        JSONHelper.create(this, "defaultSettings.json" , jsonString);
+        SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+        pref.apply();
     }
 
     @Override

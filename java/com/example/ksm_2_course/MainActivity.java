@@ -1,12 +1,17 @@
     package com.example.ksm_2_course;
 
+    import androidx.annotation.NonNull;
     import androidx.appcompat.app.AppCompatActivity;
+    import androidx.preference.PreferenceManager;
     import android.content.Intent;
+    import android.content.SharedPreferences;
     import android.os.Bundle;
     import android.os.CountDownTimer;
+    import android.view.Menu;
+    import android.view.MenuInflater;
+    import android.view.MenuItem;
     import android.view.View;
     import android.widget.Button;
-    import android.widget.RadioButton;
     import android.widget.TextView;
     import com.google.gson.Gson;
     import com.google.gson.reflect.TypeToken;
@@ -18,20 +23,37 @@
 
     public class MainActivity extends AppCompatActivity {
 
-        final String FILE_NAME = "data_disc.json",SETTINGS_FILE="defaultSettings.json";
-        public static int StatusButton;
+        final String FILE_NAME = "data_disc.json";
         Button res;
         ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
-        Setting setting = new Setting();
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             res = (Button) findViewById(R.id.res);
             setProgress();
-            restore();
             time();
             checkRegistration();
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.settings_menu,menu);
+            return true;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.item1:
+                    Intent intent;
+                    intent = new Intent(this, SettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
         }
 
         @Override
@@ -59,27 +81,7 @@
             ((Button)findViewById(R.id.res)).setText(Integer.toString(sum * 100 / all) + "%");
         }
 
-
-        public void  OnClickRadioButton(View v){
-             RadioButton radioButton_knt528 = (RadioButton) findViewById(R.id.radioButton_knt528);
-
-             if(radioButton_knt528.isChecked()){
-                 radioButton_knt528.setChecked(false);
-             }
-            StatusButton=0;
-             save();
-        }
-
-        public void  OnClickRadioButton2(View v){
-            RadioButton radioButton_knt518 = (RadioButton) findViewById(R.id.radioButton_knt518);
-            if(radioButton_knt518.isChecked()){
-                radioButton_knt518.setChecked(false);
-            }
-            StatusButton=1;
-            save();
-        }
-
-        public  void OnClickLessons_schedule(View v){
+        public void OnClickLessons_schedule(View v){
             Intent intent;
             intent = new Intent(this, Lessons.class);
             startActivity(intent);
@@ -91,28 +93,7 @@
             intent = new Intent(this, Disciplines.class);
             intent.putExtra("Name", ((Button) v).getText());
             startActivity(intent);
-
             setProgress();
-        }
-
-        public void save(){
-            Gson gson = new Gson();
-            Setting setting = gson.fromJson(JSONHelper.read(this,SETTINGS_FILE), Setting.class);
-            setting.setDefaultGroup(StatusButton);
-            String jsonString = gson.toJson(setting);
-            JSONHelper.create(this, SETTINGS_FILE , jsonString);
-        }
-
-        public void restore(){
-            RadioButton radioButton_knt518 = (RadioButton) findViewById(R.id.radioButton_knt518);
-            RadioButton radioButton_knt528 = (RadioButton) findViewById(R.id.radioButton_knt528);
-            Gson gson = new Gson();
-                Setting setting = gson.fromJson(JSONHelper.read(this,SETTINGS_FILE), Setting.class);
-                if(setting.getDefaultGroup()==0){
-                    radioButton_knt518.setChecked(true);
-                }else if(setting.getDefaultGroup() ==1){
-                    radioButton_knt528.setChecked(true);
-                }
         }
 
         public void time() {
@@ -199,21 +180,17 @@
             }
 
         public void checkRegistration( ){
-            Gson gson = new Gson();
-            Setting setting = gson.fromJson(JSONHelper.read(this,SETTINGS_FILE), Setting.class);
-            if(setting.getIsRegistered()==0){
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            Boolean is_registered = sharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+
+            if(is_registered){
                 Intent intent;
                 intent = new Intent(this, Registration.class);
                 startActivity(intent);
             }else{
                 return;
             }
-        }
-
-        public void OnClickSettings(){
-            Intent intent;
-            intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
         }
     }
 

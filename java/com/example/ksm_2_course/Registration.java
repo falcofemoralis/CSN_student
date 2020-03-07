@@ -44,17 +44,13 @@ public class Registration extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
     }
 
-    public void OnClick(View view)
+     public void OnClick(View view)
     {
         String name = nickName.getText().toString();
         if(name.equals("")){
             Toast.makeText(Registration.this, "Please enter nickname", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        getUser();
-        if(isTrue) return;
-
 
         String pass = password.getText().toString();
         String checkpass = checkPassword.getText().toString();
@@ -70,7 +66,12 @@ public class Registration extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(String response)
+            {
+                if (response.indexOf("Duplicate") != -1)
+                    Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
+                else
+                    Save();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -81,55 +82,23 @@ public class Registration extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", nickName.getText().toString().toLowerCase());
+                parameters.put("NickName", nickName.getText().toString());
                 parameters.put("Password", password.getText().toString());
                 return parameters;
             }
         };
         requestQueue.add(request);
-        Save();
-        Intent intent;
-        intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
     }
 
-
-    public void getUser() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("NickName", nickName.getText().toString() );
-
-        JSONObject parameters = new JSONObject(map);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getUserURL, parameters, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray user = response.getJSONArray("students");
-                    JSONObject student = user.getJSONObject(0);
-                    String nm = student.getString("NickName");
-
-                    if (nm.equals(nickName.getText().toString().toLowerCase())){
-                        isTrue=true;
-                        Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    isTrue=false;
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    public void Save(){
+    public void Save()
+    {        
         SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
         pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
         pref.apply();
+        Intent intent;
+        intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override

@@ -182,7 +182,7 @@
         public void checkRegistration( ){
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            Boolean is_registered = sharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+            Boolean is_registered = sharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED,true);
 
             if(is_registered){
                 Intent intent;

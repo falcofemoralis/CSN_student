@@ -27,7 +27,7 @@
             app:title="@string/group_title"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="is_registered"
             android:title="Вийти з акаунта" />
 

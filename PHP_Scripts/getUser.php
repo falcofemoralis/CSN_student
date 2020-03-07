@@ -9,14 +9,10 @@ function getUser()
 {
 	global $connect;
 	
-	
-	//$NickName = $_POST["NickName"];
-	//$NickName = json_decode( $_POST['NickName'] );
-	//$jsonString = '{"NickName":"Arti"}';
-	
     $post = json_decode(file_get_contents("php://input"), true);
-    $my_value = $post['NickName'];
-	$query = "Select NickName FROM registration WHERE NickName = '$my_value'";
+    $nickname = $post['NickName'];
+	$password = $post['Password'];
+	$query = "Select NickName,Password FROM registration WHERE NickName = '$nickname' AND Password = '$password'";
 	$result = mysqli_query($connect, $query);
 	$number_of_rows = mysqli_num_rows($result);
 	

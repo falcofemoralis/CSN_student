@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity{
 
     EditText nickNameS;
     EditText passwordS;
-    String url = "http://192.168.0.105/registr/Login.php";
+    String url = "http://192.168.0.105/registr/getUser.php";
     RequestQueue requestQueue;
 
     @Override
@@ -46,41 +46,44 @@ public class Login extends AppCompatActivity{
         requestQueue = Volley.newRequestQueue(getApplicationContext());
     }
 
-    public void OnClick(View v){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null,new Response.Listener<JSONObject>() {
+    public void OnClick(View v) {
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("NickName", nickNameS.getText().toString());
+        map.put("Password", passwordS.getText().toString());
+
+        JSONObject parameters = new JSONObject(map);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray students = response.getJSONArray("students");
-                    for (int i = 0; i < students.length(); i++) {
-                        JSONObject student = students.getJSONObject(i);
+                    JSONArray user = response.getJSONArray("students");
+                    JSONObject student = user.getJSONObject(0);
 
-                        String nickname = student.getString("NickName");
-                        String password = student.getString("Password");
+                    String nickname = student.getString("NickName");
+                    String password = student.getString("Password");
 
-                        if(nickNameS.getText().toString().equals(nickname) && passwordS.getText().toString().equals(password)){
-                            Toast.makeText(Login.this, "Successfully login", Toast.LENGTH_SHORT).show();
-                            Save();
-                            break;
-                        }else if(i==students.length()-1){
-                            Toast.makeText(Login.this, "Inccorect password or login", Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                    }
+                    if (nickNameS.getText().toString().toLowerCase().equals(nickname) && passwordS.getText().toString().toLowerCase().equals(password)) {
+                        Toast.makeText(Login.this, "Successfully login", Toast.LENGTH_SHORT).show();
+                        Save();
+                    } 
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-
+                    Toast.makeText(Login.this, "Inccorect password or login", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
         requestQueue.add(jsonObjectRequest);
     }
+
+
 
     public void OnClickRegistration(View v){
         Intent intent;

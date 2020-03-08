@@ -37,5 +37,12 @@
             android:title="Вийти з акаунта" />
 
     </PreferenceCategory>
+    <PreferenceCategory android:title="Головний екран">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="timer_setting"
+            android:title="Таймер" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

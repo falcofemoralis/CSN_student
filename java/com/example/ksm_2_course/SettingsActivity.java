@@ -22,60 +22,19 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_GROUP = "group";
     public static final String KEY_IS_REGISTERED = "is_registered";
     public static final String KEY_NICKNAME = "nickname";
+    public static final String KEY_TIMER_SETTING = "timer_setting";
     String url = "http://192.168.0.105/registr/editUser.php";
     RequestQueue requestQueue;
     String oldNickname;
     SharedPreferences pref;
+
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             if(key.equals(KEY_NICKNAME)){
-
-                requestQueue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-                {
-
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-                        if (response.indexOf("Duplicate") != -1)
-                            Toast.makeText(SettingsActivity.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
-                        else{
-                            String nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME,"");
-                            Toast.makeText(getApplicationContext(),"Nickname changed WHERE nickname="+nickname+" oldnickname="+oldNickname,Toast.LENGTH_LONG).show();
-                            oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME,"");
-
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit();
-                        pref.putString(SettingsActivity.KEY_NICKNAME,oldNickname);
-                        pref.commit();
-                        Toast.makeText(SettingsActivity.this, "No connection" , Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-                        String nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME,"");
-
-                        Map<String, String> parameters = new HashMap<String, String>();
-                        parameters.put("NickName", nickname.toLowerCase());
-                        parameters.put("OldNickName", oldNickname.toLowerCase());
-
-                        return parameters;
-                    }
-                };
-                requestQueue.add(request);
-
+                setNickname();
             }
-
         }
     };
 
@@ -95,7 +54,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
         oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME,"");
-
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
@@ -111,5 +69,47 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    public void setNickname() {
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+                SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit();
+                if (response.indexOf("Duplicate") != -1) {
+                    pref.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
+                    pref.commit();
+                    Toast.makeText(SettingsActivity.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Nickname changed", Toast.LENGTH_SHORT).show();
+                    oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit();
+                pref.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
+                pref.commit();
+                Toast.makeText(SettingsActivity.this, "No connection", Toast.LENGTH_SHORT).show();
+                finish();
+        }
+        }) {
 
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+                String nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", nickname.toLowerCase());
+                parameters.put("OldNickName", oldNickname.toLowerCase());
+
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+    }
 }
+

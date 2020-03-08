@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:background="#DFFFBF"
-            android:onClick="OnClickLessons_schedule"
+            android:onClick="OnClickLessons"
             android:text="@string/Lessons_schedule" />
 
         <Button

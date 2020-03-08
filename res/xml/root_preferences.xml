@@ -19,6 +19,11 @@
 
     <PreferenceCategory app:title="@string/Base_settings">
 
+        <EditTextPreference
+            app:key="nickname"
+            app:title="Nickname"
+            app:useSimpleSummaryProvider="true" />
+
         <ListPreference
             app:defaultValue="knt_528"
             app:entries="@array/group_entries"

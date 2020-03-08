@@ -78,17 +78,17 @@ public class Login extends AppCompatActivity{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Login.this, "No connection", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
     }
-
-
-
+    
     public void OnClickRegistration(View v){
         Intent intent;
         intent = new Intent(this, Registration.class);
         startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     @Override
@@ -100,6 +100,7 @@ public class Login extends AppCompatActivity{
     {
         SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
         pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+        pref.putString(SettingsActivity.KEY_NICKNAME,nickNameS.getText().toString());
         pref.apply();
         Intent intent;
         intent = new Intent(this, MainActivity.class);

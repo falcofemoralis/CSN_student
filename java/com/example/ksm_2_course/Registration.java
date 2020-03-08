@@ -42,6 +42,7 @@ public class Registration extends AppCompatActivity {
         Intent intent;
         intent = new Intent(this, Login.class);
         startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     public void OnClick(View view)
@@ -76,6 +77,7 @@ public class Registration extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Registration.this, "No connection", Toast.LENGTH_SHORT).show();
             }
         }) {
 
@@ -95,6 +97,7 @@ public class Registration extends AppCompatActivity {
     {
         SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
         pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+        pref.putString(SettingsActivity.KEY_NICKNAME,nickName.getText().toString());
         pref.apply();
         Intent intent;
         intent = new Intent(this, MainActivity.class);

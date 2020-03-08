@@ -30,6 +30,7 @@
         <activity android:name=".Registration" />
         <activity android:name=".Disciplines" />
         <activity android:name=".Lessons" />
+        <activity android:name=".Login" />
     </application>
 
 </manifest>

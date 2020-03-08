@@ -9,13 +9,15 @@ function insertData()
 {
     global $connect;
     
-    $NickName = $_POST["NickName"];
+    $NewNickName = $_POST["NewNickName"];
     $Pass = $_POST["Password"];
     $NameGroup = $_POST["NameGroup"];
+    $OldNickName = $_POST["OldNickName"];
     
-    $query = "  INSERT INTO `registration` (`Code_User`, `NickName`, `Password`, `Code_Group`)
-                VALUES
-                (NULL, '$NickName', '$Pass', (SELECT Code_Group FROM st_groups WHERE NameGroup = '$NameGroup'))";
+    
+    $query = "  UPDATE registration
+                SET NickName = '$NewNickName', Password = '$Pass', Code_Group = (SELECT Code_Group FROM st_groups WHERE NameGroup = '$NameGroup')
+                WHERE NickName = '$OldNickName'";
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     mysqli_close($connect);

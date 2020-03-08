@@ -33,7 +33,6 @@
             setContentView(R.layout.activity_main);
             res = (Button) findViewById(R.id.res);
             setProgress();
-            time();
             checkRegistration();
         }
 
@@ -74,23 +73,7 @@
         @Override
         protected void onResume() {
             setProgress();
-            final TextView timerS = (TextView) findViewById(R.id.timerS);
-            final TextView timerM = (TextView) findViewById(R.id.timerM);
-            final TextView timerH = (TextView) findViewById(R.id.timerH);
-            final TextView twoCommas2 = (TextView) findViewById(R.id.twoCommas2);
-            final TextView twoCommas1 = (TextView) findViewById(R.id.twoCommas1);
-            final TextView timeUntil = (TextView) findViewById(R.id.timeUntil);
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            boolean timer_settings = sharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
-            if (!timer_settings) {
-                start.cancel();
-                timeUntil.setText("");
-                twoCommas1.setText("");
-                twoCommas2.setText("");
-                timerS.setText("");
-                timerM.setText("");
-                timerH.setText("");
-            } else time();
+            checkTimer();
             super.onResume();
         }
 
@@ -189,6 +172,26 @@
                     time();
                 }
             }.start();
+        }
+
+        public void checkTimer() {
+            final TextView timerS = (TextView) findViewById(R.id.timerS);
+            final TextView timerM = (TextView) findViewById(R.id.timerM);
+            final TextView timerH = (TextView) findViewById(R.id.timerH);
+            final TextView twoCommas2 = (TextView) findViewById(R.id.twoCommas2);
+            final TextView twoCommas1 = (TextView) findViewById(R.id.twoCommas1);
+            final TextView timeUntil = (TextView) findViewById(R.id.timeUntil);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            boolean timer_settings = sharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+            if (!timer_settings) {
+                start.cancel();
+                timeUntil.setText("");
+                twoCommas1.setText("");
+                twoCommas2.setText("");
+                timerS.setText("");
+                timerM.setText("");
+                timerH.setText("");
+            } else time();
         }
 
         public void checkRegistration() {

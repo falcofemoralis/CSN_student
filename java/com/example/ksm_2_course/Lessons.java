@@ -36,9 +36,9 @@ public class Lessons extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String text = sharedPreferences.getString(SettingsActivity.KEY_GROUP,"knt_528");
         //выбираю базу данных
-        if (text.equals("knt_518")) {
+        if (text.equals("КНТ-518")) {
             FILE_NAME = "knt518.json";
-        } else if (text.equals("knt_528")) {
+        } else if (text.equals("КНТ-528")) {
             FILE_NAME = "knt528.json";
         }
 

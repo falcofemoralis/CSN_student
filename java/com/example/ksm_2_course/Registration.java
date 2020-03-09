@@ -1,13 +1,18 @@
 package com.example.ksm_2_course;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -16,15 +21,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Registration extends AppCompatActivity {
 
     EditText password, checkPassword, nickName;
+    String group;
     Button registration;
     RequestQueue requestQueue;
-    String url = "http://192.168.0.105/registr/InsertNewUser.php";
+    String url = "http://192.168.0.105/registr/Rating/registration.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,21 @@ public class Registration extends AppCompatActivity {
         nickName = (EditText) findViewById(R.id.Nick);
         registration = (Button) findViewById(R.id.button2);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        //выбор группы, в oncreate т.к нужно чтобы по умолчанию попадало что-то в группу
+        final Spinner groupSpinner = (Spinner) findViewById(R.id.group);
+        groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                group = groupSpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
     }
 
     public void OnClickLogin(View view){
@@ -71,8 +95,11 @@ public class Registration extends AppCompatActivity {
             {
                 if (response.indexOf("Duplicate") != -1)
                     Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
-                else
+                else{
+                    Toast.makeText(Registration.this, "Successfully registration", Toast.LENGTH_SHORT).show();
                     Save();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -86,11 +113,11 @@ public class Registration extends AppCompatActivity {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("NickName", nickName.getText().toString().toLowerCase());
                 parameters.put("Password", password.getText().toString());
+                parameters.put("NameGroup", group);
                 return parameters;
             }
         };
         requestQueue.add(request);
-
     }
 
     public void Save()
@@ -98,7 +125,10 @@ public class Registration extends AppCompatActivity {
         SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
         pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
         pref.putString(SettingsActivity.KEY_NICKNAME,nickName.getText().toString());
+        pref.putString(SettingsActivity.KEY_PASSWORD,password.getText().toString());
+        pref.putString(SettingsActivity.KEY_GROUP,group);
         pref.apply();
+
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -108,5 +138,6 @@ public class Registration extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
 
 }

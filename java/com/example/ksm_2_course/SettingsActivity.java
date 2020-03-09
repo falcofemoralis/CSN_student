@@ -19,21 +19,30 @@ import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String KEY_PASSWORD = "password";
     public static final String KEY_GROUP = "group";
     public static final String KEY_IS_REGISTERED = "is_registered";
     public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_TIMER_SETTING = "timer_setting";
-    String url = "http://192.168.0.105/registr/editUser.php";
+    String url = "http://192.168.0.105/registr/Rating/updateUser.php";
     RequestQueue requestQueue;
     String oldNickname;
     SharedPreferences pref;
-
+    String nickname,password,group;
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
             if(key.equals(KEY_NICKNAME)){
-                setNickname();
+                nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+                setData();
+            }else if(key.equals(KEY_PASSWORD)){
+                password = sharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
+                setData();
+            }else if(key.equals(KEY_GROUP)){
+                group = sharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
+                setData();
             }
         }
     };
@@ -54,6 +63,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
         oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME,"");
+        nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+        password = sharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
+        group = sharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
@@ -69,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    public void setNickname() {
+    public void setData() {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -82,7 +94,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast.makeText(SettingsActivity.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Nickname changed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "UserData changed", Toast.LENGTH_SHORT).show();
                     oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
                 }
             }
@@ -96,16 +108,13 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
         }
         }) {
-
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-                String nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
-
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", nickname.toLowerCase());
+                parameters.put("NewNickName", nickname.toLowerCase());
+                parameters.put("Password", password);
+                parameters.put("NameGroup", group);
                 parameters.put("OldNickName", oldNickname.toLowerCase());
-
                 return parameters;
             }
         };

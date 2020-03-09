@@ -21,7 +21,8 @@
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:hint = "Nickname"/>
 
     <EditText
         android:id="@+id/pass"
@@ -30,8 +31,8 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="30dp"
         android:ems="10"
-        android:inputType="textPassword" />
-
+        android:inputType="textPassword"
+        android:hint = "Password"/>
 
     <Button
         android:id="@+id/button4"

@@ -32,8 +32,9 @@ public class Login extends AppCompatActivity{
 
     EditText nickNameS;
     EditText passwordS;
-    String url = "http://192.168.0.105/registr/getUser.php";
+    String url = "http://192.168.0.105/registr/Rating/getUser.php";
     RequestQueue requestQueue;
+    String nickname, password,group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,37 +43,29 @@ public class Login extends AppCompatActivity{
 
         nickNameS = (EditText) findViewById(R.id.Nick);
         passwordS = (EditText) findViewById(R.id.pass);
-        Button login = (Button) findViewById(R.id.button2);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
     }
 
     public void OnClick(View v) {
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("NickName", nickNameS.getText().toString());
-        map.put("Password", passwordS.getText().toString());
-
-        JSONObject parameters = new JSONObject(map);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
-
+        StringRequest jsonObjectRequest  = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
                 try {
-                    JSONArray user = response.getJSONArray("students");
-                    JSONObject student = user.getJSONObject(0);
-
-                    String nickname = student.getString("NickName");
-                    String password = student.getString("Password");
-
-                    if (nickNameS.getText().toString().toLowerCase().equals(nickname) && passwordS.getText().toString().toLowerCase().equals(password)) {
+                    JSONObject user = new JSONObject(response);
+                    nickname = user.getString("NickName");
+                    password = user.getString("Password");
+                    group = user.getString("NameGroup");
+                    if (passwordS.getText().toString().toLowerCase().equals(password)){
                         Toast.makeText(Login.this, "Successfully login", Toast.LENGTH_SHORT).show();
                         Save();
-                    } 
-
+                    }else{
+                        Toast.makeText(Login.this, "Inccorect password", Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(Login.this, "Inccorect password or login", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "User not found", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -80,8 +73,17 @@ public class Login extends AppCompatActivity{
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(Login.this, "No connection", Toast.LENGTH_SHORT).show();
             }
-        });
-        requestQueue.add(jsonObjectRequest);
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", nickNameS.getText().toString().toLowerCase());
+                return parameters;
+            }
+        };
+        requestQueue.add(jsonObjectRequest );
+
     }
     
     public void OnClickRegistration(View v){
@@ -100,8 +102,11 @@ public class Login extends AppCompatActivity{
     {
         SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
         pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
-        pref.putString(SettingsActivity.KEY_NICKNAME,nickNameS.getText().toString());
+        pref.putString(SettingsActivity.KEY_NICKNAME,nickname);
+        pref.putString(SettingsActivity.KEY_PASSWORD,password);
+        pref.putString(SettingsActivity.KEY_GROUP,group);
         pref.apply();
+
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         startActivity(intent);

@@ -24,13 +24,19 @@
             app:title="Nickname"
             app:useSimpleSummaryProvider="true" />
 
+        <EditTextPreference
+            app:key="password"
+            app:title="Password"
+            app:useSimpleSummaryProvider="true" />
+
         <ListPreference
             app:defaultValue="knt_528"
-            app:entries="@array/group_entries"
+            app:entries="@array/group_values"
             app:entryValues="@array/group_values"
             app:key="group"
             app:title="@string/group_title"
             app:useSimpleSummaryProvider="true" />
+
         <SwitchPreference
             android:defaultValue="true"
             android:key="is_registered"

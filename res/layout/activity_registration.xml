@@ -21,7 +21,8 @@
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:hint = "Nickname"/>
 
     <EditText
         android:id="@+id/pass"
@@ -30,7 +31,8 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="30dp"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:hint = "Password"/>
 
     <EditText
         android:id="@+id/checkPass"
@@ -39,7 +41,17 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="30dp"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:hint = "Confirm password"/>
+
+    <Spinner
+        android:id="@+id/group"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="30dp"
+        android:entries="@array/group_arrays"
+        android:prompt="@string/group_prompt"/>
 
     <Button
         android:id="@+id/button4"
@@ -59,4 +71,5 @@
         android:layout_marginTop="30dp"
         android:onClick="OnClick"
         android:text="Зареєструватись" />
+
 </LinearLayout>

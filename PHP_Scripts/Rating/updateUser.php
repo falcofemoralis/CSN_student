@@ -2,10 +2,10 @@
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     include 'connection.php';
-    insertData();
+    updateUser();
 }
 
-function insertData()
+function updateUser()
 {
     global $connect;
     

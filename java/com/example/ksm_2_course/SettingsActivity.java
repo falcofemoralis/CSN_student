@@ -26,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_TIMER_SETTING = "timer_setting";
     String url = "http://192.168.0.105/registr/Rating/updateUser.php";
     RequestQueue requestQueue;
-    String oldNickname;
+    String oldNickname,oldPassword,oldGroup;
     SharedPreferences pref;
     String nickname,password,group;
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -62,10 +62,12 @@ public class SettingsActivity extends AppCompatActivity {
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-        oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME,"");
         nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+        oldNickname = nickname;
         password = sharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
+        oldPassword = password;
         group = sharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
+        oldGroup = group;
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
@@ -96,6 +98,8 @@ public class SettingsActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "UserData changed", Toast.LENGTH_SHORT).show();
                     oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+                    oldPassword = sharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
+                    oldGroup = sharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
                 }
             }
         }, new Response.ErrorListener() {
@@ -103,6 +107,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit();
                 pref.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
+                pref.putString(SettingsActivity.KEY_PASSWORD, oldPassword);
+                pref.putString(SettingsActivity.KEY_GROUP, oldGroup);
                 pref.commit();
                 Toast.makeText(SettingsActivity.this, "No connection", Toast.LENGTH_SHORT).show();
                 finish();

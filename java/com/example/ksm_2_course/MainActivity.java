@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     final String FILE_NAME = "data_disc.json";
     Button res;
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
-    long HH, MM, SS;
+    long seconds, hour, minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,77 +136,65 @@ public class MainActivity extends AppCompatActivity {
         timer(endTime * 1000);
     }
 
-   public void timer(int millis) {
-        final TextView timerS = (TextView) findViewById(R.id.timerS);
-        final TextView timerM = (TextView) findViewById(R.id.timerM);
-        final TextView timerH = (TextView) findViewById(R.id.timerH);
-        final TextView twoCommas2 = (TextView) findViewById(R.id.twoCommas2);
-        final TextView twoCommas1 = (TextView) findViewById(R.id.twoCommas1);
+       public void timer(int millis) {
+            final TextView Time = (TextView) findViewById(R.id.Time);
+            start = new CountDownTimer(millis, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
+                                        //проверка на добавление нуля в секундах
 
-        int milli = millis / 1000;
-        SS = milli % 60;
-        MM = (milli / 60) % 60;
-        HH = milli / 3600;
 
-        start = new CountDownTimer(millis, 1000)
-        {
-            @Override
-            public void onTick(long millisUntilFinished)
-            {
-                --SS;
-                if (SS < 0) {
-                    SS = 59;
-                    --MM;
-                    if (MM < 0) {
-                        MM = 59;
-                        --HH;
+                    //проверка на добавление 0 в минутах
+                    long minutes = (millisUntilFinished / (1000 * 60)) % 60;
+                    if (minutes < 10) {
+                        smin =("0" + Long.toString(minutes));
+                    } else {
+                        smin = (Long.toString(minutes));
                     }
+                    //проверка на удаление часов при минутах
+                    long hour = (millisUntilFinished / (1000 * 60)) / 60;
+                    if (hour != 0) {
+                       shour = (Long.toString(hour));
+                    } else {
+                        shour = ("");
+                        twoComm1 = ("");
+                    }
+                    long seconds = (millisUntilFinished / 1000) % 60;
+                    if (seconds < 10 &&  minutes != 0) {
+                        ssec = ("0" + Long.toString(seconds));
+                    } else {
+                        ssec = (Long.toString(seconds));
+                    }
+                    if( minutes == 0 && hour == 0){
+                        twoComm2 = ("");
+                        twoComm1 = ("");
+                        smin = "";
+
+                    }
+                    Time.setText(shour + twoComm1 + smin + twoComm2 + ssec);
                 }
 
-                timerS.setText(Long.toString(SS));
-                timerM.setText(Long.toString(MM));
-                timerH.setText(Long.toString(HH));
-            }
-
-            @Override
-            public void onFinish() {
-                time();
-            }
-        }.start();
-    }
-
-    public void checkTimer() {
-        final TextView timerS = (TextView) findViewById(R.id.timerS);
-        final TextView timerM = (TextView) findViewById(R.id.timerM);
-        final TextView timerH = (TextView) findViewById(R.id.timerH);
-        final TextView twoCommas2 = (TextView) findViewById(R.id.twoCommas2);
-        final TextView twoCommas1 = (TextView) findViewById(R.id.twoCommas1);
-        final TextView timeUntil = (TextView) findViewById(R.id.timeUntil);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        boolean timer_settings = sharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
-        if (!timer_settings) {
-            start.cancel();
-            timeUntil.setText("");
-            twoCommas1.setText("");
-            twoCommas2.setText("");
-            timerS.setText("");
-            timerM.setText("");
-            timerH.setText("");
-        } else time();
-    }
-
-    public void checkRegistration() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean is_registered = sharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED, true);
-
-        if (is_registered) {
-            Intent intent;
-            intent = new Intent(this, Registration.class);
-            startActivity(intent);
-        } else {
-            return;
+                @Override
+                public void onFinish() {
+                    time();
+                }
+            }.start();
         }
-    }
+
+
+        public void checkTimer() {
+        final TextView timeUntil = (TextView) findViewById(R.id.timeUntil);
+
+            TextView Time = (TextView) findViewById(R.id.Time);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            boolean timer_settings = sharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+            if (!timer_settings) {
+                String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
+                Time.setText(shour + twoComm1 + smin + twoComm2 + ssec);
+            } else time();
+        }
 
 }
 

@@ -139,36 +139,11 @@
                     android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/timerH"
+                    android:id="@+id/Time"
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
+                    android:layout_height="match_parent"
                     android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/twoCommas2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/timerM"
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/twoCommas1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/timerS"
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:textSize="24sp" />
             </TableRow>
 
         </TableLayout>

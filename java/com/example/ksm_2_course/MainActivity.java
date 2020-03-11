@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     final String FILE_NAME = "data_disc.json";
     Button res;
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
+    long HH, MM, SS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,42 +136,36 @@ public class MainActivity extends AppCompatActivity {
         timer(endTime * 1000);
     }
 
-    public void timer(int millis) {
+   public void timer(int millis) {
         final TextView timerS = (TextView) findViewById(R.id.timerS);
         final TextView timerM = (TextView) findViewById(R.id.timerM);
         final TextView timerH = (TextView) findViewById(R.id.timerH);
         final TextView twoCommas2 = (TextView) findViewById(R.id.twoCommas2);
         final TextView twoCommas1 = (TextView) findViewById(R.id.twoCommas1);
-        start = new CountDownTimer(millis, 1000) {
+
+        int milli = millis / 1000;
+        SS = milli % 60;
+        MM = (milli / 60) % 60;
+        HH = milli / 3600;
+
+        start = new CountDownTimer(millis, 1000)
+        {
             @Override
-            public void onTick(long millisUntilFinished) {
-                twoCommas1.setText(":");
-                //проверка на добавление нуля в секундах
-                long seconds = (millisUntilFinished / 1000) % 60;
-                if (seconds < 10) {
-                    String ssec = Long.toString(seconds);
-                    timerS.setText("0" + ssec);
-                } else {
-                    timerS.setText(Long.toString(seconds));
+            public void onTick(long millisUntilFinished)
+            {
+                --SS;
+                if (SS < 0) {
+                    SS = 59;
+                    --MM;
+                    if (MM < 0) {
+                        MM = 59;
+                        --HH;
+                    }
                 }
 
-                //проверка на добавление 0 в минутах
-                long minutes = (millisUntilFinished / (1000 * 60)) % 60;
-                if (minutes < 10) {
-                    String smin = Long.toString(minutes);
-                    timerM.setText("0" + smin);
-                } else {
-                    timerM.setText(Long.toString(minutes));
-                }
-                //проверка на удаление часов при минутах
-                long hour = (millisUntilFinished / (1000 * 60)) / 60;
-                if (hour != 0) {
-                    timerH.setText(Long.toString(hour));
-                    twoCommas2.setText(":");
-                } else {
-                    timerH.setText(" ");
-                    twoCommas2.setText(" ");
-                }
+                timerS.setText(Long.toString(SS));
+                timerM.setText(Long.toString(MM));
+                timerH.setText(Long.toString(HH));
             }
 
             @Override

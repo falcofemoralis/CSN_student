@@ -199,24 +199,17 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    public void times(){
-        Date currentDate = new Date();
-        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        String timeText = timeFormat.format(currentDate);
-        TextView Time = (TextView) findViewById(R.id.Time);
-        Time.setText(timeText);
-    }
-
     public void checkTimer() {
         final TextView timeUntil = (TextView) findViewById(R.id.timeUntil);
 
         TextView Time = (TextView) findViewById(R.id.Time);
+        TextView TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         boolean timer_settings = sharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
         if (!timer_settings) {
-            String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
-            Time.setText(shour + twoComm1 + smin + twoComm2 + ssec);
+            Time.setText("");
+            TimeUntil.setText("");
         } else time();
     }
 

@@ -1,12 +1,9 @@
 package com.example.ksm_2_course;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,18 +20,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Registration extends AppCompatActivity {
 
-    final String MAIN_URL = "http://192.168.0.108/registr/Rating/", FILE_NAME = "data_disc.json";
+    final String FILE_NAME = "data_disc.json";
     EditText password, checkPassword, nickName;
     String group;
     Button registration;
@@ -76,7 +70,7 @@ public class Registration extends AppCompatActivity {
     }
 
     public void registration(View view) {
-        String url = MAIN_URL + "registration.php";
+        String url = MainActivity.MAIN_URL + "registration.php";
         String name = nickName.getText().toString();
         if (name.equals("")) {
             Toast.makeText(Registration.this, "Please enter nickname", Toast.LENGTH_SHORT).show();
@@ -158,7 +152,7 @@ public class Registration extends AppCompatActivity {
 
     protected void setEmptyRating(final String NameDiscp, final String status)
     {
-        String url = MAIN_URL + "insertRating.php";
+        String url = MainActivity.MAIN_URL + "insertRating.php";
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()

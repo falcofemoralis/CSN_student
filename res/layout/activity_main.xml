@@ -148,6 +148,18 @@
 
         </TableLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+        <Button
+            android:id="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF8C8C"
+            android:onClick="OnClickRating"
+            android:text="Рейтинг" />
+
     </LinearLayout>
 
 </RelativeLayout>

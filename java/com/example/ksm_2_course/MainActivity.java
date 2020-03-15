@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
     SharedPreferences pref;
-
+    public static String MAIN_URL = "http://192.168.0.108/registr/Rating/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

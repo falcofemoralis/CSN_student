@@ -24,11 +24,13 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_IS_REGISTERED = "is_registered";
     public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_TIMER_SETTING = "timer_setting";
-    String url = "http://192.168.0.105/registr/Rating/updateUser.php";
+    String URL = MainActivity.MAIN_URL + "updateUser.php";
     RequestQueue requestQueue;
     String oldNickname,oldPassword,oldGroup;
     SharedPreferences pref;
+    SharedPreferences.Editor prefEdit;
     String nickname,password,group;
+
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
     @Override
@@ -59,14 +61,14 @@ public class SettingsActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+        prefEdit = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-        nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+        nickname = pref.getString(SettingsActivity.KEY_NICKNAME, "");
         oldNickname = nickname;
-        password = sharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
+        password = pref.getString(SettingsActivity.KEY_PASSWORD, "");
         oldPassword = password;
-        group = sharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
+        group = pref.getString(SettingsActivity.KEY_GROUP, "");
         oldGroup = group;
     }
 
@@ -85,31 +87,28 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void setData() {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-                SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit();
                 if (response.indexOf("Duplicate") != -1) {
-                    pref.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
-                    pref.commit();
+                    prefEdit.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
+                    prefEdit.apply();
                     Toast.makeText(SettingsActivity.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "UserData changed", Toast.LENGTH_SHORT).show();
-                    oldNickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
-                    oldPassword = sharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
-                    oldGroup = sharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
+                    oldNickname = pref.getString(SettingsActivity.KEY_NICKNAME, "");
+                    oldPassword = pref.getString(SettingsActivity.KEY_PASSWORD, "");
+                    oldGroup = pref.getString(SettingsActivity.KEY_GROUP, "");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit();
-                pref.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
-                pref.putString(SettingsActivity.KEY_PASSWORD, oldPassword);
-                pref.putString(SettingsActivity.KEY_GROUP, oldGroup);
-                pref.commit();
+                prefEdit.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
+                prefEdit.putString(SettingsActivity.KEY_PASSWORD, oldPassword);
+                prefEdit.putString(SettingsActivity.KEY_GROUP, oldGroup);
+                prefEdit.apply();
                 Toast.makeText(SettingsActivity.this, "No connection", Toast.LENGTH_SHORT).show();
                 finish();
         }

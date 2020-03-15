@@ -7,69 +7,126 @@
     android:orientation="vertical"
     tools:context=".Registration">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        />
+
     <TextView
         android:id="@+id/reg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Зарегайся!"
+        android:layout_gravity="center"
+        android:text="Ще немає аккаунта ?"
         android:textAlignment="center"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:layout_weight="0.05"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <EditText
         android:id="@+id/Nick"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
-        android:hint = "Nickname"/>
+        android:layout_gravity="center"
+        android:hint = "Nickname"
+        android:layout_weight="0.05"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <EditText
         android:id="@+id/pass"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint = "Password"/>
+        android:hint = "Password"
+        android:layout_weight="0.05"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <EditText
         android:id="@+id/checkPass"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint = "Confirm password"/>
+        android:hint = "Confirm password"
+        android:layout_weight="0.05"
+        />
+
+    <Space
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="0.1"
+    />
 
     <Spinner
         android:id="@+id/group"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:entries="@array/group_arrays"
-        android:prompt="@string/group_prompt"/>
+        android:prompt="@string/group_prompt"
+        android:layout_weight="0.1"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:background="#00FFFFFF"
         android:onClick="OnClickLogin"
-        android:text="Вже є акаунт?" />
+        android:text="Вже є акаунт?"
+        android:layout_weight="0.1"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:onClick="registration"
-        android:text="Зареєструватись" />
+        android:text="Зареєструватись"
+        android:layout_weight="0.1"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        />
 
 </LinearLayout>
+

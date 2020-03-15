@@ -5,51 +5,93 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Registration">
+    tools:context=".Login">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        />
     <TextView
         android:id="@+id/reg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
         android:text="Увійди!"
         android:textAlignment="center"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:layout_weight="0.044"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.044"
+        />
 
     <EditText
         android:id="@+id/Nick"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
-        android:hint = "Nickname"/>
+        android:layout_gravity="center"
+        android:hint = "Nickname"
+        android:layout_weight="0.044"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <EditText
         android:id="@+id/pass"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
         android:ems="10"
+        android:layout_gravity="center"
         android:inputType="textPassword"
-        android:hint = "Password"/>
+        android:hint = "Password"
+        android:layout_weight="0.05"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:background="#00FFFFFF"
         android:onClick="OnClickRegistration"
-        android:text="Вже зареєстровані?" />
+        android:text="Вже зареєстровані?"
+        android:layout_weight="0.05"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:onClick="OnClick"
-        android:text="Увійти" />
+        android:text="Увійти"
+        android:layout_weight="0.05"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        />
 </LinearLayout>
+

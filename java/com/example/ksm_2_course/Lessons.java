@@ -33,8 +33,8 @@ public class Lessons extends AppCompatActivity {
         setContentView(R.layout.activity_lessons_schedule);
         setBorders();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String text = sharedPreferences.getString(SettingsActivity.KEY_GROUP,"knt_528");
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String text = pref.getString(SettingsActivity.KEY_GROUP,"knt_528");
         //выбираю базу данных
         if (text.equals("КНТ-518")) {
             FILE_NAME = "knt518.json";
@@ -226,5 +226,3 @@ public class Lessons extends AppCompatActivity {
         }
     }
 }
-
-

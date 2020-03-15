@@ -1,4 +1,4 @@
-    package com.example.ksm_2_course;
+package com.example.ksm_2_course;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +19,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 
 public class MainActivity extends AppCompatActivity {
     CountDownTimer start;
@@ -31,12 +26,15 @@ public class MainActivity extends AppCompatActivity {
     Button res;
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
-    
+    SharedPreferences pref;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         res = (Button) findViewById(R.id.res);
+        pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         setProgress();
         checkRegistration();
     }
@@ -67,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void OnClickRating(View v) {
+        Intent intent;
+        intent = new Intent(this, Rating.class);
+        startActivity(intent);
+    }
+
     public void OnClick(View v) {
         Intent intent;
         intent = new Intent(this, Disciplines.class);
@@ -84,8 +88,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        start.cancel();
+        boolean timer_settings = pref.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+        if (timer_settings)  start.cancel();
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
     
     public void setProgress() {
@@ -148,8 +158,7 @@ public class MainActivity extends AppCompatActivity {
         minutes = (milli / 60) % 60;
         hour = milli / 3600;
         start = new CountDownTimer(millis, 1000) {
-            String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
-
+        String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -163,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
                         --hour;
                     }
                 }
-
 
                 //проверка на добавление 0 в минутах
                 if (minutes < 10) {
@@ -205,8 +213,7 @@ public class MainActivity extends AppCompatActivity {
         TextView Time = (TextView) findViewById(R.id.Time);
         TextView TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        boolean timer_settings = sharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+        boolean timer_settings = pref.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
         if (!timer_settings) {
             Time.setText("");
             TimeUntil.setText("");
@@ -214,8 +221,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkRegistration() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean is_registered = sharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED, true);
+        Boolean is_registered = pref.getBoolean(SettingsActivity.KEY_IS_REGISTERED, true);
 
         if (is_registered) {
             Intent intent;

@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity{
 
     EditText nickNameS;
     EditText passwordS;
-    String url = "http://192.168.0.105/registr/Rating/getUser.php";
+    String url = "http://192.168.0.108/registr/Rating/getUser.php";
     RequestQueue requestQueue;
     String nickname, password,group;
 
@@ -40,13 +40,13 @@ public class Login extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        nickNameS = (EditText) findViewById(R.id.Nick);
-        passwordS = (EditText) findViewById(R.id.pass);
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
     }
 
     public void OnClick(View v) {
+        nickNameS = (EditText) findViewById(R.id.Nick);
+        passwordS = (EditText) findViewById(R.id.pass);
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
         StringRequest jsonObjectRequest  = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
@@ -82,7 +82,7 @@ public class Login extends AppCompatActivity{
                 return parameters;
             }
         };
-        requestQueue.add(jsonObjectRequest );
+        requestQueue.add(jsonObjectRequest);
 
     }
     
@@ -100,12 +100,12 @@ public class Login extends AppCompatActivity{
 
     public void Save()
     {
-        SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
-        pref.putString(SettingsActivity.KEY_NICKNAME,nickname);
-        pref.putString(SettingsActivity.KEY_PASSWORD,password);
-        pref.putString(SettingsActivity.KEY_GROUP,group);
-        pref.apply();
+        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        prefEdit.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+        prefEdit.putString(SettingsActivity.KEY_NICKNAME,nickname);
+        prefEdit.putString(SettingsActivity.KEY_PASSWORD,password);
+        prefEdit.putString(SettingsActivity.KEY_GROUP,group);
+        prefEdit.apply();
 
         Intent intent;
         intent = new Intent(this, MainActivity.class);

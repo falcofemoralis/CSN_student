@@ -34,7 +34,7 @@ import java.util.Set;
 
 public class Registration extends AppCompatActivity {
 
-    final String MAIN_URL = "http://192.168.0.105/registr/Rating/", FILE_NAME = "data_disc.json";
+    final String MAIN_URL = "http://192.168.0.108/registr/Rating/", FILE_NAME = "data_disc.json";
     EditText password, checkPassword, nickName;
     String group;
     Button registration;
@@ -75,7 +75,7 @@ public class Registration extends AppCompatActivity {
         overridePendingTransition(0, 0);
     }
 
-    public void registrtion(View view) {
+    public void registration(View view) {
         String url = MAIN_URL + "registration.php";
         String name = nickName.getText().toString();
         if (name.equals("")) {
@@ -111,7 +111,7 @@ public class Registration extends AppCompatActivity {
                     for (int i = 0; i < discs.size(); ++i)
                     {
                         Discipline temp = discs.get(i);
-                        setEmpryRating(temp.getName(), gson.toJson(temp.getComplete()));
+                        setEmptyRating(temp.getName(), gson.toJson(temp.getComplete()));
                     }
 
                     Save();
@@ -135,17 +135,16 @@ public class Registration extends AppCompatActivity {
             }
         };
         requestQueue.add(request);
-
-
     }
+
     public void Save()
     {
-        SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        pref.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
-        pref.putString(SettingsActivity.KEY_NICKNAME,nickName.getText().toString());
-        pref.putString(SettingsActivity.KEY_PASSWORD,password.getText().toString());
-        pref.putString(SettingsActivity.KEY_GROUP,group);
-        pref.apply();
+        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        prefEdit.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+        prefEdit.putString(SettingsActivity.KEY_NICKNAME,nickName.getText().toString());
+        prefEdit.putString(SettingsActivity.KEY_PASSWORD,password.getText().toString());
+        prefEdit.putString(SettingsActivity.KEY_GROUP,group);
+        prefEdit.apply();
 
         Intent intent;
         intent = new Intent(this, MainActivity.class);
@@ -157,7 +156,7 @@ public class Registration extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    protected void setEmpryRating(final String NameDiscp, final String status)
+    protected void setEmptyRating(final String NameDiscp, final String status)
     {
         String url = MAIN_URL + "insertRating.php";
 
@@ -167,18 +166,10 @@ public class Registration extends AppCompatActivity {
             @Override
             public void onResponse(String response)
             {
-                if (response.indexOf("Duplicate") != -1)
-                    Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
-                else{
-                    Toast.makeText(Registration.this, "Successfully registration", Toast.LENGTH_SHORT).show();
-                    Save();
-                }
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Registration.this, "No connection", Toast.LENGTH_SHORT).show();
             }
         }) {
 

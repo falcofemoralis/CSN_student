@@ -8,4 +8,10 @@
         <item>yes</item>
         <item>no</item>
     </string-array>
+
+    <string-array name="subjects_values">
+        <item>АМО</item>
+        <item>СМП</item>
+        <item>КСХ</item>
+    </string-array>
 </resources>

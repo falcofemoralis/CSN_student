@@ -37,4 +37,9 @@
         <item>КНТ-528</item>
     </string-array>
     <string name="group_prompt">Choose a group</string>
+    <string-array name="subject_arrays">
+        <item>АМО</item>
+        <item>СМП</item>
+        <item>КСХ</item>
+    </string-array>
 </resources>

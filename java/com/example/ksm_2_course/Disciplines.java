@@ -22,6 +22,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,24 +93,29 @@ public class Disciplines extends AppCompatActivity
         }
         res = (Button) findViewById(R.id.res); // результат в процентах
 
-        RestoreAll(discs.get(num)); // Загрузка данных
+        //RestoreAll(discs.get(num)); // Загрузка данных
+        getStatus(pref.getString(SettingsActivity.KEY_NICKNAME, ""), current.getName(), current);
     }
 
     // Загрузка информации о дисциплине
-    protected void RestoreAll(Discipline current)
+    protected void RestoreAll(Discipline current, boolean[][] compl_but)
     {
-        boolean[][] compl_but = current.getComplete();
-        int color;
-
         // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
-        complete = current.getProgress();
         for (int i = 0, size = Labs; i < size; ++i)
         {
-            color = compl_but[i][0] ? TRUE : FALSE;
-            buts[i][0].setBackgroundColor(color);
+            if (compl_but[i][0]) {
+                buts[i][0].setBackgroundColor(TRUE);
+                ++complete;
+            }
+            else
+                buts[i][0].setBackgroundColor(FALSE);
 
-            color = compl_but[i][1] ? TRUE : FALSE;
-            buts[i][1].setBackgroundColor(color);
+            if (compl_but[i][1]) {
+                buts[i][1].setBackgroundColor(TRUE);
+                ++complete;
+            }
+            else
+                buts[i][1].setBackgroundColor(FALSE);
         }
 
         ((Button)(findViewById(R.id.Disc))).setText(current.getName()); // Установка имени дисциплины
@@ -218,6 +227,41 @@ public class Disciplines extends AppCompatActivity
         };
         requestQueue.add(request);
     }
-}
 
+
+    class result { public String status;}
+    protected void getStatus (final String NickName, final String NameDiscp, final Discipline current)
+    {
+        String url = MainActivity.MAIN_URL + "getStatus.php";
+
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Gson gson = new Gson();
+                boolean[][] compl_but = gson.fromJson(gson.fromJson(response, result.class).status, boolean[][].class);
+                RestoreAll(current, compl_but);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                Toast.makeText(Disciplines.this, "No connection", Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", NickName);
+                parameters.put("NameDiscp", NameDiscp);
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+    }
+}
 

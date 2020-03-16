@@ -389,6 +389,17 @@
                         android:text="X %"
                         android:textSize="10sp" />
                 </LinearLayout>
+                
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="SaveAll"
+                    android:text="Сохранить" />
 
             </LinearLayout>
         </LinearLayout>

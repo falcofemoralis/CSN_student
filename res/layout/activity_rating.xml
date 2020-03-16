@@ -19,7 +19,12 @@
         android:id="@+id/ScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">>
+        android:orientation="vertical">
+        <HorizontalScrollView
+            android:id="@+id/ScrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/mainLayout"
@@ -33,6 +38,7 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
+        </HorizontalScrollView>
     </ScrollView>
 
 </LinearLayout>

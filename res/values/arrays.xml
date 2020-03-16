@@ -10,8 +10,11 @@
     </string-array>
 
     <string-array name="subjects_values">
-        <item>АМО</item>
-        <item>СМП</item>
-        <item>КСХ</item>
+        <item>Алгоритми та методи обчислень</item>
+        <item>Архітектура комп᾿ютерів</item>
+        <item>Комп᾿ютерна схемотехніка</item>
+        <item>Організація баз данних</item>
+        <item>Основи безпеки життєдіяльності</item>
+        <item>Сучасні методи програмування</item>
     </string-array>
 </resources>

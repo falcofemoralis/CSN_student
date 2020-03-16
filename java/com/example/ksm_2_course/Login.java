@@ -97,13 +97,52 @@ public class Login extends AppCompatActivity{
     {
         SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
         prefEdit.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
-        prefEdit.putString(SettingsActivity.KEY_NICKNAME,nickname);
-        prefEdit.putString(SettingsActivity.KEY_PASSWORD,password);
-        prefEdit.putString(SettingsActivity.KEY_GROUP,group);
+        prefEdit.putString(SettingsActivity.KEY_NICKNAME, nickname);
+        prefEdit.putString(SettingsActivity.KEY_PASSWORD, password);
+        prefEdit.putString(SettingsActivity.KEY_GROUP, group);
         prefEdit.apply();
 
+        ArrayList<Discipline> discs = new ArrayList<Discipline>();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
+
+        for (int i = 0; i < discs.size(); ++i)
+        {
+            Discipline temp = discs.get(i);
+            updateRating(nickname, temp.getName(), gson.toJson(temp.getComplete()));
+        }
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    protected void updateRating( final String NickName, final String NameDiscp, final String status)
+    {
+        String url = MainActivity.MAIN_URL + "updateRating.php";
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            { }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            { }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", NickName);
+                parameters.put("NameDiscp", NameDiscp);
+                parameters.put("Status", status);
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+    }
 }
+

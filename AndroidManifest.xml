@@ -27,10 +27,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Registration" />
+
+        <activity android:name=".Registration"
+            android:theme="@style/NoActionBar">
+        </activity>
+
+        <activity android:name=".Login"
+            android:theme="@style/NoActionBar">
+        </activity>
+
         <activity android:name=".Disciplines" />
         <activity android:name=".Lessons" />
-        <activity android:name=".Login" />
+        <activity android:name=".Rating" />
     </application>
-
 </manifest>

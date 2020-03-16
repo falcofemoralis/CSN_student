@@ -14,28 +14,42 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    CountDownTimer start;
     final String FILE_NAME = "data_disc.json";
+
+    CountDownTimer start;
+    RequestQueue requestQueue;
     Button res;
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
     SharedPreferences pref;
-    public static String MAIN_URL = "http://192.168.0.108/registr/Rating/";
+    public static String MAIN_URL = "http://.../Rating/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         res = (Button) findViewById(R.id.res);
         pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
         setProgress();
         checkRegistration();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -67,11 +81,24 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void OnClickRating(View v) {
+     public void OnClickRating(View v) {
+
+        ArrayList<Discipline> discs = new ArrayList<Discipline>();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
+
+        for (int i = 0; i < discs.size(); ++i)
+        {
+            Discipline temp = discs.get(i);
+            updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
+        }
+
         Intent intent;
         intent = new Intent(this, Rating.class);
         startActivity(intent);
     }
+
 
     public void OnClick(View v) {
         Intent intent;
@@ -234,5 +261,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    protected void updateRating( final String NickName, final String NameDiscp, final String status)
+    {
+        String url = MainActivity.MAIN_URL + "updateRating.php";
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            { }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            { }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", NickName);
+                parameters.put("NameDiscp", NameDiscp);
+                parameters.put("Status", status);
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+    }
 }
 

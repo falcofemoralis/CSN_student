@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class Disciplines extends AppCompatActivity
 {
-    final String FILE_NAME = "data_disc.json"; 
+    final String FILE_NAME = "data_disc.json";
     final int FALSE = 0xFFF56D6D, TRUE = 0xFFDFFFBF; // FALSE(Не сдано) - красный, TRUE(Сдано) - светозеленый
 
     RequestQueue requestQueue;
@@ -75,8 +75,6 @@ public class Disciplines extends AppCompatActivity
                 Main_view.removeView((LinearLayout)findViewById(id));
         }
 
-
-
         // Получение кнопок
         table = "B_";
         for(int i=0;i<Labs; ++i)
@@ -99,7 +97,7 @@ public class Disciplines extends AppCompatActivity
     {
         boolean[][] compl_but = current.getComplete();
         int color;
-        
+
         // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
         complete = current.getProgress();
         for (int i = 0, size = Labs; i < size; ++i)
@@ -122,7 +120,7 @@ public class Disciplines extends AppCompatActivity
     {
         boolean[][] compl_but = new boolean[Labs][2];
 
-        // Сохранение состояния кнопок Сдано и Защита 
+        // Сохранение состояния кнопок Сдано и Защита
         for (int i = 0; i < Labs; ++i)
         {
             if (((ColorDrawable)buts[i][0].getBackground()).getColor() == 0xFFDFFFBF)
@@ -137,7 +135,7 @@ public class Disciplines extends AppCompatActivity
         }
 
         // Обновить содержимое текущей дисциплины
-        current.setComplete(compl_but); 
+        current.setComplete(compl_but);
         current.setProgress(complete);
 
         // Сохранение данных о дисциплинах с json
@@ -147,12 +145,12 @@ public class Disciplines extends AppCompatActivity
 
         updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but));
     }
-    
+
     //Смена статуса полей Сдано и Защита
     public void OnClick(View v)
     {
         Button but = (Button) v;
-        
+
         //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
         if (((ColorDrawable) but.getBackground()).getColor() == FALSE)
         {
@@ -221,4 +219,5 @@ public class Disciplines extends AppCompatActivity
         requestQueue.add(request);
     }
 }
+
 

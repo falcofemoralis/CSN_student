@@ -10,15 +10,17 @@ function getRating()
     global $connect;
     
     $group = $_POST["NameGroup"]; 
+    $NameDiscp = $_POST["NameDiscp"]; 
     
     $query = "  SELECT registration.NickName, st_groups.NameGroup, disciplines.NameDiscp, rating.status FROM rating
-                JOIN registration ON registration.Code_User = rating.Code_User
-                JOIN st_groups ON st_groups.Code_Group = (SELECT Code_group FROM registration WHERE registration.Code_User = rating.Code_User)
-                JOIN disciplines ON disciplines.Code_Discp = rating.Code_Discp ";
+		JOIN registration ON registration.Code_User = rating.Code_User
+		JOIN st_groups ON st_groups.Code_Group = (SELECT Code_group FROM registration WHERE registration.Code_User = rating.Code_User)
+		JOIN disciplines ON disciplines.Code_Discp = rating.Code_Discp ";
     
     if ($group != "ALL")
-        $query .= "WHERE st_groups.NameGroup = '$group'";
-    
+        $query .= "WHERE st_groups.NameGroup = '$group' AND disciplines.NameDiscp = '$NameDiscp'";
+    else
+	    $query .= "WHERE disciplines.NameDiscp = '$NameDiscp'";
     
     $result = mysqli_query($connect, $query);
     

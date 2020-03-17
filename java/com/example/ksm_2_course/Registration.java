@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String FILE_NAME = "data_disc_";
     EditText password, checkPassword, nickName;
@@ -40,28 +42,14 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
+        createSpinner();
         password = (EditText) findViewById(R.id.pass);
         checkPassword = (EditText) findViewById(R.id.checkPass);
         nickName = (EditText) findViewById(R.id.Nick);
         registration = (Button) findViewById(R.id.button2);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        //выбор группы, в oncreate т.к нужно чтобы по умолчанию попадало что-то в группу
-        final Spinner groupSpinner = (Spinner) findViewById(R.id.group);
-        groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                group = groupSpinner.getSelectedItem().toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
     }
 
     public void OnClickLogin(View view){
@@ -182,4 +170,27 @@ public class Registration extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    protected  void createSpinner()
+    {
+        Spinner coloredSpinner = findViewById(R.id.group);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+          this,
+          R.array.group_values,
+          R.layout.color_spinner_layout
+        );
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        coloredSpinner.setAdapter(adapter);
+        coloredSpinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

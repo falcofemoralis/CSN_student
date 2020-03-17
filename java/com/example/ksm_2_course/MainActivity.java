@@ -316,7 +316,16 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setTitle("Найдены данные за " + format.format(date));
         }
         else
+        {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Discipline>>() {}.getType();
+            discs = gson.fromJson(JSONHelper.read(MainActivity.this, "data_disc.json"), listType);
+
+            for (int i = 0; i < discs.size(); ++i)
+                getStatus(pref.getString(SettingsActivity.KEY_NICKNAME, ""), discs.get(i), i);
             return;
+        }
+
 
         alertDialog.setMessage("Загрузить их ?");
 

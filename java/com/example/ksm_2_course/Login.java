@@ -3,10 +3,19 @@ package com.example.ksm_2_course;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import com.android.volley.AuthFailureError;
@@ -29,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Login extends AppCompatActivity{
+public class Login extends AppCompatActivity {
 
     String FILE_NAME = "data_disc_";
 
@@ -37,13 +46,15 @@ public class Login extends AppCompatActivity{
     EditText passwordS;
     String URL = MainActivity.MAIN_URL + "getUser.php";
     RequestQueue requestQueue;
-    String nickname, password,group;
+    String nickname, password, group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        createClickableSpan();
     }
 
     public void OnClick(View v) {
@@ -51,8 +62,7 @@ public class Login extends AppCompatActivity{
         passwordS = (EditText) findViewById(R.id.pass);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        StringRequest jsonObjectRequest  = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>()
-        {
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -61,10 +71,10 @@ public class Login extends AppCompatActivity{
                     FILE_NAME += nickname + ".json";
                     password = user.getString("Password");
                     group = user.getString("NameGroup");
-                    if (passwordS.getText().toString().toLowerCase().equals(password)){
+                    if (passwordS.getText().toString().toLowerCase().equals(password)) {
                         Toast.makeText(Login.this, "Successfully login", Toast.LENGTH_SHORT).show();
                         Save();
-                    }else{
+                    } else {
                         Toast.makeText(Login.this, "Inccorect password", Toast.LENGTH_SHORT).show();
                     }
 
@@ -90,8 +100,8 @@ public class Login extends AppCompatActivity{
         requestQueue.add(jsonObjectRequest);
 
     }
-    
-    public void OnClickRegistration(View v){
+
+    public void OnClickRegistration() {
         Intent intent;
         intent = new Intent(this, Registration.class);
         startActivity(intent);
@@ -103,10 +113,9 @@ public class Login extends AppCompatActivity{
         moveTaskToBack(true);
     }
 
-    public void Save()
-    {
+    public void Save() {
         SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        prefEdit.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
+        prefEdit.putBoolean(SettingsActivity.KEY_IS_REGISTERED, false);
         prefEdit.putString(SettingsActivity.KEY_NICKNAME, nickname);
         prefEdit.putString(SettingsActivity.KEY_PASSWORD, password);
         prefEdit.putString(SettingsActivity.KEY_GROUP, group);
@@ -114,11 +123,11 @@ public class Login extends AppCompatActivity{
 
         ArrayList<Discipline> discs = new ArrayList<Discipline>();
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        Type listType = new TypeToken<List<Discipline>>() {
+        }.getType();
         discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
 
-        for (int i = 0; i < discs.size(); ++i)
-        {
+        for (int i = 0; i < discs.size(); ++i) {
             Discipline temp = discs.get(i);
             updateRating(nickname, temp.getName(), gson.toJson(temp.getComplete()));
         }
@@ -127,20 +136,18 @@ public class Login extends AppCompatActivity{
         startActivity(intent);
     }
 
-    protected void updateRating( final String NickName, final String NameDiscp, final String status)
-    {
+    protected void updateRating(final String NickName, final String NameDiscp, final String status) {
         String url = MainActivity.MAIN_URL + "updateRating.php";
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-        {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            { }
+            public void onResponse(String response) {
+            }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            { }
+            public void onErrorResponse(VolleyError error) {
+            }
         }) {
 
             @Override
@@ -153,5 +160,31 @@ public class Login extends AppCompatActivity{
             }
         };
         requestQueue.add(request);
+    }
+
+    protected void createClickableSpan()
+    {
+        TextView text = findViewById(R.id.Span);
+
+        SpannableString ss = new SpannableString(text.getText());
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                OnClickRegistration();
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds)
+            {
+                super.updateDrawState(ds);
+                ds.setColor(0xFF5EE656);
+            }
+        };
+
+        ss.setSpan(clickableSpan, 16, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        text.setText(ss);
+        text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

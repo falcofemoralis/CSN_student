@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (is_registered) {
             Intent intent;
-            intent = new Intent(this, Registration.class);
+            intent = new Intent(this, Login.class);
             startActivity(intent);
         } else {
             return;

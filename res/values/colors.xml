@@ -10,4 +10,5 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#F1F1F1</color>
+    <color name="StBar">#2D2D61</color>
 </resources>

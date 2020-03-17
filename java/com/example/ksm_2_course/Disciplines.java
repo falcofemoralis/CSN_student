@@ -125,8 +125,8 @@ public class Disciplines extends AppCompatActivity
         res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка среднего прогресса по дисциплине
     }
 
-    public void SaveAll(View v)
-    {
+    @Override
+    protected void onPause() {
         boolean[][] compl_but = new boolean[Labs][2];
 
         // Сохранение состояния кнопок Сдано и Защита
@@ -153,6 +153,7 @@ public class Disciplines extends AppCompatActivity
         JSONHelper.create(this, FILE_NAME, jsonString);
 
         updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but));
+        super.onPause();
     }
 
     //Смена статуса полей Сдано и Защита

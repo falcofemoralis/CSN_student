@@ -208,7 +208,7 @@ public class Disciplines extends AppCompatActivity
             @Override
             public void onResponse(String response)
             {
-                Toast.makeText(Disciplines.this, "data saved successfully", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Disciplines.this, "data saved successfully", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override

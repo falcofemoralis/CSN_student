@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
@@ -21,9 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -63,10 +70,16 @@ public class MainActivity extends AppCompatActivity {
         pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
-
         checkRegistration();
         setProgress();
-        showDialog();
+
+        try {
+            if(checkConnection()) {
+                showDialog();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -95,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-     public void OnClickRating(View v) {
+    public void OnClickRating(View v) {
 
         ArrayList<Discipline> discs = new ArrayList<Discipline>();
         Gson gson = new Gson();
@@ -139,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
-    
+
     public void setProgress() {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Discipline>>() {
@@ -200,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         minutes = (milli / 60) % 60;
         hour = milli / 3600;
         start = new CountDownTimer(millis, 1000) {
-        String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
+            String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -287,7 +300,9 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error)
-            { }
+            {
+                Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
+            }
         }) {
 
             @Override
@@ -313,10 +328,9 @@ public class MainActivity extends AppCompatActivity {
             long last = file.lastModified();
             Date date = new Date(last);
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
-            alertDialog.setTitle("Найдены данные за " + format.format(date));
+            alertDialog.setTitle("Найдены локальные данные за " + format.format(date));
         }
-        else
-        {
+        else{
             Gson gson = new Gson();
             Type listType = new TypeToken<List<Discipline>>() {}.getType();
             discs = gson.fromJson(JSONHelper.read(MainActivity.this, "data_disc.json"), listType);
@@ -327,9 +341,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        alertDialog.setMessage("Загрузить их ?");
+        alertDialog.setMessage("Взять данные с сервера или с устройства?");
 
-        alertDialog.setPositiveButton("Так", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Устройство", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
@@ -345,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        alertDialog.setNegativeButton("Ні", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("Сервер", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
@@ -392,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(MainActivity.this, "No connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -405,6 +419,14 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(request);
+    }
+
+    public boolean checkConnection () throws InterruptedException {
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 }
 

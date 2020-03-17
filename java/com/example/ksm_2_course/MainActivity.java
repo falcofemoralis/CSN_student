@@ -1,8 +1,12 @@
 package com.example.ksm_2_course;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
+
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -14,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,15 +29,21 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    final String FILE_NAME = "data_disc.json";
+    String FILE_NAME = "data_disc_";
 
     CountDownTimer start;
     RequestQueue requestQueue;
@@ -47,12 +58,15 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         res = (Button) findViewById(R.id.res);
         pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-        setProgress();
+        FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
+
         checkRegistration();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setProgress();
+        showDialog();
     }
 
     @Override
@@ -98,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         intent = new Intent(this, Rating.class);
         startActivity(intent);
     }
-
 
     public void OnClick(View v) {
         Intent intent;
@@ -283,6 +296,102 @@ public class MainActivity extends AppCompatActivity {
                 parameters.put("NickName", NickName);
                 parameters.put("NameDiscp", NameDiscp);
                 parameters.put("Status", status);
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    protected void showDialog()
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+
+        String PATH = this.getFileStreamPath(FILE_NAME).toString();
+        File file = new File(PATH);
+        if (file.exists())
+        {
+            long last = file.lastModified();
+            Date date = new Date(last);
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
+            alertDialog.setTitle("Найдены данные за " + format.format(date));
+        }
+        else
+            return;
+
+        alertDialog.setMessage("Загрузить их ?");
+
+        alertDialog.setPositiveButton("Так", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<Discipline>>() {}.getType();
+                discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
+
+                for (int i = 0; i < discs.size(); ++i)
+                {
+                    Discipline temp = discs.get(i);
+                    updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
+                }
+            }
+        });
+
+        alertDialog.setNegativeButton("Ні", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<Discipline>>() {}.getType();
+                discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
+
+                for (int i = 0; i < discs.size(); ++i)
+                    getStatus(pref.getString(SettingsActivity.KEY_NICKNAME, ""), discs.get(i), i);
+            }
+        });
+
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    protected void saveJSON()
+    {
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(discs);
+        JSONHelper.create(MainActivity.this, FILE_NAME, jsonString);
+    }
+
+    class result { public String status;}
+    protected void getStatus (final String NickName, final Discipline current, final int num)
+    {
+
+        String url = MainActivity.MAIN_URL + "getStatus.php";
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Gson gson = new Gson();
+                boolean[][] compl_but = gson.fromJson(gson.fromJson(response, result.class).status, boolean[][].class);
+                current.setComplete(compl_but);
+
+                if (num == discs.size() - 1)
+                    saveJSON();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                Toast.makeText(MainActivity.this, "No connection", Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", NickName);
+                parameters.put("NameDiscp", current.getName());
                 return parameters;
             }
         };

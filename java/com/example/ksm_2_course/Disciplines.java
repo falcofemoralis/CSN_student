@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class Disciplines extends AppCompatActivity
 {
-    final String FILE_NAME = "data_disc.json";
+    String FILE_NAME = "data_disc_";
     final int FALSE = 0xFFF56D6D, TRUE = 0xFFDFFFBF; // FALSE(Не сдано) - красный, TRUE(Сдано) - светозеленый
 
     RequestQueue requestQueue;
@@ -54,6 +54,7 @@ public class Disciplines extends AppCompatActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         pref = PreferenceManager.getDefaultSharedPreferences(Disciplines.this);
+        FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
 
         // Достать объект Дисциплина с json, возвращает массив дисциплин
         int num = GetCode(intent.getStringExtra("Name")); // индекс для выбора дисциплины из массива дисциплин
@@ -93,13 +94,13 @@ public class Disciplines extends AppCompatActivity
         }
         res = (Button) findViewById(R.id.res); // результат в процентах
 
-        //RestoreAll(discs.get(num)); // Загрузка данных
-        getStatus(pref.getString(SettingsActivity.KEY_NICKNAME, ""), current.getName(), current);
+        RestoreAll(discs.get(num)); // Загрузка данных
     }
 
     // Загрузка информации о дисциплине
-    protected void RestoreAll(Discipline current, boolean[][] compl_but)
+    protected void RestoreAll(Discipline current)
     {
+        boolean[][] compl_but = current.getComplete();
         // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
         for (int i = 0, size = Labs; i < size; ++i)
         {
@@ -125,8 +126,8 @@ public class Disciplines extends AppCompatActivity
         res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка среднего прогресса по дисциплине
     }
 
-    @Override
-    protected void onPause() {
+    public void SaveAll(View v)
+    {
         boolean[][] compl_but = new boolean[Labs][2];
 
         // Сохранение состояния кнопок Сдано и Защита
@@ -153,7 +154,6 @@ public class Disciplines extends AppCompatActivity
         JSONHelper.create(this, FILE_NAME, jsonString);
 
         updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but));
-        super.onPause();
     }
 
     //Смена статуса полей Сдано и Защита
@@ -229,40 +229,4 @@ public class Disciplines extends AppCompatActivity
         requestQueue.add(request);
     }
 
-
-    class result { public String status;}
-    protected void getStatus (final String NickName, final String NameDiscp, final Discipline current)
-    {
-        String url = MainActivity.MAIN_URL + "getStatus.php";
-
-
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-        {
-            @Override
-            public void onResponse(String response)
-            {
-                Gson gson = new Gson();
-                boolean[][] compl_but = gson.fromJson(gson.fromJson(response, result.class).status, boolean[][].class);
-                RestoreAll(current, compl_but);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                Toast.makeText(Disciplines.this, "No connection", Toast.LENGTH_LONG).show();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", NickName);
-                parameters.put("NameDiscp", NameDiscp);
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
-    }
 }
-

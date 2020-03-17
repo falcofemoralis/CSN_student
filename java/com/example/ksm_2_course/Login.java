@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity{
 
-    final String FILE_NAME = "data_disc.json";
+    String FILE_NAME = "data_disc_";
 
     EditText nickNameS;
     EditText passwordS;
@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity{
                 try {
                     JSONObject user = new JSONObject(response);
                     nickname = user.getString("NickName");
+                    FILE_NAME += nickname + ".json";
                     password = user.getString("Password");
                     group = user.getString("NameGroup");
                     if (passwordS.getText().toString().toLowerCase().equals(password)){

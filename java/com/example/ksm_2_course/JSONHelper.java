@@ -46,7 +46,7 @@ public class JSONHelper
         } catch (FileNotFoundException fileNotFound)
         {
             try {
-                return loadJSONFromAsset(context, fileName);
+                return loadJSONFromAsset(context, "data_disc.json");
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;

@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class Registration extends AppCompatActivity {
 
-    final String FILE_NAME = "data_disc.json";
+    String FILE_NAME = "data_disc_";
     EditText password, checkPassword, nickName;
     String group;
     Button registration;
@@ -74,6 +74,7 @@ public class Registration extends AppCompatActivity {
     public void registration(View view) {
         String url = MainActivity.MAIN_URL + "registration.php";
         String name = nickName.getText().toString();
+        FILE_NAME += name + ".json";
         if (name.equals("")) {
             Toast.makeText(Registration.this, "Please enter nickname", Toast.LENGTH_SHORT).show();
             return;
@@ -182,4 +183,3 @@ public class Registration extends AppCompatActivity {
     }
 
 }
-

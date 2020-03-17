@@ -11,4 +11,7 @@
     <color name="black">#000000</color>
     <color name="gray">#F1F1F1</color>
     <color name="StBar">#2D2D61</color>
+    <color name="background">#3D57AF</color>
+    <color name="mainColor">#9963F3F3</color>
+    <color name="mainColor2">#FD3A46</color>
 </resources>

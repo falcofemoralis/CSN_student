@@ -18,21 +18,23 @@
         android:layout_weight="0.1">
 
         <TextView
-            android:layout_width="320dp"
+            android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:text="@string/course_2"
+            android:layout_weight="0.8"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="25dp" />
 
         <ImageButton
             android:id="@+id/btn_id"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_gravity="center"
+            android:layout_weight="0.2"
             android:layout_margin="15dp"
-            android:background="@drawable/text_style"
+            android:background="#00FFFFFF"
             android:onClick="OnClickSettings"
             android:src="@drawable/ic_settings_black_24dp" />
 
@@ -100,12 +102,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.4" />
 
-      <LinearLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/LS"
@@ -134,6 +135,7 @@
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
             android:text="РЕЙТИНГ">
+
         </Button>
 
         <Button
@@ -142,7 +144,9 @@
             android:layout_gravity="center"
             android:layout_weight="0.25"
             android:backgroundTint="@color/white"
-            android:text="Coming\nsoon"></Button>
+            android:text="Coming\nsoon">
+
+        </Button>
 
         <Button
             android:layout_width="match_parent"
@@ -150,7 +154,10 @@
             android:layout_gravity="center"
             android:layout_weight="0.25"
             android:backgroundTint="@color/white"
-            android:text="Coming\nsoon"></Button>
+            android:text="Coming\nsoon">
+
+        </Button>
+
 
     </LinearLayout>
 

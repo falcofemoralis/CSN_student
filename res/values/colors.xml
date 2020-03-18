@@ -14,4 +14,6 @@
     <color name="background">#3D57AF</color>
     <color name="mainColor">#9963F3F3</color>
     <color name="mainColor2">#FD3A46</color>
+    <color name="gray2">#B5B3B3</color>
+    <color name="yellow">#FFD400</color>
 </resources>

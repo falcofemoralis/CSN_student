@@ -381,12 +381,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response)
             {
-                Gson gson = new Gson();
-                boolean[][] compl_but = gson.fromJson(gson.fromJson(response, result.class).status, boolean[][].class);
-                current.setComplete(compl_but);
+                if(!response.equals("null")){
+                    Gson gson = new Gson();
+                    boolean[][] compl_but = gson.fromJson(gson.fromJson(response, result.class).status, boolean[][].class);
+                    current.setComplete(compl_but);
 
-                if (num == discs.size() - 1)
-                    saveJSON();
+                    if (num == discs.size() - 1)
+                        saveJSON();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

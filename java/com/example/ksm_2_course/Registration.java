@@ -1,11 +1,17 @@
 package com.example.ksm_2_course;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -13,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -43,6 +50,8 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         createSpinner();
+        createClickableSpan();
+
         password = (EditText) findViewById(R.id.pass);
         checkPassword = (EditText) findViewById(R.id.checkPass);
         nickName = (EditText) findViewById(R.id.Nick);
@@ -52,7 +61,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    public void OnClickLogin(View view){
+    public void OnClickLogin(){
         Intent intent;
         intent = new Intent(this, Login.class);
         startActivity(intent);
@@ -192,5 +201,32 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+
+    protected void createClickableSpan()
+    {
+        TextView text = findViewById(R.id.Span);
+
+        SpannableString ss = new SpannableString(text.getText());
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                OnClickLogin();
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds)
+            {
+                super.updateDrawState(ds);
+                ds.setColor(0xFF5EE656);
+            }
+        };
+
+        ss.setSpan(clickableSpan, 16, 21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        text.setText(ss);
+        text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

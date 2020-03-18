@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
         FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
         checkRegistration();
-        setProgress();
 
         try {
             if(checkConnection()) {
@@ -367,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String jsonString = gson.toJson(discs);
         JSONHelper.create(MainActivity.this, FILE_NAME, jsonString);
+        setProgress();
     }
 
     class result { public String status;}

@@ -5,6 +5,9 @@
     android:padding="5dp"
     android:text = "debug"
     android:textColor="@android:color/white"
+    android:background="@drawable/abc_spinner_mtrl_am_alpha"
+    android:backgroundTint="@color/white"
+    android:gravity="center"
     android:textSize="18sp"
     android:textAlignment="center">
 

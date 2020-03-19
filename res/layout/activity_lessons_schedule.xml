@@ -125,10 +125,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/text_but_schedule_style2"
+                        android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
                         android:text="Пара"
-                        android:textColor="@color/background"
+                        android:textColor="@color/white"
                         android:textSize="24sp" />
 
                     <TextView
@@ -136,10 +136,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/text_but_schedule_style2"
+                        android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
                         android:text="    ПН    "
-                        android:textColor="@color/background"
+                        android:textColor="@color/white"
                         android:textSize="24sp" />
 
                     <TextView
@@ -147,10 +147,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/text_but_schedule_style2"
+                        android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
                         android:text="    ВТ    "
-                        android:textColor="@color/background"
+                        android:textColor="@color/white"
                         android:textSize="24sp" />
 
                     <TextView
@@ -158,10 +158,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/text_but_schedule_style2"
+                        android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
                         android:text="    СР    "
-                        android:textColor="@color/background"
+                        android:textColor="@color/white"
                         android:textSize="24sp" />
 
                     <TextView
@@ -169,10 +169,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/text_but_schedule_style2"
+                        android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
                         android:text="    ЧТ    "
-                        android:textColor="@color/background"
+                        android:textColor="@color/white"
                         android:textSize="24sp" />
 
                     <TextView
@@ -180,10 +180,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/text_but_schedule_style2"
+                        android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
                         android:text="    ПТ    "
-                        android:textColor="@color/background"
+                        android:textColor="@color/white"
                         android:textSize="24sp" />
 
                 </TableRow>

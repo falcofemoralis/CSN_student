@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,19 +84,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnClickSettings(View v) {
+        Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
+        v.startAnimation(click);
         Intent intent;
         intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     public void OnClickLessons(View v) {
+        Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
+        v.startAnimation(click);
         Intent intent;
         intent = new Intent(this, Lessons.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     public void OnClickRating(View v) {
-
         ArrayList<Discipline> discs = new ArrayList<Discipline>();
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Discipline>>() {}.getType();
@@ -105,13 +112,17 @@ public class MainActivity extends AppCompatActivity {
             Discipline temp = discs.get(i);
             updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
         }
-
+        Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
+        v.startAnimation(click);
         Intent intent;
         intent = new Intent(this, Rating.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     public void OnClick(View v) {
+        Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
+        v.startAnimation(click);
         Intent intent;
         intent = new Intent(this, Disciplines.class);
         intent.putExtra("Name", ((Button) v).getText());

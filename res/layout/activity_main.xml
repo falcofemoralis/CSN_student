@@ -1,264 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_main_background"
     android:orientation="vertical"
     android:layout_weight="1">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.08" />
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1">
-
-        <TextView
-            android:layout_width="300dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:text="@string/course_2"
-            android:layout_weight="0.8"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="25dp" />
-
-        <ImageButton
-            android:id="@+id/btn_id"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.2"
-            android:layout_margin="15dp"
-            android:background="#00FFFFFF"
-            android:onClick="OnClickSettings"
-            android:src="@drawable/ic_settings_black_24dp" />
-
-    </TableRow>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1" />
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.07">
-
-        <TextView
-            android:id="@+id/timeUntil"
-            android:layout_width="187dp"
-            android:layout_height="48dp"
-            android:layout_margin="15dp"
-            android:textAlignment="center"
-            android:background="@drawable/text_style"
-            android:gravity="center"
-            android:text="До кінця пари:"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/Time"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="15dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/text_style"
-            android:textSize="18sp" />
-
-    </TableRow>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.4" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/search"
-        android:layout_margin="15dp"
-        android:drawableLeft="@drawable/ic_search_black_24dp"
-        android:drawablePadding="10dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="26dp"
-        android:text="Сайт КСМ"
-        android:textAllCaps="false"
-        android:textAlignment="textStart"
-        android:textSize="20sp"
-        android:textColor="@color/gray2">
-
-    </Button>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.4" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1"
-        android:orientation="horizontal">
+        android:background="@drawable/dark_background"
+        android:layout_weight="0.3"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/LS"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.25"
-            android:backgroundTint="@color/white"
-            android:drawableTop="@drawable/ic_school_black_24dp"
-            android:onClick="OnClickLessons"
-            android:paddingTop="20dp"
-            android:paddingBottom="10dp"
-            android:text="Розклад">
+       <TextView
+           android:layout_width="300dp"
+           android:layout_height="48dp"
+           android:layout_gravity="center"
+           android:layout_weight="0.8"
+           android:gravity="center"
+           android:text="@string/course_2"
+           android:textColor="@color/white"
+           android:textSize="25dp"/>
 
-        </Button>
-
-        <Button
-            android:id="@+id/rating"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.25"
-            android:backgroundTint="@color/white"
-            android:drawableTop="@drawable/ic_group_black_24dp"
-            android:onClick="OnClickRating"
-            android:paddingTop="20dp"
-            android:paddingBottom="10dp"
-            android:text="РЕЙТИНГ">
-
-        </Button>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.25"
-            android:backgroundTint="@color/white"
-            android:text="Coming\nsoon">
-
-        </Button>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.25"
-            android:backgroundTint="@color/white"
-            android:text="Coming\nsoon">
-
-        </Button>
-
-
-    </LinearLayout>
-
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TableLayout
+        <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/table_style"
+            android:layout_weight="0.1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/timeUntil"
+                    android:layout_width="187dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="15dp"
+                    android:textAlignment="center"
+                    android:background="@drawable/text_style"
+                    android:gravity="center"
+                    android:text="До кінця пари:"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/Time"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_margin="15dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:background="@drawable/text_style"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+     </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:background="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="100">
+
+        <LinearLayout
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="15dp"
-            android:layout_weight="0">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textAlignment="center"
-                android:text="  Дисципліни" />
 
-            <Button
-                android:id="@+id/Alg"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:background="@drawable/text_style_2"
-                android:textColor="@color/white"
-                android:onClick="OnClick"
-                android:textSize="12sp"
-                android:layout_margin="5dp"
-                android:text="@string/Alg_and_metod" />
+                <Button
+                    android:id="@+id/Alg"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:background="@drawable/button_style"
+                    android:textColor="@color/white"
+                    android:onClick="OnClick"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:text="@string/Alg_and_metod" />
 
-            <Button
-                android:id="@+id/Arch"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:background="@drawable/text_style_2"
-                android:textColor="@color/white"
-                android:onClick="OnClick"
-                android:textSize="12sp"
-                android:layout_margin="5dp"
-                android:text="@string/Arch_Comp" />
+                <Button
+                    android:id="@+id/Arch"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:background="@drawable/button_style"
+                    android:textColor="@color/white"
+                    android:onClick="OnClick"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:text="@string/Arch_Comp" />
 
-            <Button
-                android:id="@+id/CS"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:background="@drawable/text_style_2"
-                android:textColor="@color/white"
-                android:onClick="OnClick"
-                android:textSize="12sp"
-                android:layout_margin="5dp"
-                android:text="@string/CompScheme" />
+                <Button
+                    android:id="@+id/CS"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:background="@drawable/button_style"
+                    android:textColor="@color/white"
+                    android:onClick="OnClick"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:text="@string/CompScheme" />
 
-            <Button
-                android:id="@+id/OBD"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:background="@drawable/text_style_2"
-                android:textColor="@color/white"
-                android:onClick="OnClick"
-                android:textSize="12sp"
-                android:layout_margin="5dp"
-                android:text="@string/DataBase" />
+                <Button
+                    android:id="@+id/OBD"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:background="@drawable/button_style"
+                    android:textColor="@color/white"
+                    android:onClick="OnClick"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:text="@string/DataBase" />
 
-            <Button
-                android:id="@+id/OBG"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/text_style_2"
-                android:textColor="@color/white"
-                android:onClick="OnClick"
-                android:textSize="12sp"
-                android:layout_margin="5dp"
-                android:text="@string/OBG" />
+                <Button
+                    android:id="@+id/OBG"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/button_style"
+                    android:textColor="@color/white"
+                    android:onClick="OnClick"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:text="@string/OBG" />
 
-            <Button
-                android:id="@+id/SMP"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:background="@drawable/text_style_2"
-                android:textColor="@color/white"
-                android:onClick="OnClick"
-                android:textSize="12sp"
-                android:layout_margin="5dp"
-                android:text="@string/S_metod_prog" />
+                <Button
+                    android:id="@+id/SMP"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/button_style"
+                    android:onClick="OnClick"
+                    android:text="@string/S_metod_prog"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
-        </TableLayout>
-
+        </LinearLayout>
     </ScrollView>
 
+
+
     <LinearLayout
+        android:id="@+id/layoutCenter"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:background="@drawable/progress"
         android:orientation="horizontal">
 
         <Button
@@ -266,26 +157,79 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/mainColor2"
             android:clickable="false"
-            android:textColor="@color/white"
-            android:text="@string/Overall" />
+            android:text="@string/Overall"
+            android:backgroundTint="#00FFFFFF"
+            android:stateListAnimator="@null"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/res"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/mainColor2"
             android:clickable="false"
+            android:backgroundTint="#00FFFFFF"
+            android:stateListAnimator="@null"
             android:textColor="@color/white"
             android:text="0 %" />
     </LinearLayout>
 
-    <Space
+    <LinearLayout
+        android:id="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0." />
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:layout_weight="1">
 
+        <Button
+            android:id="@+id/LS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.25"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableTop="@drawable/ic_school_black_24dp"
+            android:onClick="OnClickLessons"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:stateListAnimator="@null"
+            android:text="Розклад">
+
+        </Button>
+
+        <Button
+            android:id="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.25"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableTop="@drawable/ic_group_black_24dp"
+            android:onClick="OnClickRating"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:stateListAnimator="@null"
+            android:text="РЕЙТИНГ">
+
+        </Button>
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.25"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableTop="@drawable/ic_settings_black_24dp"
+            android:onClick="OnClickSettings"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:stateListAnimator="@null"
+            android:text="Настройки"
+         >
+
+        </Button>
+    </LinearLayout>
 </LinearLayout>
-

@@ -230,4 +230,9 @@ public class Disciplines extends AppCompatActivity
         requestQueue.add(request);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+    }
 }

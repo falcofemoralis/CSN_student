@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         intent = new Intent(this, Lessons.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     public void OnClickRating(View v) {
@@ -117,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         intent = new Intent(this, Rating.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     public void OnClick(View v) {
@@ -128,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("Name", ((Button) v).getText());
         startActivity(intent);
         setProgress();
+        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     @Override

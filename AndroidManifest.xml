@@ -37,8 +37,11 @@
             android:theme="@style/NoActionBar">
         </activity>
 
+        <activity android:name=".Lessons"
+            android:theme="@style/NoActionBar">
+        </activity>
+
         <activity android:name=".Disciplines" />
-        <activity android:name=".Lessons" />
         <activity android:name=".Rating" />
     </application>
 </manifest>

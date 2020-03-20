@@ -47,12 +47,8 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
     protected void updateSchedule()
     {
         int numType = type_week.getText().equals("Знаменник") ? 0 : 1;
-        String cell;
 
-        if((group_spin.getSelectedItem().toString()).equals("КНТ-518"))
-            file_name = "knt518.json";
-        else
-            file_name = "knt528.json";
+        file_name = (group_spin.getSelectedItem().toString()).equals("КНТ-518") ? "knt518.json" : "knt528.json";
 
         Gson g = new Gson();
         try {
@@ -67,29 +63,23 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
             {
                 ItemType item = lessons[numType].types.get(i * 4 + j);
 
-                if (item.getSubject().equals("-"))
-                {
+                if (item.getSubject().equals("-")) {
                     schedule[j][i].setText("");
                     continue;
                 }
-                cell = item.getSubject() + " " + item.getType() + " (" + item.getRoom() + ")";
-                schedule[j][i].setText(cell);
+                schedule[j][i].setText(item.getSubject() + " " + item.getType() + " (" + item.getRoom() + ")");
             }
         }
     }
 
     protected void setSchedule()
     {
-        String stringId, table;
         int id;
         type_week = findViewById(R.id.type_week);
 
         for (int i = 0; i < MAX_PAIR; ++i) {
-            table = "text" + (i + 1) +  "_";
-
             for (int j = 0; j < MAX_DAYS; ++j) {
-                stringId = table + (j + 2);
-                id = getResources().getIdentifier(stringId, "id", getApplicationContext().getPackageName());
+                id = getResources().getIdentifier("text" + (i + 1) +  "_" + (j + 2), "id", getApplicationContext().getPackageName());
                 schedule[i][j] = findViewById(id);
             }
         }

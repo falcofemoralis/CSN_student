@@ -265,10 +265,14 @@ public class MainActivity extends AppCompatActivity {
         TextView TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
         boolean timer_settings = pref.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
-        if (!timer_settings) {
-            Time.setText("");
-            TimeUntil.setText("");
-        } else time();
+       if (!timer_settings) {
+            Time.setVisibility(View.GONE);
+            TimeUntil.setVisibility(View.GONE);
+        } else {
+            Time.setVisibility(View.VISIBLE);
+            TimeUntil.setVisibility(View.VISIBLE);
+            time();
+        }
     }
 
     public void checkRegistration() {

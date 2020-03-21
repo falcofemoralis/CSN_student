@@ -2,17 +2,16 @@ package com.example.ksm_2_course;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,10 +21,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +30,8 @@ import java.util.Map;
 public class Disciplines extends AppCompatActivity
 {
     String FILE_NAME = "data_disc_";
-    final int FALSE = 0xFFF56D6D, TRUE = 0xFFDFFFBF; // FALSE(Не сдано) - красный, TRUE(Сдано) - светозеленый
+    static int FALSE, TRUE; // FALSE(Не сдано) - красный, TRUE(Сдано) - светозеленый
+    static Drawable FALSE_2, TRUE_2;
 
     RequestQueue requestQueue;
     Button res; // Кнопка результата
@@ -55,6 +51,11 @@ public class Disciplines extends AppCompatActivity
 
         pref = PreferenceManager.getDefaultSharedPreferences(Disciplines.this);
         FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
+        FALSE =getResources().getColor(R.color.mb_red);
+        TRUE = getResources().getColor(R.color.mb_green);
+
+        FALSE_2 =getResources().getDrawable(R.drawable.lab_choose);
+        TRUE_2 = getResources().getDrawable(R.drawable.lab_choose_accepted);
 
         // Достать объект Дисциплина с json, возвращает массив дисциплин
         int num = GetCode(intent.getStringExtra("Name")); // индекс для выбора дисциплины из массива дисциплин
@@ -112,11 +113,11 @@ public class Disciplines extends AppCompatActivity
                 buts[i][0].setBackgroundColor(FALSE);
 
             if (compl_but[i][1]) {
-                buts[i][1].setBackgroundColor(TRUE);
+                buts[i][1].setBackgroundDrawable(TRUE_2);
                 ++complete;
             }
             else
-                buts[i][1].setBackgroundColor(FALSE);
+                buts[i][1].setBackgroundDrawable(FALSE_2);
         }
 
         ((Button)(findViewById(R.id.Disc))).setText(current.getName()); // Установка имени дисциплины
@@ -134,12 +135,12 @@ public class Disciplines extends AppCompatActivity
         // Сохранение состояния кнопок Сдано и Защита
         for (int i = 0; i < Labs; ++i)
         {
-            if (((ColorDrawable)buts[i][0].getBackground()).getColor() == 0xFFDFFFBF)
+            if (((ColorDrawable)buts[i][0].getBackground()).getColor() == TRUE)
                 compl_but[i][0] = true;
             else
                 compl_but[i][0] = false;
 
-            if (((ColorDrawable)buts[i][1].getBackground()).getColor() == 0xFFDFFFBF)
+            if (((Drawable)buts[i][1].getBackground() == TRUE_2))
                 compl_but[i][1] = true;
             else
                 compl_but[i][1] = false;
@@ -158,10 +159,9 @@ public class Disciplines extends AppCompatActivity
     }
 
     //Смена статуса полей Сдано и Защита
-    public void OnClick(View v)
+    public void ButtonChangeStatus(View v)
     {
         Button but = (Button) v;
-
         //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
         if (((ColorDrawable) but.getBackground()).getColor() == FALSE)
         {
@@ -171,6 +171,24 @@ public class Disciplines extends AppCompatActivity
         {
             --complete;
             but.setBackgroundColor(FALSE);
+        }
+
+        res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка поля среднего прогресса по дисциплине
+    }
+
+    //Смена статуса полей Сдано и Защита
+    public void CornerButtonChangeStatus(View v)
+    {
+        Button but = (Button) v;
+        //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
+        if (((Drawable) but.getBackground() == FALSE_2))
+        {
+            ++complete;
+            but.setBackground(TRUE_2);
+        } else
+        {
+            --complete;
+            but.setBackground(FALSE_2);
         }
 
         res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка поля среднего прогресса по дисциплине

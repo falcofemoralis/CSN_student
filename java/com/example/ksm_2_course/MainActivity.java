@@ -265,9 +265,13 @@ public class MainActivity extends AppCompatActivity {
 
         boolean timer_settings = pref.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
         if (!timer_settings) {
-            Time.setText("");
-            TimeUntil.setText("");
-        } else time();
+            Time.setVisibility(View.GONE);
+            TimeUntil.setVisibility(View.GONE);
+        } else {
+            Time.setVisibility(View.VISIBLE);
+            TimeUntil.setVisibility(View.VISIBLE);
+            time();
+        }
     }
 
     public void checkRegistration() {

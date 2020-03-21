@@ -12,7 +12,7 @@
         android:layout_height="61dp"
         android:layout_gravity="center"
         android:background="#E3E3E3"
-        android:entries="@array/subject_arrays"
+        android:entries="@drawable/text_but_schedule_style"
         android:textAlignment="center" />
 
     <ScrollView
@@ -26,18 +26,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/mainLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TableLayout
-                android:id="@+id/table"
+            <LinearLayout
+                android:id="@+id/mainLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TableLayout
+                    android:id="@+id/table"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
         </HorizontalScrollView>
     </ScrollView>
 

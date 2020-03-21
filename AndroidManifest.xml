@@ -44,7 +44,9 @@
         <activity android:name=".Disciplines"
             android:theme="@style/NoActionBar">
         </activity>
-        
-        <activity android:name=".Rating" />
+
+        <activity android:name=".Rating"
+            android:theme="@style/NoActionBar">
+        </activity>
     </application>
 </manifest>

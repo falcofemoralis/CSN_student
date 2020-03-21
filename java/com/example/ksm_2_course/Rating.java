@@ -2,10 +2,12 @@ package com.example.ksm_2_course;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -26,10 +28,15 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Rating extends AppCompatActivity {
+public class Rating extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    final int COLOR_WHITE = 0xFFFFFFFF;
+    final int COLOR_BACK = 0xFF2D2D61;
+
     LinearLayout mainLayout;
     TableLayout table;
     String URL = MainActivity.MAIN_URL + "getRating.php";
+    Spinner sub_spin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +49,8 @@ public class Rating extends AppCompatActivity {
 
         //тут береться предмет со спиннера
         //setData() -> getRating(subject) -> если успешно setTable(users)
-        setData();
-
-    }
-
-    public void setData(){
-        final Spinner subjectSpinner = (Spinner) findViewById(R.id.subjectSpinner);
-        subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                String subject = subjectSpinner.getSelectedItem().toString();
-                getRating(subject);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
+        createSpinner();
+        getRating(sub_spin.getSelectedItem().toString());
     }
 
     public void getRating(final String subject){
@@ -113,9 +104,12 @@ public class Rating extends AppCompatActivity {
         //получаем весь рейтинг
         JSONArray rating = users.getJSONArray("Rating");
 
-        for (int i=0; i < rating.length()+1; i++) {
+
+        for (int i=0; i < rating.length()+1; i++)
+        {
             TableRow row = new TableRow(Rating.this);
-            if(i==0){
+            if(i==0)
+            {
                 //эти переменные нужны для определения количества лаб в заголовке, да да, небольшой костыль
                 JSONObject userL = rating.getJSONObject(0);
                 String statusL = userL.getString("status");
@@ -127,31 +121,35 @@ public class Rating extends AppCompatActivity {
                 TextView idz = new TextView(Rating.this);
 
                 name.setText("  Имя  ");
+                name.setTextColor(COLOR_WHITE);
                 name.setTextSize(TextSizeHeader);
                 name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                name.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
+                name.setBackground(getResources().getDrawable(R.drawable.text_but_schedule_style3));
                 row.addView(name);
 
                 group.setText("  Группа  ");
+                group.setTextColor(COLOR_WHITE);
                 group.setTextSize(TextSizeHeader);
                 group.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                group.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
+                group.setBackground(getResources().getDrawable(R.drawable.text_but_schedule_style3));
                 row.addView(group);
 
                 //количество лаб
                 for (int k = 0; k < statusjsonL.length(); k++) {
                     TextView lab = new TextView(Rating.this);
                     lab.setText(String.valueOf(k+1));
+                    lab.setTextColor(COLOR_WHITE);
                     lab.setTextSize(TextSizeHeader);
                     lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                    lab.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
+                    lab.setBackground(getResources().getDrawable(R.drawable.text_but_schedule_style3));
                     row.addView(lab);
                 }
 
                 idz.setText("  ИДЗ  ");
+                idz.setTextColor(COLOR_WHITE);
                 idz.setTextSize(TextSizeHeader);
                 idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                idz.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
+                idz.setBackground(getResources().getDrawable(R.drawable.text_but_schedule_style3));
                 row.addView(idz);
             }else {
                 //row.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
@@ -163,15 +161,17 @@ public class Rating extends AppCompatActivity {
                 TextView idz = new TextView(Rating.this);
 
                 name.setText(user.getString("NickName"));
+                name.setTextColor(COLOR_BACK);
                 name.setTextSize(TextSize);
                 name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                name.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                name.setBackground(getResources().getDrawable(R.drawable.text_but_schedule_style2));
                 row.addView(name);
 
                 group.setText(user.getString("NameGroup"));
+                group.setTextColor(COLOR_BACK);
                 group.setTextSize(TextSize);
                 group.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                group.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                group.setBackground(getResources().getDrawable(R.drawable.text_but_schedule_style2));
                 row.addView(group);
 
                 //получаем массив boolean[][]
@@ -192,12 +192,14 @@ public class Rating extends AppCompatActivity {
                 //устанавливаем значения сдачи
                for(int n =0;n<statusArray.length();n++){
                     TextView lab = new TextView(Rating.this);
-                    lab.setText("Сдано ");
+
                     if(st[n][0] && st[n][1]) {
-                        lab.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+                        lab.setBackground(getResources().getDrawable(R.drawable.text_but_rating_style_green));
+                        lab.setText("     ✓     ");
                     }
                     else{
-                        lab.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+                        lab.setBackground(getResources().getDrawable(R.drawable.text_but_rating_style_red));
+                        lab.setText("     ╳     ");
                     }
                     lab.setTextSize(TextSize);
                     lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -210,6 +212,33 @@ public class Rating extends AppCompatActivity {
 
         mainLayout.addView(table);
     }
+
+    protected  void createSpinner()
+    {
+        sub_spin = findViewById(R.id.subjectSpinner);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.subject_arrays,
+                R.layout.color_spinner_schedule
+        );
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        sub_spin.setAdapter(adapter);
+        sub_spin.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+        getRating(sub_spin.getSelectedItem().toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
+
+
 
 

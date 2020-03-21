@@ -46,7 +46,7 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
 
     protected void updateSchedule()
     {
-        int numType = type_week.getText().equals("Знаменник") ? 0 : 1;
+        int numType = type_week.getText().equals(getResources().getString(R.string.denominator)) ? 0 : 1;
 
         file_name = (group_spin.getSelectedItem().toString()).equals("КНТ-518") ? "knt518.json" : "knt528.json";
 
@@ -88,10 +88,10 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
 
     public void changeTypeWeek(View v)
     {
-        if (type_week.getText().equals("Знаменник"))
-            type_week.setText("Чисельник");
+        if (type_week.getText().equals(getResources().getString(R.string.denominator)))
+            type_week.setText(getResources().getString(R.string.numerator));
         else
-            type_week.setText("Знаменник");
+            type_week.setText(getResources().getString(R.string.denominator));
         updateSchedule();
     }
 

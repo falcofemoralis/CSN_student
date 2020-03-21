@@ -21,12 +21,12 @@
 
         <EditTextPreference
             app:key="nickname"
-            app:title="Nickname"
+            app:title="@string/full_nickname"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
             app:key="password"
-            app:title="Password"
+            app:title="@string/password"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
@@ -40,15 +40,15 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="is_registered"
-            android:title="Вийти з акаунта" />
+            android:title="@string/account_exit" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="Головний екран">
+    <PreferenceCategory android:title="@string/home_screen">
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="timer_setting"
-            android:title="Таймер" />
+            android:title="@string/timer" />
     </PreferenceCategory>
 
 </PreferenceScreen>

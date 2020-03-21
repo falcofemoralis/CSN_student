@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
     SharedPreferences pref;
-    public static String MAIN_URL = "http://192.168.1.3/Rating/";
+    public static String MAIN_URL = "http://192.168.0.108/Rating/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         v.startAnimation(click);
         Intent intent;
         intent = new Intent(this, Disciplines.class);
-        intent.putExtra("Name", ((Button) v).getText());
+        intent.putExtra("button_id", v.getId());
         startActivity(intent);
         setProgress();
         overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
@@ -185,16 +185,16 @@ public class MainActivity extends AppCompatActivity {
                 if (currentTime < lessons[i][0]) {
                     if (currentTime < lessons[i - 1][1]) {
                         endTime = lessons[i - 1][1] - currentTime;
-                        timeUntil.setText("До кінця пари:");
+                        timeUntil.setText(getResources().getString(R.string.timeUntil));
                     } else {
                         endTime = lessons[i][0] - currentTime;
-                        timeUntil.setText("Початок " + romeNum[i] + " пари:");
+                        timeUntil.setText(getResources().getString(R.string.start) + " " + romeNum[i] + " "+ getResources().getString(R.string.lesson));
                     }
                     break;
                 }
             }
         } else {
-            timeUntil.setText("Початок I пари:");
+            timeUntil.setText(R.string.first_lesson);
             if (currentTime > lessons[0][0])
                 endTime = 24 * 60 * 60 - currentTime + lessons[0][0];
             else endTime = lessons[0][0] - currentTime;
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, R.string.no_connection_server, Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
             long last = file.lastModified();
             Date date = new Date(last);
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
-            alertDialog.setTitle("Найдены локальные данные за " + format.format(date));
+            alertDialog.setTitle(getResources().getString(R.string.localdata_is_found) + " " + format.format(date));
         }
         else{
             Gson gson = new Gson();
@@ -341,9 +341,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        alertDialog.setMessage("Взять данные с сервера или с устройства?");
+        alertDialog.setMessage(R.string.get_data_dialog);
 
-        alertDialog.setPositiveButton("Устройство", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.device, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        alertDialog.setNegativeButton("Сервер", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.server, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (whole) {
-                    Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, R.string.no_connection_server, Toast.LENGTH_LONG).show();
                     whole = false;
                 }
             }

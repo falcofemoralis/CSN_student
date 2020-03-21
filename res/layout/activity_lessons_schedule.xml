@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="center"
-                android:text="Розклад занять"
+                android:text="@string/Lessons_schedule"
                 android:textAlignment="center"
                 android:textColor="@color/background"
                 android:textSize="40sp">
@@ -61,7 +61,7 @@
                 android:layout_weight="0.1"
                 android:background="@drawable/text_but_schedule_style"
                 android:gravity="center"
-                android:text="Группа:"
+                android:text="@string/group_with_2dots"
                 android:textColor="@color/background"
                 android:textSize="24sp" />
 
@@ -87,7 +87,7 @@
                 android:layout_weight="0.4"
                 android:background="@drawable/text_but_schedule_style"
                 android:onClick="changeTypeWeek"
-                android:text="Знаменник"
+                android:text="@string/denominator"
                 android:textColor="@color/background"
                 android:textSize="18sp" />
 
@@ -127,7 +127,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
-                        android:text="Пара"
+                        android:text="@string/pair"
                         android:textColor="@color/white"
                         android:textSize="24sp" />
 

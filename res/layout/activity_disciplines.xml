@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/dark_background2"
-                    android:text="Архітектура комп'ютера"
+                    android:text="@string/Arch_Comp"
                     android:textColor="@color/white"
                     android:textSize="13sp" />
 
@@ -61,7 +61,7 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:clickable="false"
-                        android:text="Викладач :"
+                        android:text="@string/lector"
                         android:textSize="10sp" />
 
 
@@ -74,7 +74,7 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:clickable="false"
-                        android:text="Степан Юрійович Скрупський"
+                        android:text="@string/teacher_CA"
                         android:textSize="10sp" />
 
                 </TableRow>
@@ -98,9 +98,8 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:clickable="false"
-                        android:text="Цінність :"
-                        android:textSize="10sp"
-                        tools:text="Цінність :" />
+                        android:text="@string/valueOfSubject"
+                        android:textSize="10sp" />
 
                     <Button
                         android:id="@+id/val"
@@ -111,7 +110,7 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:clickable="false"
-                        android:text="Залік"
+                        android:text="@string/test"
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -135,9 +134,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/lab_style"
                         android:textColor="@color/white"
-                        android:text="Лабороторна 1"
-                        android:textSize="10sp"
-                        tools:text="Лабороторна 1" />
+                        android:text="@string/lab1"
+                        tools:text="@string/lab1"
+                        android:textSize="10sp" />
 
 
                     <Button
@@ -148,7 +147,7 @@
                         android:background="@color/mb_red"
                         android:onClick="ButtonChangeStatus"
                         android:textColor="@color/white"
-                        android:text="Защита"
+                        android:text="@string/Passed"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -160,7 +159,7 @@
                         android:background="@drawable/lab_choose"
                         android:textColor="@color/white"
                         android:onClick="CornerButtonChangeStatus"
-                        android:text="Защита"
+                        android:text="@string/Protection"
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -178,9 +177,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/lab_style"
                         android:textColor="@color/white"
-                        android:text="Лабороторна  2"
-                        android:textSize="10sp"
-                        tools:text="Лабороторна  2" />
+                        android:text="@string/lab2"
+                        tools:text="@string/lab2"
+                        android:textSize="10sp" />
 
                     <Button
                         android:id="@+id/B_1_0"
@@ -190,7 +189,7 @@
                         android:background="@color/mb_red"
                         android:onClick="ButtonChangeStatus"
                         android:textColor="@color/white"
-                        android:text="Сдано"
+                        android:text="@string/Passed"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -202,7 +201,7 @@
                         android:background="@drawable/lab_choose"
                         android:textColor="@color/white"
                         android:onClick="CornerButtonChangeStatus"
-                        android:text="Защита"
+                        android:text="@string/Protection"
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -220,7 +219,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/lab_style"
                         android:textColor="@color/white"
-                        android:text="Лабороторна 3"
+                        android:text="@string/lab3"
+                        tools:text="@string/lab3"
                         android:textSize="10sp" />
 
                     <Button
@@ -231,7 +231,7 @@
                         android:background="@color/mb_red"
                         android:onClick="ButtonChangeStatus"
                         android:textColor="@color/white"
-                        android:text="Сдано"
+                        android:text="@string/Passed"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -243,7 +243,7 @@
                         android:background="@drawable/lab_choose"
                         android:textColor="@color/white"
                         android:onClick="CornerButtonChangeStatus"
-                        android:text="Защита"
+                        android:text="@string/Protection"
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -261,9 +261,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/lab_style"
                         android:textColor="@color/white"
-                        android:text="Лабороторна 4"
-                        android:textSize="10sp"
-                        tools:text="Лабороторна 4" />
+                        android:text="@string/lab4"
+                        tools:text="@string/lab4"
+                        android:textSize="10sp" />
 
                     <Button
                         android:id="@+id/B_3_0"
@@ -273,7 +273,7 @@
                         android:background="@color/mb_red"
                         android:onClick="ButtonChangeStatus"
                         android:textColor="@color/white"
-                        android:text="Сдано"
+                        android:text="@string/Passed"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -285,7 +285,7 @@
                         android:background="@drawable/lab_choose"
                         android:textColor="@color/white"
                         android:onClick="CornerButtonChangeStatus"
-                        android:text="Защита"
+                        android:text="@string/Protection"
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -303,9 +303,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/lab_style"
                         android:textColor="@color/white"
-                        android:text="Лабороторна 5"
-                        android:textSize="10sp"
-                        tools:text="Лабороторна 5" />
+                        android:text="@string/lab5"
+                        tools:text="@string/lab5"
+                        android:textSize="10sp" />
 
                     <Button
                         android:id="@+id/B_4_0"
@@ -315,7 +315,7 @@
                         android:background="@color/mb_red"
                         android:onClick="ButtonChangeStatus"
                         android:textColor="@color/white"
-                        android:text="Сдано"
+                        android:text="@string/Passed"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -327,7 +327,7 @@
                         android:background="@drawable/lab_choose"
                         android:textColor="@color/white"
                         android:onClick="CornerButtonChangeStatus"
-                        android:text="Защита"
+                        android:text="@string/Protection"
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -344,10 +344,10 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/lab_style"
+                        android:text="@string/lab6"
                         android:textColor="@color/white"
-                        android:text="Лабороторна 6"
                         android:textSize="10sp"
-                        tools:text="Лабороторна 6" />
+                        tools:text="@string/lab6" />
 
                     <Button
                         android:id="@+id/B_5_0"
@@ -357,7 +357,7 @@
                         android:background="@color/mb_red"
                         android:onClick="ButtonChangeStatus"
                         android:textColor="@color/white"
-                        android:text="Сдано"
+                        android:text="@string/Passed"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -369,7 +369,7 @@
                         android:background="@drawable/lab_choose"
                         android:textColor="@color/white"
                         android:onClick="CornerButtonChangeStatus"
-                        android:text="Защита"
+                        android:text="@string/Protection"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -388,9 +388,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/lab_style"
                         android:textColor="@color/white"
-                        android:text="Лабороторна 7"
-                        android:textSize="10sp"
-                        tools:text="Лабороторна 7" />
+                        android:text="@string/lab7"
+                        tools:text="@string/lab7"
+                        android:textSize="10sp" />
 
                     <Button
                         android:id="@+id/B_6_0"
@@ -400,7 +400,7 @@
                         android:background="@color/mb_red"
                         android:onClick="ButtonChangeStatus"
                         android:textColor="@color/white"
-                        android:text="Сдано"
+                        android:text="@string/Passed"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -412,7 +412,7 @@
                         android:background="@drawable/lab_choose"
                         android:textColor="@color/white"
                         android:onClick="CornerButtonChangeStatus"
-                        android:text="Защита"
+                        android:text="@string/Protection"
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
@@ -438,7 +438,7 @@
                         android:backgroundTint="#00FFFFFF"
                         android:textColor="@color/white"
                         android:stateListAnimator="@null"
-                        android:text="Прогрес :"
+                        android:text="@string/Progress"
                         android:textSize="10sp" />
 
                     <Button

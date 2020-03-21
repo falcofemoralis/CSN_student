@@ -72,21 +72,21 @@ public class Login extends AppCompatActivity {
                     password = user.getString("Password");
                     group = user.getString("NameGroup");
                     if (passwordS.getText().toString().toLowerCase().equals(password)) {
-                        Toast.makeText(Login.this, "Successfully login", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, R.string.successfully_login, Toast.LENGTH_SHORT).show();
                         Save();
                     } else {
-                        Toast.makeText(Login.this, "Inccorect password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(Login.this, "User not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, R.string.no_user, Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Login.this, "No connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         }) {
 
@@ -164,7 +164,7 @@ public class Login extends AppCompatActivity {
 
     protected void createClickableSpan()
     {
-        TextView text = findViewById(R.id.Span);
+        TextView text = findViewById(R.id.Span_2);
 
         SpannableString ss = new SpannableString(text.getText());
 
@@ -181,8 +181,7 @@ public class Login extends AppCompatActivity {
                 ds.setColor(0xFF5EE656);
             }
         };
-
-        ss.setSpan(clickableSpan, 16, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(clickableSpan, 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());

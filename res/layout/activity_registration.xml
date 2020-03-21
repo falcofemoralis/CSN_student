@@ -37,7 +37,7 @@
         android:textSize="18sp"
         android:textColor="#FFFFFF"
         android:background="@drawable/text_style"
-        android:hint="Nickname" />
+        android:hint="@string/nickname" />
 
     <Space
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
         android:layout_weight="0.1"
         android:textAlignment="center"
         android:background="@drawable/text_style"
-        android:hint="Password"
+        android:hint="@string/password"
         android:textSize="18sp"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
@@ -71,7 +71,7 @@
         android:layout_weight="0.1"
         android:textAlignment="center"
         android:background="@drawable/text_style"
-        android:hint="Confirm password"
+        android:hint="@string/password_conf"
         android:textColorHint="#FFFFFF"
         android:textSize="18sp"
         android:textColor="#FFFFFF"
@@ -105,7 +105,7 @@
         android:layout_weight="0.03"
         android:background="@drawable/button_style"
         android:onClick="registration"
-        android:text="Зареєструватись"
+        android:text="@string/sign_up"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textColor="@color/white"/>
@@ -115,15 +115,29 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.05" />
 
-    <TextView
-        android:id="@+id/Span"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:text="Вже є аккаунт ? Війти" />
+
+        <TextView
+            android:id="@+id/Span_1a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="@string/account_1"
+            tools:ignore="RtlCompat" />
+
+        <TextView
+            android:id="@+id/Span_2a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_gravity="top"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:text="@string/account_2"
+            tools:ignore="RtlCompat" />
 
 </LinearLayout>
 

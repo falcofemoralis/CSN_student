@@ -40,7 +40,7 @@
                     android:textAlignment="center"
                     android:background="@drawable/text_style"
                     android:gravity="center"
-                    android:text="До кінця пари:"
+                    android:text="@string/timeUntil"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
@@ -115,20 +115,20 @@
                     android:onClick="OnClick"
                     android:textSize="12sp"
                     android:layout_margin="5dp"
-                    android:text="@string/DataBase" />
-
-                <Button
-                    android:id="@+id/OBG"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@drawable/button_style"
-                    android:textColor="@color/white"
-                    android:onClick="OnClick"
-                    android:textSize="12sp"
-                    android:layout_margin="5dp"
                     android:text="@string/OBG" />
 
-                <Button
+            <Button
+                android:id="@+id/OBG"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/button_style"
+                android:onClick="OnClick"
+                android:text="@string/DataBase"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <Button
                     android:id="@+id/SMP"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
@@ -195,7 +195,7 @@
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
             android:stateListAnimator="@null"
-            android:text="Розклад">
+            android:text="@string/Lessons_schedule">
 
         </Button>
 
@@ -211,7 +211,7 @@
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
             android:stateListAnimator="@null"
-            android:text="РЕЙТИНГ">
+            android:text="@string/Rating">
 
         </Button>
 
@@ -227,8 +227,7 @@
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
             android:stateListAnimator="@null"
-            android:text="Настройки"
-         >
+            android:text="@string/title_activity_settings">
 
         </Button>
     </LinearLayout>

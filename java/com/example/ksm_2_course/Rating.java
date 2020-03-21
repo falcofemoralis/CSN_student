@@ -1,6 +1,6 @@
 package com.example.ksm_2_course;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,19 +49,44 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         STYLE_GREEN = getResources().getDrawable(R.drawable.text_but_rating_style_green);
         STYLE_RED = getResources().getDrawable(R.drawable.text_but_rating_style_red);
 
-
         mainLayout = findViewById(R.id.mainLayout);
         table = findViewById(R.id.table);
 
         //тут береться предмет со спиннера
         //setData() -> getRating(subject) -> если успешно setTable(users)
         createSpinner();
-        getRating(sub_spin.getSelectedItem().toString(), gr_spin.getSelectedItem().toString());
+        getRating(sub_spin.getSelectedItemPosition(), gr_spin.getSelectedItem().toString());
     }
 
-    public void getRating(final String subject, final String group){
+    public void getRating(final int subjectNumber, final String group){
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
+        String tempSubject;
+        switch (subjectNumber) {
+            case 0:
+                tempSubject = "Алгоритми та методи обчислень";
+                break;
+            case 1:
+                tempSubject = "Архітектура комп᾿ютерів";
+                break;
+            case 2:
+                tempSubject = "Комп᾿ютерна схемотехніка";
+                break;
+            case 3:
+                tempSubject = "Організація баз данних";
+                break;
+            case 4:
+                tempSubject = "Основи безпеки життєдіяльності";
+                break;
+            case 5:
+                tempSubject = "Сучасні методи програмування";
+                break;
+            default:
+                tempSubject = "";
+                break;
+        }
+
+        final String subject = tempSubject;
         StringRequest jsonObjectRequest  = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>()
         {
             @Override
@@ -83,7 +107,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Rating.this, "No connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Rating.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         }) {
 
@@ -127,14 +151,14 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 TextView group = new TextView(Rating.this);
                 TextView idz = new TextView(Rating.this);
 
-                name.setText("  Имя  ");
+                name.setText("  "+getResources().getString(R.string.nickname)+"  ");
                 name.setTextColor(COLOR_WHITE);
                 name.setTextSize(TextSizeHeader);
                 name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 name.setBackground(STYLE_BACK);
                 row.addView(name);
 
-                group.setText("  Группа  ");
+                group.setText("  "+getResources().getString(R.string.group)+"  ");
                 group.setTextColor(COLOR_WHITE);
                 group.setTextSize(TextSizeHeader);
                 group.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -152,7 +176,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                     row.addView(lab);
                 }
 
-                idz.setText("  ИДЗ  ");
+                idz.setText("  "+getResources().getString(R.string.IHW)+"  ");
                 idz.setTextColor(COLOR_WHITE);
                 idz.setTextSize(TextSizeHeader);
                 idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -225,7 +249,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         sub_spin = findViewById(R.id.subjectSpinner);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.subject_arrays,
+                R.array.subjects_values,
                 R.layout.color_spinner_schedule
         );
 
@@ -248,7 +272,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
-        getRating(sub_spin.getSelectedItem().toString(), gr_spin.getSelectedItem().toString());
+        getRating(sub_spin.getSelectedItemPosition(), gr_spin.getSelectedItem().toString());
     }
 
     @Override
@@ -256,9 +280,3 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
     }
 }
-
-
-
-
-
-

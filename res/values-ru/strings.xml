@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">CSN student</string>
+    <string name="Alg_and_metod">Алгоритмы и методы вычислений</string>
+    <string name="Arch_Comp"> Архитектура компьютеров</string>
+    <string name="CompScheme">Компьютерная схемотехника</string>
+    <string name="DataBase">Организация баз данных</string>
+    <string name="OBG">Основы безопасности жизнедеятельности</string>
+    <string name="S_metod_prog">Современные методы программирования</string>
+    <string name="Overall">В общем</string>
+    <string name="course_2">2 курс</string>
+    <string name="subjects">Дисциплины :</string>
+    <string name="lector">Преподаватель:</string>
+    <string name="valueOfSubject">Ценность  :</string>
+    <string name="Exam">Экзамен </string>
+    <string name="Lessons_schedule">Расписание занятий</string>
+    <string name="Passed">Сдано</string>
+    <string name="Protection">Защита</string>
+    <string name="Progress">Прогресс :</string>
+    <string name="Laboratory">Преподаватель лабораторных:</string>
+    <string name="type">Вид</string>
+    <string name="number">№</string>
+    <string name="lec">ЛК</string>
+    <string name="lab">ЛР</string>
+    <string name="room">Аудитория</string>
+    <string name="subject">Предмет</string>
+    <string name="monday">ПОНЕДЕЛЬНИК</string>
+    <string name="tuesday">ВТОРНИК</string>
+    <string name="wednesday">СРЕДА</string>
+    <string name="thursday">ЧЕТВЕРГ</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="group_title">Группа</string>
+    <string name="Base_settings">Настройка юзера</string>
+    <string-array name="group_arrays">
+        <item>КНТ-518</item>
+        <item>КНТ-528</item>
+    </string-array>
+    <string name="group_prompt">Выберите группу</string>
+    <string name="timeUntil">Конец пары</string>
+    <string name="start">Начало</string>
+    <string name="lesson">пары в</string>
+    <string name="first_lesson">Начало 1 пары</string>
+    <string name="no_connection_server">Нет связи с нашим сервером, попробуйте позже ...</string>
+    <string name="localdata_is_found">Найдено локальные данные за</string>
+    <string name="get_data_dialog">Получить данные с сервера или устройства?</string>
+    <string name="device">Устройство</string>
+    <string name="server">Сервер</string>
+    <string name="sign_in">Войти!</string>
+    <string name="login">Вход </string>
+    <string name="enter_nickname">Введите никнейм</string>
+    <string name="password">Пароль</string>
+    <string name="successfully_login">Успешный вход</string>
+    <string name="inccorect_password">Неверный пароль</string>
+    <string name="no_user"> Пользователь не найден</string>
+    <string name="no_connection">Нет соединения</string>
+    <string name="nickname">Никнейм</string>
+    <string name="password_conf">Подтвердить пароль</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="nickname_error">Пожалуйста, введите никнейм</string>
+    <string name="password_error">Введите пароль"</string>
+    <string name="nickname_is_taken">Этот никнейм взял другой пользователь</string>
+    <string name="successfully_registration">Успешная регистрация</string>
+    <string name="test">Зачет</string>
+    <string name="lab1">Лабораторная 1</string>
+    <string name="lab2">Лабораторная 2</string>
+    <string name="lab3">Лабораторная 3</string>
+    <string name="lab4">Лабораторная 4</string>
+    <string name="lab5">Лабораторная 5</string>
+    <string name="lab6">Лабораторная 6</string>
+    <string name="lab7">Лабораторная 7</string>
+    <string name="teacher_AMO">Кудерметов Равиль Камилович</string>
+    <string name="teacher_CA">Скрупський Степан Юрьевич</string>
+    <string name="teacher_CS">Сгадов Сергей Александрович</string>
+    <string name="teacher_OBD">Паромова Татьяна Александровна</string>
+    <string name="teacher_OBG">Скуйбида Елена Леонидовна</string>
+    <string name="test_exam">Зачем/Экзамен</string>
+    <string name="diff_exam">Дифф.зачет</string>
+    <string name="group">Группа</string>
+    <string name="IHW">ИДЗ</string>
+    <string-array name="subjects_values">
+        <item>Алгоритмы и методы вычислений</item>
+        <item>Архитектура компьютеров</item>
+        <item>Компьютерная схемотехника</item>
+        <item>Организация баз данных</item>
+        <item>Основы безопасности жизнедеятельности</item>
+        <item>Современные методы программирования</item>
+    </string-array>
+    <string name="home_screen">Главный экран</string>
+    <string name="timer">Таймер</string>
+    <string name="account_exit">Выйти из аккаунта</string>
+    <string name="full_nickname">Никнейм</string>
+    <string name="denominator">Знаменатель</string>
+    <string name="numerator">Числитель</string>
+    <string name="pair">Пара</string>
+    <string name="group_with_2dots">Группа:</string>
+    <string name="no_account_1">Нету аккаунта?\t</string>
+    <string name="no_account_2">\tСоздайте новый</string>
+    <string name="account_1">Уже есть аккаунт?</string>
+    <string name="account_2">Войти</string>
+    <string name="Rating">Рейтинг</string>
+</resources>

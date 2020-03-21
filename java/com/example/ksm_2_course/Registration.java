@@ -73,17 +73,17 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         String name = nickName.getText().toString();
         FILE_NAME += name + ".json";
         if (name.equals("")) {
-            Toast.makeText(Registration.this, "Please enter nickname", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Registration.this, R.string.nickname_error, Toast.LENGTH_SHORT).show();
             return;
         }
 
         String pass = password.getText().toString();
         String checkpass = checkPassword.getText().toString();
         if (!pass.equals(checkpass)) {
-            Toast.makeText(Registration.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Registration.this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
             return;
         } else if (pass.equals("") || checkpass.equals("")) {
-            Toast.makeText(Registration.this, "Enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Registration.this, R.string.password_error, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -92,9 +92,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onResponse(String response) {
                 if (response.indexOf("Duplicate") != -1)
-                    Toast.makeText(Registration.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registration.this, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
                 else {
-                    Toast.makeText(Registration.this, "Successfully registration", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registration.this, R.string.successfully_registration, Toast.LENGTH_SHORT).show();
 
                     Gson gson = new Gson();
                     ArrayList<Discipline> discs = new ArrayList<Discipline>();
@@ -115,7 +115,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Registration.this, "No connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Registration.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         }) {
 
@@ -206,7 +206,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     protected void createClickableSpan()
     {
-        TextView text = findViewById(R.id.Span);
+        TextView text = findViewById(R.id.Span_2a);
 
         SpannableString ss = new SpannableString(text.getText());
 
@@ -224,7 +224,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
         };
 
-        ss.setSpan(clickableSpan, 16, 21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(clickableSpan, 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());

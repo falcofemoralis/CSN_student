@@ -58,7 +58,7 @@ public class Disciplines extends AppCompatActivity
         TRUE_2 = getResources().getDrawable(R.drawable.lab_choose_accepted);
 
         // Достать объект Дисциплина с json, возвращает массив дисциплин
-        int num = GetCode(intent.getStringExtra("Name")); // индекс для выбора дисциплины из массива дисциплин
+        int num = GetCode(intent.getIntExtra("button_id", 0)); // индекс для выбора дисциплины из массива дисциплин
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Discipline>>() {}.getType();
         discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
@@ -120,10 +120,9 @@ public class Disciplines extends AppCompatActivity
                 buts[i][1].setBackgroundDrawable(FALSE_2);
         }
 
-        ((Button)(findViewById(R.id.Disc))).setText(current.getName()); // Установка имени дисциплины
-        ((Button)(findViewById(R.id.val))).setText(current.getValue()); // Установка стоимости дисциплины
-        ((Button)(findViewById(R.id.teach))).setText(current.getTeacher()); // Установка ФИО преподавателя
-
+        ((Button)(findViewById(R.id.Disc))).setText(current.getStringName(this)); // Установка имени дисциплины
+        ((Button)(findViewById(R.id.val))).setText(current.getStringValue(this)); // Установка стоимости дисциплины
+        ((Button)(findViewById(R.id.teach))).setText(current.getStringTeacher(this)); // Установка ФИО преподавателя
         res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка среднего прогресса по дисциплине
     }
 
@@ -195,21 +194,21 @@ public class Disciplines extends AppCompatActivity
     }
 
     // Функция получения кода текущей дисциплины
-    private int GetCode(String name)
+    private int GetCode(int button_id)
     {
-        switch(name)
+        switch(button_id)
         {
-            case "Алгоритми та методи обчислень":
+            case R.id.Alg:
                 return 0;
-            case "Архітектура комп'ютерів":
+            case R.id.Arch:
                 return 1;
-            case "Комп'ютерна схемотехніка":
+            case R.id.CS:
                 return 2;
-            case "Організація баз данних":
+            case R.id.OBG:
                 return 3;
-            case "Основи безпеки життєдіяльності":
+            case R.id.OBD:
                 return 4;
-            case "Сучасні методи програмування":
+            case R.id.SMP:
                 return 5;
             default:
                 return -1;

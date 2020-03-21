@@ -54,13 +54,14 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     String FILE_NAME = "data_disc_";
 
+    boolean whole = true;
     CountDownTimer start;
     RequestQueue requestQueue;
     Button res;
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
     SharedPreferences pref;
-    public static String MAIN_URL = "http://.../Rating/";
+    public static String MAIN_URL = "http://192.168.1.3/Rating/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,13 +266,9 @@ public class MainActivity extends AppCompatActivity {
 
         boolean timer_settings = pref.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
         if (!timer_settings) {
-            Time.setVisibility(View.GONE);
-            TimeUntil.setVisibility(View.GONE);
-        } else {
-            Time.setVisibility(View.VISIBLE);
-            TimeUntil.setVisibility(View.VISIBLE);
-            time();
-        }
+            Time.setText("");
+            TimeUntil.setText("");
+        } else time();
     }
 
     public void checkRegistration() {
@@ -381,6 +378,7 @@ public class MainActivity extends AppCompatActivity {
         String jsonString = gson.toJson(discs);
         JSONHelper.create(MainActivity.this, FILE_NAME, jsonString);
         setProgress();
+        whole = true;
     }
 
     class result { public String status;}
@@ -406,9 +404,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
+            public void onErrorResponse(VolleyError error) {
+                if (whole) {
+                    Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
+                    whole = false;
+                }
             }
         }) {
 
@@ -431,4 +431,6 @@ public class MainActivity extends AppCompatActivity {
         return isConnected;
     }
 }
+
+
 

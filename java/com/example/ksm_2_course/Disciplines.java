@@ -250,6 +250,6 @@ public class Disciplines extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 }

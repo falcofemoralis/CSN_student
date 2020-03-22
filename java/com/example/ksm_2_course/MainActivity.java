@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
     SharedPreferences pref;
-    public static String MAIN_URL = "http://192.168.0.108/Rating/";
+    public static String MAIN_URL = "http:///";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     public void OnClickLessons(View v) {
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("button_id", v.getId());
         startActivity(intent);
         setProgress();
-        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 
     @Override

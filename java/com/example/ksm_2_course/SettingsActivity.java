@@ -32,18 +32,18 @@ public class SettingsActivity extends AppCompatActivity {
     String nickname,password,group;
 
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+            if (key.equals(KEY_NICKNAME)) {
+                nickname = pref.getString(SettingsActivity.KEY_NICKNAME, "");
+                setData();
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-            if(key.equals(KEY_NICKNAME)){
-                nickname = sharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+            } else if (key.equals(KEY_PASSWORD)) {
+                password = pref.getString(SettingsActivity.KEY_PASSWORD, "");
                 setData();
-            }else if(key.equals(KEY_PASSWORD)){
-                password = sharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
-                setData();
-            }else if(key.equals(KEY_GROUP)){
-                group = sharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
+
+            } else if (key.equals(KEY_GROUP)) {
+                group = pref.getString(SettingsActivity.KEY_GROUP, "");
                 setData();
             }
         }
@@ -86,6 +86,22 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void setData() {
+            nickname = pref.getString(SettingsActivity.KEY_NICKNAME, "");
+            password = pref.getString(SettingsActivity.KEY_PASSWORD, "");
+            if (nickname.equals("")) {
+                prefEdit.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
+                prefEdit.apply();
+                Toast.makeText(SettingsActivity.this, R.string.nodata, Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }else if (password.equals("")) {
+                prefEdit.putString(SettingsActivity.KEY_PASSWORD, oldPassword);
+                prefEdit.apply();
+                Toast.makeText(SettingsActivity.this, R.string.nodata, Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
@@ -93,10 +109,10 @@ public class SettingsActivity extends AppCompatActivity {
                 if (response.indexOf("Duplicate") != -1) {
                     prefEdit.putString(SettingsActivity.KEY_NICKNAME, oldNickname);
                     prefEdit.apply();
-                    Toast.makeText(SettingsActivity.this, "This nickname is taken by another user", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "UserData changed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.datachanged, Toast.LENGTH_SHORT).show();
                     oldNickname = pref.getString(SettingsActivity.KEY_NICKNAME, "");
                     oldPassword = pref.getString(SettingsActivity.KEY_PASSWORD, "");
                     oldGroup = pref.getString(SettingsActivity.KEY_GROUP, "");
@@ -109,7 +125,7 @@ public class SettingsActivity extends AppCompatActivity {
                 prefEdit.putString(SettingsActivity.KEY_PASSWORD, oldPassword);
                 prefEdit.putString(SettingsActivity.KEY_GROUP, oldGroup);
                 prefEdit.apply();
-                Toast.makeText(SettingsActivity.this, "No connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
                 finish();
         }
         }) {
@@ -129,7 +145,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+       // overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 } 
 

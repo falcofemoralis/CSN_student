@@ -31,8 +31,8 @@
     <string name="group_title">Group</string>
     <string name="Base_settings">User settings</string>
     <string-array name="group_arrays">
-        <item>KNT-518</item>
-        <item>KNT-528</item>
+        <item>КНТ-518</item>
+        <item>КНТ-528</item>
     </string-array>
     <string name="group_prompt">Choose a group</string>
     <string name="timeUntil">The end of the pair</string>
@@ -97,4 +97,7 @@
     <string name="account_1">Already have an account?\t</string>
     <string name="account_2">Sign in</string>
     <string name="Rating">Rating</string>
+    <string name="datachanged">Successfully changed</string>
+    <string name="nodata">Enter data!</string>
 </resources>
+

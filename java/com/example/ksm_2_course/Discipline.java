@@ -3,11 +3,9 @@ package com.example.ksm_2_course;
 import android.app.Application;
 import android.content.Context;
 
-public class Discipline extends Application
+public class Discipline
 {
-    private String name;
-    private String teacher;
-    private String value; // name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
+    private String name,teacher,value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
     private boolean[][] complete; // состояние сдачи лабораторных работ
     private int labs, progress; // labs - количество лабораторных , progress - суммарное количество сданных и защищенных работ
 
@@ -59,7 +57,7 @@ public class Discipline extends Application
         return complete;
     }
 
-    public String getStringName(Context context) {
+   public String getStringName(Context context) {
         switch (this.name) {
             case "Алгоритми та методи обчислень":
                 return context.getResources().getString(R.string.Alg_and_metod);

@@ -1,10 +1,10 @@
 package com.example.ksm_2_course;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
-
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,9 +14,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,14 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -40,9 +32,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,8 +46,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     class groups { public String NameGroup;}
     public static groups[] GROUPS;
-    public static String MAIN_URL = "http:///";
-    
+    public static String MAIN_URL = "";
+
     String FILE_NAME = "data_disc_";
     boolean whole = true;
     CountDownTimer start;
@@ -63,18 +55,17 @@ public class MainActivity extends AppCompatActivity {
     Button res;
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
-    SharedPreferences pref;
-    
+    public static SharedPreferences encryptedSharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setFile();
         res = (Button) findViewById(R.id.res);
-        pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-        FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
+        FILE_NAME += encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, "") + ".json";
         getGroups();
         checkRegistration();
 
@@ -91,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
         Intent intent;
-        intent = new Intent(this, SettingsActivity.class);
+        intent = new Intent(this, Settings2.class);
         startActivity(intent);
         //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
@@ -113,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < discs.size(); ++i)
         {
             Discipline temp = discs.get(i);
-            updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
+            updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
         }
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
@@ -137,12 +128,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         setProgress();
         checkTimer();
+        checkRegistration();
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        boolean timer_settings = pref.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings2.KEY_TIMER_SETTING, true);
         if (timer_settings)  start.cancel();
         super.onPause();
     }
@@ -267,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         TextView Time = (TextView) findViewById(R.id.Time);
         TextView TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
-        boolean timer_settings = pref.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings2.KEY_TIMER_SETTING, true);
        if (!timer_settings) {
             Time.setVisibility(View.GONE);
             TimeUntil.setVisibility(View.GONE);
@@ -279,9 +271,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkRegistration() {
-        Boolean is_registered = pref.getBoolean(SettingsActivity.KEY_IS_REGISTERED, true);
+        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings2.KEY_IS_REGISTERED, true);
 
-        if (is_registered) {
+        if (!is_registered) {
             Intent intent;
             intent = new Intent(this, Login.class);
             startActivity(intent);
@@ -339,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
             discs = gson.fromJson(JSONHelper.read(MainActivity.this, "data_disc.json"), listType);
 
             for (int i = 0; i < discs.size(); ++i)
-                getStatus(pref.getString(SettingsActivity.KEY_NICKNAME, ""), discs.get(i), i);
+                getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
             return;
         }
 
@@ -357,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < discs.size(); ++i)
                 {
                     Discipline temp = discs.get(i);
-                    updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
+                    updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
                 }
             }
         });
@@ -371,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
                 discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
 
                 for (int i = 0; i < discs.size(); ++i)
-                    getStatus(pref.getString(SettingsActivity.KEY_NICKNAME, ""), discs.get(i), i);
+                    getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
             }
         });
 
@@ -437,7 +429,32 @@ public class MainActivity extends AppCompatActivity {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
-    
+
+    public void setFile(){
+        String masterKeyAlias = null;
+        try {
+            masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            encryptedSharedPreferences = EncryptedSharedPreferences.create(
+                    "secret_shared_prefs",
+                    masterKeyAlias,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void getGroups ()
     {
         String url = MainActivity.MAIN_URL + "getGroups.php";

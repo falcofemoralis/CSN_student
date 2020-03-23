@@ -133,12 +133,12 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     public void Save()
     {
-        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        prefEdit.putBoolean(SettingsActivity.KEY_IS_REGISTERED,false);
-        prefEdit.putString(SettingsActivity.KEY_NICKNAME,nickName.getText().toString());
-        prefEdit.putString(SettingsActivity.KEY_PASSWORD,password.getText().toString());
-        prefEdit.putString(SettingsActivity.KEY_GROUP,group);
-        prefEdit.apply();
+        SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
+        prefEditor.putBoolean(Settings2.KEY_IS_REGISTERED,true);
+        prefEditor.putString(Settings2.KEY_NICKNAME,nickName.getText().toString());
+        prefEditor.putString(Settings2.KEY_PASSWORD,password.getText().toString());
+        prefEditor.putString(Settings2.KEY_GROUP,group);
+        prefEditor.apply();
 
         Intent intent;
         intent = new Intent(this, MainActivity.class);
@@ -179,7 +179,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         requestQueue.add(request);
     }
 
-        protected  void createSpinner()
+    protected  void createSpinner()
     {
         Spinner gr_spin = findViewById(R.id.group);
 

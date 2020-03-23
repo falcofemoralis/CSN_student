@@ -3,7 +3,6 @@ package com.example.ksm_2_course;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -14,10 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,10 +24,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +36,6 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
 
     String FILE_NAME = "data_disc_";
-
     EditText nickNameS;
     EditText passwordS;
     String URL = MainActivity.MAIN_URL + "getUser.php";
@@ -53,7 +47,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         createClickableSpan();
     }
 
@@ -114,12 +107,12 @@ public class Login extends AppCompatActivity {
     }
 
     public void Save() {
-        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        prefEdit.putBoolean(SettingsActivity.KEY_IS_REGISTERED, false);
-        prefEdit.putString(SettingsActivity.KEY_NICKNAME, nickname);
-        prefEdit.putString(SettingsActivity.KEY_PASSWORD, password);
-        prefEdit.putString(SettingsActivity.KEY_GROUP, group);
-        prefEdit.apply();
+        SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
+        prefEditor.putBoolean(Settings2.KEY_IS_REGISTERED, true);
+        prefEditor.putString(Settings2.KEY_NICKNAME, nickname);
+        prefEditor.putString(Settings2.KEY_PASSWORD, password);
+        prefEditor.putString(Settings2.KEY_GROUP, group);
+        prefEditor.apply();
 
         ArrayList<Discipline> discs = new ArrayList<Discipline>();
         Gson gson = new Gson();

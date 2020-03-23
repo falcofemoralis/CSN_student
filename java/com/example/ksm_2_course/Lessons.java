@@ -1,26 +1,16 @@
 package com.example.ksm_2_course;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Lessons extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -112,7 +102,6 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
         group_spin.setOnItemSelectedListener(this);
     }
 
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
@@ -124,6 +113,3 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
 
     }
 }
-
-
-

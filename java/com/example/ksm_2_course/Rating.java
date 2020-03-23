@@ -24,6 +24,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -244,12 +246,12 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         mainLayout.addView(table);
     }
 
-       protected  void createSpinner()
+    protected  void createSpinner()
     {
         sub_spin = findViewById(R.id.subjectSpinner);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.subject_arrays,
+                R.array.subjects_values,
                 R.layout.color_spinner_schedule
         );
 
@@ -264,7 +266,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         for (int i = 0; i < MainActivity.GROUPS.length; ++i)
             spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
         spinnerArray.add("ALL");
-           
+
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
                 this, R.layout.color_spinner_schedule,spinnerArray);
 

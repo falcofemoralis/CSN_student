@@ -99,4 +99,8 @@
     <string name="Rating">Рейтинг</string>
     <string name="datachanged">Успішно змінено</string>
     <string name="nodata">Ведіть дані!</string>
+    <string name="not_set">Не встановленно!</string>
+    <string name="ok">Ок</string>
+    <string name="cancel">Відмінити</string>
+    <string name="exit">Успішно вийдено з аккаунта</string>
 </resources>

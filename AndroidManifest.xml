@@ -13,14 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ksm_2_course.MainActivity" />
-        </activity>
+
         <activity android:name=".MainActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -48,5 +41,8 @@
         <activity android:name=".Rating"
             android:theme="@style/NoActionBar">
         </activity>
+
+        <activity android:name=".Settings2"
+            android:label="@string/title_activity_settings"/>
     </application>
 </manifest>

@@ -99,5 +99,9 @@
     <string name="Rating">Rating</string>
     <string name="datachanged">Successfully changed</string>
     <string name="nodata">Enter data!</string>
+    <string name="not_set">Not set!</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit">Successfully log out</string>
 </resources>
 

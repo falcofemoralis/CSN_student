@@ -1,9 +1,7 @@
 package com.example.ksm_2_course;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -39,7 +37,6 @@ public class Disciplines extends AppCompatActivity
     int complete = 0, Labs; // complete - подсчет сданих лаб, Labs - хранит количество лабораторних
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     Discipline current; // текущая дисциплина
-    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,8 +46,7 @@ public class Disciplines extends AppCompatActivity
         Intent intent = getIntent();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        pref = PreferenceManager.getDefaultSharedPreferences(Disciplines.this);
-        FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
+        FILE_NAME += MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, "") + ".json";
         FALSE =getResources().getColor(R.color.mb_red);
         TRUE = getResources().getColor(R.color.mb_green);
 
@@ -154,7 +150,7 @@ public class Disciplines extends AppCompatActivity
         String jsonString = gson.toJson(discs);
         JSONHelper.create(this, FILE_NAME, jsonString);
 
-        updateRating(pref.getString(SettingsActivity.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but));
+        updateRating(MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but));
     }
 
     //Смена статуса полей Сдано и Защита

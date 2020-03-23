@@ -262,10 +262,10 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         gr_spin = findViewById(R.id.gr_rat_spin);
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
-
-        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
+        
         spinnerArray.add("ALL");
+        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
+            spinnerArray.add(MainActivity.GROUPS[i].NameGroup); 
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
                 this, R.layout.color_spinner_schedule,spinnerArray);

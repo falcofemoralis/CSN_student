@@ -103,5 +103,6 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="exit">Successfully log out</string>
+    <string name="all">ALL</string>
 </resources>
 

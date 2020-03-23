@@ -86,7 +86,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         //тут береться предмет со спиннера
         //setData() -> getRating(subject) -> если успешно setTable(users)
         createSpinner();
-        getRating(sub_spin.getSelectedItemPosition(), gr_spin.getSelectedItem().toString());
+        getRating(sub_spin.getSelectedItemPosition(), fromLocal());
     }
 
     public void getRating(final int subjectNumber, final String group){
@@ -260,8 +260,8 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 boolean st[] = user.status;
 
                 //устанавливаем значения сдачи
-               for(int n = 0; n < st.length; n++)
-               {
+                for(int n = 0; n < st.length; n++)
+                {
                     TextView lab = new TextView(Rating.this);
 
                     if(st[n]) {
@@ -301,7 +301,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
 
-        spinnerArray.add("ALL");
+        spinnerArray.add(getResources().getString(R.string.all));
         for (int i = 0; i < MainActivity.GROUPS.length; ++i)
             spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
 
@@ -316,11 +316,24 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
-        getRating(sub_spin.getSelectedItemPosition(), gr_spin.getSelectedItem().toString());
+        getRating(sub_spin.getSelectedItemPosition(), fromLocal());
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public String fromLocal(){
+        //String tmpGrp = getResources().getString(R.string.all);
+        switch (gr_spin.getSelectedItem().toString()){
+            case "Все":
+                return "ALL";
+            case "Усі":
+                return "ALL";
+            default:
+                return gr_spin.getSelectedItem().toString();
+        }
 
     }
 }

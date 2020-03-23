@@ -103,4 +103,5 @@
     <string name="ok">Ок</string>
     <string name="cancel">Відмінити</string>
     <string name="exit">Успішно вийдено з аккаунта</string>
+    <string name="all">Усі</string>
 </resources>

@@ -21,11 +21,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +43,31 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
     TableLayout table;
     String URL = MainActivity.MAIN_URL + "getRating.php";
     Spinner sub_spin, gr_spin;
+
+    class User implements Comparable<User>
+    {
+        public String nickName;
+        public String nameGroup;
+        public boolean[] status;
+        byte sumPositiveStatus = 0;
+
+        User(String nickName, String nameGroup, boolean[] status)
+        {
+            this.nickName = nickName;
+            this.nameGroup = nameGroup;
+            this.status = status;
+
+            for (int i = 0; i < status.length; ++i)
+                sumPositiveStatus += status[i] ? 1 : 0;
+        }
+
+        @Override
+        public int compareTo(User compareUser)
+        {
+            return  compareUser.sumPositiveStatus - this.sumPositiveStatus;
+        }
+    }
+    ArrayList<User> users = new ArrayList<User>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +121,8 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         StringRequest jsonObjectRequest  = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>()
         {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(String response)
+            {
                 JSONObject users = null;
                 try {
                     users = new JSONObject(response);
@@ -100,7 +130,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                     e.printStackTrace();
                 }
                 try {
-                    setTable(users);
+                    setUsers(users);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -124,7 +154,30 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void setTable(JSONObject users) throws JSONException {
+    public void setUsers(JSONObject jsonUsers) throws JSONException
+    {
+        users.clear();
+        JSONArray rating = jsonUsers.getJSONArray("Rating");
+
+        for (int j = 0; j < rating.length(); j++)
+        {
+            JSONObject user = rating.getJSONObject(j);
+            String status = user.getString("status");
+            Gson g = new Gson();
+            boolean st[][] = g.fromJson(status, boolean[][].class);
+            boolean newSt[] = new boolean[st.length];
+            for (int i = 0; i < st.length; ++i)
+                newSt[i] = st[i][0] && st[i][1];
+
+            users.add(new User(user.getString("NickName"), user.getString("NameGroup"), newSt));
+
+        }
+
+        Collections.sort(users);
+        setTable(users);
+    }
+
+    public void setTable(ArrayList<User> users) {
         int TextSizeHeader = 26;
         int TextSize = 22;
         if(table.getParent() != null) {
@@ -135,18 +188,14 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         table.removeAllViews();
 
         //получаем весь рейтинг
-        JSONArray rating = users.getJSONArray("Rating");
 
-
-        for (int i=0; i < rating.length()+1; i++)
+        for (int i=0; i <= users.size(); i++)
         {
             TableRow row = new TableRow(Rating.this);
             if(i==0)
             {
                 //эти переменные нужны для определения количества лаб в заголовке, да да, небольшой костыль
-                JSONObject userL = rating.getJSONObject(0);
-                String statusL = userL.getString("status");
-                JSONArray statusjsonL = new JSONArray(statusL);
+                User userL = users.get(0);
 
                 //заголовок таблицы
                 TextView name = new TextView(Rating.this);
@@ -168,7 +217,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 row.addView(group);
 
                 //количество лаб
-                for (int k = 0; k < statusjsonL.length(); k++) {
+                for (int k = 0; k < userL.status.length; k++) {
                     TextView lab = new TextView(Rating.this);
                     lab.setText(String.valueOf(k+1));
                     lab.setTextColor(COLOR_WHITE);
@@ -187,20 +236,20 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
             }else {
                 //row.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
                 //row.setBackground(ContextCompat.getDrawable(this,R.drawable.borders));
-                JSONObject user = rating.getJSONObject(i-1);
+                User user = users.get(i-1);
 
                 TextView name = new TextView(Rating.this);
                 TextView group = new TextView(Rating.this);
                 TextView idz = new TextView(Rating.this);
 
-                name.setText(user.getString("NickName"));
+                name.setText(user.nickName);
                 name.setTextColor(COLOR_BACK);
                 name.setTextSize(TextSize);
                 name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 name.setBackground(STYLE_CELL);
                 row.addView(name);
 
-                group.setText(user.getString("NameGroup"));
+                group.setText(user.nameGroup);
                 group.setTextColor(COLOR_BACK);
                 group.setTextSize(TextSize);
                 group.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -208,29 +257,18 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 row.addView(group);
 
                 //получаем массив boolean[][]
-                String status = user.getString("status");
-                //statusArray [[true.false],[true.false]]
-                JSONArray statusArray = new JSONArray(status);
-                boolean st[][] = new boolean[statusArray.length()][2];
-                for(int n =0;n<statusArray.length();n++){
-                    //statusArrayArray [true,false]
-                    JSONArray statusArrayArray = statusArray.getJSONArray(n);
-                    for(int p=0;p<2;p++){
-                        if(statusArrayArray.getString(p).equals("true")) st[n][p] = true;
-                        else st[n][p] = false;
-
-                    }
-                }
+                boolean st[] = user.status;
 
                 //устанавливаем значения сдачи
-               for(int n =0;n<statusArray.length();n++){
+               for(int n = 0; n < st.length; n++)
+               {
                     TextView lab = new TextView(Rating.this);
 
-                    if(st[n][0] && st[n][1]) {
+                    if(st[n]) {
                         lab.setBackground(STYLE_GREEN);
                         lab.setText("     ✓     ");
                     }
-                    else{
+                    else {
                         lab.setBackground(STYLE_RED);
                         lab.setText("     ╳     ");
                     }
@@ -262,10 +300,10 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         gr_spin = findViewById(R.id.gr_rat_spin);
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
-        
+
         spinnerArray.add("ALL");
         for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-            spinnerArray.add(MainActivity.GROUPS[i].NameGroup); 
+            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
                 this, R.layout.color_spinner_schedule,spinnerArray);

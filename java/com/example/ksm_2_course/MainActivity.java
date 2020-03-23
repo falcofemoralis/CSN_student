@@ -52,8 +52,11 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    class groups { public String NameGroup;}
+    public static groups[] GROUPS;
+    public static String MAIN_URL = "http:///";
+    
     String FILE_NAME = "data_disc_";
-
     boolean whole = true;
     CountDownTimer start;
     RequestQueue requestQueue;
@@ -61,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
     SharedPreferences pref;
-    public static String MAIN_URL = "http:///";
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         FILE_NAME += pref.getString(SettingsActivity.KEY_NICKNAME, "") + ".json";
+        getGroups();
         checkRegistration();
 
         try {
@@ -433,6 +436,30 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
+    }
+    
+    protected void getGroups ()
+    {
+        String url = MainActivity.MAIN_URL + "getGroups.php";
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Gson gson = new Gson();
+                GROUPS = gson.fromJson(response, groups[].class);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
+            }
+        }) {
+        };
+        requestQueue.add(request);
     }
 }
 

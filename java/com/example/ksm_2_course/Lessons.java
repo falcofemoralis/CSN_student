@@ -98,16 +98,20 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
     protected  void createSpinner()
     {
         group_spin = findViewById(R.id.group_spin);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.group_values,
-                R.layout.color_spinner_schedule
-        );
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+
+        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
+            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, R.layout.color_spinner_schedule,spinnerArray);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
         group_spin.setAdapter(adapter);
         group_spin.setOnItemSelectedListener(this);
     }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)

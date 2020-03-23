@@ -179,18 +179,21 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         requestQueue.add(request);
     }
 
-    protected  void createSpinner()
+        protected  void createSpinner()
     {
-        Spinner coloredSpinner = findViewById(R.id.group);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-          this,
-          R.array.group_values,
-          R.layout.color_spinner_layout
-        );
+        Spinner gr_spin = findViewById(R.id.group);
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+
+        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
+            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, R.layout.color_spinner_layout,spinnerArray);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        coloredSpinner.setAdapter(adapter);
-        coloredSpinner.setOnItemSelectedListener(this);
+        gr_spin.setAdapter(adapter);
+        gr_spin.setOnItemSelectedListener(this);
     }
 
     @Override

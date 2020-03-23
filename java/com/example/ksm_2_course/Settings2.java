@@ -35,6 +35,7 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
     public static final String KEY_IS_REGISTERED = "is_registered";
     public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_TIMER_SETTING = "timer_setting";
+    public static final String KEY_OFFLINE_DATA = "offline_data";
     SharedPreferences.Editor prefEditor;
     String oldNickname,oldPassword,oldGroup;
     String nickname,password,group;

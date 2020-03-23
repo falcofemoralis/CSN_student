@@ -69,13 +69,16 @@ public class MainActivity extends AppCompatActivity {
         getGroups();
         checkRegistration();
 
-        try {
-            if(checkConnection()) {
-                showDialog();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
+
+        boolean offline_data = encryptedSharedPreferences.getBoolean(Settings2.KEY_OFFLINE_DATA, false);
+
+        if(checkConnection() && offline_data) {
+            showDialog();
+            prefEditor.putBoolean(Settings2.KEY_OFFLINE_DATA, false);
         }
+        else
+            loadStatus();
     }
 
     public void OnClickSettings(View v) {
@@ -312,6 +315,17 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    protected void loadStatus()
+    {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        discs = gson.fromJson(JSONHelper.read(MainActivity.this, "data_disc.json"), listType);
+
+        for (int i = 0; i < discs.size(); ++i)
+            getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
+    }
+
+
     protected void showDialog()
     {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
@@ -326,12 +340,7 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setTitle(getResources().getString(R.string.localdata_is_found) + " " + format.format(date));
         }
         else{
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<Discipline>>() {}.getType();
-            discs = gson.fromJson(JSONHelper.read(MainActivity.this, "data_disc.json"), listType);
-
-            for (int i = 0; i < discs.size(); ++i)
-                getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
+            loadStatus();
             return;
         }
 
@@ -422,7 +431,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    public boolean checkConnection () throws InterruptedException {
+    public boolean checkConnection () {
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

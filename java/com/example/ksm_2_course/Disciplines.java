@@ -2,6 +2,7 @@ package com.example.ksm_2_course;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -227,6 +228,8 @@ public class Disciplines extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error)
             {
+                SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
+                prefEditor.putBoolean(Settings2.KEY_OFFLINE_DATA, true);
                 Toast.makeText(Disciplines.this, "No connection with server, data saved locally", Toast.LENGTH_LONG).show();
             }
         }) {

@@ -52,14 +52,18 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 break;
             case R.id.group:
                 view = inflater.inflate(R.layout.dialog_settings2,null);
-                groupSpinner = view.findViewById(R.id.group);
-                ArrayList<String> spinnerArray = new ArrayList<String>();
-                for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-                    spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                        getContext(), R.layout.spinner_dropdown_settings,spinnerArray);
-                adapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
-                groupSpinner.setAdapter(adapter);
+                try {
+                    groupSpinner = view.findViewById(R.id.group);
+                    ArrayList<String> spinnerArray = new ArrayList<String>();
+                    for (int i = 0; i < MainActivity.GROUPS.length; ++i)
+                        spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                            getContext(), R.layout.spinner_dropdown_settings,spinnerArray);
+                    adapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
+                    groupSpinner.setAdapter(adapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 title = getResources().getString(R.string.group);
                 break;
             default:

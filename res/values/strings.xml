@@ -104,6 +104,6 @@
     <string name="cancel">Cancel</string>
     <string name="exit">Successfully log out</string>
     <string name="all">ALL</string>
-    <string name="exitconfirm">Are you sure you want to log out??</string>
+    <string name="exitconfirm">Are you sure you want to log out?</string>
 </resources>
 

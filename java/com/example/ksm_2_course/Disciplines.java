@@ -144,8 +144,6 @@ public class Disciplines extends AppCompatActivity
 
         // Обновить содержимое текущей дисциплины
         current.setComplete(compl_but);
-        current.setProgress(complete);
-
         // Сохранение данных о дисциплинах с json
         Gson gson = new Gson();
         String jsonString = gson.toJson(discs);
@@ -253,3 +251,4 @@ public class Disciplines extends AppCompatActivity
         //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 }
+

@@ -1,13 +1,12 @@
 package com.example.ksm_2_course;
 
-import android.app.Application;
 import android.content.Context;
 
 public class Discipline
 {
     private String name,teacher,value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
     private boolean[][] complete; // состояние сдачи лабораторных работ
-    private int labs, progress; // labs - количество лабораторных , progress - суммарное количество сданных и защищенных работ
+    private int labs;// labs - количество лабораторных
 
     public Discipline()
     { }
@@ -31,8 +30,6 @@ public class Discipline
 
     public String getValue() {return value;}
 
-    public int getProgress() {return progress;}
-
     public int getLabs(){return labs;}
 
     public void setComplete(boolean arr[][])
@@ -45,11 +42,6 @@ public class Discipline
             complete[i][0] = arr[i][0];
             complete[i][1] = arr[i][1];
         }
-    }
-
-    public void setProgress(int progress)
-    {
-        this.progress = progress;
     }
 
     public boolean[][] getComplete()

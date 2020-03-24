@@ -230,6 +230,7 @@ public class Disciplines extends AppCompatActivity
             {
                 SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
                 prefEditor.putBoolean(Settings2.KEY_OFFLINE_DATA, true);
+                prefEditor.apply();
                 Toast.makeText(Disciplines.this, "No connection with server, data saved locally", Toast.LENGTH_LONG).show();
             }
         }) {

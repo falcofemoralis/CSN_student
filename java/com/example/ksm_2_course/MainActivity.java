@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -46,13 +47,14 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     class groups { public String NameGroup;}
     public static groups[] GROUPS;
-    public static String MAIN_URL = "";
+    public static String MAIN_URL = "http://fknt.web-file.site/";
 
     String FILE_NAME = "data_disc_";
     boolean whole = true;
     CountDownTimer start;
     RequestQueue requestQueue;
     Button res;
+    SharedPreferences.Editor prefEditor;
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     long seconds, hour, minutes;
     public static SharedPreferences encryptedSharedPreferences;
@@ -69,16 +71,20 @@ public class MainActivity extends AppCompatActivity {
         getGroups();
         checkRegistration();
 
-        SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
+        prefEditor = MainActivity.encryptedSharedPreferences.edit();
 
         boolean offline_data = encryptedSharedPreferences.getBoolean(Settings2.KEY_OFFLINE_DATA, false);
 
-        if(checkConnection() && offline_data) {
-            showDialog();
-            prefEditor.putBoolean(Settings2.KEY_OFFLINE_DATA, false);
+        if(checkConnection())
+        {
+            if (offline_data)
+                showDialog();
+            else
+                loadStatusFromServer();
         }
         else
-            loadStatus();
+            loadStatusFromDevice();
+
     }
 
     public void OnClickSettings(View v) {
@@ -315,16 +321,28 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    protected void loadStatus()
+    protected void loadStatusFromServer()
     {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Discipline>>() {}.getType();
-        discs = gson.fromJson(JSONHelper.read(MainActivity.this, "data_disc.json"), listType);
+        discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i)
             getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
     }
 
+    protected void loadStatusFromDevice()
+    {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
+
+        for (int i = 0; i < discs.size(); ++i)
+        {
+            Discipline temp = discs.get(i);
+            updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
+        }
+    }
 
     protected void showDialog()
     {
@@ -340,7 +358,14 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setTitle(getResources().getString(R.string.localdata_is_found) + " " + format.format(date));
         }
         else{
-            loadStatus();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Discipline>>() {}.getType();
+
+            String test = JSONHelper.read(MainActivity.this, "data_disc.json");
+            discs = gson.fromJson(test, listType);
+
+            for (int i = 0; i < discs.size(); ++i)
+                getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
             return;
         }
 
@@ -351,15 +376,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<Discipline>>() {}.getType();
-                discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
-
-                for (int i = 0; i < discs.size(); ++i)
-                {
-                    Discipline temp = discs.get(i);
-                    updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
-                }
+                loadStatusFromDevice();
             }
         });
 
@@ -367,12 +384,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<Discipline>>() {}.getType();
-                discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
-
-                for (int i = 0; i < discs.size(); ++i)
-                    getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
+                loadStatusFromServer();
             }
         });
 
@@ -382,6 +394,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void saveJSON()
     {
+        prefEditor.putBoolean(Settings2.KEY_OFFLINE_DATA, false);
+        prefEditor.apply();
         Gson gson = new Gson();
         String jsonString = gson.toJson(discs);
         JSONHelper.create(MainActivity.this, FILE_NAME, jsonString);
@@ -488,6 +502,3 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 }
-
-
-

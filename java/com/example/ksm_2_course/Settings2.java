@@ -81,9 +81,7 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
     }
 
     public void Exit(View v) {
-        prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
-        Toast.makeText(Settings2.this, R.string.exit, Toast.LENGTH_SHORT).show();
-        finish();
+        showDialog();
     }
 
     @Override
@@ -160,5 +158,31 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
             }
         };
         requestQueue.add(request);
+    }
+    
+        protected void showDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Settings2.this);
+
+        alertDialog.setMessage(R.string.exitconfirm);
+
+        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
+                Toast.makeText(Settings2.this, R.string.exit, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+            }
+        });
+
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 }

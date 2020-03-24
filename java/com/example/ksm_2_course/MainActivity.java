@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkRegistration() {
-        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings2.KEY_IS_REGISTERED, true);
+        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings2.KEY_IS_REGISTERED, false);
 
         if (!is_registered) {
             Intent intent;

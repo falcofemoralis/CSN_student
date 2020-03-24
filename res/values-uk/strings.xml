@@ -104,4 +104,5 @@
     <string name="cancel">Відмінити</string>
     <string name="exit">Успішно вийдено з аккаунта</string>
     <string name="all">Усі</string>
+    <string name="exitconfirm">Ви впевнені, що хочете вийти?</string>
 </resources>

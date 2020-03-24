@@ -162,7 +162,13 @@ public class MainActivity extends AppCompatActivity {
         int sum = 0, all = 0;
         for (int i = 0; i < discs.size(); ++i) {
             Discipline temp = discs.get(i);
-            sum += temp.getProgress();
+
+            boolean[][] temp_bool = temp.getComplete();
+            for (int j = 0; j < temp_bool.length; ++j)
+            {
+                sum += temp_bool[j][0] ? 1 : 0;
+                sum += temp_bool[j][1] ? 1 : 0;
+            }
             all += temp.getLabs();
         }
         all *= 2;
@@ -269,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         TextView TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
         boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings2.KEY_TIMER_SETTING, true);
-       if (!timer_settings) {
+        if (!timer_settings) {
             Time.setVisibility(View.GONE);
             TimeUntil.setVisibility(View.GONE);
         } else {
@@ -403,10 +409,10 @@ public class MainActivity extends AppCompatActivity {
         whole = true;
     }
 
+    int count = 0;
     class result { public String status;}
     protected void getStatus (final String NickName, final Discipline current, final int num)
     {
-
         String url = MainActivity.MAIN_URL + "getStatus.php";
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -415,13 +421,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response)
             {
-                if(!response.equals("null")){
+                if(!response.equals("null"))
+                {
                     Gson gson = new Gson();
                     boolean[][] compl_but = gson.fromJson(gson.fromJson(response, result.class).status, boolean[][].class);
                     current.setComplete(compl_but);
 
-                    if (num == discs.size() - 1)
+                    if (count == discs.size() - 1)
                         saveJSON();
+                    else
+                        ++count;
                 }
             }
         }, new Response.ErrorListener() {
@@ -502,3 +511,8 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 }
+
+
+
+
+

@@ -7,15 +7,17 @@ public class Discipline
     private String name,teacher,value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
     private boolean[][] complete; // состояние сдачи лабораторных работ
     private int labs;// labs - количество лабораторных
+    private byte IDZ; // 0 - не сдано, 1 - сдано , -1 - не сдано
 
     public Discipline()
     { }
 
-    public Discipline(String name, String teacher, String value, int labs) {
+    public Discipline(String name, String teacher, String value, int labs, byte IDZ) {
         this.name = name;
         this.teacher = teacher;
         this.value = value;
         this.labs = labs;
+        this.IDZ = IDZ;
         complete = new boolean[labs][2];
         for (int i = 0; i < labs; ++i)
             complete[i][0] = complete[i][1] = false;
@@ -29,6 +31,8 @@ public class Discipline
     public String getTeacher() {return teacher;}
 
     public String getValue() {return value;}
+
+    public byte getIDZ() {return IDZ;}
 
     public int getLabs(){return labs;}
 

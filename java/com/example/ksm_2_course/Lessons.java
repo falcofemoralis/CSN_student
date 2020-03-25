@@ -88,17 +88,26 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
     protected  void createSpinner()
     {
         group_spin = findViewById(R.id.group_spin);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.group_values,
+                R.layout.color_spinner_schedule
+        );
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        group_spin.setAdapter(adapter);
+
+        group_spin.setOnItemSelectedListener(this);
+    }
+
+    /*protected  void createSpinner()
+    {
+        group_spin = findViewById(R.id.group_spin);
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
 
-        try {
-            for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-                spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
-        } catch (Exception e) {
-            e.printStackTrace();
-            spinnerArray.add("КНТ-518");
-            spinnerArray.add("КНТ-528");
-        }
+        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
+            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, R.layout.color_spinner_schedule,spinnerArray);
@@ -106,7 +115,7 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
         group_spin.setAdapter(adapter);
         group_spin.setOnItemSelectedListener(this);
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -119,3 +128,4 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
 
     }
 }
+

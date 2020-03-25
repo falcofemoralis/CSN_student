@@ -181,6 +181,20 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     protected  void createSpinner()
     {
+        Spinner coloredSpinner = findViewById(R.id.group);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.group_values,
+                R.layout.color_spinner_layout
+        );
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        coloredSpinner.setAdapter(adapter);
+        coloredSpinner.setOnItemSelectedListener(this);
+    }
+
+    /*protected  void createSpinner()
+    {
         Spinner gr_spin = findViewById(R.id.group);
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
@@ -194,7 +208,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         gr_spin.setAdapter(adapter);
         gr_spin.setOnItemSelectedListener(this);
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

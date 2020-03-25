@@ -292,6 +292,28 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 R.array.subjects_values,
                 R.layout.color_spinner_schedule
         );
+        sub_spin.setOnItemSelectedListener(this);
+        sub_spin.setAdapter(adapter);
+
+        gr_spin = findViewById(R.id.gr_rat_spin);
+        adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.group_values_and_ALL,
+                R.layout.color_spinner_schedule
+        );
+
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        gr_spin.setAdapter(adapter);
+        gr_spin.setOnItemSelectedListener(this);
+    }
+    /*protected  void createSpinner()
+    {
+        sub_spin = findViewById(R.id.subjectSpinner);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.subjects_values,
+                R.layout.color_spinner_schedule
+        );
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
         sub_spin.setAdapter(adapter);
@@ -311,7 +333,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         adapter2.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
         gr_spin.setAdapter(adapter2);
         gr_spin.setOnItemSelectedListener(this);
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -337,3 +359,4 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
     }
 }
+

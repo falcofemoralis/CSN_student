@@ -12,10 +12,11 @@ function updateUser()
     $Status = $_POST["Status"];
     $NickName = $_POST["NickName"];
     $NameDiscp = $_POST["NameDiscp"];
-    
+    $IDZ = $_POST["IDZ"];
+    $IDZ += 0;
     
     $query = "  UPDATE rating
-                SET status = '$Status'
+                SET status = '$Status', IDZ = $IDZ
                 WHERE Code_User = (SELECT Code_User FROM registration WHERE NickName = '$NickName') AND  Code_Discp = (SELECT Code_Discp FROM disciplines WHERE NameDiscp  = '$NameDiscp')";
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));

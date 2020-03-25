@@ -29,8 +29,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +51,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     class groups { public String NameGroup;}
     public static groups[] GROUPS;
-    public static String MAIN_URL = "http://fknt.web-file.site/";
+    public static String MAIN_URL = "";
 
     String FILE_NAME = "data_disc_";
     boolean whole = true;
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < discs.size(); ++i)
         {
             Discipline temp = discs.get(i);
-            updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
+            updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
         }
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
@@ -297,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void updateRating( final String NickName, final String NameDiscp, final String status)
+    protected void updateRating( final String NickName, final String NameDiscp, final String status, final byte IDZ)
     {
         String url = MainActivity.MAIN_URL + "updateRating.php";
 
@@ -321,6 +325,7 @@ public class MainActivity extends AppCompatActivity {
                 parameters.put("NickName", NickName);
                 parameters.put("NameDiscp", NameDiscp);
                 parameters.put("Status", status);
+                parameters.put("IDZ", Byte.toString(IDZ));
                 return parameters;
             }
         };
@@ -334,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i)
-            getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
+            getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i));
     }
 
     protected void loadStatusFromDevice()
@@ -346,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < discs.size(); ++i)
         {
             Discipline temp = discs.get(i);
-            updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()));
+            updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
         }
     }
 
@@ -371,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
             discs = gson.fromJson(test, listType);
 
             for (int i = 0; i < discs.size(); ++i)
-                getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i), i);
+                getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i));
             return;
         }
 
@@ -410,8 +415,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int count = 0;
-    class result { public String status;}
-    protected void getStatus (final String NickName, final Discipline current, final int num)
+    protected void getStatus (final String NickName, final Discipline current)
     {
         String url = MainActivity.MAIN_URL + "getStatus.php";
 
@@ -423,14 +427,22 @@ public class MainActivity extends AppCompatActivity {
             {
                 if(!response.equals("null"))
                 {
-                    Gson gson = new Gson();
-                    boolean[][] compl_but = gson.fromJson(gson.fromJson(response, result.class).status, boolean[][].class);
-                    current.setComplete(compl_but);
+                    JSONObject obj;
+                    try {
+                         obj = new JSONObject(response);
+                         byte IDZ = (byte)obj.getInt("IDZ");
+                         Gson gson = new Gson();
+                         boolean[][] compl = gson.fromJson(obj.getString("status"), boolean[][].class);
+                         current.setComplete(compl);
+                         current.setIDZ(IDZ);
 
-                    if (count == discs.size() - 1)
-                        saveJSON();
-                    else
-                        ++count;
+                         ++count;
+                         if (count == discs.size())
+                             saveJSON();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }, new Response.ErrorListener() {
@@ -511,8 +523,4 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 }
-
-
-
-
 

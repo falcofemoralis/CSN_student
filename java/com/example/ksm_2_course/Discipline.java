@@ -34,6 +34,8 @@ public class Discipline
 
     public byte getIDZ() {return IDZ;}
 
+    public void setIDZ(byte IDZ) {this.IDZ = IDZ;}
+
     public int getLabs(){return labs;}
 
     public void setComplete(boolean arr[][])

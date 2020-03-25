@@ -122,14 +122,14 @@ public class Login extends AppCompatActivity {
 
         for (int i = 0; i < discs.size(); ++i) {
             Discipline temp = discs.get(i);
-            updateRating(nickname, temp.getName(), gson.toJson(temp.getComplete()));
+            updateRating(nickname, temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
         }
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    protected void updateRating(final String NickName, final String NameDiscp, final String status) {
+    protected void updateRating(final String NickName, final String NameDiscp, final String status, final byte IDZ) {
         String url = MainActivity.MAIN_URL + "updateRating.php";
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -149,6 +149,7 @@ public class Login extends AppCompatActivity {
                 parameters.put("NickName", NickName);
                 parameters.put("NameDiscp", NameDiscp);
                 parameters.put("Status", status);
+                parameters.put("IDZ", Byte.toString(IDZ));
                 return parameters;
             }
         };
@@ -180,3 +181,4 @@ public class Login extends AppCompatActivity {
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
+

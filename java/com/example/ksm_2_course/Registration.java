@@ -105,7 +105,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                     for (int i = 0; i < discs.size(); ++i)
                     {
                         Discipline temp = discs.get(i);
-                        setEmptyRating(temp.getName(), gson.toJson(temp.getComplete()));
+                        setEmptyRating(temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
                     }
 
                     Save();
@@ -150,7 +150,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         moveTaskToBack(true);
     }
 
-    protected void setEmptyRating(final String NameDiscp, final String status)
+    protected void setEmptyRating(final String NameDiscp, final String status, final byte IDZ)
     {
         String url = MainActivity.MAIN_URL + "insertRating.php";
 
@@ -168,11 +168,12 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         }) {
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("NickName", nickName.getText().toString().toLowerCase());
                 parameters.put("NameDiscp", NameDiscp);
                 parameters.put("Status", status);
+                parameters.put("IDZ", Byte.toString(IDZ));
                 return parameters;
             }
         };

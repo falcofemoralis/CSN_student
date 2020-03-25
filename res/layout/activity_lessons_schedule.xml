@@ -3,47 +3,20 @@
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    >
+    android:padding="15dp"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop ="20dp"
-        android:orientation="vertical"
-        >
+        android:padding="12dp"
+        android:orientation="vertical">
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_weight="0.2">
-        </Space>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:gravity="center"
-                android:text="@string/Lessons_schedule"
-                android:textAlignment="center"
-                android:textColor="@color/background"
-                android:textSize="40sp">
-            </TextView>
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_weight="0.2">
+            android:layout_height="12dp"
+            android:layout_weight="0.1">
         </Space>
 
         <LinearLayout
@@ -63,7 +36,7 @@
                 android:gravity="center"
                 android:text="@string/group_with_2dots"
                 android:textColor="@color/background"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <Spinner
                 android:id="@+id/group_spin"
@@ -82,14 +55,14 @@
 
             <Button
                 android:id="@+id/type_week"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:background="@drawable/text_but_schedule_style"
                 android:onClick="changeTypeWeek"
                 android:text="@string/denominator"
                 android:textColor="@color/background"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -122,14 +95,13 @@
 
                     <TextView
                         android:id="@+id/text1"
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
                         android:text="@string/pair"
                         android:textColor="@color/white"
-                        android:textSize="24sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/text2"
@@ -138,9 +110,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
-                        android:text="    ПН    "
+                        android:text="@string/mon"
                         android:textColor="@color/white"
-                        android:textSize="24sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/text3"
@@ -149,9 +121,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
-                        android:text="    ВТ    "
+                        android:text="@string/tue"
                         android:textColor="@color/white"
-                        android:textSize="24sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/text4"
@@ -160,9 +132,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
-                        android:text="    СР    "
+                        android:text="@string/wed"
                         android:textColor="@color/white"
-                        android:textSize="24sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/text5"
@@ -171,9 +143,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
-                        android:text="    ЧТ    "
+                        android:text="@string/thu"
                         android:textColor="@color/white"
-                        android:textSize="24sp" />
+                        android:textSize="16sp"  />
 
                     <TextView
                         android:id="@+id/text6"
@@ -182,9 +154,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style3"
                         android:gravity="center"
-                        android:text="    ПТ    "
+                        android:text="@string/fri"
                         android:textColor="@color/white"
-                        android:textSize="24sp" />
+                        android:textSize="16sp" />
 
                 </TableRow>
 
@@ -194,9 +166,8 @@
 
                     <TextView
                         android:id="@+id/text1_1"
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="I"
@@ -266,9 +237,8 @@
 
                     <TextView
                         android:id="@+id/text2_1"
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="II"
@@ -338,9 +308,8 @@
 
                     <TextView
                         android:id="@+id/text3_1"
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="III"
@@ -410,9 +379,8 @@
 
                     <TextView
                         android:id="@+id/text4_1"
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="IV"
@@ -482,9 +450,8 @@
 
                     <TextView
                         android:id="@+id/text5_1"
-                        android:layout_width="match_parent"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="V"
@@ -545,7 +512,6 @@
                         android:text=""
                         android:textColor="@color/background"
                         android:textSize="14sp" />
-
                 </TableRow>
 
             </TableLayout>
@@ -556,15 +522,7 @@
                 android:layout_weight="0.1">
             </Space>
 
-
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_weight="0.2">
-        </Space>
-
     </LinearLayout>
 
 </ScrollView>

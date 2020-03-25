@@ -91,8 +91,14 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
 
-        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
+        try {
+            for (int i = 0; i < MainActivity.GROUPS.length; ++i)
+                spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
+        } catch (Exception e) {
+            e.printStackTrace();
+            spinnerArray.add("КНТ-518");
+            spinnerArray.add("КНТ-528");
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, R.layout.color_spinner_schedule,spinnerArray);

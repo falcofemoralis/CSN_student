@@ -105,5 +105,10 @@
     <string name="exit">Successfully log out</string>
     <string name="all">ALL</string>
     <string name="exitconfirm">Are you sure you want to log out?</string>
+    <string name="mon">\t\t\t\tMON\t\t\t\t</string>
+    <string name="tue">\t\t\t\tTUE\t\t\t\t</string>
+    <string name="wed">\t\t\t\tWED\t\t\t\t</string>
+    <string name="thu">\t\t\t\tTHU\t\t\t\t</string>
+    <string name="fri">\t\t\t\tFRI\t\t\t\t</string>
 </resources>
 

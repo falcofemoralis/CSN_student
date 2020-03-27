@@ -37,7 +37,7 @@ public class Disciplines extends AppCompatActivity
 
     RequestQueue requestQueue;
     Button res; // Кнопка результата
-    Button buts[][] = new Button[7][2]; // Кнопки "Сдано" и "Защита"
+    Button buts[][], IDZ; // Кнопки "Сдано" и "Защита"
     int complete = 0, Labs; // complete - подсчет сданих лаб, Labs - хранит количество лабораторних
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     Discipline current; // текущая дисциплина
@@ -72,12 +72,17 @@ public class Disciplines extends AppCompatActivity
 
         mainView = findViewById(R.id.Main_view);
 
+        if (current.getIDZ() == -1)
+            buts = new Button[Labs][2];
+        else
+            buts = new Button[Labs + 1][2];
+
         for (int i = 0; i < Labs; ++i)
         {
             LinearLayout newLine = new LinearLayout(this);
 
             TextView lab = new TextView(this);
-            lab.setText("Лабораторная работа номер " + i);
+            lab.setText(getResources().getString(R.string.Lab) + i);
             lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             lab.setTextSize(TEXT_SIZE);
             lab.setTextColor(TEXT_WHITE);
@@ -87,7 +92,7 @@ public class Disciplines extends AppCompatActivity
             newLine.addView(lab);
 
             buts[i][0] = new Button(this);
-            buts[i][0].setText("PASSED");
+            buts[i][0].setText(getResources().getString(R.string.Passed));
             buts[i][0].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             buts[i][0].setTextSize(BUTTON_TEXT_SIZE);
             buts[i][0].setTextColor(TEXT_WHITE);
@@ -96,7 +101,7 @@ public class Disciplines extends AppCompatActivity
             newLine.addView(buts[i][0]);
 
             buts[i][1] = new Button(this);
-            buts[i][1].setText("PROTECTED");
+            buts[i][1].setText(getResources().getString(R.string.Protection));
             buts[i][1].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             buts[i][1].setTextSize(BUTTON_TEXT_SIZE);
             buts[i][1].setTextColor(TEXT_WHITE);
@@ -105,45 +110,33 @@ public class Disciplines extends AppCompatActivity
             newLine.addView(buts[i][1]);
 
             mainView.addView(newLine);
-            //mainView.addView();
         }
 
-
-        // Получение полей лабораторных работ
-       /* String table = "Line_", stringId;
-        int id;
-        LinearLayout Main_view = findViewById(R.id.Main_view);
-        LinearLayout[] lines = new LinearLayout[Labs];
-        for (int i = 0; i < 7; ++i)
+        if (current.getIDZ() != -1)
         {
-            stringId = table + i;
-            id = getResources().getIdentifier(stringId, "id", getApplicationContext().getPackageName());
-            if (i < Labs)
-                lines[i] = findViewById(id);
-            else
-                Main_view.removeView(findViewById(id));
+            LinearLayout newLine = new LinearLayout(this);
+
+            TextView IDZText = new TextView(this);
+            IDZText.setText(getResources().getString(R.string.IHW));
+            IDZText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            IDZText.setTextSize(TEXT_SIZE);
+            IDZText.setTextColor(TEXT_WHITE);
+            IDZText.setGravity(Gravity.CENTER);
+            IDZText.setLayoutParams(new LinearLayout.LayoutParams((int)(230 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT));
+            IDZText.setBackground(LAB_STYLE);
+            newLine.addView(IDZText);
+
+            IDZ = new Button(this);
+            IDZ.setText(getResources().getString(R.string.Passed));
+            IDZ.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            IDZ.setTextSize(BUTTON_TEXT_SIZE);
+            IDZ.setTextColor(TEXT_WHITE);
+            IDZ.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            IDZ.setBackground(FALSE_2);
+            newLine.addView(IDZ);
         }
 
-
-        // Получение кнопок
-        table = "B_";
-        for(int i=0;i<Labs; ++i)
-        {
-            stringId = table + Integer.toString(i) + "_" + Integer.toString(0);
-            id = getResources().getIdentifier(stringId, "id", getApplicationContext().getPackageName());
-            buts[i][0] = (Button)(findViewById(id));
-
-            stringId = table + Integer.toString(i) + "_" + Integer.toString(1);
-            id = getResources().getIdentifier(stringId, "id", getApplicationContext().getPackageName());
-            buts[i][1] = (Button)(findViewById(id));
-        }
-        res = (Button) findViewById(R.id.res); // результат в процентах
-
-        RestoreAll(discs.get(num)); // Загрузка данных*/
-
-       LinearLayout newLine = new LinearLayout(this);
-
-
+        RestoreAll(discs.get(num)); // Загрузка данных
     }
 
     // Функция получения кода текущей дисциплины
@@ -183,12 +176,20 @@ public class Disciplines extends AppCompatActivity
                 buts[i][0].setBackgroundColor(FALSE);
 
             if (compl_but[i][1]) {
-                buts[i][1].setBackgroundDrawable(TRUE_2);
+                buts[i][1].setBackground(TRUE_2);
                 ++complete;
             }
             else
-                buts[i][1].setBackgroundDrawable(FALSE_2);
+                buts[i][1].setBackground(FALSE_2);
         }
+
+        if (current.getIDZ() == 1) {
+            IDZ.setBackground(TRUE_2);
+            ++complete;
+        }
+        else if (current.getIDZ() == 0)
+            IDZ.setBackground(FALSE_2);
+
 
         ((Button)(findViewById(R.id.Disc))).setText(current.getStringName(this)); // Установка имени дисциплины
         ((Button)(findViewById(R.id.val))).setText(current.getStringValue(this)); // Установка стоимости дисциплины
@@ -209,7 +210,7 @@ public class Disciplines extends AppCompatActivity
             else
                 compl_but[i][0] = false;
 
-            if (((Drawable)buts[i][1].getBackground() == TRUE_2))
+            if ((buts[i][1].getBackground() == TRUE_2))
                 compl_but[i][1] = true;
             else
                 compl_but[i][1] = false;
@@ -217,6 +218,13 @@ public class Disciplines extends AppCompatActivity
 
         // Обновить содержимое текущей дисциплины
         current.setComplete(compl_but);
+
+        if (current.getIDZ() != -1)
+            if (IDZ.getBackground() == TRUE_2)
+                current.setIDZ((byte)1);
+            else
+                current.setIDZ((byte)0);
+
         // Сохранение данных о дисциплинах с json
         Gson gson = new Gson();
         String jsonString = gson.toJson(discs);

@@ -60,13 +60,7 @@
     <string name="nickname_is_taken">This nickname is taken by another user</string>
     <string name="successfully_registration">Successfully registration"</string>
     <string name="test">Test</string>
-    <string name="lab1">Laboratory 1</string>
-    <string name="lab2">Laboratory 2</string>
-    <string name="lab3">Laboratory 3</string>
-    <string name="lab4">Laboratory 4</string>
-    <string name="lab5">Laboratory 5</string>
-    <string name="lab6">Laboratory 6</string>
-    <string name="lab7">Laboratory 7</string>
+    <string name="Lab">Laboratory</string>
     <string name="teacher_AMO">Kudermetov Ravil Kamilovich</string>
     <string name="teacher_CA">Skrupsky Stepan Yurievich</string>
     <string name="teacher_CS">Sgadov Sergey Alexandrovich</string>
@@ -104,11 +98,5 @@
     <string name="cancel">Cancel</string>
     <string name="exit">Successfully log out</string>
     <string name="all">ALL</string>
-    <string name="exitconfirm">Are you sure you want to log out?</string>
-    <string name="mon">\t\t\t\tMON\t\t\t\t</string>
-    <string name="tue">\t\t\t\tTUE\t\t\t\t</string>
-    <string name="wed">\t\t\t\tWED\t\t\t\t</string>
-    <string name="thu">\t\t\t\tTHU\t\t\t\t</string>
-    <string name="fri">\t\t\t\tFRI\t\t\t\t</string>
 </resources>
 

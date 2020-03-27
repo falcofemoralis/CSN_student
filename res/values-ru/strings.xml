@@ -60,13 +60,7 @@
     <string name="nickname_is_taken">Этот никнейм взял другой пользователь</string>
     <string name="successfully_registration">Успешная регистрация</string>
     <string name="test">Зачет</string>
-    <string name="lab1">Лабораторная 1</string>
-    <string name="lab2">Лабораторная 2</string>
-    <string name="lab3">Лабораторная 3</string>
-    <string name="lab4">Лабораторная 4</string>
-    <string name="lab5">Лабораторная 5</string>
-    <string name="lab6">Лабораторная 6</string>
-    <string name="lab7">Лабораторная 7</string>
+    <string name="Lab">Лабораторная</string>
     <string name="teacher_AMO">Кудерметов Равиль Камилович</string>
     <string name="teacher_CA">Скрупський Степан Юрьевич</string>
     <string name="teacher_CS">Сгадов Сергей Александрович</string>
@@ -104,10 +98,4 @@
     <string name="cancel">Отменить</string>
     <string name="exit">Успешно выйдено из аккаунта</string>
     <string name="all">Все</string>
-    <string name="exitconfirm">Вы действительно хотите выйти?</string>
-    <string name="mon">\t\t\t\tПН\t\t\t\t</string>
-    <string name="tue">\t\t\t\tВТ\t\t\t\t</string>
-    <string name="wed">\t\t\t\tСР\t\t\t\t</string>
-    <string name="thu">\t\t\t\tЧТ\t\t\t\t</string>
-    <string name="fri">\t\t\t\tПТ\t\t\t\t</string>
 </resources>

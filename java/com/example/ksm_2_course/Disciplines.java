@@ -38,7 +38,7 @@ public class Disciplines extends AppCompatActivity
     RequestQueue requestQueue;
     Button res; // Кнопка результата
     Button buts[][], IDZ; // Кнопки "Сдано" и "Защита"
-    int complete = 0, Labs; // complete - подсчет сданих лаб, Labs - хранит количество лабораторних
+    int complete = 0, Labs, count_idz = 0; // complete - подсчет сданих лаб, Labs - хранит количество лабораторних
     ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
     Discipline current; // текущая дисциплина
     LinearLayout mainView;
@@ -50,6 +50,50 @@ public class Disciplines extends AppCompatActivity
         setContentView(R.layout.activity_disciplines);
         Intent intent = getIntent();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+        //Cмена статуса для кнопок сдачи
+        View.OnClickListener ButtonChangeStatus = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Button but = (Button) v;
+                //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
+                if (((ColorDrawable) but.getBackground()).getColor() == FALSE)
+                {
+                    ++complete;
+                    but.setBackgroundColor(TRUE);
+                } else
+                {
+                    --complete;
+                    but.setBackgroundColor(FALSE);
+                }
+
+                res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка поля среднего прогресса по дисциплине
+            }
+        };
+
+        //Смена статуса для кнопок защиты (с закругленными углами)
+        View.OnClickListener CornerButtonChangeStatus = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button but = (Button) v;
+                //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
+                if (((Drawable) but.getBackground() == FALSE_2))
+                {
+                    ++complete;
+                    but.setBackground(TRUE_2);
+                } else
+                {
+                    --complete;
+                    but.setBackground(FALSE_2);
+                }
+
+                res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка поля среднего прогресса по дисциплине
+            }
+        };
+
 
         FILE_NAME += MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, "") + ".json";
 
@@ -74,15 +118,16 @@ public class Disciplines extends AppCompatActivity
 
         if (current.getIDZ() == -1)
             buts = new Button[Labs][2];
-        else
+        else {
+            count_idz = 1;
             buts = new Button[Labs + 1][2];
-
+        }
         for (int i = 0; i < Labs; ++i)
         {
             LinearLayout newLine = new LinearLayout(this);
 
             TextView lab = new TextView(this);
-            lab.setText(getResources().getString(R.string.Lab) + i);
+            lab.setText(getResources().getString(R.string.Lab) + (i + 1));
             lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             lab.setTextSize(TEXT_SIZE);
             lab.setTextColor(TEXT_WHITE);
@@ -98,6 +143,7 @@ public class Disciplines extends AppCompatActivity
             buts[i][0].setTextColor(TEXT_WHITE);
             buts[i][0].setGravity(Gravity.CENTER);
             buts[i][0].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            buts[i][0].setOnClickListener(ButtonChangeStatus);
             newLine.addView(buts[i][0]);
 
             buts[i][1] = new Button(this);
@@ -107,6 +153,7 @@ public class Disciplines extends AppCompatActivity
             buts[i][1].setTextColor(TEXT_WHITE);
             buts[i][1].setGravity(Gravity.CENTER);
             buts[i][1].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            buts[i][1].setOnClickListener(CornerButtonChangeStatus);
             newLine.addView(buts[i][1]);
 
             mainView.addView(newLine);
@@ -132,6 +179,7 @@ public class Disciplines extends AppCompatActivity
             IDZ.setTextSize(BUTTON_TEXT_SIZE);
             IDZ.setTextColor(TEXT_WHITE);
             IDZ.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            IDZ.setOnClickListener(CornerButtonChangeStatus);
             newLine.addView(IDZ);
 
             mainView.addView(newLine);
@@ -140,6 +188,8 @@ public class Disciplines extends AppCompatActivity
         res = findViewById(R.id.res);
 
         RestoreAll(discs.get(num)); // Загрузка данных
+
+
     }
 
     // Функция получения кода текущей дисциплины
@@ -196,7 +246,7 @@ public class Disciplines extends AppCompatActivity
         ((Button)(findViewById(R.id.Disc))).setText(current.getStringName(this)); // Установка имени дисциплины
         ((Button)(findViewById(R.id.val))).setText(current.getStringValue(this)); // Установка стоимости дисциплины
         ((Button)(findViewById(R.id.teach))).setText(current.getStringTeacher(this)); // Установка ФИО преподавателя
-        res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка среднего прогресса по дисциплине
+        res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка среднего прогресса по дисциплине
     }
 
     @Override
@@ -232,48 +282,10 @@ public class Disciplines extends AppCompatActivity
         String jsonString = gson.toJson(discs);
         JSONHelper.create(this, FILE_NAME, jsonString);
 
-        updateRating(MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but));
+        updateRating(MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but), current.getIDZ());
     }
 
-    //Смена статуса полей Сдано и Защита
-    public void ButtonChangeStatus(View v)
-    {
-        Button but = (Button) v;
-        //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
-        if (((ColorDrawable) but.getBackground()).getColor() == FALSE)
-        {
-            ++complete;
-            but.setBackgroundColor(TRUE);
-        } else
-        {
-            --complete;
-            but.setBackgroundColor(FALSE);
-        }
-
-        res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка поля среднего прогресса по дисциплине
-    }
-
-    //Смена статуса полей Сдано и Защита
-    public void CornerButtonChangeStatus(View v)
-    {
-        Button but = (Button) v;
-        //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
-        if (((Drawable) but.getBackground() == FALSE_2))
-        {
-            ++complete;
-            but.setBackground(TRUE_2);
-        } else
-        {
-            --complete;
-            but.setBackground(FALSE_2);
-        }
-
-        res.setText(Integer.toString(complete * 50 / Labs) + "%"); // Установка поля среднего прогресса по дисциплине
-    }
-
-
-
-    protected void updateRating( final String NickName, final String NameDiscp, final String status)
+    protected void updateRating( final String NickName, final String NameDiscp, final String status, final byte IDZ)
     {
         String url = MainActivity.MAIN_URL + "updateRating.php";
 
@@ -302,6 +314,7 @@ public class Disciplines extends AppCompatActivity
                 parameters.put("NickName", NickName);
                 parameters.put("NameDiscp", NameDiscp);
                 parameters.put("Status", status);
+                parameters.put("IDZ", Byte.toString(IDZ));
                 return parameters;
             }
         };
@@ -314,5 +327,4 @@ public class Disciplines extends AppCompatActivity
         //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
     }
 }
-
 

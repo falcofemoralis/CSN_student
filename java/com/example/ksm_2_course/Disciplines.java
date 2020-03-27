@@ -96,8 +96,8 @@ public class Disciplines extends AppCompatActivity
             buts[i][0].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             buts[i][0].setTextSize(BUTTON_TEXT_SIZE);
             buts[i][0].setTextColor(TEXT_WHITE);
+            buts[i][0].setGravity(Gravity.CENTER);
             buts[i][0].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            buts[i][0].setBackgroundColor(FALSE);
             newLine.addView(buts[i][0]);
 
             buts[i][1] = new Button(this);
@@ -105,8 +105,8 @@ public class Disciplines extends AppCompatActivity
             buts[i][1].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             buts[i][1].setTextSize(BUTTON_TEXT_SIZE);
             buts[i][1].setTextColor(TEXT_WHITE);
+            buts[i][1].setGravity(Gravity.CENTER);
             buts[i][1].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            buts[i][1].setBackground(FALSE_2);
             newLine.addView(buts[i][1]);
 
             mainView.addView(newLine);
@@ -131,10 +131,13 @@ public class Disciplines extends AppCompatActivity
             IDZ.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             IDZ.setTextSize(BUTTON_TEXT_SIZE);
             IDZ.setTextColor(TEXT_WHITE);
-            IDZ.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            IDZ.setBackground(FALSE_2);
+            IDZ.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             newLine.addView(IDZ);
+
+            mainView.addView(newLine);
         }
+
+        res = findViewById(R.id.res);
 
         RestoreAll(discs.get(num)); // Загрузка данных
     }
@@ -171,8 +174,7 @@ public class Disciplines extends AppCompatActivity
             if (compl_but[i][0]) {
                 buts[i][0].setBackgroundColor(TRUE);
                 ++complete;
-            }
-            else
+            } else
                 buts[i][0].setBackgroundColor(FALSE);
 
             if (compl_but[i][1]) {

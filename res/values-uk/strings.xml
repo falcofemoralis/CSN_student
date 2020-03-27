@@ -98,4 +98,10 @@
     <string name="cancel">Відмінити</string>
     <string name="exit">Успішно вийдено з аккаунта</string>
     <string name="all">Усі</string>
+    <string name="exitconfirm">Ви впевнені, що хочете вийти?</string>
+    <string name="mon">\t\t\t\tПН\t\t\t\t</string>
+    <string name="tue">\t\t\t\tВТ\t\t\t\t</string>
+    <string name="wed">\t\t\t\tСР\t\t\t\t</string>
+    <string name="thu">\t\t\t\tЧТ\t\t\t\t</string>
+    <string name="fri">\t\t\t\tПТ\t\t\t\t</string>
 </resources>

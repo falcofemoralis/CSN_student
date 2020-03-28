@@ -48,14 +48,16 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
     {
         public String nickName;
         public String nameGroup;
+        public byte idz;
         public boolean[] status;
         byte sumPositiveStatus = 0;
 
-        User(String nickName, String nameGroup, boolean[] status)
+        User(String nickName, String nameGroup, boolean[] status,byte idz)
         {
             this.nickName = nickName;
             this.nameGroup = nameGroup;
             this.status = status;
+            this.idz = idz;
 
             for (int i = 0; i < status.length; ++i)
                 sumPositiveStatus += status[i] ? 1 : 0;
@@ -168,8 +170,9 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
             boolean newSt[] = new boolean[st.length];
             for (int i = 0; i < st.length; ++i)
                 newSt[i] = st[i][0] && st[i][1];
-
-            users.add(new User(user.getString("NickName"), user.getString("NameGroup"), newSt));
+            String idzST = user.getString("IDZ");
+            byte idz = g.fromJson(idzST,byte.class);
+            users.add(new User(user.getString("NickName"), user.getString("NameGroup"), newSt,idz));
 
         }
 
@@ -227,12 +230,15 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                     row.addView(lab);
                 }
 
-                idz.setText("  "+getResources().getString(R.string.IHW)+"  ");
-                idz.setTextColor(COLOR_WHITE);
-                idz.setTextSize(TextSizeHeader);
-                idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                idz.setBackground(STYLE_BACK);
-                row.addView(idz);
+                if(userL.idz>=0){
+                    idz.setText("  "+getResources().getString(R.string.IHW)+"  ");
+                    idz.setTextColor(COLOR_WHITE);
+                    idz.setTextSize(TextSizeHeader);
+                    idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    idz.setBackground(STYLE_BACK);
+                    row.addView(idz);
+                }
+
             }else {
                 //row.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
                 //row.setBackground(ContextCompat.getDrawable(this,R.drawable.borders));
@@ -240,7 +246,6 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
                 TextView name = new TextView(Rating.this);
                 TextView group = new TextView(Rating.this);
-                TextView idz = new TextView(Rating.this);
 
                 name.setText(user.nickName);
                 name.setTextColor(COLOR_BACK);
@@ -276,6 +281,22 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                     lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     row.addView(lab);
                 }
+
+                TextView idz = new TextView(Rating.this);
+                if(user.idz==1){
+                    idz.setBackground(STYLE_GREEN);
+                    idz.setText("     ✓     ");
+                    idz.setTextSize(TextSize);
+                    idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    row.addView(idz);
+                }else if (user.idz==0){
+                    idz.setBackground(STYLE_RED);
+                    idz.setText("     ╳     ");
+                    idz.setTextSize(TextSize);
+                    idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    row.addView(idz);
+                }
+
 
             }
             table.addView(row);

@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
@@ -125,6 +126,8 @@ public class Disciplines extends AppCompatActivity
         for (int i = 0; i < Labs; ++i)
         {
             LinearLayout newLine = new LinearLayout(this);
+            newLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            newLine.setOrientation(LinearLayout.HORIZONTAL);
 
             TextView lab = new TextView(this);
             lab.setText(getResources().getString(R.string.Lab) + (i + 1));
@@ -132,7 +135,7 @@ public class Disciplines extends AppCompatActivity
             lab.setTextSize(TEXT_SIZE);
             lab.setTextColor(TEXT_WHITE);
             lab.setGravity(Gravity.CENTER);
-            lab.setLayoutParams(new LinearLayout.LayoutParams((int)(230 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT));
+            lab.setLayoutParams(new LinearLayout.LayoutParams((int)(230 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT,1.0f));
             lab.setBackground(LAB_STYLE);
             newLine.addView(lab);
 
@@ -142,7 +145,7 @@ public class Disciplines extends AppCompatActivity
             buts[i][0].setTextSize(BUTTON_TEXT_SIZE);
             buts[i][0].setTextColor(TEXT_WHITE);
             buts[i][0].setGravity(Gravity.CENTER);
-            buts[i][0].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            buts[i][0].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,1.0f));
             buts[i][0].setOnClickListener(ButtonChangeStatus);
             newLine.addView(buts[i][0]);
 
@@ -152,16 +155,22 @@ public class Disciplines extends AppCompatActivity
             buts[i][1].setTextSize(BUTTON_TEXT_SIZE);
             buts[i][1].setTextColor(TEXT_WHITE);
             buts[i][1].setGravity(Gravity.CENTER);
-            buts[i][1].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            buts[i][1].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,1.0f));
             buts[i][1].setOnClickListener(CornerButtonChangeStatus);
             newLine.addView(buts[i][1]);
 
             mainView.addView(newLine);
         }
 
+        Space space = new Space(this);
+        space.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int)(24 * this.getResources().getDisplayMetrics().density)));
+        mainView.addView(space);
+
         if (current.getIDZ() != -1)
         {
             LinearLayout newLine = new LinearLayout(this);
+            newLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            newLine.setOrientation(LinearLayout.HORIZONTAL);
 
             TextView IDZText = new TextView(this);
             IDZText.setText(getResources().getString(R.string.IHW));
@@ -169,7 +178,7 @@ public class Disciplines extends AppCompatActivity
             IDZText.setTextSize(TEXT_SIZE);
             IDZText.setTextColor(TEXT_WHITE);
             IDZText.setGravity(Gravity.CENTER);
-            IDZText.setLayoutParams(new LinearLayout.LayoutParams((int)(230 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT));
+            IDZText.setLayoutParams(new LinearLayout.LayoutParams((int)(150 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT,1.0f));
             IDZText.setBackground(LAB_STYLE);
             newLine.addView(IDZText);
 
@@ -178,7 +187,7 @@ public class Disciplines extends AppCompatActivity
             IDZ.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             IDZ.setTextSize(BUTTON_TEXT_SIZE);
             IDZ.setTextColor(TEXT_WHITE);
-            IDZ.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            IDZ.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,1.0f));
             IDZ.setOnClickListener(CornerButtonChangeStatus);
             newLine.addView(IDZ);
 

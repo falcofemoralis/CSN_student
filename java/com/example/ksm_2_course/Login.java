@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.ksm_2_course.MainActivity.encryptedSharedPreferences;
+
 
 public class Login extends AppCompatActivity {
 
@@ -107,53 +109,16 @@ public class Login extends AppCompatActivity {
     }
 
     public void Save() {
-        SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
+        SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
         prefEditor.putBoolean(Settings2.KEY_IS_REGISTERED, true);
         prefEditor.putString(Settings2.KEY_NICKNAME, nickname);
         prefEditor.putString(Settings2.KEY_PASSWORD, password);
         prefEditor.putString(Settings2.KEY_GROUP, group);
         prefEditor.apply();
-
-        ArrayList<Discipline> discs = new ArrayList<Discipline>();
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {
-        }.getType();
-        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
-
-        for (int i = 0; i < discs.size(); ++i) {
-            Discipline temp = discs.get(i);
-            updateRating(nickname, temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
-        }
+        
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-    }
-
-    protected void updateRating(final String NickName, final String NameDiscp, final String status, final byte IDZ) {
-        String url = MainActivity.MAIN_URL + "updateRating.php";
-
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", NickName);
-                parameters.put("NameDiscp", NameDiscp);
-                parameters.put("Status", status);
-                parameters.put("IDZ", Byte.toString(IDZ));
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
     }
 
     protected void createClickableSpan()
@@ -181,4 +146,5 @@ public class Login extends AppCompatActivity {
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
+
 

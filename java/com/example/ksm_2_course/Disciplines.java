@@ -114,8 +114,7 @@ public class Disciplines extends AppCompatActivity
         current = discs.get(num);
         Labs = current.getLabs(); // количество лабораторных
 
-
-        mainView = findViewById(R.id.Main_view);
+         mainView = findViewById(R.id.Discp_main);
 
         if (current.getIDZ() == -1)
             buts = new Button[Labs][2];

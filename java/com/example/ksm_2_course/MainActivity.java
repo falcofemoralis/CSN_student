@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
         setFile();
         res = (Button) findViewById(R.id.res);
 
-        FILE_NAME += encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, "") + ".json";
         getGroups();
         checkRegistration();
+        FILE_NAME += encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, "") + ".json";
 
         prefEditor = MainActivity.encryptedSharedPreferences.edit();
 
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i)
-            getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i));
+            getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), i);
     }
 
     protected void loadStatusFromDevice()
@@ -376,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
             discs = gson.fromJson(test, listType);
 
             for (int i = 0; i < discs.size(); ++i)
-                getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), discs.get(i));
+                getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), i);
             return;
         }
 
@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int count = 0;
-    protected void getStatus (final String NickName, final Discipline current)
+    protected void getStatus (final String NickName, final int i)
     {
         String url = MainActivity.MAIN_URL + "getStatus.php";
 
@@ -433,8 +433,11 @@ public class MainActivity extends AppCompatActivity {
                          byte IDZ = (byte)obj.getInt("IDZ");
                          Gson gson = new Gson();
                          boolean[][] compl = gson.fromJson(obj.getString("status"), boolean[][].class);
-                         current.setComplete(compl);
-                         current.setIDZ(IDZ);
+                         discs.get(i).setComplete(compl);
+                         discs.get(i).setIDZ(IDZ);
+
+                         compl = discs.get(0).getComplete();
+                         compl[0][0] = true;
 
                          ++count;
                          if (count == discs.size())
@@ -459,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("NickName", NickName);
-                parameters.put("NameDiscp", current.getName());
+                parameters.put("NameDiscp", discs.get(i).getName());
                 return parameters;
             }
         };
@@ -523,4 +526,3 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 }
-

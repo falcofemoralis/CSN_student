@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:text = "debug"
+    android:textColor="@android:color/white"
+    android:background="@drawable/abc_spinner_mtrl_am_alpha"
+    android:backgroundTint="@color/white"
+    android:gravity="center"
+    android:textSize="18sp"
+    android:textAlignment="center">
+
+
+
+</CheckedTextView>

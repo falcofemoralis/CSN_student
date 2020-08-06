@@ -27,10 +27,7 @@
             $this->action = $this->getAction();
             
             // Проверяем переопределено ли это действие в наследнике
-            if (method_exists($this, $this->action))
-                return $this->{$this->action}();
-            else 
-                throw new RuntimeException('Invalid method', 405);
+            return $this->{$this->action}();
         }
            
         // Метод API который будет выполнятся в зависимости от типа запроса

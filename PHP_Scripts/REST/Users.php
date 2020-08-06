@@ -34,6 +34,12 @@ function createUser($connect)
     $password = $_POST["Password"];
     $group = $_POST["Group"];
     
+    if ($nickName == NULL || $password == NULL || $group == NULL)
+    {
+        echo "ERROR";
+        return;
+    }
+    
     $query = "  INSERT INTO `users`(`NickName`, `Password`, `Code_Group`)
                 VALUES ('$nickName','$password', (SELECT groups.Code_Group FROM groups WHERE groups.GroupName = '$group'))";
     

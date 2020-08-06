@@ -1,22 +1,23 @@
 <?php
-
+    require_once 'DataBase.php';
+    
     //abstract class Api
     abstract class Api
     {
         protected $method = ''; // ћетод запроса (GET/POST/PUT/DELETE)
 
-        public $requestUri = [];
-        protected $requestParams = [];
+        protected $requestUri = [];
         
         protected $action = ''; // Ќазвание метода дл€ действи€
+        protected $connect;
         
         // онструктор "вынимает" из запроса все необходимые данные (тип запроса, параметры переданные в URI, параметры переданные в теле запроса)
-        public function __construct()
+        public function __construct($requestUri)
         {
+            $db = new DataBase();
+            $this->connect = $db->getConnection();
             $this->method = $_SERVER['REQUEST_METHOD'];
-            $this->requestUri = explode('/', $_SERVER['REQUEST_URI']);
-            $this->requestParams = $_REQUEST;
-            array_shift($this->requestUri); // ƒелаетс€ сдвиг потому первый элемент всегда пустой ''
+            $this->requestUri = $requestUri;
         }
           
         // ќбрабатывает запрос

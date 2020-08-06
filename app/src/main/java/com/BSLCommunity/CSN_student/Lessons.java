@@ -1,7 +1,7 @@
 package com.BSLCommunity.CSN_student;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.pm.ActivityInfo;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,19 +26,40 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         createSpinner();
         setSchedule();
         updateSchedule();
     }
 
+    //получение необходимых обьектов
+    protected void setSchedule()
+    {
+        int id;
+
+        type_week = findViewById(R.id.type_week);
+
+        //получеам id текстовых полей с activity_lessons_schedule и сохраняем их в массиве schedule[][]
+        for (int i = 0; i < MAX_PAIR; ++i) {
+            for (int j = 0; j < MAX_DAYS; ++j) {
+                id = getResources().getIdentifier("text" + (i + 1) +  "_" + (j + 2), "id", getApplicationContext().getPackageName());
+                schedule[i][j] = findViewById(id);
+            }
+        }
+
+        //устанавливаем информацию
+        updateSchedule();
+    }
+
     protected void updateSchedule()
     {
+        //выбираем неделю в зависимости от выбранной недели
         int numType = type_week.getText().equals(getResources().getString(R.string.denominator)) ? 0 : 1;
 
+        //выбираем базу в зависимости от выбранной группы
         file_name = (group_spin.getSelectedItem().toString()).equals("КНТ-518") ? "knt518.json" : "knt528.json";
 
+        //загружаем базу
         Gson g = new Gson();
         try {
             lessons = g.fromJson(JSONHelper.loadJSONFromAsset(this, file_name), Lesson[].class);
@@ -46,6 +67,7 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
             e.printStackTrace();
         }
 
+        //i - день, j - пара
         for (int i = 0, size = lessons[numType].types.size() / 4; i < size; ++i)
         {
             for (int j = 0; j < 4; ++j)
@@ -59,20 +81,6 @@ public class Lessons extends AppCompatActivity implements AdapterView.OnItemSele
                 schedule[j][i].setText(item.getSubject() + " " + item.getType() + " (" + item.getRoom() + ")");
             }
         }
-    }
-
-    protected void setSchedule()
-    {
-        int id;
-        type_week = findViewById(R.id.type_week);
-
-        for (int i = 0; i < MAX_PAIR; ++i) {
-            for (int j = 0; j < MAX_DAYS; ++j) {
-                id = getResources().getIdentifier("text" + (i + 1) +  "_" + (j + 2), "id", getApplicationContext().getPackageName());
-                schedule[i][j] = findViewById(id);
-            }
-        }
-        updateSchedule();
     }
 
     public void changeTypeWeek(View v)

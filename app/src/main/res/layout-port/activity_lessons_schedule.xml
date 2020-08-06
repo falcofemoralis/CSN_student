@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_weight="0.1"></Space>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+
+            <Spinner
+                android:id="@+id/group_spin"
+                android:layout_width="138dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:background="@drawable/text_but_schedule_style"
+                android:entries="@array/group_arrays"
+                android:prompt="@string/group_prompt"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1" />
+
+            <Button
+                android:id="@+id/type_week"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:background="@drawable/text_but_schedule_style"
+                android:onClick="changeTypeWeek"
+                android:text="@string/denominator"
+                android:textColor="@color/background"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="0.2"></Space>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_mon"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/pair"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/mon"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_mon_1"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="I"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text1_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_mon_2"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="II"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text2_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_mon_3"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="III"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text3_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_mon_4"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="IV"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text4_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_mon_5"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="V"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text5_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="0.1"></Space>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_tue"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/pair"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/tue"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_tue_1"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="I"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text1_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_tue_2"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="II"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text2_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_tue_3"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="III"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text3_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_tue_4"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="IV"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text4_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_tue_5"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="V"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text5_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="0.1"></Space>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_wed"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/pair"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/wed"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_wed_1"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="I"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text1_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_wed_2"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="II"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text2_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_wed_3"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="III"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text3_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_wed_4"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="IV"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text4_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_wed_5"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="V"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text5_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="0.1"></Space>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_thur"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/pair"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/thu"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_thur_1"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="I"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text1_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_thur_2"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="II"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text2_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_thur_3"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="III"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text3_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_thur_4"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="IV"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text4_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_thur_5"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="V"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text5_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_weight="0.1"></Space>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_fri"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/pair"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style3"
+                        android:gravity="center"
+                        android:text="@string/fri"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_fri_1"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="I"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text1_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_fri_2"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="II"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text2_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_fri_3"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="III"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text3_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_fri_4"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="IV"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text4_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_pair_fri_5"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text="V"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text5_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_but_schedule_style2"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/background"
+                        android:textSize="14sp" />
+                </TableRow>
+
+            </TableLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></Space>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_weight="0.1"></Space>
+
+    </LinearLayout>
+
+</ScrollView>

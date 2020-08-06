@@ -1,14 +1,12 @@
 <?php
     include 'DataBase.php';
     include 'Api.php';
+    include 'Users.php';
     
     $db = new DataBase();
     $api = new Api();
     
     $connect = $db->getConnection();
     
-    $api->run();
-    
-    array_shift($api->requestUri);
-    echo $api->requestUri;
+    $user = updateUser($connect, 2);
 ?>

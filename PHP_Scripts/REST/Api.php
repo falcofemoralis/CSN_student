@@ -1,7 +1,7 @@
 <?php
 
     //abstract class Api
-    class Api
+    abstract class Api
     {
         protected $method = ''; // Метод запроса (GET/POST/PUT/DELETE)
 
@@ -52,10 +52,10 @@
             }
         }
         
-        /*abstract protected function createAction();
+        abstract protected function createAction();
         abstract protected function viewAction();
         abstract protected function deleteAction();
-        abstract protected function updateAction();*/
+        abstract protected function updateAction();
     }
 
 ?>

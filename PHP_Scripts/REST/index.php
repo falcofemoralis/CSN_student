@@ -1,7 +1,7 @@
 <?php
 
     $requestUri = explode('/', $_SERVER['REQUEST_URI']);
-    array_shift($requestUri); // Äåëàåòñÿ ñäâèã ïîòîìó ïåðâûé ýëåìåíò âñåãäà ïóñòîé ''
+    array_shift($requestUri); // Ð”ÐµÐ»Ð°ÐµÑ‚ÑÑ ÑÐ´Ð²Ð¸Ð³ Ð¿Ð¾Ñ‚Ð¾Ð¼Ñƒ Ð¿ÐµÑ€Ð²Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð²ÑÐµÐ³Ð´Ð° Ð¿ÑƒÑÑ‚Ð¾Ð¹ ''
        
     if (array_shift($requestUri) == 'api')
     {

@@ -43,12 +43,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     class groups { public String NameGroup;}
     public static groups[] GROUPS;
-    public static String MAIN_URL = "";
+
+    public static String MAIN_URL = "http://fknt.web-file.site/";
+    public static String NEW_MAIN_URL = "http://a0459938.xsph.ru/";
 
     String FILE_NAME = "data_disc_";
     boolean whole = true;
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         else
             loadStatusFromDevice();
 
+
+        Toast.makeText(this, Locale.getDefault().getLanguage() , Toast.LENGTH_SHORT).show();
     }
 
     public void OnClickSettings(View v) {

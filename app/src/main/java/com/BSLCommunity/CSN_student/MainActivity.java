@@ -47,13 +47,14 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    class groups { public String NameGroup;}
+    //список групп по курсу
+    class groups { public int Code_Group; public String GroupName;}
     public static groups[] GROUPS;
 
     public static String MAIN_URL = "http://fknt.web-file.site/";
     public static String NEW_MAIN_URL = "http://a0459938.xsph.ru/";
 
-    String FILE_NAME = "data_disc_";
+    public static String FILE_NAME = "data_disc_";
     boolean whole = true;
     CountDownTimer start;
     RequestQueue requestQueue;
@@ -88,26 +89,18 @@ public class MainActivity extends AppCompatActivity {
         }
         else
             loadStatusFromDevice();
-
-
-        Toast.makeText(this, Locale.getDefault().getLanguage() , Toast.LENGTH_SHORT).show();
     }
 
     public void OnClickSettings(View v) {
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
-        Intent intent;
-        intent = new Intent(this, Settings2.class);
-        startActivity(intent);
-        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+        startActivity(new Intent(this, Settings2.class));
     }
 
     public void OnClickLessons(View v) {
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
-        Intent intent;
-        intent = new Intent(this, Schedule.class);
-        startActivity(intent);
+        startActivity(new Intent(this, Schedule.class));
     }
 
     public void OnClickRating(View v) {
@@ -123,25 +116,17 @@ public class MainActivity extends AppCompatActivity {
         }
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
-        Intent intent;
-        intent = new Intent(this, Rating.class);
-        startActivity(intent);
+        startActivity( new Intent(this, Rating.class));
     }
 
-    public void OnClick(View v) {
+    public void OnClickSubjects(View v) {
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
-        Intent intent;
-        intent = new Intent(this, Disciplines.class);
-        intent.putExtra("button_id", v.getId());
-        startActivity(intent);
-        setProgress();
-        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+        startActivity(new Intent(this, Subjects.class));
     }
 
     @Override
     protected void onResume() {
-        setProgress();
         checkTimer();
         checkRegistration();
         super.onResume();
@@ -157,29 +142,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-    }
-
-    public void setProgress() {
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {
-        }.getType();
-        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
-
-        int sum = 0, all = 0;
-        for (int i = 0; i < discs.size(); ++i) {
-            Discipline temp = discs.get(i);
-
-            boolean[][] temp_bool = temp.getComplete();
-            for (int j = 0; j < temp_bool.length; ++j)
-            {
-                sum += temp_bool[j][0] ? 1 : 0;
-                sum += temp_bool[j][1] ? 1 : 0;
-            }
-            all += temp.getLabs();
-        }
-        all *= 2;
-
-        ((Button) findViewById(R.id.res)).setText(Integer.toString(sum * 100 / all) + "%");
     }
 
     public void time() {
@@ -412,7 +374,6 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String jsonString = gson.toJson(discs);
         JSONHelper.create(MainActivity.this, FILE_NAME, jsonString);
-        setProgress();
         whole = true;
     }
 
@@ -504,26 +465,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //получение групп по курсу
     protected void getGroups ()
     {
-        String url = MainActivity.MAIN_URL + "getGroups.php";
+        String url = MainActivity.NEW_MAIN_URL + "getGroups.php";
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response)
             {
+                JSONHelper.create(MainActivity.this,"groups",response);
                 Gson gson = new Gson();
                 GROUPS = gson.fromJson(response, groups[].class);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                String response = JSONHelper.read(MainActivity.this,"groups");
+                Gson gson = new Gson();
+                GROUPS = gson.fromJson(response, groups[].class);
             }
         }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("Course", String.valueOf(3));
+                return parameters;
+            }
         };
         requestQueue.add(request);
     }

@@ -18,7 +18,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -55,6 +58,8 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     //обьект сохраненого расписание
     ScheduleList[][][] scheduleList;
 
+    long groupId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +72,16 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     //создаем спинер выбора группы
     protected void createSpinner() {
         group_spin = findViewById(R.id.group_spin);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.group_values,
-                R.layout.color_spinner_schedule
-        );
 
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-        group_spin.setAdapter(adapter);
+        //создаем лист групп
+        List<String> groups = new ArrayList<String>();
+        for(int i=0;i< MainActivity.GROUPS.length;++i)
+            groups.add(MainActivity.GROUPS[i].GroupName);
 
+        //устанавливаем спинер
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_schedule, groups);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        group_spin.setAdapter(dataAdapter);
         group_spin.setOnItemSelectedListener(this);
     }
 
@@ -83,6 +89,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     //запускается после onCreate
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        groupId = id;
         downloadSchedule();
    }
 
@@ -182,7 +189,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NameGroup", group);
+                parameters.put("groupId", String.valueOf( MainActivity.GROUPS[(int) groupId].Code_Group));
                 return parameters;
             }
         };

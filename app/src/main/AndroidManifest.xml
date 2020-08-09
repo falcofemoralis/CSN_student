@@ -44,5 +44,9 @@
 
         <activity android:name="com.BSLCommunity.CSN_student.Settings2"
             android:label="@string/title_activity_settings"/>
+
+        <activity android:name="com.BSLCommunity.CSN_student.Subjects"
+            android:theme="@style/NoActionBar">
+        </activity>
     </application>
 </manifest>

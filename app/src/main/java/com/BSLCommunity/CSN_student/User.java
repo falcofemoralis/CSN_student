@@ -62,7 +62,40 @@ public class User {
     * loginData - параметры необходимо передать в GET запросе при логине пользователя
     * */
     public static void login(final Context appContext, final Context activityContext, final Map<String, String> loginData) {
-        
+        RequestQueue requestQueue;
+        requestQueue = Volley.newRequestQueue(appContext);
+
+        String url = MainActivity.MAIN_URL + "api/users/login";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject user = new JSONObject(response);
+                    instance = new User();
+                    instance.id = user.getInt("id");
+                    instance.nickName = user.getString("NickName");
+                    instance.password = user.getString("Password");;
+                    instance.сourse = user.getInt("Course");
+                    instance.nameGroup = user.getString("GroupName");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(appContext, R.string.no_user, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activityContext, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return  loginData;
+            }
+        };
+        requestQueue.add(request);
     }
 
     /* Функция регистрации нового пользователя

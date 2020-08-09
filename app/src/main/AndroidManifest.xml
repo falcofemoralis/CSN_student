@@ -30,7 +30,7 @@
             android:theme="@style/NoActionBar">
         </activity>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Lessons"
+        <activity android:name="com.BSLCommunity.CSN_student.Schedule"
             android:theme="@style/NoActionBar">
         </activity>
 

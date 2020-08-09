@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
         Intent intent;
-        intent = new Intent(this, Lessons.class);
+        intent = new Intent(this, Schedule.class);
         startActivity(intent);
     }
 

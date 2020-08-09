@@ -48,7 +48,7 @@
                 android:layout_weight="0.4"
                 android:background="@drawable/text_but_schedule_style"
                 android:onClick="changeTypeWeek"
-                android:text="@string/denominator"
+                android:text="@string/numerator"
                 android:textColor="@color/background"
                 android:textSize="16sp" />
 

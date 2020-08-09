@@ -12,26 +12,18 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.android.volley.RequestQueue;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.BSLCommunity.CSN_student.MainActivity.encryptedSharedPreferences;
 
-
+// Форма логина для пользователя
 public class Login extends AppCompatActivity {
 
     String FILE_NAME = "data_disc_";
@@ -49,48 +41,14 @@ public class Login extends AppCompatActivity {
         createClickableSpan();
     }
 
+    // Логин
     public void OnClick(View v) {
-        nickNameS = (EditText) findViewById(R.id.Nick);
-        passwordS = (EditText) findViewById(R.id.pass);
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        Map<String, String> param = new HashMap<>();
 
-        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject user = new JSONObject(response);
-                    nickname = user.getString("NickName");
-                    FILE_NAME += nickname + ".json";
-                    password = user.getString("Password");
-                    group = user.getString("NameGroup");
-                    if (passwordS.getText().toString().toLowerCase().equals(password)) {
-                        Toast.makeText(Login.this, R.string.successfully_login, Toast.LENGTH_SHORT).show();
-                        Save();
-                    } else {
-                        Toast.makeText(Login.this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
-                    }
+        param.put("NickName", "Arthur");
+        param.put("Password", "Farmer Arthur");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(Login.this, R.string.no_user, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Login.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", nickNameS.getText().toString().toLowerCase());
-                return parameters;
-            }
-        };
-        requestQueue.add(jsonObjectRequest);
-
+        User.registration(getApplicationContext(), Login.this, param);
     }
 
     public void OnClickRegistration() {

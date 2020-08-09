@@ -1,9 +1,5 @@
 package com.BSLCommunity.CSN_student;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +15,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -48,7 +49,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     class groups { public String NameGroup;}
     public static groups[] GROUPS;
-    public static String MAIN_URL = "";
+    public static String MAIN_URL = "http://localhost/";
 
     String FILE_NAME = "data_disc_";
     boolean whole = true;

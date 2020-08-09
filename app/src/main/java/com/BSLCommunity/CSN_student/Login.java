@@ -31,7 +31,7 @@ import java.util.Map;
 
 import static com.BSLCommunity.CSN_student.MainActivity.encryptedSharedPreferences;
 
-
+// Форма логина для пользователя
 public class Login extends AppCompatActivity {
 
     String FILE_NAME = "data_disc_";

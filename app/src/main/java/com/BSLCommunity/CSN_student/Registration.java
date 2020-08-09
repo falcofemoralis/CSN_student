@@ -72,66 +72,6 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
         User.registration(getApplicationContext(), Registration.this, param);
 
-       /* String url = MainActivity.MAIN_URL + "registration.php";
-        String name = nickName.getText().toString();
-        FILE_NAME += name + ".json";
-        if (name.equals("")) {
-            Toast.makeText(Registration.this, R.string.nickname_error, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String pass = password.getText().toString();
-        String checkpass = checkPassword.getText().toString();
-        if (!pass.equals(checkpass)) {
-            Toast.makeText(Registration.this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
-            return;
-        } else if (pass.equals("") || checkpass.equals("")) {
-            Toast.makeText(Registration.this, R.string.password_error, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response.indexOf("Duplicate") != -1)
-                    Toast.makeText(Registration.this, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
-                else {
-                    Toast.makeText(Registration.this, R.string.successfully_registration, Toast.LENGTH_SHORT).show();
-
-                    Gson gson = new Gson();
-                    ArrayList<Discipline> discs = new ArrayList<Discipline>();
-                    Type listType = new TypeToken<List<Discipline>>() {
-                    }.getType();
-                    discs = gson.fromJson(JSONHelper.read(Registration.this, FILE_NAME), listType);
-
-                    for (int i = 0; i < discs.size(); ++i)
-                    {
-                        Discipline temp = discs.get(i);
-                        setEmptyRating(temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
-                    }
-
-                    Save();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Registration.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", nickName.getText().toString().toLowerCase());
-                parameters.put("Password", password.getText().toString());
-                parameters.put("NameGroup", group);
-                return parameters;
-            }
-        };
-        requestQueue.add(request);*/
     }
 
     public void Save()

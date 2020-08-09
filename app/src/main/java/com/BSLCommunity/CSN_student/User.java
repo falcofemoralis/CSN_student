@@ -109,7 +109,7 @@ public class User {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = MainActivity.MAIN_URL + "api/users";
+        String url = MainActivity.MAIN_URL + "/api/users";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

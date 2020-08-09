@@ -476,6 +476,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response)
             {
+                JSONHelper.create(MainActivity.this,"groups",response);
                 Gson gson = new Gson();
                 GROUPS = gson.fromJson(response, groups[].class);
             }
@@ -483,6 +484,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                String response = JSONHelper.read(MainActivity.this,"groups");
+                Gson gson = new Gson();
+                GROUPS = gson.fromJson(response, groups[].class);
             }
         }) {
             @Override

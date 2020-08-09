@@ -189,8 +189,6 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                System.out.println("groupId = " +  groupId);
-                System.out.println("Id= " +  MainActivity.GROUPS[(int) groupId].Code_Group);
                 parameters.put("groupId", String.valueOf( MainActivity.GROUPS[(int) groupId].Code_Group));
                 return parameters;
             }

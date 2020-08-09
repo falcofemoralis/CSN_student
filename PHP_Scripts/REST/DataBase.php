@@ -3,7 +3,7 @@
     {
         private $host = "localhost";
         private $username = "root";
-        private $password = "";
+        private $password = "root";
         private $db_name = "csn";
         public $conn;
         
@@ -13,5 +13,6 @@
             mysqli_set_charset($conn, "utf8");
             return $conn;
         }
+
     }
 ?>

@@ -17,7 +17,7 @@ require_once 'DataBase.php';
             $db = new DataBase();
             $this->connect = $db->getConnection();
             $this->method = $_SERVER['REQUEST_METHOD'];
-            $this->requestUri = $requestUri;
+            $this->requestUri = $requestUri;     
         }
         
         // Обрабатывает запрос

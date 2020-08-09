@@ -6,7 +6,7 @@ function readUser($connect)
     $nickName = $_GET["NickName"];
     $password = $_GET["Password"];
     
-    $query = "  SELECT users.Code_User, users.NickName, users.Password,  groups.Course, groups.GroupName FROM users
+    $query = "  SELECT users.Code_User as id, users.NickName, users.Password,  groups.Course, groups.GroupName FROM users
                 JOIN rating ON rating.Code_User = users.Code_User
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE users.NickName = '$nickName' AND users.Password = '$password'";
@@ -16,7 +16,7 @@ function readUser($connect)
     // Если данные не были получены с запроса, значит пользователь неправильно ввел данные при логине
     if (mysqli_num_rows($result) == null)
     {
-        echo "null";
+        echo "ERROR";
         return;
     }
     

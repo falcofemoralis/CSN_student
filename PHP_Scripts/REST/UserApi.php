@@ -44,7 +44,9 @@ class UserApi extends Api
             $id = array_shift($this->requestUri);
             userViewById($this->connect, $id);
         }
-        else 
+        else if (array_shift($this->requestUri) == "login")
+            readUser($this->connect);
+        else            
             echo "invalid method";
     }
 
@@ -55,3 +57,5 @@ class UserApi extends Api
     }
 
 }
+
+?>

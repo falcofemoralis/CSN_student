@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,16 +45,14 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
     String URL = MainActivity.MAIN_URL + "getRating.php";
     Spinner sub_spin, gr_spin;
 
-    class User implements Comparable<User>
-    {
+    class User implements Comparable<User> {
         public String nickName;
         public String nameGroup;
         public byte idz;
         public boolean[] status;
         byte sumPositiveStatus = 0;
 
-        User(String nickName, String nameGroup, boolean[] status,byte idz)
-        {
+        User(String nickName, String nameGroup, boolean[] status, byte idz) {
             this.nickName = nickName;
             this.nameGroup = nameGroup;
             this.status = status;
@@ -63,11 +63,11 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         }
 
         @Override
-        public int compareTo(User compareUser)
-        {
-            return  compareUser.sumPositiveStatus - this.sumPositiveStatus;
+        public int compareTo(User compareUser) {
+            return compareUser.sumPositiveStatus - this.sumPositiveStatus;
         }
     }
+
     ArrayList<User> users = new ArrayList<User>();
 
     @Override
@@ -90,7 +90,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         getRating(sub_spin.getSelectedItemPosition(), fromLocal());
     }
 
-    public void getRating(final int subjectNumber, final String group){
+    public void getRating(final int subjectNumber, final String group) {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         String tempSubject;
@@ -119,11 +119,9 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         }
 
         final String subject = tempSubject;
-        StringRequest jsonObjectRequest  = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>()
-        {
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
+            public void onResponse(String response) {
                 JSONObject users = null;
                 try {
                     users = new JSONObject(response);
@@ -155,13 +153,11 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void setUsers(JSONObject jsonUsers) throws JSONException
-    {
+    public void setUsers(JSONObject jsonUsers) throws JSONException {
         users.clear();
         JSONArray rating = jsonUsers.getJSONArray("Rating");
 
-        for (int j = 0; j < rating.length(); j++)
-        {
+        for (int j = 0; j < rating.length(); j++) {
             JSONObject user = rating.getJSONObject(j);
             String status = user.getString("status");
             Gson g = new Gson();
@@ -170,8 +166,8 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
             for (int i = 0; i < st.length; ++i)
                 newSt[i] = st[i][0] && st[i][1];
             String idzST = user.getString("IDZ");
-            byte idz = g.fromJson(idzST,byte.class);
-            users.add(new User(user.getString("NickName"), user.getString("NameGroup"), newSt,idz));
+            byte idz = g.fromJson(idzST, byte.class);
+            users.add(new User(user.getString("NickName"), user.getString("NameGroup"), newSt, idz));
 
         }
 
@@ -182,8 +178,8 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
     public void setTable(ArrayList<User> users) {
         int TextSizeHeader = 26;
         int TextSize = 22;
-        if(table.getParent() != null) {
-            ((ViewGroup)table.getParent()).removeView(table); // <- fix
+        if (table.getParent() != null) {
+            ((ViewGroup) table.getParent()).removeView(table); // <- fix
         }
         //удаляем предыдущию таблицу
         mainLayout.removeAllViews();
@@ -191,11 +187,9 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
         //получаем весь рейтинг
 
-        for (int i=0; i <= users.size(); i++)
-        {
+        for (int i = 0; i <= users.size(); i++) {
             TableRow row = new TableRow(Rating.this);
-            if(i==0)
-            {
+            if (i == 0) {
                 //эти переменные нужны для определения количества лаб в заголовке, да да, небольшой костыль
                 User userL = users.get(0);
 
@@ -204,14 +198,14 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 TextView group = new TextView(Rating.this);
                 TextView idz = new TextView(Rating.this);
 
-                name.setText("  "+getResources().getString(R.string.nickname)+"  ");
+                name.setText("  " + getResources().getString(R.string.nickname) + "  ");
                 name.setTextColor(COLOR_WHITE);
                 name.setTextSize(TextSizeHeader);
                 name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 name.setBackground(STYLE_BACK);
                 row.addView(name);
 
-                group.setText("  "+getResources().getString(R.string.group)+"  ");
+                group.setText("  " + getResources().getString(R.string.group) + "  ");
                 group.setTextColor(COLOR_WHITE);
                 group.setTextSize(TextSizeHeader);
                 group.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -221,7 +215,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 //количество лаб
                 for (int k = 0; k < userL.status.length; k++) {
                     TextView lab = new TextView(Rating.this);
-                    lab.setText(String.valueOf(k+1));
+                    lab.setText(String.valueOf(k + 1));
                     lab.setTextColor(COLOR_WHITE);
                     lab.setTextSize(TextSizeHeader);
                     lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -229,8 +223,8 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                     row.addView(lab);
                 }
 
-                if(userL.idz>=0){
-                    idz.setText("  "+getResources().getString(R.string.IHW)+"  ");
+                if (userL.idz >= 0) {
+                    idz.setText("  " + getResources().getString(R.string.IHW) + "  ");
                     idz.setTextColor(COLOR_WHITE);
                     idz.setTextSize(TextSizeHeader);
                     idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -238,10 +232,10 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                     row.addView(idz);
                 }
 
-            }else {
+            } else {
                 //row.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
                 //row.setBackground(ContextCompat.getDrawable(this,R.drawable.borders));
-                User user = users.get(i-1);
+                User user = users.get(i - 1);
 
                 TextView name = new TextView(Rating.this);
                 TextView group = new TextView(Rating.this);
@@ -264,15 +258,13 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 boolean st[] = user.status;
 
                 //устанавливаем значения сдачи
-                for(int n = 0; n < st.length; n++)
-                {
+                for (int n = 0; n < st.length; n++) {
                     TextView lab = new TextView(Rating.this);
 
-                    if(st[n]) {
+                    if (st[n]) {
                         lab.setBackground(STYLE_GREEN);
                         lab.setText("     ✓     ");
-                    }
-                    else {
+                    } else {
                         lab.setBackground(STYLE_RED);
                         lab.setText("     ╳     ");
                     }
@@ -282,13 +274,13 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 }
 
                 TextView idz = new TextView(Rating.this);
-                if(user.idz==1){
+                if (user.idz == 1) {
                     idz.setBackground(STYLE_GREEN);
                     idz.setText("     ✓     ");
                     idz.setTextSize(TextSize);
                     idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     row.addView(idz);
-                }else if (user.idz==0){
+                } else if (user.idz == 0) {
                     idz.setBackground(STYLE_RED);
                     idz.setText("     ╳     ");
                     idz.setTextSize(TextSize);
@@ -304,8 +296,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         mainLayout.addView(table);
     }
 
-    protected  void createSpinner()
-    {
+    protected void createSpinner() {
         sub_spin = findViewById(R.id.subjectSpinner);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
@@ -356,8 +347,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
     }*/
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-    {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         getRating(sub_spin.getSelectedItemPosition(), fromLocal());
     }
 
@@ -366,9 +356,9 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
     }
 
-    public String fromLocal(){
+    public String fromLocal() {
         //String tmpGrp = getResources().getString(R.string.all);
-        switch (gr_spin.getSelectedItem().toString()){
+        switch (gr_spin.getSelectedItem().toString()) {
             case "Все":
                 return "ALL";
             case "Усі":

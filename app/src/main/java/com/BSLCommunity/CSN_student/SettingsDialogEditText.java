@@ -24,8 +24,8 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
     private int applyKey;
     private Spinner groupSpinner;
 
-    SettingsDialogEditText(int KEY){
-        applyKey=KEY;
+    SettingsDialogEditText(int KEY) {
+        applyKey = KEY;
     }
 
     @NonNull
@@ -35,28 +35,28 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view;
 
-        switch (applyKey){
+        switch (applyKey) {
             case R.id.nickname:
-                view = inflater.inflate(R.layout.dialog_settings,null);
+                view = inflater.inflate(R.layout.dialog_settings, null);
                 EditText = view.findViewById(R.id.editText_dialog);
                 EditText.setText(MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""));
                 title = getResources().getString(R.string.nickname);
                 break;
             case R.id.password:
-                view = inflater.inflate(R.layout.dialog_settings,null);
+                view = inflater.inflate(R.layout.dialog_settings, null);
                 EditText = view.findViewById(R.id.editText_dialog);
                 EditText.setText(MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_PASSWORD, ""));
                 title = getResources().getString(R.string.password);
                 break;
             case R.id.group:
-                view = inflater.inflate(R.layout.dialog_settings2,null);
+                view = inflater.inflate(R.layout.dialog_settings2, null);
                 try {
                     groupSpinner = view.findViewById(R.id.group);
                     ArrayList<String> spinnerArray = new ArrayList<String>();
                     for (int i = 0; i < MainActivity.GROUPS.length; ++i)
                         spinnerArray.add(MainActivity.GROUPS[i].GroupName);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                            getContext(), R.layout.spinner_dropdown_settings,spinnerArray);
+                            getContext(), R.layout.spinner_dropdown_settings, spinnerArray);
                     adapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
                     groupSpinner.setAdapter(adapter);
                 } catch (Exception e) {
@@ -65,8 +65,8 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 title = getResources().getString(R.string.group);
                 break;
             default:
-                view = inflater.inflate(R.layout.dialog_settings,null);
-                title="";
+                view = inflater.inflate(R.layout.dialog_settings, null);
+                title = "";
         }
 
         builder.setView(view)
@@ -81,21 +81,21 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String text;
-                        switch (applyKey){
+                        switch (applyKey) {
                             case R.id.nickname:
-                                 text = EditText.getText().toString();
-                                 break;
+                                text = EditText.getText().toString();
+                                break;
                             case R.id.password:
                                 text = EditText.getText().toString();
                                 break;
                             case R.id.group:
-                                 text = groupSpinner.getSelectedItem().toString();
-                                 break;
+                                text = groupSpinner.getSelectedItem().toString();
+                                break;
                             default:
                                 text = "";
                         }
 
-                        listener.applyText(text,applyKey);
+                        listener.applyText(text, applyKey);
                     }
                 });
 
@@ -109,11 +109,11 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
         try {
             listener = (DialogListener) context;
         } catch (ClassCastException e) {
-           throw new ClassCastException(context.toString()+"must implement DialogListener");
+            throw new ClassCastException(context.toString() + "must implement DialogListener");
         }
     }
 
-    public interface DialogListener{
-        void applyText(String text,int key);
+    public interface DialogListener {
+        void applyText(String text, int key);
     }
 }

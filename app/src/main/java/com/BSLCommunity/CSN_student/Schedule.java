@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,18 +29,18 @@ import java.util.Locale;
 import java.util.Map;
 
 /*
-* Класс для сериализации
-*
-* subject - предмет (строка JSON)
-* type - тип предмета (строка JSON)
-* room - номер аудитории
-* */
+ * Класс для сериализации
+ *
+ * subject - предмет (строка JSON)
+ * type - тип предмета (строка JSON)
+ * room - номер аудитории
+ * */
 class ScheduleList {
     public String subject;
     public String type;
     public int room;
 
-    public ScheduleList( String subject, String type, int room) {
+    public ScheduleList(String subject, String type, int room) {
         this.room = room;
         this.subject = subject;
         this.type = type;
@@ -45,7 +48,6 @@ class ScheduleList {
 }
 
 public class Schedule extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
     //кол-во дней и пар в активити
     final int MAX_PAIR = 5;
     final int MAX_DAYS = 5;
@@ -75,7 +77,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
 
         //создаем лист групп
         List<String> groups = new ArrayList<String>();
-        for(int i=0;i< MainActivity.GROUPS.length;++i)
+        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
             groups.add(MainActivity.GROUPS[i].GroupName);
 
         //устанавливаем спинер
@@ -91,10 +93,11 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         groupId = id;
         downloadSchedule();
-   }
+    }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) { }
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
     //получение необходимых обьектов
     protected void getScheduleElements() {
@@ -160,7 +163,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         //обьект запроса
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,  MainActivity.NEW_MAIN_URL + "getSchedule.php", new Response.Listener<String>() {
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, MainActivity.MAIN_URL + "getSchedule.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -189,7 +192,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("groupId", String.valueOf( MainActivity.GROUPS[(int) groupId].Code_Group));
+                parameters.put("groupId", String.valueOf(MainActivity.GROUPS[(int) groupId].Code_Group));
                 return parameters;
             }
         };

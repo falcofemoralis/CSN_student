@@ -12,11 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class JSONHelper
-{
+public class JSONHelper {
     // Приватный конструктор запрещающий создание экземпляром класса
-    private JSONHelper()
-    {}
+    private JSONHelper() {
+    }
 
     //Чтение содержимого json файла с assets
     public static String loadJSONFromAsset(Context context, String jsonFileName)
@@ -43,8 +42,7 @@ public class JSONHelper
                 sb.append(line);
             }
             return sb.toString();
-        } catch (FileNotFoundException fileNotFound)
-        {
+        } catch (FileNotFoundException fileNotFound) {
             try {
                 return loadJSONFromAsset(context, "data_disc.json");
             } catch (IOException e) {
@@ -58,10 +56,9 @@ public class JSONHelper
 
     // Запись в json файл
     // Если файл не будет найден - создастся новый json файл в директории files
-    public static void create(Context context, String fileName, String jsonString)
-    {
+    public static void create(Context context, String fileName, String jsonString) {
         try {
-            FileOutputStream fos = context.openFileOutput(fileName,Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             if (jsonString != null) {
                 fos.write(jsonString.getBytes());
             }

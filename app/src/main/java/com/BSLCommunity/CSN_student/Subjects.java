@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +53,7 @@ public class Subjects extends AppCompatActivity {
             Discipline temp = discs.get(i);
 
             boolean[][] temp_bool = temp.getComplete();
-            for (int j = 0; j < temp_bool.length; ++j)
-            {
+            for (int j = 0; j < temp_bool.length; ++j) {
                 sum += temp_bool[j][0] ? 1 : 0;
                 sum += temp_bool[j][1] ? 1 : 0;
             }

@@ -49,13 +49,15 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     //список групп по курсу
-    class groups { public int Code_Group; public String GroupName;}
-    public static groups[] GROUPS;
-  
-    public static String MAIN_URL = "";
+    class groups {
+        public int Code_Group;
+        public String GroupName;
+    }
 
-    public static String MAIN_URL = "http://fknt.web-file.site/";
-    public static String NEW_MAIN_URL = "http://a0459938.xsph.ru/";
+    public static groups[] GROUPS;
+
+   // public static String OLD_MAIN_URL = "http://fknt.web-file.site/";
+    public static String MAIN_URL = "http://a0459938.xsph.ru/";
 
     public static String FILE_NAME = "data_disc_";
     boolean whole = true;
@@ -83,14 +85,12 @@ public class MainActivity extends AppCompatActivity {
 
         boolean offline_data = encryptedSharedPreferences.getBoolean(Settings2.KEY_OFFLINE_DATA, false);
 
-        if(checkConnection())
-        {
+        if (checkConnection()) {
             if (offline_data)
                 showDialog();
             else
                 loadStatusFromServer();
-        }
-        else
+        } else
             loadStatusFromDevice();
     }
 
@@ -109,17 +109,17 @@ public class MainActivity extends AppCompatActivity {
     public void OnClickRating(View v) {
         ArrayList<Discipline> discs = new ArrayList<Discipline>();
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        Type listType = new TypeToken<List<Discipline>>() {
+        }.getType();
         discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
 
-        for (int i = 0; i < discs.size(); ++i)
-        {
+        for (int i = 0; i < discs.size(); ++i) {
             Discipline temp = discs.get(i);
             updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
         }
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         v.startAnimation(click);
-        startActivity( new Intent(this, Rating.class));
+        startActivity(new Intent(this, Rating.class));
     }
 
     public void OnClickSubjects(View v) {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings2.KEY_TIMER_SETTING, true);
-        if (timer_settings)  start.cancel();
+        if (timer_settings) start.cancel();
         super.onPause();
     }
 
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         timeUntil.setText(getResources().getString(R.string.timeUntil));
                     } else {
                         endTime = lessons[i][0] - currentTime;
-                        timeUntil.setText(getResources().getString(R.string.start) + " " + romeNum[i] + " "+ getResources().getString(R.string.lesson));
+                        timeUntil.setText(getResources().getString(R.string.start) + " " + romeNum[i] + " " + getResources().getString(R.string.lesson));
                     }
                     break;
                 }
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         minutes = (milli / 60) % 60;
         hour = milli / 3600;
         start = new CountDownTimer(millis, 1000) {
-            String twoComm1 = ":", twoComm2 =":", shour = "", smin = "", ssec = "" ;
+            String twoComm1 = ":", twoComm2 = ":", shour = "", smin = "", ssec = "";
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //проверка на добавление 0 в минутах
                 if (minutes < 10) {
-                    smin =("0" + Long.toString(minutes));
+                    smin = ("0" + Long.toString(minutes));
                 } else {
                     smin = (Long.toString(minutes));
                 }
@@ -218,12 +218,12 @@ public class MainActivity extends AppCompatActivity {
                     shour = ("");
                     twoComm1 = ("");
                 }
-                if (seconds < 10 &&  minutes != 0) {
+                if (seconds < 10 && minutes != 0) {
                     ssec = ("0" + Long.toString(seconds));
                 } else {
                     ssec = (Long.toString(seconds));
                 }
-                if( minutes == 0 && hour == 0){
+                if (minutes == 0 && hour == 0) {
                     twoComm2 = ("");
                     twoComm1 = ("");
                     smin = "";
@@ -268,20 +268,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void updateRating( final String NickName, final String NameDiscp, final String status, final byte IDZ)
-    {
+    protected void updateRating(final String NickName, final String NameDiscp, final String status, final byte IDZ) {
         String url = MainActivity.MAIN_URL + "updateRating.php";
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-        {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            { }
+            public void onResponse(String response) {
+            }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
+            public void onErrorResponse(VolleyError error) {
                 Toast.makeText(MainActivity.this, R.string.no_connection_server, Toast.LENGTH_LONG).show();
             }
         }) {
@@ -299,45 +296,42 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    protected void loadStatusFromServer()
-    {
+    protected void loadStatusFromServer() {
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        Type listType = new TypeToken<List<Discipline>>() {
+        }.getType();
         discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i)
             getStatus(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), i);
     }
 
-    protected void loadStatusFromDevice()
-    {
+    protected void loadStatusFromDevice() {
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {}.getType();
+        Type listType = new TypeToken<List<Discipline>>() {
+        }.getType();
         discs = gson.fromJson(JSONHelper.read(MainActivity.this, FILE_NAME), listType);
 
-        for (int i = 0; i < discs.size(); ++i)
-        {
+        for (int i = 0; i < discs.size(); ++i) {
             Discipline temp = discs.get(i);
             updateRating(encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ());
         }
     }
 
-    protected void showDialog()
-    {
+    protected void showDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
 
         String PATH = this.getFileStreamPath(FILE_NAME).toString();
         File file = new File(PATH);
-        if (file.exists())
-        {
+        if (file.exists()) {
             long last = file.lastModified();
             Date date = new Date(last);
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
             alertDialog.setTitle(getResources().getString(R.string.localdata_is_found) + " " + format.format(date));
-        }
-        else{
+        } else {
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Discipline>>() {}.getType();
+            Type listType = new TypeToken<List<Discipline>>() {
+            }.getType();
 
             String test = JSONHelper.read(MainActivity.this, "data_disc.json");
             discs = gson.fromJson(test, listType);
@@ -352,16 +346,14 @@ public class MainActivity extends AppCompatActivity {
 
         alertDialog.setPositiveButton(R.string.device, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 loadStatusFromDevice();
             }
         });
 
         alertDialog.setNegativeButton(R.string.server, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 loadStatusFromServer();
             }
         });
@@ -370,8 +362,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    protected void saveJSON()
-    {
+    protected void saveJSON() {
         prefEditor.putBoolean(Settings2.KEY_OFFLINE_DATA, false);
         prefEditor.apply();
         Gson gson = new Gson();
@@ -381,33 +372,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int count = 0;
-    protected void getStatus (final String NickName, final int i)
-    {
+
+    protected void getStatus(final String NickName, final int i) {
         String url = MainActivity.MAIN_URL + "getStatus.php";
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-        {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
-                if(!response.equals("null"))
-                {
+            public void onResponse(String response) {
+                if (!response.equals("null")) {
                     JSONObject obj;
                     try {
-                         obj = new JSONObject(response);
-                         byte IDZ = (byte)obj.getInt("IDZ");
-                         Gson gson = new Gson();
-                         boolean[][] compl = gson.fromJson(obj.getString("status"), boolean[][].class);
-                         discs.get(i).setComplete(compl);
-                         discs.get(i).setIDZ(IDZ);
+                        obj = new JSONObject(response);
+                        byte IDZ = (byte) obj.getInt("IDZ");
+                        Gson gson = new Gson();
+                        boolean[][] compl = gson.fromJson(obj.getString("status"), boolean[][].class);
+                        discs.get(i).setComplete(compl);
+                        discs.get(i).setIDZ(IDZ);
 
-                         compl = discs.get(0).getComplete();
-                         compl[0][0] = true;
+                        compl = discs.get(0).getComplete();
+                        compl[0][0] = true;
 
-                         ++count;
-                         if (count == discs.size())
-                             saveJSON();
+                        ++count;
+                        if (count == discs.size())
+                            saveJSON();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -435,15 +423,15 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    public boolean checkConnection () {
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean checkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
 
-    public void setFile(){
+    public void setFile() {
         String masterKeyAlias = null;
         try {
             masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
@@ -469,17 +457,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //получение групп по курсу
-    protected void getGroups ()
-    {
-        String url = MainActivity.NEW_MAIN_URL + "getGroups.php";
+    protected void getGroups() {
+        String url = MainActivity.MAIN_URL + "getGroups.php";
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-        {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
-                JSONHelper.create(MainActivity.this,"groups",response);
+            public void onResponse(String response) {
+                JSONHelper.create(MainActivity.this, "groups", response);
                 Gson gson = new Gson();
                 GROUPS = gson.fromJson(response, groups[].class);
             }
@@ -487,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(MainActivity.this, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
-                String response = JSONHelper.read(MainActivity.this,"groups");
+                String response = JSONHelper.read(MainActivity.this, "groups");
                 Gson gson = new Gson();
                 GROUPS = gson.fromJson(response, groups[].class);
             }

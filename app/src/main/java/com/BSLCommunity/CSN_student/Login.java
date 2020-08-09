@@ -70,14 +70,13 @@ public class Login extends AppCompatActivity {
         prefEditor.putString(Settings2.KEY_PASSWORD, password);
         prefEditor.putString(Settings2.KEY_GROUP, group);
         prefEditor.apply();
-        
+
         Intent intent;
         intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    protected void createClickableSpan()
-    {
+    protected void createClickableSpan() {
         TextView text = findViewById(R.id.Span_2);
 
         SpannableString ss = new SpannableString(text.getText());
@@ -89,8 +88,7 @@ public class Login extends AppCompatActivity {
             }
 
             @Override
-            public void updateDrawState(TextPaint ds)
-            {
+            public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
                 ds.setColor(0xFF5EE656);
             }

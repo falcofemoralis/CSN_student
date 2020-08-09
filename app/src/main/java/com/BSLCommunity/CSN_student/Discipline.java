@@ -2,15 +2,14 @@ package com.BSLCommunity.CSN_student;
 
 import android.content.Context;
 
-public class Discipline
-{
-    private String name,teacher,value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
+public class Discipline {
+    private String name, teacher, value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
     private boolean[][] complete; // состояние сдачи лабораторных работ
     private int labs;// labs - количество лабораторных
     private byte IDZ; // 0 - не сдано, 1 - сдано , -1 - не сдано
 
-    public Discipline()
-    { }
+    public Discipline() {
+    }
 
     public Discipline(String name, String teacher, String value, int labs, byte IDZ) {
         this.name = name;
@@ -23,39 +22,45 @@ public class Discipline
             complete[i][0] = complete[i][1] = false;
     }
 
-   public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public String getTeacher() {return teacher;}
+    public String getTeacher() {
+        return teacher;
+    }
 
-    public String getValue() {return value;}
+    public String getValue() {
+        return value;
+    }
 
-    public byte getIDZ() {return IDZ;}
+    public byte getIDZ() {
+        return IDZ;
+    }
 
-    public void setIDZ(byte IDZ) {this.IDZ = IDZ;}
+    public void setIDZ(byte IDZ) {
+        this.IDZ = IDZ;
+    }
 
-    public int getLabs(){return labs;}
+    public int getLabs() {
+        return labs;
+    }
 
-    public void setComplete(boolean arr[][])
-    {
+    public void setComplete(boolean arr[][]) {
         if (arr.length > complete.length)
             return;
 
-        for (int i = 0; i < complete.length; ++i)
-        {
+        for (int i = 0; i < complete.length; ++i) {
             complete[i][0] = arr[i][0];
             complete[i][1] = arr[i][1];
         }
     }
 
-    public boolean[][] getComplete()
-    {
+    public boolean[][] getComplete() {
         return complete;
     }
 
-   public String getStringName(Context context) {
+    public String getStringName(Context context) {
         switch (this.name) {
             case "Алгоритми та методи обчислень":
                 return context.getResources().getString(R.string.Alg_and_metod);
@@ -74,7 +79,7 @@ public class Discipline
         }
     }
 
-    public String getStringTeacher(Context context){
+    public String getStringTeacher(Context context) {
         switch (this.teacher) {
             case "Кудерметов Равіль Камілович":
                 return context.getResources().getString(R.string.teacher_AMO);
@@ -91,7 +96,7 @@ public class Discipline
         }
     }
 
-    public String getStringValue(Context context){
+    public String getStringValue(Context context) {
         switch (this.value) {
             case "Іспит":
                 return context.getResources().getString(R.string.Exam);

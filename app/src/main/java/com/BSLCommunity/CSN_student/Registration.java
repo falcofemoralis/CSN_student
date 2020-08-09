@@ -56,7 +56,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    public void OnClickLogin(){
+    public void OnClickLogin() {
         Intent intent;
         intent = new Intent(this, Login.class);
         startActivity(intent);
@@ -74,13 +74,12 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    public void Save()
-    {
+    public void Save() {
         SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
-        prefEditor.putBoolean(Settings2.KEY_IS_REGISTERED,true);
-        prefEditor.putString(Settings2.KEY_NICKNAME,nickName.getText().toString());
-        prefEditor.putString(Settings2.KEY_PASSWORD,password.getText().toString());
-        prefEditor.putString(Settings2.KEY_GROUP,group);
+        prefEditor.putBoolean(Settings2.KEY_IS_REGISTERED, true);
+        prefEditor.putString(Settings2.KEY_NICKNAME, nickName.getText().toString());
+        prefEditor.putString(Settings2.KEY_PASSWORD, password.getText().toString());
+        prefEditor.putString(Settings2.KEY_GROUP, group);
         prefEditor.apply();
 
         Intent intent;
@@ -93,16 +92,13 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         moveTaskToBack(true);
     }
 
-    protected void setEmptyRating(final String NameDiscp, final String status, final byte IDZ)
-    {
+    protected void setEmptyRating(final String NameDiscp, final String status, final byte IDZ) {
         String url = MainActivity.MAIN_URL + "insertRating.php";
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-        {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
+            public void onResponse(String response) {
             }
         }, new Response.ErrorListener() {
             @Override
@@ -111,7 +107,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         }) {
 
             @Override
-            protected Map<String, String> getParams(){
+            protected Map<String, String> getParams() {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("NickName", nickName.getText().toString().toLowerCase());
                 parameters.put("NameDiscp", NameDiscp);
@@ -123,8 +119,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         requestQueue.add(request);
     }
 
-    protected  void createSpinner()
-    {
+    protected void createSpinner() {
         Spinner coloredSpinner = findViewById(R.id.group);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
@@ -156,7 +151,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-         group = parent.getItemAtPosition(position).toString();
+        group = parent.getItemAtPosition(position).toString();
     }
 
     @Override
@@ -164,8 +159,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    protected void createClickableSpan()
-    {
+    protected void createClickableSpan() {
         TextView text = findViewById(R.id.Span_2a);
 
         SpannableString ss = new SpannableString(text.getText());
@@ -177,8 +171,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
 
             @Override
-            public void updateDrawState(TextPaint ds)
-            {
+            public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
                 ds.setColor(0xFF5EE656);
             }

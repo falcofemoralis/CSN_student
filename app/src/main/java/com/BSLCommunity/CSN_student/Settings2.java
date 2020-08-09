@@ -10,7 +10,9 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,13 +20,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import static com.BSLCommunity.CSN_student.MainActivity.encryptedSharedPreferences;
 
-public class Settings2 extends AppCompatActivity implements SettingsDialogEditText.DialogListener{
+public class Settings2 extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
 
-    TextView nickname_setText,password_setText,group_setText;
+    TextView nickname_setText, password_setText, group_setText;
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_GROUP = "group";
     public static final String KEY_IS_REGISTERED = "is_registered";
@@ -32,8 +36,8 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
     public static final String KEY_TIMER_SETTING = "timer_setting";
     public static final String KEY_OFFLINE_DATA = "offline_data";
     SharedPreferences.Editor prefEditor;
-    String oldNickname,oldPassword,oldGroup;
-    String nickname,password,group;
+    String oldNickname, oldPassword, oldGroup;
+    String nickname, password, group;
     String URL = MainActivity.MAIN_URL + "updateUser.php";
     RequestQueue requestQueue;
 
@@ -59,12 +63,13 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
         oldGroup = group;
 
         Switch timerSwitch = (Switch) findViewById(R.id.timer_switch);
-        if(MainActivity.encryptedSharedPreferences.getBoolean(Settings2.KEY_TIMER_SETTING, true)) timerSwitch.setChecked(true);
+        if (MainActivity.encryptedSharedPreferences.getBoolean(Settings2.KEY_TIMER_SETTING, true))
+            timerSwitch.setChecked(true);
         else timerSwitch.setChecked(false);
 
         timerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)  prefEditor.putBoolean(KEY_TIMER_SETTING, true).apply();
+                if (isChecked) prefEditor.putBoolean(KEY_TIMER_SETTING, true).apply();
                 else prefEditor.putBoolean(KEY_TIMER_SETTING, false).apply();
             }
         });
@@ -72,7 +77,7 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
 
     public void OnClick(View v) {
         SettingsDialogEditText SettingsDialogEditText = new SettingsDialogEditText(v.getId());
-        SettingsDialogEditText.show(getSupportFragmentManager(),"DialogText");
+        SettingsDialogEditText.show(getSupportFragmentManager(), "DialogText");
     }
 
     public void Exit(View v) {
@@ -80,29 +85,29 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
     }
 
     @Override
-    public void applyText(String text,int applyKey) {
-        switch (applyKey){
+    public void applyText(String text, int applyKey) {
+        switch (applyKey) {
             case R.id.nickname:
-                if(text.equals("")){
+                if (text.equals("")) {
                     Toast.makeText(Settings2.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 nickname_setText.setText(text);
-                prefEditor.putString(KEY_NICKNAME,text).apply();
+                prefEditor.putString(KEY_NICKNAME, text).apply();
                 setData();
                 break;
             case R.id.password:
-                if(text.equals("")){
+                if (text.equals("")) {
                     Toast.makeText(Settings2.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 password_setText.setText(text);
-                prefEditor.putString(KEY_PASSWORD,text).apply();
+                prefEditor.putString(KEY_PASSWORD, text).apply();
                 setData();
                 break;
             case R.id.group:
                 group_setText.setText(text);
-                prefEditor.putString(KEY_GROUP,text).apply();
+                prefEditor.putString(KEY_GROUP, text).apply();
                 setData();
                 break;
         }
@@ -123,9 +128,9 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
                     nickname_setText.setText(oldNickname);
                     Toast.makeText(Settings2.this, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
                 } else {
-                    oldNickname =  MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, "");
-                    oldPassword =  MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_PASSWORD, "");
-                    oldGroup =  MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_GROUP, "");
+                    oldNickname = MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_NICKNAME, "");
+                    oldPassword = MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_PASSWORD, "");
+                    oldGroup = MainActivity.encryptedSharedPreferences.getString(Settings2.KEY_GROUP, "");
                     Toast.makeText(Settings2.this, R.string.datachanged, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -154,16 +159,15 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
         };
         requestQueue.add(request);
     }
-    
-        protected void showDialog(){
+
+    protected void showDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Settings2.this);
 
         alertDialog.setMessage(R.string.exitconfirm);
 
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
                 Toast.makeText(Settings2.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();
@@ -172,8 +176,7 @@ public class Settings2 extends AppCompatActivity implements SettingsDialogEditTe
 
         alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
 

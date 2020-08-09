@@ -2,6 +2,8 @@ package com.BSLCommunity.CSN_student;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Debug;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -55,7 +57,7 @@ public class JSONHelper
     }
 
     // Запись в json файл
-    // Если файд не будет найден - создастся новый json файл в директории files 
+    // Если файл не будет найден - создастся новый json файл в директории files
     public static void create(Context context, String fileName, String jsonString)
     {
         try {

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import static com.BSLCommunity.CSN_student.Objects.User.getGroups;
 
 /*
  * Класс для сериализации
@@ -50,59 +51,57 @@ class ScheduleList {
     }
 }
 
+//форма расписание предметов группы
 public class Schedule extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    //кол-во дней и пар в активити
-    final int MAX_PAIR = 5;
-    final int MAX_DAYS = 5;
+    final int MAX_PAIR = 5; //кол-во пар в активити
+    final int MAX_DAYS = 5; //кол-во дней в активити
 
-    TextView[][] scheduleTextView = new TextView[MAX_DAYS][MAX_PAIR];
-    TextView type_week;
-    Spinner group_spin;
-    String group;
-
-    //обьект сохраненого расписание
-    ScheduleList[][][] scheduleList;
-
-    long groupId;
+    TextView[][] scheduleTextView = new TextView[MAX_DAYS][MAX_PAIR]; //массив из элементов TextView в активити
+    TextView type_week; //тип недели
+    Spinner groupSpinner; //спинер выбора группы
+    long groupId; // выбранный код группы
+    ScheduleList[][][] scheduleList;  //сохраненое расписание
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
-
-        createSpinner();
+        createGroupSpinner();
         getScheduleElements();
     }
 
-    //создаем спинер выбора группы
-    protected void createSpinner() {
-        group_spin = findViewById(R.id.group_spin);
-
-        //создаем лист групп
-        List<String> groups = new ArrayList<String>();
-        for (int i = 0; i < User.GROUPS.length; ++i)
-            groups.add(User.GROUPS[i].GroupName);
+    //создание спиннера групп
+    protected void createGroupSpinner() {
+        groupSpinner = findViewById(R.id.group_spin);
+        getGroups(this, groupSpinner, 3,R.layout.color_spinner_schedule); //в дальнейшем заменить на User.getInstance().course
 
         //устанавливаем спинер
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_schedule, groups);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-        group_spin.setAdapter(dataAdapter);
-        group_spin.setOnItemSelectedListener(this);
+        groupSpinner.setOnItemSelectedListener(this);
     }
 
     //если в спинере была выбрана группа
-    //запускается после onCreate
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        groupId = id;
+        //+1 т.к спиннер хранит группы от 0, а в базе от 1
+        groupId = id+1; //сохраняем выбранный код группы
         downloadSchedule();
     }
 
+    //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    //получение необходимых обьектов
+    //меняем тип недели
+    public void changeTypeWeek(View v) {
+        if (type_week.getText().equals(getResources().getString(R.string.denominator)))
+            type_week.setText(getResources().getString(R.string.numerator));
+        else
+            type_week.setText(getResources().getString(R.string.denominator));
+        setSchedule();
+    }
+
+    //получение необходимых полей с активити расписание
     protected void getScheduleElements() {
         type_week = findViewById(R.id.type_week);
 
@@ -115,27 +114,40 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         }
     }
 
-    //устанавливаем расписание
-    protected void setSchedule() {
-        //выбираем неделю в зависимости от выбранной недели
-        int numType = type_week.getText().equals(getResources().getString(R.string.denominator)) ? 1 : 0;
+    //скачиваем расписание с сервера
+    public void downloadSchedule() {
+        //обьект запроса
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        for (int i = 0; i < MAX_DAYS; ++i) {
-            for (int j = 0; j < MAX_PAIR; ++j) {
+        System.out.println(groupId);
+        String url = Main.MAIN_URL + String.format("api/groups/%1$s/schedule", groupId);
+
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
                 try {
-                    //парсим предмет по установленому языку в приложении
-                    JSONObject subjectJSONObject = new JSONObject(scheduleList[numType][i][j].subject);
-                    String subject = subjectJSONObject.getString(Locale.getDefault().getLanguage());
-
-                    JSONObject typeJSONObject = new JSONObject(scheduleList[numType][i][j].type);
-                    String type = typeJSONObject.getString(Locale.getDefault().getLanguage());
-
-                    scheduleTextView[i][j].setText(subject + " " + type + " (" + scheduleList[numType][i][j].room + ")");
-                } catch (Exception e) {
-                    scheduleTextView[i][j].setText("");
+                    //сохраняем расписание в отдельный json файл
+                    JSONHelper.create(Schedule.this, String.valueOf(groupId), response);
+                    updateSchedule(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    setSchedule();
                 }
             }
-        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Schedule.this, "local schedule", Toast.LENGTH_SHORT).show();
+                try {
+                    //загружаем расписание из отдельного json файла
+                    String response = JSONHelper.read(Schedule.this, String.valueOf(groupId));
+                    updateSchedule(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 
     //обновляем данные json строки в массив расписания
@@ -158,57 +170,28 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         setSchedule();
     }
 
-    //скачиваем расписание с сервера
-    public void downloadSchedule() {
-        //узнаем какая группа выбрана
-        group = group_spin.getSelectedItem().toString();
+    //устанавливаем расписание
+    protected void setSchedule() {
+        //получаем неделю в зависимости от выбранной недели
+        int numType = type_week.getText().equals(getResources().getString(R.string.denominator)) ? 1 : 0;
 
-        //обьект запроса
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-
-        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Main.MAIN_URL + "getSchedule.php", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+        for (int i = 0; i < MAX_DAYS; ++i) {
+            for (int j = 0; j < MAX_PAIR; ++j) {
                 try {
-                    //сохраняем расписание в отдельный json файл
-                    JSONHelper.create(Schedule.this, group, response);
-                    updateSchedule(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    setSchedule();
+                    //парсим предмет по установленому языку в приложении
+                    JSONObject subjectJSONObject = new JSONObject(scheduleList[numType][i][j].subject);
+                    String subject = subjectJSONObject.getString(Locale.getDefault().getLanguage());
+
+                    JSONObject typeJSONObject = new JSONObject(scheduleList[numType][i][j].type);
+                    String type = typeJSONObject.getString(Locale.getDefault().getLanguage());
+
+                    scheduleTextView[i][j].setText(subject + " " + type + " (" + scheduleList[numType][i][j].room + ")");
+                } catch (Exception e) {
+                    //если поле пустое
+                    scheduleTextView[i][j].setText("");
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Schedule.this, "local schedule", Toast.LENGTH_SHORT).show();
-                try {
-                    //загружаем расписание из отдельного json файла
-                    String response = JSONHelper.read(Schedule.this, group);
-                    updateSchedule(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("groupId", String.valueOf(User.GROUPS[(int) groupId].Code_Group));
-                return parameters;
-            }
-        };
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    //меняем тип недели
-    public void changeTypeWeek(View v) {
-        if (type_week.getText().equals(getResources().getString(R.string.denominator)))
-            type_week.setText(getResources().getString(R.string.numerator));
-        else
-            type_week.setText(getResources().getString(R.string.denominator));
-        setSchedule();
+        }
     }
 }
 

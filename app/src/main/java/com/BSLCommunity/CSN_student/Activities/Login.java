@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,72 +11,43 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.RequestQueue;
-
+import com.BSLCommunity.CSN_student.Objects.User;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
-
 // Форма логина для пользователя
 public class Login extends AppCompatActivity {
-
-    String FILE_NAME = "data_disc_";
-    EditText nickNameS;
-    EditText passwordS;
-    String URL = Main.MAIN_URL + "getUser.php";
-    RequestQueue requestQueue;
-    String nickname, password, group;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         createClickableSpan();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    // Логин
-    public void OnClick(View v) {
-        Map<String, String> param = new HashMap<>();
-
-        param.put("NickName", "Arti");
-        param.put("Password", "Arti");
-
-        User.login(getApplicationContext(), Login.this, param);
-    }
-
-    public void OnClickRegistration() {
-        Intent intent;
-        intent = new Intent(this, Registration.class);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
-
+    //возращает активити в исходное состояние
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
 
-    public void Save() {
-        SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
-        prefEditor.putBoolean(Settings.KEY_IS_REGISTERED, true);
-        prefEditor.putString(Settings.KEY_NICKNAME, nickname);
-        prefEditor.putString(Settings.KEY_PASSWORD, password);
-        prefEditor.putString(Settings.KEY_GROUP, group);
-        prefEditor.apply();
-
-        Intent intent;
-        intent = new Intent(this, Main.class);
-        startActivity(intent);
+    //кнопка логина
+    public void OnClick(View v) {
+        EditText NickName = (EditText) findViewById(R.id.Nick) ;
+        EditText Password = (EditText) findViewById(R.id.pass) ;
+        User.login(getApplicationContext(), Login.this, NickName.getText().toString().toLowerCase(),Password.getText().toString());
     }
 
+    //обработчик перехода на форму регистрации
+    public void OnClickRegistration() {
+        startActivity(new Intent(this, Registration.class));
+        overridePendingTransition(0, 0);
+    }
+
+    //кнопка перехода в регистрацию
     protected void createClickableSpan() {
         TextView text = findViewById(R.id.Span_2);
 

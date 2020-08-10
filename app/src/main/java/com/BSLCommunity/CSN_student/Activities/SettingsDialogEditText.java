@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
+import com.BSLCommunity.CSN_student.Objects.Settings;
 
 import java.util.ArrayList;
 
@@ -42,13 +43,13 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
             case R.id.nickname:
                 view = inflater.inflate(R.layout.dialog_settings, null);
                 EditText = view.findViewById(R.id.editText_dialog);
-                EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""));
+                EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.PrefKeys.NICKNAME.getKey(), ""));
                 title = getResources().getString(R.string.nickname);
                 break;
             case R.id.password:
                 view = inflater.inflate(R.layout.dialog_settings, null);
                 EditText = view.findViewById(R.id.editText_dialog);
-                EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.KEY_PASSWORD, ""));
+                EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.PrefKeys.PASSWORD.getKey(), ""));
                 title = getResources().getString(R.string.password);
                 break;
             case R.id.group:
@@ -56,8 +57,8 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 try {
                     groupSpinner = view.findViewById(R.id.group);
                     ArrayList<String> spinnerArray = new ArrayList<String>();
-                    for (int i = 0; i < User.GROUPS.length; ++i)
-                        spinnerArray.add(User.GROUPS[i].GroupName);
+                    for (int i = 0; i < User.groups.length; ++i)
+                        spinnerArray.add(User.groups[i].GroupName);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                             getContext(), R.layout.spinner_dropdown_settings, spinnerArray);
                     adapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);

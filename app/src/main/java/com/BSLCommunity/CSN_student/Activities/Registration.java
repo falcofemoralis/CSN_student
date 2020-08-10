@@ -16,131 +16,104 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.User.getGroups;
 
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    public final static String FILE_NAME = "data_disc_";
-    EditText password, checkPassword, nickName;
-    String group;
-    Button registration;
+    Spinner groupSpinner; //спиннер группы
+    long CodeGroup; //выбранный код группы со спиннера
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        createSpinner();
+        createGroupSpinner();
+        createCourseSpinner();
         createClickableSpan();
-
-        password = (EditText) findViewById(R.id.pass);
-        checkPassword = (EditText) findViewById(R.id.checkPass);
-        nickName = (EditText) findViewById(R.id.Nick);
-        registration = (Button) findViewById(R.id.button2);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    public void OnClickLogin() {
-        Intent intent;
-        intent = new Intent(this, Login.class);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
-
-    public void registration(View view) {
-        Map<String, String> param = new HashMap<>();
-
-        param.put("NickName", "Arthur");
-        param.put("Password", "Farmer Arthur");
-        param.put("Group", "КНТ-518");
-
-        User.registration(getApplicationContext(), Registration.this, param);
-    }
-
-    public void Save() {
-        SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
-        prefEditor.putBoolean(Settings.KEY_IS_REGISTERED, true);
-        prefEditor.putString(Settings.KEY_NICKNAME, nickName.getText().toString());
-        prefEditor.putString(Settings.KEY_PASSWORD, password.getText().toString());
-        prefEditor.putString(Settings.KEY_GROUP, group);
-        prefEditor.apply();
-
-        Intent intent;
-        intent = new Intent(this, Subjects.class);
-        startActivity(intent);
-    }
-
+    //возращает активити в исходное состояние
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
 
-    protected void setEmptyRating(final String NameDiscp, final String status, final byte IDZ) {
-        String url = Main.MAIN_URL + "insertRating.php";
+    //обработчик регистрации юзера
+    public void OnClick(View view) {
+        EditText NickName = (EditText) findViewById(R.id.Nick);
+        EditText Password = (EditText) findViewById(R.id.pass);
+        EditText RepeatPassword = (EditText) findViewById(R.id.checkPass);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", nickName.getText().toString().toLowerCase());
-                parameters.put("NameDiscp", NameDiscp);
-                parameters.put("Status", status);
-                parameters.put("IDZ", Byte.toString(IDZ));
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
+        if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
+            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(CodeGroup));
+        } else {
+            Toast.makeText(this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
+        }
     }
 
-    protected void createSpinner() {
-        Spinner coloredSpinner = findViewById(R.id.group);
+    //создание спиннера групп
+    protected void createGroupSpinner() {
+        groupSpinner = findViewById(R.id.group);
+
+        //устанавливаем спинер
+        groupSpinner.setOnItemSelectedListener(this);
+    }
+
+    //создание спиннера курсов
+    protected void createCourseSpinner() {
+        Spinner courseSpinner = findViewById(R.id.course);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.group_values,
+                R.array.courses,
                 R.layout.color_spinner_layout
         );
 
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        coloredSpinner.setAdapter(adapter);
-        coloredSpinner.setOnItemSelectedListener(this);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        courseSpinner.setAdapter(adapter);
+        courseSpinner.setOnItemSelectedListener(this);
     }
 
+    //выбор элемента на спинере (используется свитч для определения на каком спинере был выбран элемент)
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        group = parent.getItemAtPosition(position).toString();
+        switch (parent.getId()) {
+            case R.id.group:
+                //+1 т.к спиннер хранит группы от 0, а в базе от 1
+                CodeGroup = id + 1;
+                break;
+            case R.id.course:
+                //загружаются группы на спинер в зависимости от курса
+                getGroups(this, groupSpinner, Integer.parseInt(parent.getItemAtPosition(position).toString()), R.layout.color_spinner_layout);
+                break;
+        }
     }
 
+    //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
+    //переход на форму логина
+    public void OnClickLogin() {
+        startActivity(new Intent(this, Login.class));
+        overridePendingTransition(0, 0);
+    }
+
+    //кнопка перехода в логин
     protected void createClickableSpan() {
         TextView text = findViewById(R.id.Span_2a);
 

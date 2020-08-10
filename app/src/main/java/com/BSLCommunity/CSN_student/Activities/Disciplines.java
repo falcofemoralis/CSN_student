@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 class Discipline {
     private String name, teacher, value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
@@ -175,6 +175,7 @@ public class Disciplines extends AppCompatActivity {
         loadRating();
         FILE_NAME += encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, "") + ".json";
 
+        res = (Button) findViewById(R.id.res);
 
         //Cмена статуса для кнопок сдачи
         View.OnClickListener ButtonChangeStatus = new View.OnClickListener() {
@@ -446,7 +447,7 @@ public class Disciplines extends AppCompatActivity {
         prefEditor.apply();
         Gson gson = new Gson();
         String jsonString = gson.toJson(discs);
-        JSONHelper.create(context, Registration.FILE_NAME, jsonString);
+        JSONHelper.create(context, Main.FILE_NAME, jsonString);
         whole = true;
     }
 

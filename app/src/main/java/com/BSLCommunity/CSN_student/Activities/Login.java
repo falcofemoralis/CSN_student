@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student;
+package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,12 +16,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.User;
 import com.android.volley.RequestQueue;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.BSLCommunity.CSN_student.MainActivity.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
 
 // Форма логина для пользователя
 public class Login extends AppCompatActivity {
@@ -29,7 +31,7 @@ public class Login extends AppCompatActivity {
     String FILE_NAME = "data_disc_";
     EditText nickNameS;
     EditText passwordS;
-    String URL = MainActivity.MAIN_URL + "getUser.php";
+    String URL = Main.MAIN_URL + "getUser.php";
     RequestQueue requestQueue;
     String nickname, password, group;
 
@@ -65,19 +67,18 @@ public class Login extends AppCompatActivity {
 
     public void Save() {
         SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
-        prefEditor.putBoolean(Settings2.KEY_IS_REGISTERED, true);
-        prefEditor.putString(Settings2.KEY_NICKNAME, nickname);
-        prefEditor.putString(Settings2.KEY_PASSWORD, password);
-        prefEditor.putString(Settings2.KEY_GROUP, group);
+        prefEditor.putBoolean(Settings.KEY_IS_REGISTERED, true);
+        prefEditor.putString(Settings.KEY_NICKNAME, nickname);
+        prefEditor.putString(Settings.KEY_PASSWORD, password);
+        prefEditor.putString(Settings.KEY_GROUP, group);
         prefEditor.apply();
-        
+
         Intent intent;
-        intent = new Intent(this, MainActivity.class);
+        intent = new Intent(this, Main.class);
         startActivity(intent);
     }
 
-    protected void createClickableSpan()
-    {
+    protected void createClickableSpan() {
         TextView text = findViewById(R.id.Span_2);
 
         SpannableString ss = new SpannableString(text.getText());
@@ -89,8 +90,7 @@ public class Login extends AppCompatActivity {
             }
 
             @Override
-            public void updateDrawState(TextPaint ds)
-            {
+            public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
                 ds.setColor(0xFF5EE656);
             }

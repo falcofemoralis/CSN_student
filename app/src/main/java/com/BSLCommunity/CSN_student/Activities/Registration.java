@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student;
+package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,29 +16,34 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.User;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
+
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
-    String FILE_NAME = "data_disc_";
+    public final static String FILE_NAME = "data_disc_";
     EditText password, checkPassword, nickName;
     String group;
     Button registration;
-    RequestQueue requestQueue;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +56,10 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         checkPassword = (EditText) findViewById(R.id.checkPass);
         nickName = (EditText) findViewById(R.id.Nick);
         registration = (Button) findViewById(R.id.button2);
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    public void OnClickLogin(){
+    public void OnClickLogin() {
         Intent intent;
         intent = new Intent(this, Login.class);
         startActivity(intent);
@@ -71,20 +74,18 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         param.put("Group", "КНТ-518");
 
         User.registration(getApplicationContext(), Registration.this, param);
-
     }
 
-    public void Save()
-    {
-        SharedPreferences.Editor prefEditor = MainActivity.encryptedSharedPreferences.edit();
-        prefEditor.putBoolean(Settings2.KEY_IS_REGISTERED,true);
-        prefEditor.putString(Settings2.KEY_NICKNAME,nickName.getText().toString());
-        prefEditor.putString(Settings2.KEY_PASSWORD,password.getText().toString());
-        prefEditor.putString(Settings2.KEY_GROUP,group);
+    public void Save() {
+        SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
+        prefEditor.putBoolean(Settings.KEY_IS_REGISTERED, true);
+        prefEditor.putString(Settings.KEY_NICKNAME, nickName.getText().toString());
+        prefEditor.putString(Settings.KEY_PASSWORD, password.getText().toString());
+        prefEditor.putString(Settings.KEY_GROUP, group);
         prefEditor.apply();
 
         Intent intent;
-        intent = new Intent(this, MainActivity.class);
+        intent = new Intent(this, Main.class);
         startActivity(intent);
     }
 
@@ -93,16 +94,13 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         moveTaskToBack(true);
     }
 
-    protected void setEmptyRating(final String NameDiscp, final String status, final byte IDZ)
-    {
-        String url = MainActivity.MAIN_URL + "insertRating.php";
+    protected void setEmptyRating(final String NameDiscp, final String status, final byte IDZ) {
+        String url = Main.MAIN_URL + "insertRating.php";
 
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
-        {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
+            public void onResponse(String response) {
             }
         }, new Response.ErrorListener() {
             @Override
@@ -111,7 +109,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         }) {
 
             @Override
-            protected Map<String, String> getParams(){
+            protected Map<String, String> getParams() {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("NickName", nickName.getText().toString().toLowerCase());
                 parameters.put("NameDiscp", NameDiscp);
@@ -123,8 +121,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         requestQueue.add(request);
     }
 
-    protected  void createSpinner()
-    {
+    protected void createSpinner() {
         Spinner coloredSpinner = findViewById(R.id.group);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
@@ -137,26 +134,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         coloredSpinner.setOnItemSelectedListener(this);
     }
 
-    /*protected  void createSpinner()
-    {
-        Spinner gr_spin = findViewById(R.id.group);
-
-        ArrayList<String> spinnerArray = new ArrayList<String>();
-
-        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, R.layout.color_spinner_layout,spinnerArray);
-
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        gr_spin.setAdapter(adapter);
-        gr_spin.setOnItemSelectedListener(this);
-    }*/
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-         group = parent.getItemAtPosition(position).toString();
+        group = parent.getItemAtPosition(position).toString();
     }
 
     @Override
@@ -164,8 +144,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    protected void createClickableSpan()
-    {
+    protected void createClickableSpan() {
         TextView text = findViewById(R.id.Span_2a);
 
         SpannableString ss = new SpannableString(text.getText());
@@ -177,8 +156,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
             }
 
             @Override
-            public void updateDrawState(TextPaint ds)
-            {
+            public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
                 ds.setColor(0xFF5EE656);
             }

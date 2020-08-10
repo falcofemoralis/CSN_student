@@ -80,7 +80,7 @@
                 android:layout_weight="0.25"
                 android:background="@drawable/button_style"
                 android:drawableTop="@drawable/ic_school_black_24dp"
-                android:onClick="OnClickSubjects"
+                android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
@@ -95,14 +95,14 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/rating"
+                android:id="@+id/ratingBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
                 android:background="@drawable/button_style"
                 android:drawableTop="@drawable/ic_group_black_24dp"
-                android:onClick="OnClickRating"
+                android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
@@ -117,14 +117,14 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/LS"
+                android:id="@+id/lessons_scheduleBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
                 android:background="@drawable/button_style"
                 android:drawableTop="@drawable/ic_school_black_24dp"
-                android:onClick="OnClickLessons"
+                android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
@@ -139,14 +139,14 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/settings"
+                android:id="@+id/settingsBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
                 android:background="@drawable/button_style"
                 android:drawableTop="@drawable/ic_settings_black_24dp"
-                android:onClick="OnClickSettings"
+                android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"

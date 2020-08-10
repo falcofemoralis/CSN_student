@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.BSLCommunity.CSN_student.MainActivity"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Main"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,30 +22,30 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Registration"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Registration"
             android:theme="@style/NoActionBar">
         </activity>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Login"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Login"
             android:theme="@style/NoActionBar">
         </activity>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Schedule"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Schedule"
             android:theme="@style/NoActionBar">
         </activity>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Disciplines"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Disciplines"
             android:theme="@style/NoActionBar">
         </activity>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Rating"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Rating"
             android:theme="@style/NoActionBar">
         </activity>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Settings2"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Settings"
             android:label="@string/title_activity_settings"/>
 
-        <activity android:name="com.BSLCommunity.CSN_student.Subjects"
+        <activity android:name="com.BSLCommunity.CSN_student.Activities.Subjects"
             android:theme="@style/NoActionBar">
         </activity>
     </application>

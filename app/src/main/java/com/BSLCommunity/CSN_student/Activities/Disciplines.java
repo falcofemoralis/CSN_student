@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 class Discipline {
     private String name, teacher, value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета

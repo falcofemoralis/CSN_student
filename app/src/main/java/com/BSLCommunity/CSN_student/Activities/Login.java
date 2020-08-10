@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
+import com.BSLCommunity.CSN_student.Objects.User;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -21,21 +21,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
+import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.Objects.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
-import static com.BSLCommunity.CSN_student.User.getGroups;
+import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.User.getGroups;
 
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

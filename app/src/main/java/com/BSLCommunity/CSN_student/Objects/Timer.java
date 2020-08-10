@@ -15,7 +15,7 @@ import com.BSLCommunity.CSN_student.R;
 
 import java.util.Calendar;
 
-import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Timer extends AppCompatActivity {
     long seconds, hour, minutes;

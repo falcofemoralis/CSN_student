@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,8 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static com.BSLCommunity.CSN_student.User.getGroups;
+import static com.BSLCommunity.CSN_student.Objects.User.getGroups;
 
 /*
  * Класс для сериализации

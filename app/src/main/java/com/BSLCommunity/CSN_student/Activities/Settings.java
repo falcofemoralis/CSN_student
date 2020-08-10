@@ -30,8 +30,9 @@ import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Settings extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
+import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
+public class Settings extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
     TextView nickname_setText, password_setText, group_setText;
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_GROUP = "group";
@@ -44,7 +45,6 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
     String nickname, password, group;
     String URL = Main.MAIN_URL + "updateUser.php";
     RequestQueue requestQueue;
-    public static SharedPreferences encryptedSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,30 +187,5 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
 
         alertDialog.setCancelable(false);
         alertDialog.show();
-    }
-
-    public static void setSettingsFile(Context context) {
-        String masterKeyAlias = null;
-        try {
-            masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            encryptedSharedPreferences = EncryptedSharedPreferences.create(
-                    "secret_shared_prefs",
-                    masterKeyAlias,
-                    context,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

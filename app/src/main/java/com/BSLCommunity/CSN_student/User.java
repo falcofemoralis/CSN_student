@@ -1,9 +1,15 @@
 package com.BSLCommunity.CSN_student;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.service.controls.Control;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Activities.Settings;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,8 +23,13 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.StandardSocketOptions;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
 
 // Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
 public class User {
@@ -35,16 +46,15 @@ public class User {
     public String nameGroup;
     public int course;
 
-    //список групп по курсу
-    public class groups {
-        public int Code_Group;
-        public String GroupName;
-    }
+    /*список групп по курсу
+     * Code_Group -  код группы в базе данных
+     * GroupName - имя группы
+     * */
+    public class Groups { public int id; public String GroupName;}
+    public static Groups[] groups;
 
-    public static groups[] GROUPS;
-
+    //реализация синглтона
     public static User instance = null;
-
     public static User getInstance() {
         if (instance == null)
             return init();
@@ -67,19 +77,18 @@ public class User {
     /* Функция логина пользователя
      * Параметры:
      * appContext - application context
-     * acivityContext - activity context активити из которого был сделан вызов функции
+     * activityContext - activity context активити из которого был сделан вызов функции
      * loginData - параметры необходимо передать в GET запросе при логине пользователя
      * */
-    public static void login(final Context appContext, final Context activityContext, final Map<String, String> loginData) {
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(appContext);
+    public static void login(final Context appContext, final Context activityContext, final String nickName, final String password) {
+        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
+        String url = Main.MAIN_URL + String.format("api/users/login?NickName=%1$s&Password=%2$s", nickName,password);
 
-        String url = Main.MAIN_URL + "api/users/login";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
+                    //загружаем данные юзера
                     JSONObject user = new JSONObject(response);
                     instance = new User();
                     instance.id = user.getInt("id");
@@ -87,6 +96,13 @@ public class User {
                     instance.password = user.getString("Password");
                     instance.course = user.getInt("Course");
                     instance.nameGroup = user.getString("GroupName");
+
+                    //запоминаем что пользователь зарегистрировался
+                    SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
+                    prefEditor.putBoolean(Settings.KEY_IS_REGISTERED, true).apply();
+
+                    //запускаем главное окно
+                    activityContext.startActivity(new Intent(appContext, Main.class));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(appContext, R.string.no_user, Toast.LENGTH_SHORT).show();
@@ -98,27 +114,20 @@ public class User {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(activityContext, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return loginData;
-            }
-        };
+        });
         requestQueue.add(request);
     }
 
     /* Функция регистрации нового пользователя
      * Параметры:
-     * appContext - application conext ????
-     * acivityContext - activity context активити из которого был сделан вызов функции
+     * appContext - application context
+     * activityContext - activity context активити из которого был сделан вызов функции
      * regData - параметры необходимо передать в GET запросе при регистрации пользователя
      * */
-    public static void registration(final Context appContext, final Context activityContext, final Map<String, String> regData) {
+    public static void registration(final Context appContext, final Context activityContext, final String nickName, final String password, final String codeGroup) {
+        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
 
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(appContext);
-
-        String url = Main.MAIN_URL + "/api/users";
+        String url = Main.MAIN_URL + "api/users";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -132,12 +141,8 @@ public class User {
                     /* Для загрузки данных используется логин, потому необходимо передать в функцию необходимые данные для успешного логина
                      * Вызывает логин по причине того что для полных данных о пользователе нужно так же знать его id, который создается в базе автоматически при регистрации
                      * */
-                    Map<String, String> param = new HashMap<>();
-                    param.put("NickName", regData.get("NickName"));
-                    param.put("Password", regData.get("Password"));
-                    login(appContext, activityContext, param); // Логин загружает все необходимые данные после успешной регистрации пользователя
+                    login(appContext, activityContext, nickName, password); // Логин загружает все необходимые данные после успешной регистрации пользователя
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -147,40 +152,57 @@ public class User {
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return regData;
+                Map<String, String> param = new HashMap<>();
+                param.put("NickName", nickName);
+                param.put("Password", password);
+                param.put("CodeGroup", codeGroup);
+                return param;
             }
         };
         requestQueue.add(request);
     }
 
-    //получение групп по курсу
-    public static void getGroups(final Context context) {
-        String url = Main.MAIN_URL + "getGroups.php";
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+    /* Функция получение групп по курсу
+     * Параметры:
+     * appContext - application context
+     * course - номер курса
+     * */
+    public static void getGroups(final Context appContext, final Spinner groupSpinner, int course, final int spinnerLayout) {
+        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
+        String url = Main.MAIN_URL + String.format("api/groups?Course=%1$s", course);
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                JSONHelper.create(context, "groups", response);
+                //сохраняем группы в файл
+                JSONHelper.create(appContext, Main.GROUP_FILE_NAME, response);
+
+                //парсим полученный список групп
                 Gson gson = new Gson();
-                GROUPS = gson.fromJson(response, groups[].class);
+                groups = gson.fromJson(response, Groups[].class);
+
+                //создаем лист групп
+                List<String> groups = new ArrayList<String>();
+                if(User.groups.length!=0){
+                    //добавляем в массив из класса Groups группы
+                    for (int i = 0; i < User.groups.length; ++i)
+                        groups.add(User.groups[i].GroupName);
+                }else{
+                    //в том случае если групп по курсу нету
+                    groups.add("No groups");
+                }
+
+                //устанавливаем спинер выбора групп
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(appContext, spinnerLayout, groups);
+                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+                groupSpinner.setAdapter(dataAdapter);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
-                String response = JSONHelper.read(context, "groups");
-                Gson gson = new Gson();
-                GROUPS = gson.fromJson(response, groups[].class);
+                Toast.makeText(appContext, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("Course", String.valueOf(3));
-                return parameters;
-            }
-        };
+        });
         requestQueue.add(request);
     }
 }

@@ -48,7 +48,7 @@ public class Subjects extends AppCompatActivity {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Discipline>>() {
         }.getType();
-        discs = gson.fromJson(JSONHelper.read(this, Registration.FILE_NAME), listType);
+        discs = gson.fromJson(JSONHelper.read(this, Main.FILE_NAME), listType);
 
         int sum = 0, all = 0;
         for (int i = 0; i < discs.size(); ++i) {

@@ -43,6 +43,8 @@ import static com.BSLCommunity.CSN_student.User.getGroups;
 
 public class Main extends AppCompatActivity {
     public static String MAIN_URL = "http://a0459938.xsph.ru/";
+    public static String FILE_NAME = "data_disc_";
+    public static String GROUP_FILE_NAME = "groups";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера
@@ -59,7 +61,6 @@ public class Main extends AppCompatActivity {
         Settings.setSettingsFile(this);
 
         checkData();
-        getGroups(this);
     }
 
     public void OnClick(View view) {
@@ -119,7 +120,7 @@ public class Main extends AppCompatActivity {
     protected void showDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main.this);
 
-        String PATH = this.getFileStreamPath(Registration.FILE_NAME).toString();
+        String PATH = this.getFileStreamPath(Main.FILE_NAME).toString();
         File file = new File(PATH);
         if (file.exists()) {
             long last = file.lastModified();
@@ -171,7 +172,7 @@ public class Main extends AppCompatActivity {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Discipline>>() {
         }.getType();
-        discs = gson.fromJson(JSONHelper.read(Main.this, Registration.FILE_NAME), listType);
+        discs = gson.fromJson(JSONHelper.read(Main.this, Main.FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i)
             Disciplines.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
@@ -181,7 +182,7 @@ public class Main extends AppCompatActivity {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Discipline>>() {
         }.getType();
-        discs = gson.fromJson(JSONHelper.read(Main.this, Registration.FILE_NAME), listType);
+        discs = gson.fromJson(JSONHelper.read(Main.this, Main.FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i) {
             Discipline temp = discs.get(i);

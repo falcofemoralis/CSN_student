@@ -56,8 +56,8 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 try {
                     groupSpinner = view.findViewById(R.id.group);
                     ArrayList<String> spinnerArray = new ArrayList<String>();
-                    for (int i = 0; i < User.GROUPS.length; ++i)
-                        spinnerArray.add(User.GROUPS[i].GroupName);
+                    for (int i = 0; i < User.groups.length; ++i)
+                        spinnerArray.add(User.groups[i].GroupName);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                             getContext(), R.layout.spinner_dropdown_settings, spinnerArray);
                     adapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);

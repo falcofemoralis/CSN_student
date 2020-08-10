@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.android.volley.RequestQueue;
 
 import java.util.HashMap;

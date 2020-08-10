@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
+import com.BSLCommunity.CSN_student.Objects.User;
 
 import java.util.ArrayList;
 

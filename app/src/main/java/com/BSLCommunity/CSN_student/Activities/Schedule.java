@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;

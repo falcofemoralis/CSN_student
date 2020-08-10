@@ -16,22 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
-import com.android.volley.AuthFailureError;
+import com.BSLCommunity.CSN_student.Objects.User;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +82,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         prefEditor.apply();
 
         Intent intent;
-        intent = new Intent(this, Main.class);
+        intent = new Intent(this, Subjects.class);
         startActivity(intent);
     }
 

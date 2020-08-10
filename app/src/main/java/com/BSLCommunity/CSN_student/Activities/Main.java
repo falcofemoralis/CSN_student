@@ -32,7 +32,7 @@ import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPr
 import static com.BSLCommunity.CSN_student.Objects.User.getGroups;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://192.168.1.3";
+    public static String MAIN_URL = "...";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера

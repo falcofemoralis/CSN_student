@@ -23,7 +23,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-// Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
 public class User {
 
     /* Основные данные пользователя
@@ -65,7 +64,7 @@ public class User {
             // Извлечение локальных данных пользователя
             instance = new User();
 
-            SharedPreferences pref = Settings.sharedPrefs;
+            SharedPreferences pref = Settings.encryptedSharedPreferences;
             instance.id =  pref.getInt(Settings.PrefKeys.USER_ID.getKey(), -1);
             instance.nickName =  pref.getString(Settings.PrefKeys.NICKNAME.getKey(), null);
             instance.password = pref.getString(Settings.PrefKeys.PASSWORD.getKey(), null);
@@ -94,12 +93,13 @@ public class User {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = Main.MAIN_URL + "api/users/login";
+        String url = Main.MAIN_URL + String.format("/api/users/login?NickName=%s&Password=%s", loginData.get("NickName"), loginData.get("Password"));
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
+                    // Получаем все необходимые данные пользователя
                     JSONObject user = new JSONObject(response);
                     instance = new User();
                     instance.id = user.getInt("id");
@@ -108,6 +108,8 @@ public class User {
                     instance.сourse = user.getInt("Course");
                     instance.nameGroup = user.getString("GroupName");
                     instance.groupId = user.getInt("group_id");
+                    instance.saveData(); // Сохраняем данные
+                    activityContext.startActivity(new Intent(appContext, Main.class)); // Загружаем MainActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(appContext, R.string.no_user, Toast.LENGTH_SHORT).show();
@@ -119,12 +121,7 @@ public class User {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(activityContext, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return  loginData;
-            }
-        };
+        });
         requestQueue.add(request);
     }
 
@@ -159,7 +156,7 @@ public class User {
                     param.put("NickName", regData.get("NickName"));
                     param.put("Password", regData.get("Password"));
                     login(appContext, activityContext, param); // Логин загружает все необходимые данные после успешной регистрации пользователя
-                    activityContext.startActivity(new Intent(appContext, Main.class));
+                    activityContext.startActivity(new Intent(appContext, Main.class)); // Загружаем MainActivity
                 }
 
             }
@@ -183,13 +180,13 @@ public class User {
      * acivityContext - activity context активити из которого был сделан вызов функции
      * regData - параметры которые необходимо передать в PUT запросе при обновления данных пользователя
      * */
-    public  void update(final Context appContext, final Context activityContext, final Map<String, String> updateData) {
+    public void update(final Context appContext, final Context activityContext, final Map<String, String> updateData) {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = Main.MAIN_URL + "/api/users/" + Integer.toString(instance.id);
+        String url = Main.MAIN_URL + "/api/users/1";
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 // Обновление успешно, потому заносим новые данные
@@ -216,7 +213,7 @@ public class User {
     // Сохранение всех данных пользователя
     public void saveData()
     {
-        SharedPreferences.Editor prefEditor = Settings.sharedPrefs.edit();
+        SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();
         prefEditor.putInt(Settings.PrefKeys.USER_ID.getKey(), instance.id);
         prefEditor.putString(Settings.PrefKeys.NICKNAME.getKey(), instance.nickName);
         prefEditor.putString(Settings.PrefKeys.PASSWORD.getKey(), instance.password);

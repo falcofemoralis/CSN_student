@@ -16,8 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.User;
 import com.android.volley.RequestQueue;
 
 import java.util.HashMap;
@@ -47,10 +47,10 @@ public class Login extends AppCompatActivity {
     public void OnClick(View v) {
         Map<String, String> param = new HashMap<>();
 
-        param.put("NickName", "Arthur");
-        param.put("Password", "Farmer Arthur");
+        param.put("NickName", "Arti");
+        param.put("Password", "Arti");
 
-        User.registration(getApplicationContext(), Login.this, param);
+        User.login(getApplicationContext(), Login.this, param);
     }
 
     public void OnClickRegistration() {

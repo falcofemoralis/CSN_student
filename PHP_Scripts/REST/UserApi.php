@@ -38,14 +38,17 @@ class UserApi extends Api
 
     // Просмотр данных
     protected function viewAction()
-    {             
+    {         
         if (!empty($this->requestUri))
         {
-            $id = array_shift($this->requestUri);
-            userViewById($this->connect, $id);
+            if (array_shift($this->requestUri) == "login")
+                readUser($this->connect);
+            else
+            {
+                $id = array_shift($this->requestUri);
+                userViewById($this->connect, $id);
+            }
         }
-        else if (array_shift($this->requestUri) == "login")
-            readUser($this->connect);
         else            
             echo "invalid method";
     }

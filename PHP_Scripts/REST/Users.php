@@ -6,24 +6,23 @@ function readUser($connect)
     $nickName = $_GET["NickName"];
     $password = $_GET["Password"];
     
-    $query = "  SELECT users.Code_User as id, users.NickName, users.Password,  groups.Course, groups.GroupName FROM users
+    $query = "  SELECT users.Code_User as id, users.NickName, users.Password,  groups.Course, groups.GroupName, groups.Code_Group as group_id FROM users
                 JOIN rating ON rating.Code_User = users.Code_User
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE users.NickName = '$nickName' AND users.Password = '$password'";
     
     $result = mysqli_query($connect, $query) or die (mysqli_error($connect));
+    $res = mysqli_fetch_assoc($result);
+    $data = json_encode($res);
     
     // Если данные не были получены с запроса, значит пользователь неправильно ввел данные при логине
-    if (mysqli_num_rows($result) == null)
+    if ($data == null)
     {
         echo "ERROR";
         return;
     }
     
-    $res = mysqli_fetch_assoc($result);
-    $data = json_encode($res);
-    echo $data;
-    
+    echo $data;    
     mysqli_close($connect);
 }
 
@@ -62,13 +61,25 @@ function userViewById($connect, $id)
 // POST запрос URI: .../users
 function createUser($connect)
 {
+        
     $nickName = $_POST["NickName"];
     $password = $_POST["Password"];
     $group = $_POST["Group"];
     
+    // Проверка на целостность данных
     if ($nickName == NULL || $password == NULL || $group == NULL)
     {
         echo "ERROR";
+        return;
+    }
+    
+    // Проверка есть ли в базе пользователь с таким же никнеймом
+    $query = "  SELECT * FROM users WHERE users.NickName = '$nickName'";
+    $result = mysqli_query($connect, $query) or die (mysqli_error($connect));
+    $data = mysqli_fetch_assoc($result);
+    if ($data != null)
+    {
+        echo "Duplicate";
         return;
     }
     
@@ -78,13 +89,11 @@ function createUser($connect)
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     
-    
     // Добавляет пустой рейтинг юзера
     $query = "  INSERT INTO rating(Code_User, JSON_RATING)
-                VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), '')";
+                    VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), '')";
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
-    
     mysqli_close($connect);
 }
 
@@ -103,10 +112,10 @@ function updateUser($connect, $id)
     // Получаем данные
     $nickName = $data->{'NickName'};
     $password = $data->{'Password'};
-    $groupName = $data->{'GroupName'};
+    $oldPassword = $data->{'OldPassword'};
    
     // Проверка на то, все ли данные пришли
-    if ($nickName == NULL || $password == NULL || $groupName == NULL)
+    if ($nickName == NULL || $password == NULL || $oldPassword == NULL)
     {
         echo "ERROR";
         return;
@@ -114,9 +123,8 @@ function updateUser($connect, $id)
          
     $query = "  UPDATE `users`
                 SET `NickName`='$nickName',
-                    `Password`='$password',
-                    `Code_Group`= (SELECT Code_Group FROM groups WHERE groups.GroupName = '$groupName') 
-                    WHERE Code_User = '$id'";
+                    `Password`='$password'
+                    WHERE Code_User = '$id' AND Password = '$oldPassword'";
     
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));

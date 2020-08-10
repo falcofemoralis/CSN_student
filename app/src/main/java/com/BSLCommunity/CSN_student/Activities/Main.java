@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,13 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,16 +25,14 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.BSLCommunity.CSN_student.Activities.Disciplines.discs;
 import static com.BSLCommunity.CSN_student.Activities.Settings.encryptedSharedPreferences;
-import static com.BSLCommunity.CSN_student.User.getGroups;
+import static com.BSLCommunity.CSN_student.Objects.User.getGroups;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://a0459938.xsph.ru/";
+    public static String MAIN_URL = "...";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера

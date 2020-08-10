@@ -3,6 +3,8 @@ package com.BSLCommunity.CSN_student;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -10,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +22,6 @@ import java.util.Map;
 
 // Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
 public class User {
-
     /* Основные данные пользователя
      * id -  id пользователя
      * nickName - никнейм
@@ -33,6 +35,13 @@ public class User {
     public String nameGroup;
     public int course;
 
+    //список групп по курсу
+    public class groups {
+        public int Code_Group;
+        public String GroupName;
+    }
+
+    public static groups[] GROUPS;
 
     public static User instance = null;
 
@@ -65,7 +74,7 @@ public class User {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = MainActivity.MAIN_URL + "api/users/login";
+        String url = Main.MAIN_URL + "api/users/login";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -109,7 +118,7 @@ public class User {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = MainActivity.MAIN_URL + "/api/users";
+        String url = Main.MAIN_URL + "/api/users";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -139,6 +148,37 @@ public class User {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return regData;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    //получение групп по курсу
+    public static void getGroups(final Context context) {
+        String url = Main.MAIN_URL + "getGroups.php";
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONHelper.create(context, "groups", response);
+                Gson gson = new Gson();
+                GROUPS = gson.fromJson(response, groups[].class);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                String response = JSONHelper.read(context, "groups");
+                Gson gson = new Gson();
+                GROUPS = gson.fromJson(response, groups[].class);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("Course", String.valueOf(3));
+                return parameters;
             }
         };
         requestQueue.add(request);

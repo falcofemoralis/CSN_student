@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student;
+package com.BSLCommunity.CSN_student.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +16,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,7 +43,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
     LinearLayout mainLayout;
     TableLayout table;
-    String URL = MainActivity.MAIN_URL + "getRating.php";
+    String URL = Main.MAIN_URL + "getRating.php";
     Spinner sub_spin, gr_spin;
 
     class User implements Comparable<User> {
@@ -317,34 +318,6 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         gr_spin.setAdapter(adapter);
         gr_spin.setOnItemSelectedListener(this);
     }
-    /*protected  void createSpinner()
-    {
-        sub_spin = findViewById(R.id.subjectSpinner);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.subjects_values,
-                R.layout.color_spinner_schedule
-        );
-
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-        sub_spin.setAdapter(adapter);
-        sub_spin.setOnItemSelectedListener(this);
-
-        gr_spin = findViewById(R.id.gr_rat_spin);
-
-        ArrayList<String> spinnerArray = new ArrayList<String>();
-
-        spinnerArray.add(getResources().getString(R.string.all));
-        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-            spinnerArray.add(MainActivity.GROUPS[i].NameGroup);
-
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
-                this, R.layout.color_spinner_schedule,spinnerArray);
-
-        adapter2.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-        gr_spin.setAdapter(adapter2);
-        gr_spin.setOnItemSelectedListener(this);
-    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

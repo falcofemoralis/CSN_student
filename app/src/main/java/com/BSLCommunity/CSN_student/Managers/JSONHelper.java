@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student;
+package com.BSLCommunity.CSN_student.Managers;
 
 import android.content.Context;
 import android.content.res.AssetManager;

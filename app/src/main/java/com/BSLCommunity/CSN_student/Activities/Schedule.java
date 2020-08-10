@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student;
+package com.BSLCommunity.CSN_student.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.User;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -77,8 +80,8 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
 
         //создаем лист групп
         List<String> groups = new ArrayList<String>();
-        for (int i = 0; i < MainActivity.GROUPS.length; ++i)
-            groups.add(MainActivity.GROUPS[i].GroupName);
+        for (int i = 0; i < User.GROUPS.length; ++i)
+            groups.add(User.GROUPS[i].GroupName);
 
         //устанавливаем спинер
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_schedule, groups);
@@ -163,7 +166,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         //обьект запроса
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, MainActivity.MAIN_URL + "getSchedule.php", new Response.Listener<String>() {
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Main.MAIN_URL + "getSchedule.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -192,7 +195,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("groupId", String.valueOf(MainActivity.GROUPS[(int) groupId].Code_Group));
+                parameters.put("groupId", String.valueOf(User.GROUPS[(int) groupId].Code_Group));
                 return parameters;
             }
         };

@@ -1,10 +1,4 @@
 <resources>
-
-    <string-array name="group_values">
-        <item>КНТ-518</item>
-        <item>КНТ-528</item>
-    </string-array>
-
     <string-array name="group_values_and_ALL">
         <item>ALL</item>
         <item>КНТ-518</item>

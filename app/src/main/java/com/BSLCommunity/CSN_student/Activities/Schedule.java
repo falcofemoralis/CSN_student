@@ -61,7 +61,6 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     TextView[][] scheduleTextView = new TextView[MAX_DAYS][MAX_PAIR]; //массив из элементов TextView в активити
     TextView type_week; //тип недели
     Spinner groupSpinner; //спинер выбора группы
-    long id; // выбранный код группы
     ScheduleList[][][] scheduleList;  //сохраненое расписание
     private boolean isFirst = true; //инициализация первого раза
 
@@ -78,12 +77,21 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         groupSpinner = findViewById(R.id.group_spin);
 
         Groups groups = Groups.getInstance(this);
+        User user = User.getInstance();
+        int id = 0;
+
+
         //создаем лист групп
-        List<String> groupsAdapter = new ArrayList<String>();
+        List<String> groupsAdapter = new ArrayList<>();
         if (groups.groupsLists.length != 0) {
             //добавляем в массив из класса Groups группы
-            for (int j = 0; j < groups.groupsLists.length; ++j)
+            for (int j = 0; j < groups.groupsLists.length; ++j) {
                 groupsAdapter.add(groups.groupsLists[j].GroupName);
+
+                //узнаем ид группы юзера в спинере для дальнейшем установки в кач-ве дефолтного значения
+                if (groups.groupsLists[j].id == user.groupId) id = j;
+            }
+
         } else {
             //в том случае если групп по курсу нету
             groupsAdapter.add("No groups");
@@ -94,6 +102,8 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
         groupSpinner.setAdapter(dataAdapter);
 
+        //устанвливаем стандартное значение
+        groupSpinner.setSelection(id);
         //устанавливаем спинер
         groupSpinner.setOnItemSelectedListener(this);
     }
@@ -101,8 +111,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     //если в спинере была выбрана группа
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        this.id = id;
-        downloadSchedule();
+        downloadSchedule(id);
     }
 
     //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
@@ -133,7 +142,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     }
 
     //скачиваем расписание с сервера
-    public void downloadSchedule() {
+    public void downloadSchedule(long id) {
         //обьект запроса
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 

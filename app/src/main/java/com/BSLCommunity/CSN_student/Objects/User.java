@@ -227,5 +227,6 @@ public class User {
         prefEditor.putString(Settings.PrefKeys.GROUP.getKey(), instance.nameGroup);
         prefEditor.putInt(Settings.PrefKeys.GROUP_ID.getKey(), instance.groupId);
         prefEditor.putInt(Settings.PrefKeys.COURSE.getKey(), instance.course);
+        prefEditor.apply();
     }
 }

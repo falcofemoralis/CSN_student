@@ -71,6 +71,15 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     protected void createGroupSpinner() {
         groupSpinner = findViewById(R.id.group);
 
+        //создаем лист групп
+        List<String> groups = new ArrayList<String>();
+        groups.add("Downloading...");
+
+        //устанавливаем спинер выбора групп
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_layout, groups);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        groupSpinner.setAdapter(dataAdapter);
+
         //устанавливаем спинер
         groupSpinner.setOnItemSelectedListener(this);
     }

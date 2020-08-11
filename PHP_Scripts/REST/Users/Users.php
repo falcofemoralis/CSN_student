@@ -64,10 +64,10 @@ function createUser($connect)
         
     $nickName = $_POST["NickName"];
     $password = $_POST["Password"];
-    $codeGroup = $_POST["CodeGroup"];
+    $group = $_POST["Group"];
     
     // Проверка на целостность данных
-    if ($nickName == NULL || $password == NULL || $codeGroup == NULL)
+    if ($nickName == NULL || $password == NULL || $group == NULL)
     {
         echo "ERROR";
         return;
@@ -85,13 +85,13 @@ function createUser($connect)
     
     // Создает нового юзера
     $query = "  INSERT INTO `users`(`NickName`, `Password`, `Code_Group`)
-                VALUES ('$nickName','$password', '$codeGroup')";
+                VALUES ('$nickName','$password', (SELECT groups.Code_Group FROM groups WHERE groups.GroupName = '$group'))";
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     
     // Добавляет пустой рейтинг юзера
     $query = "  INSERT INTO rating(Code_User, JSON_RATING)
-                    VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), '0')";
+                    VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), 'empty')";
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     mysqli_close($connect);

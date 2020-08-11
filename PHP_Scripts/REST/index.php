@@ -1,6 +1,6 @@
 <?php
 
-// Возникла сложность с GET запросами, их параметры передаются вместе с адресной строкой,
+// Возникла сложность с GET запросами, их параметрі передаются вместе с адресной строкой,
 // потому необходимо удалить все значения после ?, так же необходимо добавлять в конце '?' чтобы функция могла нормально спарсить
 $requestUri = explode('/', stristr($_SERVER['REQUEST_URI'] . '?', '?', true));
 array_shift($requestUri); // Делается сдвиг потому первый элемент всегда пустой ''
@@ -8,17 +8,25 @@ array_shift($requestUri); // Делается сдвиг потому первы
 if (array_shift($requestUri) == 'api')
 {
     $apiName = array_shift($requestUri);
-    if ($apiName == "users")
+
+    switch ($apiName)
     {
-        include 'UserApi.php';
-        $userApi = new UserApi($requestUri);
-        $userApi->run();
-    }
-    else if ($apiName == "groups")
-    {
-        include 'GroupsApi.php';
-        $groupsApi = new GroupsApi($requestUri);
-        $groupsApi->run();
+        case "users":
+            include 'Users/UsersApi.php';
+            $userApi = new UsersApi($requestUri);
+            $userApi->run();
+            break;
+        case "grups":
+            include 'Groups/GroupsApi.php';
+            $groupsApi = new GroupsApi($requestUri);
+            $groupsApi->run();
+            break;
+        case "teachers":
+            include 'Teachers/TeachersApi.php';
+            $groupsApi = new TeachersApi($requestUri);
+            $groupsApi->run();
+            break;
     }
 }
+
 ?>

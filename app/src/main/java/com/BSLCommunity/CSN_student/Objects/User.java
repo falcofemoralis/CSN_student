@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.BSLCommunity.CSN_student.Objects.Groups;
 
 
 // Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
@@ -41,14 +42,7 @@ public class User {
     public String password;
     public int groupId;
     public String nameGroup;
-    public int сourse;
-
-    /*список групп по курсу
-     * Code_Group -  код группы в базе данных
-     * GroupName - имя группы
-     * */
-    public class Groups { public int id; public String GroupName;}
-    public static Groups[] groups;
+    public int course;
 
     //реализация синглтона
     public static User instance = null;
@@ -56,6 +50,11 @@ public class User {
         if (instance == null)
             return init();
         return instance;
+    }
+
+    //удаление юзера
+    public static void deleteUser() {
+       instance = null;
     }
 
     /* Инициализация пользователя (извлекается из локального файла)
@@ -73,10 +72,10 @@ public class User {
             instance.password = pref.getString(Settings.PrefKeys.PASSWORD.getKey(), null);
             instance.groupId = pref.getInt(Settings.PrefKeys.GROUP_ID.getKey(), -1);
             instance.nameGroup = pref.getString(Settings.PrefKeys.GROUP.getKey(), null);
-            instance.сourse = pref.getInt(Settings.PrefKeys.COURSE.getKey(), -1);
+            instance.course = pref.getInt(Settings.PrefKeys.COURSE.getKey(), -1);
 
             // Если хотя бы один из элементов данных отсутствует, можно считать - они повреждены (ошибка записи, пользователь каким то образом стер, просто стерлись данные)
-            if (instance.id == -1 || instance.groupId == -1 || instance.сourse == -1 || instance.nickName == null || instance.password == null || instance.nameGroup == null)
+            if (instance.id == -1 || instance.groupId == -1 || instance.course == -1 || instance.nickName == null || instance.password == null || instance.nameGroup == null)
                 return null;
             return instance;
         }
@@ -106,18 +105,20 @@ public class User {
                     instance.id = user.getInt("id");
                     instance.nickName = user.getString("NickName");
                     instance.password = user.getString("Password");;
-                    instance.сourse = user.getInt("Course");
+                    instance.course = user.getInt("Course");
                     instance.nameGroup = user.getString("GroupName");
+                    instance.groupId = user.getInt("group_id");
+                    instance.saveData(); // Сохраняем данные
+
+                    //скачиваем группы
+                    Groups.getGroups(appContext, instance.course);
 
                     //запоминаем что пользователь зарегистрировался
                     SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();
                     prefEditor.putBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), true).apply();
-                    instance.groupId = user.getInt("group_id");
-                    instance.saveData(); // Сохраняем данные
 
                     //запускаем главное окно
                     activityContext.startActivity(new Intent(appContext, Main.class));
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(appContext, R.string.no_user, Toast.LENGTH_SHORT).show();
@@ -218,56 +219,13 @@ public class User {
     // Сохранение всех данных пользователя
     public void saveData()
     {
+        System.out.println("saveData");
         SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();
         prefEditor.putInt(Settings.PrefKeys.USER_ID.getKey(), instance.id);
         prefEditor.putString(Settings.PrefKeys.NICKNAME.getKey(), instance.nickName);
         prefEditor.putString(Settings.PrefKeys.PASSWORD.getKey(), instance.password);
         prefEditor.putString(Settings.PrefKeys.GROUP.getKey(), instance.nameGroup);
         prefEditor.putInt(Settings.PrefKeys.GROUP_ID.getKey(), instance.groupId);
-        prefEditor.putInt(Settings.PrefKeys.COURSE.getKey(), instance.сourse);
-    }
-
-    /* Функция получение групп по курсу
-     * Параметры:
-     * appContext - application context
-     * course - номер курса
-     * */
-    public static void getGroups(final Context appContext, final Spinner groupSpinner, int course, final int spinnerLayout) {
-        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = Main.MAIN_URL + String.format("api/groups?Course=%1$s", course);
-
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //сохраняем группы в файл
-                JSONHelper.create(appContext, Main.GROUP_FILE_NAME, response);
-
-                //парсим полученный список групп
-                Gson gson = new Gson();
-                groups = gson.fromJson(response, Groups[].class);
-
-                //создаем лист групп
-                List<String> groups = new ArrayList<String>();
-                if(User.groups.length!=0){
-                    //добавляем в массив из класса Groups группы
-                    for (int i = 0; i < User.groups.length; ++i)
-                        groups.add(User.groups[i].GroupName);
-                }else{
-                    //в том случае если групп по курсу нету
-                    groups.add("No groups");
-                }
-
-                //устанавливаем спинер выбора групп
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(appContext, spinnerLayout, groups);
-                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-                groupSpinner.setAdapter(dataAdapter);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(request);
+        prefEditor.putInt(Settings.PrefKeys.COURSE.getKey(), instance.course);
     }
 }

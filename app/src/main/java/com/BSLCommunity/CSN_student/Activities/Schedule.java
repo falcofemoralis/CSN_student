@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.android.volley.AuthFailureError;
@@ -30,7 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import static com.BSLCommunity.CSN_student.Objects.User.getGroups;
+
+import static com.BSLCommunity.CSN_student.Objects.Groups.getGroups;
 
 /*
  * Класс для сериализации
@@ -59,8 +61,9 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     TextView[][] scheduleTextView = new TextView[MAX_DAYS][MAX_PAIR]; //массив из элементов TextView в активити
     TextView type_week; //тип недели
     Spinner groupSpinner; //спинер выбора группы
-    long groupId; // выбранный код группы
+    long id; // выбранный код группы
     ScheduleList[][][] scheduleList;  //сохраненое расписание
+    private boolean isFirst = true; //инициализация первого раза
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,23 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     //создание спиннера групп
     protected void createGroupSpinner() {
         groupSpinner = findViewById(R.id.group_spin);
-        getGroups(this, groupSpinner, 3,R.layout.color_spinner_schedule); //в дальнейшем заменить на User.getInstance().course
+
+        Groups groups = Groups.getInstance(this);
+        //создаем лист групп
+        List<String> groupsAdapter = new ArrayList<String>();
+        if (groups.groupsLists.length != 0) {
+            //добавляем в массив из класса Groups группы
+            for (int j = 0; j < groups.groupsLists.length; ++j)
+                groupsAdapter.add(groups.groupsLists[j].GroupName);
+        } else {
+            //в том случае если групп по курсу нету
+            groupsAdapter.add("No groups");
+        }
+
+        //устанавливаем спинер выбора групп
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_schedule, groupsAdapter);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        groupSpinner.setAdapter(dataAdapter);
 
         //устанавливаем спинер
         groupSpinner.setOnItemSelectedListener(this);
@@ -82,8 +101,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     //если в спинере была выбрана группа
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //+1 т.к спиннер хранит группы от 0, а в базе от 1
-        groupId = id+1; //сохраняем выбранный код группы
+        this.id = id;
         downloadSchedule();
     }
 
@@ -119,7 +137,20 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         //обьект запроса
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        System.out.println(groupId);
+        //переменные id группы и названия группы
+        int groupId;
+        final String groupName;
+
+        //в начале ставится группа юзера, а затем в зависимости от id на спинере
+        if(isFirst){
+            groupId = User.getInstance().groupId;
+            groupName = User.getInstance().nameGroup;
+            isFirst = false;
+        }else{
+            groupId = Groups.getInstance(this).groupsLists[(int)id].id;
+            groupName = Groups.getInstance(this).groupsLists[(int)id].GroupName;
+        }
+
         String url = Main.MAIN_URL + String.format("api/groups/%1$s/schedule", groupId);
 
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -127,7 +158,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             public void onResponse(String response) {
                 try {
                     //сохраняем расписание в отдельный json файл
-                    JSONHelper.create(Schedule.this, String.valueOf(groupId), response);
+                    JSONHelper.create(Schedule.this, groupName, response);
                     updateSchedule(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -140,7 +171,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                 Toast.makeText(Schedule.this, "local schedule", Toast.LENGTH_SHORT).show();
                 try {
                     //загружаем расписание из отдельного json файла
-                    String response = JSONHelper.read(Schedule.this, String.valueOf(groupId));
+                    String response = JSONHelper.read(Schedule.this, groupName);
                     updateSchedule(response);
                 } catch (JSONException e) {
                     e.printStackTrace();

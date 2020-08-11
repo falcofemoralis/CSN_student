@@ -44,7 +44,7 @@ public class JSONHelper {
             return sb.toString();
         } catch (FileNotFoundException fileNotFound) {
             try {
-                return loadJSONFromAsset(context, "data_disc.json");
+                return loadJSONFromAsset(context, fileName);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;

@@ -50,7 +50,7 @@ public class Main extends AppCompatActivity {
 
         setSettingsFile(this);
 
-        checkData();
+        //checkData();
     }
 
     public void OnClick(View view) {

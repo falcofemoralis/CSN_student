@@ -11,12 +11,12 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.BSLCommunity.CSN_student.R;
+
 import com.BSLCommunity.CSN_student.Objects.User;
-import java.util.HashMap;
-import java.util.Map;
+import com.BSLCommunity.CSN_student.R;
 
 // Форма логина для пользователя
 public class Login extends AppCompatActivity {

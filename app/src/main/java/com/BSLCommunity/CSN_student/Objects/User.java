@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.BSLCommunity.CSN_student.Activities.Main;
-import com.BSLCommunity.CSN_student.Objects.Settings;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
@@ -18,8 +18,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -219,7 +221,6 @@ public class User {
     // Сохранение всех данных пользователя
     public void saveData()
     {
-        System.out.println("saveData");
         SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();
         prefEditor.putInt(Settings.PrefKeys.USER_ID.getKey(), instance.id);
         prefEditor.putString(Settings.PrefKeys.NICKNAME.getKey(), instance.nickName);

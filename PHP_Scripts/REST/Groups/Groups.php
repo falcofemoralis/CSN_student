@@ -10,8 +10,6 @@ function getScheduleById($connect, $id)
                 WHERE schedule_List.Code_Schedule = (SELECT schedule.Code_Schedule
                                                      FROM schedule
                                                      WHERE schedule.Code_Group = '$id')";
-                                                     
-                                                     
    
    $result = mysqli_query($connect, $query);
    
@@ -34,11 +32,12 @@ function getScheduleById($connect, $id)
 //GET запрос на получение всех групп по курсу id URI: .../groups
 function getGroupsOnCourse($connect)
 {
+    
     $course = $_GET['Course'];
     
     $query = "  SELECT groups.Code_Group as id, groups.GroupName 
                 FROM groups
-                WHERE groups.Course = '$course'";
+                WHERE groups.Course = $course";
     
     $result = mysqli_query($connect, $query);
     

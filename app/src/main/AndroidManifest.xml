@@ -13,40 +13,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Main"
+        <activity
+            android:name=".Activities.Main"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Registration"
-            android:theme="@style/NoActionBar">
-        </activity>
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Login"
-            android:theme="@style/NoActionBar">
-        </activity>
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Schedule"
-            android:theme="@style/NoActionBar">
-        </activity>
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Disciplines"
-            android:theme="@style/NoActionBar">
-        </activity>
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Rating"
-            android:theme="@style/NoActionBar">
-        </activity>
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Settings"
-            android:label="@string/title_activity_settings"/>
-
-        <activity android:name="com.BSLCommunity.CSN_student.Activities.Subjects"
-            android:theme="@style/NoActionBar">
-        </activity>
+        <activity
+            android:name=".Activities.Registration"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".Activities.Login"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".Activities.Schedule"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".Activities.Disciplines"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".Activities.Rating"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".Activities.Settings"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".Activities.Subjects"
+            android:theme="@style/NoActionBar"></activity>
     </application>
+
 </manifest>

@@ -28,11 +28,10 @@ import java.util.Date;
 import java.util.List;
 
 import static com.BSLCommunity.CSN_student.Activities.Disciplines.discs;
-import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://a0459938.xsph.ru/";
+    public static String MAIN_URL = "http://192.168.1.3/";
     public static String FILE_NAME = "data_disc_";
     public static String GROUP_FILE_NAME = "groups";
 
@@ -48,9 +47,9 @@ public class Main extends AppCompatActivity {
         Time = (TextView) findViewById(R.id.Time);
         TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
-        setSettingsFile(this);
+        com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile(this);
 
-        checkData();
+        //checkData();
     }
 
     public void OnClick(View view) {
@@ -66,10 +65,13 @@ public class Main extends AppCompatActivity {
                 activity = Rating.class;
                 break;
             case R.id.lessons_scheduleBtn:
-                activity = Schedule.class;
+                startActivity(new Intent(this, Schedule.class).putExtra("typeSchedule", "Groups"));
                 break;
             case R.id.settingsBtn:
                 activity = Settings.class;
+                break;
+            case R.id.teachers_scheduleBtn:
+                startActivity(new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers"));
                 break;
         }
         startActivity(new Intent(this, activity));

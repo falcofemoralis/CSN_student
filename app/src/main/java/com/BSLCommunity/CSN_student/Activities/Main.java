@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.BSLCommunity.CSN_student.Activities.Disciplines.discs;
-import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Main extends AppCompatActivity {
@@ -48,31 +47,34 @@ public class Main extends AppCompatActivity {
         Time = (TextView) findViewById(R.id.Time);
         TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
-        setSettingsFile(this);
+        com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile(this);
 
-        checkData();
+        //checkData();
     }
 
     public void OnClick(View view) {
         Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
         view.startAnimation(click);
 
-        Class activity = null;
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.subjectsBtn:
-                activity = Subjects.class;
+                intent = new Intent(this, Subjects.class);
                 break;
             case R.id.ratingBtn:
-                activity = Rating.class;
+                intent = new Intent(this, Rating.class);
                 break;
             case R.id.lessons_scheduleBtn:
-                activity = Schedule.class;
+                intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Groups");
                 break;
             case R.id.settingsBtn:
-                activity = Settings.class;
+                intent = new Intent(this, Settings.class);
+                break;
+            case R.id.teachers_scheduleBtn:
+                intent =new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
                 break;
         }
-        startActivity(new Intent(this, activity));
+        startActivity(intent);
     }
 
     @Override

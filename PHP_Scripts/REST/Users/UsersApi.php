@@ -2,9 +2,9 @@
 
 require_once 'DataBase.php';
 require_once 'Api.php';
-require_once 'Users.php';
+require_once 'Users/Users.php';
 
-class UserApi extends Api
+class UsersApi extends Api
 {
     // Добавление в базу новых данных
     protected function createAction()
@@ -41,7 +41,7 @@ class UserApi extends Api
     {         
         if (!empty($this->requestUri))
         {
-            if (array_shift($this->requestUri) == "login")
+            if ($this->requestUri[0] == "login")
                 readUser($this->connect);
             else
             {

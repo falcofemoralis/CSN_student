@@ -15,11 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.Objects.Settings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsDialogEditText extends AppCompatDialogFragment {
     private EditText EditText;
@@ -56,13 +58,23 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 view = inflater.inflate(R.layout.dialog_settings2, null);
                 try {
                     groupSpinner = view.findViewById(R.id.group);
-                    ArrayList<String> spinnerArray = new ArrayList<String>();
-                    for (int i = 0; i < User.groups.length; ++i)
-                        spinnerArray.add(User.groups[i].GroupName);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                            getContext(), R.layout.spinner_dropdown_settings, spinnerArray);
-                    adapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
-                    groupSpinner.setAdapter(adapter);
+
+                    Groups groups = Groups.getInstance(getContext());
+                    //создаем лист групп
+                    List<String> groupsAdapter = new ArrayList<String>();
+                    if (groups.groupsLists.length != 0) {
+                        //добавляем в массив из класса Groups группы
+                        for (int j = 0; j < groups.groupsLists.length; ++j)
+                            groupsAdapter.add(groups.groupsLists[j].GroupName);
+                    } else {
+                        //в том случае если групп по курсу нету
+                        groupsAdapter.add("No groups");
+                    }
+
+                    //устанавливаем спинер выбора групп
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_dropdown_settings, groupsAdapter);
+                    dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
+                    groupSpinner.setAdapter(dataAdapter);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

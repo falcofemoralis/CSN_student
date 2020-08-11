@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.BSLCommunity.CSN_student.Objects.Groups;
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -174,6 +176,8 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
+                User.deleteUser();
+                Groups.deleteGroups();
                 Toast.makeText(Settings.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();
             }

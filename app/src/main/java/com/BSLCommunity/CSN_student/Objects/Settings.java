@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 import androidx.security.crypto.MasterKeys;
 
 import java.io.IOException;
@@ -35,9 +36,9 @@ public class Settings {
     public static SharedPreferences encryptedSharedPreferences;
 
     public static void setSettingsFile(Context context) {
-        String masterKeyAlias = null;
+        MasterKey  masterKey = null;
         try {
-            masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+            masterKey = new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -45,13 +46,8 @@ public class Settings {
         }
 
         try {
-            encryptedSharedPreferences = EncryptedSharedPreferences.create(
-                    "secret_shared_prefs",
-                    masterKeyAlias,
-                    context,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
+            encryptedSharedPreferences = EncryptedSharedPreferences.create(context,"settings_data",masterKey, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -2,7 +2,7 @@
 
 require_once 'DataBase.php';
 require_once 'Api.php';
-require_once 'Groups.php';
+require_once 'Groups/Groups.php';
 
 class GroupsApi extends Api
 {

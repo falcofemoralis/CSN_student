@@ -28,13 +28,17 @@
 
             <Spinner
                 android:id="@+id/group_spin"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="138dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
                 android:background="@drawable/text_but_schedule_style"
-                android:entries="@array/group_arrays"
+                android:entries="@array/downloading"
+                android:gravity="center_horizontal|center_vertical"
                 android:prompt="@string/group_prompt"
-                android:textSize="18sp" />
+                android:spinnerMode="dropdown"
+                android:textAlignment="center"
+                android:textSize="12sp" />
 
             <Space
                 android:layout_width="wrap_content"

@@ -302,7 +302,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.subjects_values,
-                R.layout.color_spinner_schedule
+                R.layout.spinner_schedule_layout
         );
         sub_spin.setOnItemSelectedListener(this);
         sub_spin.setAdapter(adapter);
@@ -311,10 +311,10 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.group_values_and_ALL,
-                R.layout.color_spinner_schedule
+                R.layout.spinner_schedule_layout
         );
 
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
         gr_spin.setAdapter(adapter);
         gr_spin.setOnItemSelectedListener(this);
     }

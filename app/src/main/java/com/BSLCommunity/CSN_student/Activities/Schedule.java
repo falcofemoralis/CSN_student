@@ -1,6 +1,5 @@
 package com.BSLCommunity.CSN_student.Activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,31 +7,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
-
+import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
-import com.BSLCommunity.CSN_student.R;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.Callable;
 import static com.BSLCommunity.CSN_student.Objects.Teachers.getTeachers;
+import static com.BSLCommunity.CSN_student.Objects.Groups.getGroups;
 
 /*
  * Класс для сериализации
@@ -69,49 +65,68 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
-        createGroupSpinner();
         getScheduleElements();
+
+        if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")){
+            entity = "teachers";
+            getTeachers(this, new Callable<Void>() {
+                @Override
+                public Void call(){
+                    createSpinner();
+                    return null;
+                }
+            });
+        }else{
+            entity = "groups";
+            getGroups(this, User.getInstance().course, new Callable<Void>() {
+                @Override
+                public Void call(){
+                    createSpinner();
+                    return null;
+                }
+            });
+        }
     }
 
     //создание спиннера групп
-    protected void createGroupSpinner() {
+    protected void createSpinner() {
         groupSpinner = findViewById(R.id.group_spin);
-
-        Groups groups = Groups.getInstance(this);
-        User user = User.getInstance();
-        int id = 0;
-        List<String> groupsAdapter = new ArrayList<>();
+        List<String> listAdapter = new ArrayList<>();
 
         //Выбор расписания в зависимости от пришедшего значения с активити
-        if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")){
-            entity = "teachers";
-            groupsAdapter.add("Downloading");
-        }
-        else{
-            entity = "groups";
-            //создаем лист групп
-            if (groups.groupsLists.length != 0) {
-                //добавляем в массив из класса Groups группы
-                for (int j = 0; j < groups.groupsLists.length; ++j) {
-                    groupsAdapter.add(groups.groupsLists[j].GroupName);
-
-                    //узнаем ид группы юзера в спинере для дальнейшем установки в кач-ве дефолтного значения
-                    if (groups.groupsLists[j].id == user.groupId) id = j;
+        if (entity == "teachers"){
+            for (Map.Entry<Integer, String> entry : Teachers.teachersList.entrySet()) {
+                try {
+                    JSONObject teacherJSONObject = new JSONObject(entry.getValue());
+                    listAdapter.add(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } else {
-                //в том случае если групп по курсу нету
-                groupsAdapter.add("No groups");
             }
+
+            //устанавливаем спинер
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
+            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+            groupSpinner.setAdapter(dataAdapter);
+            groupSpinner.setSelection(0);
         }
+        else {
+            if (Groups.groupsLists.length != 0) {
+                //добавляем в массив из класса Groups группы
+                for (int j = 0; j < Groups.groupsLists.length; ++j)
+                    listAdapter.add(Groups.groupsLists[j].GroupName);
+            }
 
-        //устанвливаем стандартное значение
-        groupSpinner.setSelection(id);
+            //устанавливаем спинер
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
+            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+            groupSpinner.setAdapter(dataAdapter);
 
-        //устанавливаем спинер
-        //устанавливаем спинер выбора групп
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_schedule, groupsAdapter);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-        groupSpinner.setAdapter(dataAdapter);
+            User user = User.getInstance();
+            for (int i = 0; i < Groups.groupsLists.length; ++i)
+                if (user.groupId == Groups.groupsLists[i].id)
+                    groupSpinner.setSelection(i);
+        }
         groupSpinner.setOnItemSelectedListener(this);
     }
 
@@ -153,25 +168,15 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         //обьект запроса
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        int groupId = 0;   //переменная id группы
+        int groupId;   //переменная id группы
         final String ScheduleFileName = "Schedule_" + id; //сохранения расписания
         String url;
 
-        if(entity == "groups"){
-            //в начале ставится группа юзера, а затем в зависимости от id на спинере
-            if(isFirst){
-                groupId = User.getInstance().groupId;
-                isFirst = false;
-            }else{
-                groupId = Groups.getInstance(this).groupsLists[(int)id].id;
-            }
-            url = Main.MAIN_URL + String.format("api/" + entity +"/%1$s/schedule", groupId);
-        }else{
-            if(isFirst){
-                getTeachers(this, groupSpinner, R.layout.color_spinner_schedule);
-                isFirst = false;
-            }
+        if(entity == "teachers"){
             url = Main.MAIN_URL + String.format("api/" + entity +"/%1$s/schedule", id+1);
+        } else {
+            groupId = Groups.groupsLists[(int) id].id;
+            url = Main.MAIN_URL + String.format("api/" + entity + "/%1$s/schedule", groupId);
         }
 
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {

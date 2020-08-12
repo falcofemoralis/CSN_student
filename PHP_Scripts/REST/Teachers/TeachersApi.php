@@ -3,13 +3,15 @@
 require_once 'DataBase.php';
 require_once 'Api.php';
 require_once 'Teachers/Teachers.php';
+require_once 'Cache.php';
 
 class TeachersApi extends Api
 {
     // Добавление в базу новых данных
     protected function createAction()
     {
-        echo "invalid method";
+        createJSON($this->connect, 'teachers');
+        getUpdateList('teachers');
     }
     
     // Обновление данных

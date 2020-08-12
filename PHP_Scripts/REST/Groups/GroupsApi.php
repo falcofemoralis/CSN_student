@@ -3,13 +3,15 @@
 require_once 'DataBase.php';
 require_once 'Api.php';
 require_once 'Groups/Groups.php';
+require_once 'Cache.php';
 
 class GroupsApi extends Api
 {  
     // Добавление в базу новых данных
     protected function createAction()
     {
-        getJSON();
+        createJSON($this->connect, 'groups');
+        getUpdateList('groups');
     }
     
     // Обновление данных

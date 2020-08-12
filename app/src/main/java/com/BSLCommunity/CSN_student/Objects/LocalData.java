@@ -20,19 +20,20 @@ public class LocalData {
 
     // Константы типо объектов хранящихся в локальном хранилище
     public static enum TypeData {
-        group,
-        teacher
+        groups,
+        teachers
     }
 
     // Хранит информацию последнего изменения группы по id
     public static HashMap<Integer, Date> updateListGroups = new HashMap<Integer, Date>();
+    public static HashMap<Integer, Date> updateListTeachers = new HashMap<Integer, Date>();
 
     // Загрзка Апдейта списка групп (список который хранит время изменения каждой группы на сервере)
-    public static void downloadGroupsUpdateList(final Context appContext) {
+    public static void downloadGroupsUpdateList(final Context appContext, final HashMap<Integer, Date> updateList, final TypeData entity) {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = "http://192.168.1.3/api/groups/updateList";
+        String url = "http://192.168.1.3/api/" + entity.toString() + "/updateList";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -49,7 +50,7 @@ public class LocalData {
                         Date lastUpdate;
                         try {
                             lastUpdate = sdf.parse(date);
-                            updateListGroups.put(id,  lastUpdate);
+                            updateList.put(id,  lastUpdate);
                         } catch (Exception e) {}
                     }
 
@@ -76,9 +77,9 @@ public class LocalData {
         // Выбор действия в зависимости от типа данных
         switch (type)
         {
-            case group:
+            case groups:
                 if (updateListGroups.isEmpty())
-                    downloadGroupsUpdateList(appContext);
+                    downloadGroupsUpdateList(appContext, updateListGroups, type);
 
                 // Проверяем актуальность данных в группах
                 Groups.GroupsList[] groups = Groups.groupsLists;
@@ -87,7 +88,9 @@ public class LocalData {
                         // Здесь должна быть функция обновления группы по id
                     }
                 break;
-            case teacher:
+            case teachers:
+                if (updateListTeachers.isEmpty())
+                    downloadGroupsUpdateList(appContext, updateListTeachers, type);
 
                 break;
         }

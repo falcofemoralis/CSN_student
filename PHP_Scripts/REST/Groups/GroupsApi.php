@@ -5,11 +5,11 @@ require_once 'Api.php';
 require_once 'Groups/Groups.php';
 
 class GroupsApi extends Api
-{
+{  
     // Добавление в базу новых данных
     protected function createAction()
     {
-        echo "invalid method";
+        getJSON();
     }
     
     // Обновление данных
@@ -23,6 +23,8 @@ class GroupsApi extends Api
     {
         if (empty($this->requestUri))
             getGroupsOnCourse($this->connect);
+        else if ($this->requestUri[0] == 'updateList')
+            getUpdateList();
         else 
         {
             $id = array_shift($this->requestUri);

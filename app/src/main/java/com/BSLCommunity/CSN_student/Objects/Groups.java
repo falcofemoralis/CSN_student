@@ -1,13 +1,11 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
-import com.BSLCommunity.CSN_student.Activities.Schedule;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.Request;
@@ -18,9 +16,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Groups {
@@ -29,8 +29,20 @@ public class Groups {
      * Code_Group -  код группы в базе данных
      * GroupName - имя группы
      * */
-    public class GroupsList { public int id; public String GroupName;}
-    public GroupsList[] groupsLists;
+    public static class GroupsList {
+        public int id;
+        public String GroupName;
+        public Date lastUpdate;
+
+        public GroupsList(int id, String GroupName, Date lastUpdate) {
+            this.id = id;
+            this.GroupName = GroupName;
+            this.lastUpdate = lastUpdate;
+        }
+
+
+    }
+    public static GroupsList[] groupsLists;
 
     //реализация синглтона
     public static Groups instance = null;
@@ -83,8 +95,22 @@ public class Groups {
                 JSONHelper.create(appContext, Main.GROUP_FILE_NAME, response);
 
                 //парсим полученный список групп
-                Gson gson = new Gson();
-                GroupsList[] groupsLists = gson.fromJson(response, GroupsList[].class);
+                try {
+                    JSONArray JSONArray = new JSONArray(response);
+                    groupsLists = new GroupsList[JSONArray.length()];
+                    for (int i = 0; i < JSONArray.length(); ++i) {
+                        org.json.JSONObject JSONObject = JSONArray.getJSONObject(i);
+                        int id = JSONObject.getInt("id");
+                        String GroupName = JSONObject.getString("GroupName");
+                        groupsLists[i] = new GroupsList(id, GroupName, new Date());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+               // Gson gson = new Gson();
+               // GroupsList[] groupsLists = gson.fromJson(response, GroupsList[].class);
 
                 //создаем лист групп
                 List<String> groups = new ArrayList<String>();

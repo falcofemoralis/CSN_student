@@ -49,7 +49,7 @@ public class Main extends AppCompatActivity {
 
         com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile(this);
 
-        //checkData();
+        checkData();
     }
 
     public void OnClick(View view) {

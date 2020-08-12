@@ -84,13 +84,14 @@
 
     <Spinner
         android:id="@+id/course"
-        android:layout_width="238dp"
+        android:layout_width="230dp"
         android:layout_height="2dp"
         android:layout_gravity="center"
         android:layout_weight="0.2"
         android:background="@drawable/text_style"
         android:entries="@array/courses"
-        android:prompt="@string/group_prompt" />
+        android:prompt="@string/group_prompt"
+        android:textAlignment="center" />
 
     <Space
         android:layout_width="match_parent"
@@ -104,13 +105,14 @@
         android:layout_gravity="center"
         android:layout_weight="0.1"
         android:background="@drawable/text_style"
-        android:entries="@array/group_arrays"
-        android:prompt="@string/group_prompt" />
+        android:entries="@array/downloading"
+        android:prompt="@string/group_prompt"
+        android:textAlignment="center" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.15" />
+        android:layout_weight="0.2" />
 
     <Button
         android:id="@+id/signUpBtn"

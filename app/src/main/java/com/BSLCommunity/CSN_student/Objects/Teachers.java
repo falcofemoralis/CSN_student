@@ -20,17 +20,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class Teachers {
     public class TeachersList { public int teacher_id; public String FIO;}
+
+    public static Map<Integer, String> teachersList = new HashMap<>();
+
     /* Функция получение учителей в университете
      * Параметры:
      * appContext - application context
      * course - номер курса
      * */
-    public static void getTeachers(final Context appContext, final Spinner teachersSpinner, final int spinnerLayout) {
+    public static void getTeachers(final Context appContext, final Callable<Void> methodParam) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = Main.MAIN_URL + "api/teachers/all";
 
@@ -41,30 +47,26 @@ public class Teachers {
                 Gson gson = new Gson();
                 TeachersList[] teachersList = gson.fromJson(response, TeachersList[].class);
                 String teacherName = null;
-                JSONObject subjectJSONObject = null;
+                JSONObject teacherJSONObject = null;
 
-                //создаем лист учителей
-                List<String> teachers = new ArrayList<String>();
                 if(teachersList.length!=0){
                     //добавляем в массив из класса Teachers учителей
                     for (int i = 0; i < teachersList.length; ++i){
                         try {
-                            subjectJSONObject = new JSONObject(teachersList[i].FIO);
-                            teacherName = subjectJSONObject.getString(Locale.getDefault().getLanguage());
+                            teacherJSONObject = new JSONObject(teachersList[i].FIO);
+                            teacherName = teacherJSONObject.getString(Locale.getDefault().getLanguage());
+                            Teachers.teachersList.put(teachersList[i].teacher_id,teacherName);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        teachers.add(teacherName);
                     }
-                }else{
-                    //в том случае если учителя не были получены
-                    teachers.add("No teachers");
                 }
 
-                //устанавливаем спинер выбора учителей
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(appContext, spinnerLayout, teachers);
-                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-                teachersSpinner.setAdapter(dataAdapter);
+                try {
+                    methodParam.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

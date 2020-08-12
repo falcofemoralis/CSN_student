@@ -32,7 +32,7 @@
             android:name=".Activities.Schedule"
             android:theme="@style/NoActionBar"></activity>
         <activity
-            android:name=".Activities.Disciplines"
+            android:name=".Activities.SubjectInfo"
             android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".Activities.Rating"
@@ -41,7 +41,7 @@
             android:name=".Activities.Settings"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".Activities.Subjects"
+            android:name=".Activities.SubjectList"
             android:theme="@style/NoActionBar"></activity>
     </application>
 

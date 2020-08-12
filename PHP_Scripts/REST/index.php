@@ -23,8 +23,13 @@ if (array_shift($requestUri) == 'api')
             break;
         case "teachers":
             include 'Teachers/TeachersApi.php';
-            $groupsApi = new TeachersApi($requestUri);
-            $groupsApi->run();
+            $teachersApi = new TeachersApi($requestUri);
+            $teachersApi->run();
+            break;
+		case "subjects":
+            include 'Subjects/SubjectsApi.php';
+            $subjectsApi = new SubjectsApi($requestUri);
+            $subjectsApi->run();
             break;
     }
 }

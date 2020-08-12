@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,7 +11,6 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,19 +21,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.Callable;
 
 import static com.BSLCommunity.CSN_student.Objects.Groups.getGroups;
-import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    Spinner groupSpinner; //спиннер группы
     long id; //выбранный код группы со спиннера
 
     @Override
@@ -43,7 +37,6 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         createCourseSpinner();
-        createGroupSpinner();
         createClickableSpan();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -61,7 +54,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         EditText RepeatPassword = (EditText) findViewById(R.id.checkPass);
 
         if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
-            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(Groups.getInstance(this).groupsLists[(int)id].id));
+            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(Groups.groupsLists[(int)id].id));
         } else {
             Toast.makeText(this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
         }
@@ -69,15 +62,18 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     //создание спиннера групп
     protected void createGroupSpinner() {
-        groupSpinner = findViewById(R.id.group);
+        Spinner groupSpinner = findViewById(R.id.group);
 
-        //создаем лист групп
-        List<String> groups = new ArrayList<String>();
-        groups.add("Downloading...");
+        List<String> listAdapter = new ArrayList<>();
+        if (Groups.groupsLists.length != 0) {
+            //добавляем в массив из класса Groups группы
+            for (int j = 0; j < Groups.groupsLists.length; ++j)
+                listAdapter.add(Groups.groupsLists[j].GroupName);
+        }
 
         //устанавливаем спинер выбора групп
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_layout, groups);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_registration_layout, listAdapter);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
         groupSpinner.setAdapter(dataAdapter);
 
         //устанавливаем спинер
@@ -90,10 +86,10 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.courses,
-                R.layout.color_spinner_layout
+                R.layout.spinner_registration_layout
         );
 
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
         courseSpinner.setAdapter(adapter);
         courseSpinner.setOnItemSelectedListener(this);
     }
@@ -103,11 +99,15 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.course:
-                //загружаются группы на спинер в зависимости от курса
-                getGroups(this, Integer.parseInt(parent.getItemAtPosition(position).toString()), groupSpinner, R.layout.color_spinner_layout);
+                getGroups(this,  Integer.parseInt(parent.getItemAtPosition(position).toString()), new Callable<Void>() {
+                    @Override
+                    public Void call(){
+                        createGroupSpinner();
+                        return null;
+                    }
+                });
                 break;
             case R.id.group:
-                //+1 т.к спиннер хранит группы от 0, а в базе от 1
                 this.id = id;
                 break;
         }

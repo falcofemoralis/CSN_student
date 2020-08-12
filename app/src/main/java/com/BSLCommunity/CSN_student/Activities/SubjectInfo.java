@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.Objects.Rating;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,117 +41,7 @@ import java.util.Map;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
-class Discipline {
-    private String name, teacher, value;// name - Название дисциплины, teacher - ФИО преподавателя, value - ценность предмета
-    private boolean[][] complete; // состояние сдачи лабораторных работ
-    private int labs;// labs - количество лабораторных
-    private byte IDZ; // 0 - не сдано, 1 - сдано , -1 - не сдано
-
-    public Discipline() {
-    }
-
-    public Discipline(String name, String teacher, String value, int labs, byte IDZ) {
-        this.name = name;
-        this.teacher = teacher;
-        this.value = value;
-        this.labs = labs;
-        this.IDZ = IDZ;
-        complete = new boolean[labs][2];
-        for (int i = 0; i < labs; ++i)
-            complete[i][0] = complete[i][1] = false;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public byte getIDZ() {
-        return IDZ;
-    }
-
-    public void setIDZ(byte IDZ) {
-        this.IDZ = IDZ;
-    }
-
-    public int getLabs() {
-        return labs;
-    }
-
-    public void setComplete(boolean arr[][]) {
-        if (arr.length > complete.length)
-            return;
-
-        for (int i = 0; i < complete.length; ++i) {
-            complete[i][0] = arr[i][0];
-            complete[i][1] = arr[i][1];
-        }
-    }
-
-    public boolean[][] getComplete() {
-        return complete;
-    }
-
-    public String getStringName(Context context) {
-        switch (this.name) {
-            case "Алгоритми та методи обчислень":
-                return context.getResources().getString(R.string.Alg_and_metod);
-            case "Архітектура комп᾿ютерів":
-                return context.getResources().getString(R.string.Arch_Comp);
-            case "Комп᾿ютерна схемотехніка":
-                return context.getResources().getString(R.string.CompScheme);
-            case "Організація баз данних":
-                return context.getResources().getString(R.string.DataBase);
-            case "Основи безпеки життєдіяльності":
-                return context.getResources().getString(R.string.OBG);
-            case "Сучасні методи програмування":
-                return context.getResources().getString(R.string.S_metod_prog);
-            default:
-                return "";
-        }
-    }
-
-    public String getStringTeacher(Context context) {
-        switch (this.teacher) {
-            case "Кудерметов Равіль Камілович":
-                return context.getResources().getString(R.string.teacher_AMO);
-            case "Скрупський Степан Юрійович":
-                return context.getResources().getString(R.string.teacher_CA);
-            case "Сгадов Сергій Олександрович":
-                return context.getResources().getString(R.string.teacher_CS);
-            case "Паромова Тетяна Олександрівна":
-                return context.getResources().getString(R.string.teacher_OBD);
-            case "Скуйбіда Олена Леонідівна":
-                return context.getResources().getString(R.string.teacher_OBG);
-            default:
-                return "";
-        }
-    }
-
-    public String getStringValue(Context context) {
-        switch (this.value) {
-            case "Іспит":
-                return context.getResources().getString(R.string.Exam);
-            case "Залік":
-                return context.getResources().getString(R.string.test);
-            case "Залік/Іспит":
-                return context.getResources().getString(R.string.test_exam);
-            case "Диф. Залік":
-                return context.getResources().getString(R.string.diff_exam);
-            default:
-                return "";
-        }
-    }
-}
-
-public class Disciplines extends AppCompatActivity {
+public class SubjectInfo extends AppCompatActivity {
     String FILE_NAME = "data_disc_";
     final int BUTTON_TEXT_SIZE = 10, TEXT_SIZE = 13;
     int FALSE, TRUE, TEXT_WHITE; // FALSE(Не сдано) - красный, TRUE(Сдано) - светозеленый
@@ -160,16 +51,16 @@ public class Disciplines extends AppCompatActivity {
     Button res; // Кнопка результата
     Button buts[][], IDZ; // Кнопки "Сдано" и "Защита"
     int complete = 0, Labs, count_idz = 0; // complete - подсчет сданих лаб, Labs - хранит количество лабораторних
-    public static ArrayList<Discipline> discs = new ArrayList<Discipline>(); //Дисциплины
-    Discipline current; // текущая дисциплина
+    public static ArrayList<Rating> discs = new ArrayList<>(); //Дисциплины
+    Rating current; // текущая дисциплина
     LinearLayout mainView;
     static boolean whole = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_disciplines);
-        Intent intent = getIntent();
+        setContentView(R.layout.activity_subject_info);
+        /*Intent intent = getIntent();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         loadRating();
@@ -225,12 +116,12 @@ public class Disciplines extends AppCompatActivity {
         LAB_STYLE = getResources().getDrawable(R.drawable.lab_style);
 
         // Достать объект Дисциплина с json, возвращает массив дисциплин
-        int num = GetCode(intent.getIntExtra("button_id", 0)); // индекс для выбора дисциплины из массива дисциплин
+        // num = GetCode(intent.getIntExtra("button_id", 0)); // индекс для выбора дисциплины из массива дисциплин
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {
+        Type listType = new TypeToken<List<Rating>>() {
         }.getType();
         discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
-        current = discs.get(num);
+       // current = discs.get(num);
         Labs = current.getLabs(); // количество лабораторных
 
         mainView = findViewById(R.id.Discp_main);
@@ -312,33 +203,13 @@ public class Disciplines extends AppCompatActivity {
 
         res = findViewById(R.id.res);
 
-        RestoreAll(discs.get(num)); // Загрузка данных
+       // RestoreAll(discs.get(num)); // Загрузка данных
 
-
-    }
-
-    // Функция получения кода текущей дисциплины
-    private int GetCode(int button_id) {
-        switch (button_id) {
-            case R.id.Alg:
-                return 0;
-            case R.id.Arch:
-                return 1;
-            case R.id.CS:
-                return 2;
-            case R.id.OBG:
-                return 3;
-            case R.id.OBD:
-                return 4;
-            case R.id.SMP:
-                return 5;
-            default:
-                return -1;
-        }
+ */
     }
 
     // Загрузка информации о дисциплине
-    protected void RestoreAll(Discipline current) {
+    protected void RestoreAll(Rating current) {
         boolean[][] compl_but = current.getComplete();
         // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
         for (int i = 0, size = Labs; i < size; ++i) {
@@ -503,14 +374,14 @@ public class Disciplines extends AppCompatActivity {
     }
 
     public void loadRating() {
-        ArrayList<Discipline> discs = new ArrayList<Discipline>();
+        ArrayList<Rating> discs = new ArrayList<>();
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {
+        Type listType = new TypeToken<List<Rating>>() {
         }.getType();
         discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i) {
-            Discipline temp = discs.get(i);
+            Rating temp = discs.get(i);
             updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
         }
     }

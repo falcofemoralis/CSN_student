@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.Objects.Rating;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,12 +28,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.BSLCommunity.CSN_student.Activities.Disciplines.discs;
+import static com.BSLCommunity.CSN_student.Activities.SubjectInfo.discs;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class Main extends AppCompatActivity {
     public static String MAIN_URL = "http://a0459938.xsph.ru/";
-    public static String FILE_NAME = "data_disc_";
+    public static String FILE_NAME = "data_disc";
     public static String GROUP_FILE_NAME = "groups";
 
     Timer timer = new Timer(); //таймер
@@ -47,8 +49,7 @@ public class Main extends AppCompatActivity {
         Time = (TextView) findViewById(R.id.Time);
         TimeUntil = (TextView) findViewById(R.id.timeUntil);
 
-        com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile(this);
-
+        setSettingsFile(this);
         //checkData();
     }
 
@@ -59,7 +60,7 @@ public class Main extends AppCompatActivity {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.subjectsBtn:
-                intent = new Intent(this, Subjects.class);
+                intent = new Intent(this, SubjectList.class);
                 break;
             case R.id.ratingBtn:
                 intent = new Intent(this, Rating.class);
@@ -121,14 +122,14 @@ public class Main extends AppCompatActivity {
             alertDialog.setTitle(getResources().getString(R.string.localdata_is_found) + " " + format.format(date));
         } else {
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Discipline>>() {
+            Type listType = new TypeToken<List<Rating>>() {
             }.getType();
 
             String test = JSONHelper.read(Main.this, "data_disc.json");
             discs = gson.fromJson(test, listType);
 
             for (int i = 0; i < discs.size(); ++i)
-                Disciplines.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
+                SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
             return;
         }
 
@@ -162,23 +163,23 @@ public class Main extends AppCompatActivity {
 
     protected void loadStatusFromServer() {
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {
+        Type listType = new TypeToken<List<Rating>>() {
         }.getType();
         discs = gson.fromJson(JSONHelper.read(Main.this, Main.FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i)
-            Disciplines.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
+            SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
     }
 
     protected void loadStatusFromDevice() {
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {
+        Type listType = new TypeToken<List<Rating>>() {
         }.getType();
         discs = gson.fromJson(JSONHelper.read(Main.this, Main.FILE_NAME), listType);
 
         for (int i = 0; i < discs.size(); ++i) {
-            Discipline temp = discs.get(i);
-            Disciplines.updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
+            Rating temp = discs.get(i);
+            SubjectInfo.updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
         }
     }
 }

@@ -3,13 +3,15 @@
 //GET запрос на расписания группы по id URI: .../groups/id/schedule
 function getScheduleById($connect, $id)
 {
-   $query = "   SELECT schedule_List.Day, schedule_List.Pair, schedule_List.Half, disciplines.NameDiscipline, schedule_List.Room, subjectTypes.SubjectType
-                FROM schedule_List
-                JOIN subjectTypes ON subjectTypes.Code_SubjectType = schedule_List.Code_SubjectType
-                JOIN disciplines ON disciplines.Code_Discipline = schedule_List.Code_Discp
-                WHERE schedule_List.Code_Schedule = (SELECT schedule.Code_Schedule
-                                                     FROM schedule
-                                                     WHERE schedule.Code_Group = '$id')";
+    
+   $query = "   SELECT schedule_list.Day, schedule_list.Pair, schedule_list.Half, disciplines.NameDiscipline, schedule_list.Room,
+                subjecttypes.SubjectType
+                FROM schedule_list
+                JOIN subjecttypes ON subjecttypes.Code_SubjectType = schedule_list.Code_SubjectType
+                JOIN disciplines ON disciplines.Code_Discipline = schedule_list.Code_Discp
+                WHERE schedule_list.Code_Schedule = (SELECT schedule.Code_Schedule
+                FROM schedule
+                WHERE schedule.Code_Group = '$id')";
    
    $result = mysqli_query($connect, $query);
    

@@ -49,68 +49,11 @@
 
 
             <Button
-                android:id="@+id/Alg"
+                android:id="@+id/reference"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/button_style"
-                android:onClick="OnClick"
-                android:text="@string/Alg_and_metod"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/Arch"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/button_style"
-                android:onClick="OnClick"
-                android:text="@string/Arch_Comp"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/CS"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/button_style"
-                android:onClick="OnClick"
-                android:text="@string/CompScheme"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/OBD"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/button_style"
-                android:onClick="OnClick"
-                android:text="@string/OBG"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/OBG"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/button_style"
-                android:onClick="OnClick"
-                android:text="@string/DataBase"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/SMP"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/button_style"
-                android:onClick="OnClick"
-                android:text="@string/S_metod_prog"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 

@@ -17,5 +17,9 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+
+    <string-array name="downloading">
+        <item>Downloading</item>
+    </string-array>
 </resources>
 

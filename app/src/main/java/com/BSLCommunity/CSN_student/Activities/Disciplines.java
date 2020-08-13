@@ -1,7 +1,5 @@
 package com.BSLCommunity.CSN_student.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
@@ -227,8 +227,7 @@ public class Disciplines extends AppCompatActivity {
         // Достать объект Дисциплина с json, возвращает массив дисциплин
         int num = GetCode(intent.getIntExtra("button_id", 0)); // индекс для выбора дисциплины из массива дисциплин
         Gson gson = new Gson();
-        Type listType = new TypeToken<List<Discipline>>() {
-        }.getType();
+        Type listType = new TypeToken<List<Discipline>>() {}.getType();
         discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
         current = discs.get(num);
         Labs = current.getLabs(); // количество лабораторных

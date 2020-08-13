@@ -31,7 +31,7 @@ import static com.BSLCommunity.CSN_student.Activities.Disciplines.discs;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://a0459938.xsph.ru/";
+    public static String MAIN_URL = "http://192.168.1.3/";
     public static String FILE_NAME = "data_disc_";
     public static String GROUP_FILE_NAME = "groups";
 
@@ -49,7 +49,9 @@ public class Main extends AppCompatActivity {
 
         com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile(this);
 
-        checkData();
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+        //checkData();
     }
 
     public void OnClick(View view) {

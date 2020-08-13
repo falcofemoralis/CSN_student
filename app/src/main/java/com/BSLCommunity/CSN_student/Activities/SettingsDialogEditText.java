@@ -16,9 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.BSLCommunity.CSN_student.Objects.Groups;
-import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.Objects.Settings;
+import com.BSLCommunity.CSN_student.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,10 +61,10 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                     Groups groups = Groups.getInstance(getContext());
                     //создаем лист групп
                     List<String> groupsAdapter = new ArrayList<String>();
-                    if (groups.groupsLists.length != 0) {
+                    if (groups.groupsLists.size() != 0) {
                         //добавляем в массив из класса Groups группы
-                        for (int j = 0; j < groups.groupsLists.length; ++j)
-                            groupsAdapter.add(groups.groupsLists[j].GroupName);
+                        for (int j = 0; j < groups.groupsLists.size(); ++j)
+                            groupsAdapter.add(groups.groupsLists.get(j).GroupName);
                     } else {
                         //в том случае если групп по курсу нету
                         groupsAdapter.add("No groups");

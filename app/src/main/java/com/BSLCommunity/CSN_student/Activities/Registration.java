@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,7 +11,6 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,16 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Objects.Groups;
-import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
+import com.BSLCommunity.CSN_student.R;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.BSLCommunity.CSN_student.Objects.Groups.getGroups;
-import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -61,7 +56,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         EditText RepeatPassword = (EditText) findViewById(R.id.checkPass);
 
         if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
-            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(Groups.getInstance(this).groupsLists[(int)id].id));
+            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(Groups.getInstance(this).groupsLists.get((int)id).id));
         } else {
             Toast.makeText(this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
         }

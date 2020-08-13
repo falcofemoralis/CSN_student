@@ -29,7 +29,7 @@ public class LocalData {
     public static HashMap<Integer, Date> updateListTeachers = new HashMap<Integer, Date>();
 
     // Загрзка Апдейта списка групп (список который хранит время изменения каждой группы на сервере)
-    public static void downloadGroupsUpdateList(final Context appContext, final HashMap<Integer, Date> updateList, final TypeData entity) {
+    public static void downloadUpdateList(final Context appContext, final HashMap<Integer, Date> updateList, final TypeData entity) {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
@@ -71,7 +71,7 @@ public class LocalData {
     * appContext - контекст всего приложения
     * type - тип объекта (учитель или группа)
     * fileDate - Время последнего изменения файла
-    * */
+    *
     public static void checkUpdate(Context appContext, TypeData type, Date fileDate) {
 
         // Выбор действия в зависимости от типа данных
@@ -79,7 +79,7 @@ public class LocalData {
         {
             case groups:
                 if (updateListGroups.isEmpty())
-                    downloadGroupsUpdateList(appContext, updateListGroups, type);
+                    downloadUpdateList(appContext, updateListGroups, type);
 
                 // Проверяем актуальность данных в группах
                 Groups.GroupsList[] groups = Groups.groupsLists;
@@ -90,10 +90,10 @@ public class LocalData {
                 break;
             case teachers:
                 if (updateListTeachers.isEmpty())
-                    downloadGroupsUpdateList(appContext, updateListTeachers, type);
+                    downloadUpdateList(appContext, updateListTeachers, type);
 
                 break;
         }
     }
-
+*/
 }

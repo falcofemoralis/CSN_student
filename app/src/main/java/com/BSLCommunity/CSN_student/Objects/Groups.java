@@ -1,13 +1,11 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
-import com.BSLCommunity.CSN_student.R;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 
 public class Groups {
+
+    static final String DATA_FILE_NAME = "Groups";
 
     /*список групп по курсу
      * Code_Group -  код группы в базе данных
@@ -56,6 +56,7 @@ public class Groups {
             this.lastUpdate = lastUpdate;
         }
 
+        // Добавляет расписание в группу 
         public void addSchedule(int half, int day, int pair, String subject, String type, int room) {
             scheduleList[half][day][pair] = new GroupsList.ScheduleList(subject, type, room);
         }
@@ -86,11 +87,10 @@ public class Groups {
             instance = new Groups();
 
             //загружаем расписание из отдельного json файла
-            String response = JSONHelper.read(context, "Groups");
+            String response = JSONHelper.read(context, DATA_FILE_NAME);
             Gson gson = new Gson();
             Type listType = new TypeToken<List<GroupsList>>() {}.getType();
             instance.groupsLists = gson.fromJson(response, listType);
-            SHOW_ALL();
             return instance;
         } catch (Exception ex) {
             // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
@@ -98,77 +98,21 @@ public class Groups {
         }
     }
 
-    public static void SHOW_ALL() {
-        for (int i = 0; i < groupsLists.size(); ++i) {
-            groupsLists.get(i).id = groupsLists.get(i).id;
-            groupsLists.get(i);
-        }
-
+    /* Функция получение групп по курсу, возвращает массив строк названий групп групп
+     * */
+    public static String[] getGroupNames(final Context appContext, int course, final Spinner groupSpinner, final int spinnerLayout) {
+        String[] groupNames = new String[groupsLists.size()];
+        for (int i = 0; i < groupsLists.size(); ++i)
+            groupNames[i] = groupsLists.get(i).GroupName;
+        return groupNames;
     }
 
-    /* Функция получение групп по курсу и установка их в спиннер
+    /* Функция получение групп по курсу из базы
      * Параметры:
      * appContext - application context
      * course - номер курса
      * */
-    public static void getGroups(final Context appContext, int course, final Spinner groupSpinner, final int spinnerLayout) {
-        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = Main.MAIN_URL + String.format("api/groups?Course=%1$s", course);
-
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //сохраняем группы в файл
-                JSONHelper.create(appContext, Main.GROUP_FILE_NAME, response);
-
-                //парсим полученный список групп
-                try {
-                    JSONArray JSONArray = new JSONArray(response);
-                    for (int i = 0; i < JSONArray.length(); ++i) {
-                        org.json.JSONObject JSONObject = JSONArray.getJSONObject(i);
-                        int id = JSONObject.getInt("id");
-                        String GroupName = JSONObject.getString("GroupName");
-                        //groupsLists.add(new GroupsList(id, GroupName, new Date());
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-               // Gson gson = new Gson();
-               // GroupsList[] groupsLists = gson.fromJson(response, GroupsList[].class);
-
-                //создаем лист групп
-                List<String> groups = new ArrayList<String>();
-                if (groupsLists.size() != 0) {
-                    //добавляем в массив из класса Groups группы
-                    for (int j = 0; j < groupsLists.size(); ++j)
-                        groups.add(groupsLists.get(j).GroupName);
-                } else {
-                    //в том случае если групп по курсу нету
-                    groups.add("No groups");
-                }
-
-                //устанавливаем спинер выбора групп
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(appContext, spinnerLayout, groups);
-                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-                groupSpinner.setAdapter(dataAdapter);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(request);
-    }
-
-    /* Функция получение групп по курсу
-     * Параметры:
-     * appContext - application context
-     * course - номер курса
-     * */
-    public static void getGroups(final Context appContext, int course) {
+    public static void downloadFromServer(final Context appContext, int course) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = Main.MAIN_URL + "api/groups?Course=" + course;
 
@@ -185,7 +129,9 @@ public class Groups {
                         org.json.JSONObject JSONObject = JSONArray.getJSONObject(i);
                         int id = JSONObject.getInt("id");
                         String GroupName = JSONObject.getString("GroupName");
+                        // Добавляем группу в список
                         groupsLists.add(new GroupsList(id, GroupName, new Date()));
+                        // Скачиваем расписание группы, если все остальные группы скачаны, то после скачивания последней - сохраняем данные
                         getSchedule(appContext, id, i == (JSONArray.length()  - 1) );
                     }
                 } catch (JSONException e) {
@@ -201,6 +147,12 @@ public class Groups {
         requestQueue.add(request);
     }
 
+    /* Функция загруки расписания из базы для группы
+    * Параметры:
+    * appContext - контекст приложения
+    * id - id группы
+    * saveData - сохранять данные или нет ? true - сохранить, false - не сохранять
+    * */
     public static void getSchedule(final Context appContext, final int id, final boolean saveData) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = Main.MAIN_URL + String.format("api/groups/%d/schedule", id);
@@ -223,6 +175,7 @@ public class Groups {
                         String room = dayJSONObject.getString("Room");
                         String type = dayJSONObject.getString("SubjectType");
 
+                        // Добавляем расписание в список
                         groupsList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, Integer.parseInt(room));
                     }
 
@@ -244,12 +197,14 @@ public class Groups {
         requestQueue.add(request);
     }
 
+    // Сохраняет данные о группах в Json файл
     public static void save(Context appContext) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(groupsLists);
-        JSONHelper.create(appContext, "Groups", jsonString);
+        JSONHelper.create(appContext, DATA_FILE_NAME , jsonString);
     }
 
+    // Поиск группы по id
     public static GroupsList findById(int id) {
         for (int i = 0; i < groupsLists.size(); ++i)
             if (groupsLists.get(i).id == id)

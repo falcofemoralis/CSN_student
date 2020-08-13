@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 
+import com.BSLCommunity.CSN_student.Activities.Main;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,7 +34,7 @@ public class LocalData {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = "http://192.168.1.3/api/" + entity.toString() + "/updateList";
+        String url = Main.MAIN_URL + entity.toString() + "/updateList";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -71,7 +72,7 @@ public class LocalData {
     * appContext - контекст всего приложения
     * type - тип объекта (учитель или группа)
     * fileDate - Время последнего изменения файла
-    *
+    * */
     public static void checkUpdate(Context appContext, TypeData type, Date fileDate) {
 
         // Выбор действия в зависимости от типа данных
@@ -82,11 +83,11 @@ public class LocalData {
                     downloadUpdateList(appContext, updateListGroups, type);
 
                 // Проверяем актуальность данных в группах
-                Groups.GroupsList[] groups = Groups.groupsLists;
-                for (int i = 0; i < groups.length; ++i)
-                    if (groups[i].lastUpdate.before(updateListGroups.get(groups[i].id))) {
-                        // Здесь должна быть функция обновления группы по id
-                    }
+                for (int i = 0; i < Groups.groupsLists.size(); ++i) {
+                    Groups.GroupsList localGroup = Groups.groupsLists.get(i);
+                    if (localGroup.lastUpdate.before(updateListGroups.get(localGroup.id)))
+                        Groups.getSchedule(appContext, localGroup.id, true);
+                }
                 break;
             case teachers:
                 if (updateListTeachers.isEmpty())
@@ -95,5 +96,5 @@ public class LocalData {
                 break;
         }
     }
-*/
+
 }

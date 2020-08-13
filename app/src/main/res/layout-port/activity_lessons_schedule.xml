@@ -27,7 +27,7 @@
 
 
             <Spinner
-                android:id="@+id/group_spin"
+                android:id="@+id/activity_lessons_schedule_sp_main"
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="138dp"
                 android:layout_height="match_parent"
@@ -46,7 +46,7 @@
                 android:layout_weight="0.1" />
 
             <Button
-                android:id="@+id/type_week"
+                android:id="@+id/activity_lessons_schedule_bt_weekType"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"

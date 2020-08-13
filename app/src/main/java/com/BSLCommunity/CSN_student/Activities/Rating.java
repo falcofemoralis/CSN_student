@@ -82,7 +82,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         STYLE_GREEN = getResources().getDrawable(R.drawable.text_but_rating_style_green);
         STYLE_RED = getResources().getDrawable(R.drawable.text_but_rating_style_red);
 
-        mainLayout = findViewById(R.id.mainLayout);
+        mainLayout = findViewById(R.id.activity_subject_list_ll_main);
         table = findViewById(R.id.table);
 
         //тут береться предмет со спиннера

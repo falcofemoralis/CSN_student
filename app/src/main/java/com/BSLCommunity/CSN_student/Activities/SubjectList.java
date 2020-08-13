@@ -1,9 +1,7 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Debug;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -43,7 +41,7 @@ public class SubjectList extends AppCompatActivity {
 
     public void setSubjectsList(){
         //достаем параметры референсной кнопки  затем ее выключаем
-        Button refBtn = (Button) findViewById(R.id.reference);
+        Button refBtn = (Button) findViewById(R.id.activity_subject_list_reference);
         ViewGroup.LayoutParams refParams = refBtn.getLayoutParams();
         refBtn.setVisibility(View.GONE);
 
@@ -60,16 +58,16 @@ public class SubjectList extends AppCompatActivity {
             //обработчик нажатию на кнопку
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
-                    v.startAnimation(click);
+                    view.startAnimation(click);
                     Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
-                    intent.putExtra("button_id", v.getId());
+                    intent.putExtra("button_id", view.getId());
                     startActivity(intent);
                 }
             };
 
-            LinearLayout layout = (LinearLayout) findViewById(R.id.mainLayout); //поле где будут кнопки
+            LinearLayout layout = (LinearLayout) findViewById(R.id.activity_subject_list_ll_main); //поле где будут кнопки
             Button subjectBtn = new Button(this); //новая кнопка
 
             //даем параметры кнопки

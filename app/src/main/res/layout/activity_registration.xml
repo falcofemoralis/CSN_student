@@ -14,7 +14,6 @@
         android:layout_weight="0.2" />
 
     <ImageView
-        android:id="@+id/imageView2"
         android:layout_width="236dp"
         android:layout_height="18dp"
         android:layout_gravity="center"
@@ -27,7 +26,7 @@
         android:layout_weight="0.2" />
 
     <EditText
-        android:id="@+id/Nick"
+        android:id="@+id/activity_registration_et_nickname"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -45,7 +44,7 @@
         android:layout_weight="0.1" />
 
     <EditText
-        android:id="@+id/pass"
+        android:id="@+id/activity_registration_et_password"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -64,7 +63,7 @@
         android:layout_weight="0.1" />
 
     <EditText
-        android:id="@+id/checkPass"
+        android:id="@+id/activity_registration_et_passwordRe"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -83,7 +82,7 @@
         android:layout_weight="0.1" />
 
     <Spinner
-        android:id="@+id/course"
+        android:id="@+id/activity_registration_sp_courses"
         android:layout_width="230dp"
         android:layout_height="2dp"
         android:layout_gravity="center"
@@ -99,7 +98,7 @@
         android:layout_weight="0.2" />
 
     <Spinner
-        android:id="@+id/group"
+        android:id="@+id/activity_registration_sp_groups"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -115,7 +114,7 @@
         android:layout_weight="0.2" />
 
     <Button
-        android:id="@+id/signUpBtn"
+        android:id="@+id/activity_registration_bt_register"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -134,7 +133,7 @@
 
 
         <TextView
-            android:id="@+id/Span_1a"
+            android:id="@+id/activity_registration_span1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -145,7 +144,7 @@
             tools:ignore="RtlCompat" />
 
         <TextView
-            android:id="@+id/Span_2a"
+            android:id="@+id/activity_registration_span2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"

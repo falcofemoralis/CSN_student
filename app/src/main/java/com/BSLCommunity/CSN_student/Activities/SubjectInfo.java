@@ -5,19 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Space;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.Objects.Subjects;
+import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.Rating;
 import com.android.volley.AuthFailureError;
@@ -37,9 +33,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Teachers.getTeachers;
 
 public class SubjectInfo extends AppCompatActivity {
     String FILE_NAME = "data_disc_";
@@ -60,7 +59,221 @@ public class SubjectInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_info);
-        /*Intent intent = getIntent();
+
+       getTeachers(this, new Callable<Void>() {
+            @Override
+            public Void call(){
+                setTeachers();
+                return null;
+            }
+        });
+    }
+
+    public void setTeachers(){
+        Intent intent = getIntent();
+        int subjectId = intent.getIntExtra("button_id", 0);
+        int teacherId = Subjects.subjectsList[subjectId-1].Code_Lector;
+
+        Button TeacherText = (Button) findViewById(R.id.activity_subject_info_bt_teacher);
+        try {
+            JSONObject teacherJSONObject = new JSONObject(Teachers.teachersList.get(teacherId));
+            TeacherText.setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+    // Загрузка информации о дисциплине
+    protected void RestoreAll(Rating current) {
+        boolean[][] compl_but = current.getComplete();
+        // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
+        for (int i = 0, size = Labs; i < size; ++i) {
+            if (compl_but[i][0]) {
+                buts[i][0].setBackgroundColor(TRUE);
+                ++complete;
+            } else
+                buts[i][0].setBackgroundColor(FALSE);
+
+            if (compl_but[i][1]) {
+                buts[i][1].setBackground(TRUE_2);
+                ++complete;
+            } else
+                buts[i][1].setBackground(FALSE_2);
+        }
+
+        if (current.getIDZ() == 1) {
+            IDZ.setBackground(TRUE_2);
+            ++complete;
+        } else if (current.getIDZ() == 0)
+            IDZ.setBackground(FALSE_2);
+
+        ((Button) (findViewById(R.id.activity_subject_info_bt_subjectName))).setText(current.getStringName(this)); // Установка имени дисциплины
+        ((Button) (findViewById(R.id.activity_subject_info_bt_teacher))).setText(current.getStringValue(this)); // Установка стоимости дисциплины
+        ((Button) (findViewById(R.id.activity_subject_info_bt_teacher))).setText(current.getStringTeacher(this)); // Установка ФИО преподавателя
+        res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка среднего прогресса по дисциплине
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+     //   boolean[][] compl_but = new boolean[Labs][2];
+
+      /*  // Сохранение состояния кнопок Сдано и Защита
+        for (int i = 0; i < Labs; ++i) {
+            if (((ColorDrawable) buts[i][0].getBackground()).getColor() == TRUE)
+                compl_but[i][0] = true;
+            else
+                compl_but[i][0] = false;
+
+            if ((buts[i][1].getBackground() == TRUE_2))
+                compl_but[i][1] = true;
+            else
+                compl_but[i][1] = false;
+        }
+
+        // Обновить содержимое текущей дисциплины
+        current.setComplete(compl_but);
+
+        if (current.getIDZ() != -1)
+            if (IDZ.getBackground() == TRUE_2)
+                current.setIDZ((byte) 1);
+            else
+                current.setIDZ((byte) 0);
+
+        // Сохранение данных о дисциплинах с json
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(discs);
+        JSONHelper.create(this, FILE_NAME, jsonString);
+
+        updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but), current.getIDZ(), this);*/
+    }
+
+    public static void updateRating(final String NickName, final String NameDiscp, final String status, final byte IDZ, final Context context) {
+        String url = Main.MAIN_URL + "updateRating.php";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Toast.makeText(Disciplines.this, "data saved successfully", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
+                prefEditor.putBoolean(Settings.KEY_OFFLINE_DATA, true);
+                prefEditor.apply();
+                Toast.makeText(context, "No connection with server, data saved locally", Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", NickName);
+                parameters.put("NameDiscp", NameDiscp);
+                parameters.put("Status", status);
+                parameters.put("IDZ", Byte.toString(IDZ));
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+    }
+
+    public static void saveJSON(Context context) {
+        SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
+        prefEditor.putBoolean(Settings.KEY_OFFLINE_DATA, false);
+        prefEditor.apply();
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(discs);
+        JSONHelper.create(context, Main.FILE_NAME, jsonString);
+        whole = true;
+    }
+
+    public static void getStatus(final String NickName, final int i, final Context context) {
+        String url = Main.MAIN_URL + "getStatus.php";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                int count = 0;
+                if (!response.equals("null")) {
+                    JSONObject obj;
+                    try {
+                        obj = new JSONObject(response);
+                        byte IDZ = (byte) obj.getInt("IDZ");
+                        Gson gson = new Gson();
+                        boolean[][] compl = gson.fromJson(obj.getString("status"), boolean[][].class);
+                        discs.get(i).setComplete(compl);
+                        discs.get(i).setIDZ(IDZ);
+
+                        compl = discs.get(0).getComplete();
+                        compl[0][0] = true;
+
+                        ++count;
+                        if (count == discs.size())
+                            saveJSON(context);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (whole) {
+                    Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_LONG).show();
+                    whole = false;
+                }
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("NickName", NickName);
+                parameters.put("NameDiscp", discs.get(i).getName());
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    public void loadRating() {
+        ArrayList<Rating> discs = new ArrayList<>();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Rating>>() {
+        }.getType();
+        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
+
+        for (int i = 0; i < discs.size(); ++i) {
+            Rating temp = discs.get(i);
+            updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
+        }
+    }
+}
+
+
+
+        /*
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         loadRating();
@@ -206,184 +419,3 @@ public class SubjectInfo extends AppCompatActivity {
        // RestoreAll(discs.get(num)); // Загрузка данных
 
  */
-    }
-
-    // Загрузка информации о дисциплине
-    protected void RestoreAll(Rating current) {
-        boolean[][] compl_but = current.getComplete();
-        // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
-        for (int i = 0, size = Labs; i < size; ++i) {
-            if (compl_but[i][0]) {
-                buts[i][0].setBackgroundColor(TRUE);
-                ++complete;
-            } else
-                buts[i][0].setBackgroundColor(FALSE);
-
-            if (compl_but[i][1]) {
-                buts[i][1].setBackground(TRUE_2);
-                ++complete;
-            } else
-                buts[i][1].setBackground(FALSE_2);
-        }
-
-        if (current.getIDZ() == 1) {
-            IDZ.setBackground(TRUE_2);
-            ++complete;
-        } else if (current.getIDZ() == 0)
-            IDZ.setBackground(FALSE_2);
-
-
-        ((Button) (findViewById(R.id.Disc))).setText(current.getStringName(this)); // Установка имени дисциплины
-        ((Button) (findViewById(R.id.val))).setText(current.getStringValue(this)); // Установка стоимости дисциплины
-        ((Button) (findViewById(R.id.teach))).setText(current.getStringTeacher(this)); // Установка ФИО преподавателя
-        res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка среднего прогресса по дисциплине
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        boolean[][] compl_but = new boolean[Labs][2];
-
-        // Сохранение состояния кнопок Сдано и Защита
-        for (int i = 0; i < Labs; ++i) {
-            if (((ColorDrawable) buts[i][0].getBackground()).getColor() == TRUE)
-                compl_but[i][0] = true;
-            else
-                compl_but[i][0] = false;
-
-            if ((buts[i][1].getBackground() == TRUE_2))
-                compl_but[i][1] = true;
-            else
-                compl_but[i][1] = false;
-        }
-
-        // Обновить содержимое текущей дисциплины
-        current.setComplete(compl_but);
-
-        if (current.getIDZ() != -1)
-            if (IDZ.getBackground() == TRUE_2)
-                current.setIDZ((byte) 1);
-            else
-                current.setIDZ((byte) 0);
-
-        // Сохранение данных о дисциплинах с json
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(discs);
-        JSONHelper.create(this, FILE_NAME, jsonString);
-
-        updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but), current.getIDZ(), this);
-    }
-
-    public static void updateRating(final String NickName, final String NameDiscp, final String status, final byte IDZ, final Context context) {
-        String url = Main.MAIN_URL + "updateRating.php";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Toast.makeText(Disciplines.this, "data saved successfully", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
-                prefEditor.putBoolean(Settings.KEY_OFFLINE_DATA, true);
-                prefEditor.apply();
-                Toast.makeText(context, "No connection with server, data saved locally", Toast.LENGTH_LONG).show();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", NickName);
-                parameters.put("NameDiscp", NameDiscp);
-                parameters.put("Status", status);
-                parameters.put("IDZ", Byte.toString(IDZ));
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
-    }
-
-    public static void saveJSON(Context context) {
-        SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
-        prefEditor.putBoolean(Settings.KEY_OFFLINE_DATA, false);
-        prefEditor.apply();
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(discs);
-        JSONHelper.create(context, Main.FILE_NAME, jsonString);
-        whole = true;
-    }
-
-    public static void getStatus(final String NickName, final int i, final Context context) {
-        String url = Main.MAIN_URL + "getStatus.php";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                int count = 0;
-                if (!response.equals("null")) {
-                    JSONObject obj;
-                    try {
-                        obj = new JSONObject(response);
-                        byte IDZ = (byte) obj.getInt("IDZ");
-                        Gson gson = new Gson();
-                        boolean[][] compl = gson.fromJson(obj.getString("status"), boolean[][].class);
-                        discs.get(i).setComplete(compl);
-                        discs.get(i).setIDZ(IDZ);
-
-                        compl = discs.get(0).getComplete();
-                        compl[0][0] = true;
-
-                        ++count;
-                        if (count == discs.size())
-                            saveJSON(context);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (whole) {
-                    Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_LONG).show();
-                    whole = false;
-                }
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", NickName);
-                parameters.put("NameDiscp", discs.get(i).getName());
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
-    }
-
-    public void loadRating() {
-        ArrayList<Rating> discs = new ArrayList<>();
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Rating>>() {
-        }.getType();
-        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
-
-        for (int i = 0; i < discs.size(); ++i) {
-            Rating temp = discs.get(i);
-            updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
-        }
-    }
-}
-

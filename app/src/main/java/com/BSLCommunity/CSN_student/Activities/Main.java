@@ -46,8 +46,8 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        Time = (TextView) findViewById(R.id.Time);
-        TimeUntil = (TextView) findViewById(R.id.timeUntil);
+        Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
+        TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
 
         setSettingsFile(this);
         //checkData();
@@ -59,19 +59,19 @@ public class Main extends AppCompatActivity {
 
         Intent intent = null;
         switch (view.getId()) {
-            case R.id.subjectsBtn:
+            case R.id.activity_main_bt_subjects:
                 intent = new Intent(this, SubjectList.class);
                 break;
-            case R.id.ratingBtn:
+            case R.id.activity_main_bt_rating:
                 intent = new Intent(this, Rating.class);
                 break;
-            case R.id.lessons_scheduleBtn:
+            case R.id.activity_main_bt_lessonsShedule:
                 intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Groups");
                 break;
-            case R.id.settingsBtn:
+            case R.id.activity_main_bt_settings:
                 intent = new Intent(this, Settings.class);
                 break;
-            case R.id.teachers_scheduleBtn:
+            case R.id.activity_main_bt_teachersSchedule:
                 intent =new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
                 break;
         }

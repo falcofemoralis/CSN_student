@@ -19,13 +19,12 @@
             android:layout_weight="0.1" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="18sp"
             android:text="@string/Base_settings"
-            android:textColor="@color/mb_red"/>
+            android:textColor="@color/mb_red"
+            android:textSize="18sp" />
 
 
         <Space
@@ -35,65 +34,64 @@
     </LinearLayout>
 
 
+    <LinearLayout
+        android:id="@+id/activity_settings_ll_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="OnClick"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
 
         <LinearLayout
-            android:id="@+id/nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="OnClick"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
 
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
             <TextView
-                android:id="@+id/nickname_text"
+                android:id="@+id/activity_settings_tv_nickname_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
                 android:text="@string/nickname"
-                android:textSize="18sp"
                 android:textColor="@color/black"
-                android:layout_weight="1"
-                android:layout_gravity="start" />
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/nickname_setText"
+                android:id="@+id/activity_settings_tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/not_set"
-                android:textSize="18sp"
+                android:layout_gravity="start"
                 android:layout_weight="1"
-                android:layout_gravity="start" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:text="@string/not_set"
+                android:textSize="18sp" />
         </LinearLayout>
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 
     <LinearLayout
-        android:id="@+id/password"
+        android:id="@+id/activity_settings_ll_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:onClick="OnClick"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <Space
             android:layout_width="20dp"
@@ -104,71 +102,26 @@
             android:layout_height="match_parent"
             android:layout_weight="0.2"
             android:orientation="vertical">
+
             <TextView
-                android:id="@+id/password_text"
+                android:id="@+id/activity_settings_tv_password_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
                 android:text="@string/password"
-                android:textSize="18sp"
                 android:textColor="@color/black"
-                android:layout_weight="1"
-                android:layout_gravity="start" />
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/password_setText"
+                android:id="@+id/activity_settings_tv_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/not_set"
-                android:textSize="18sp"
+                android:layout_gravity="start"
+                android:layout_weight="1"
                 android:inputType="textPassword"
-                android:layout_weight="1"
-                android:layout_gravity="start" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="OnClick"
-        android:foreground="?android:attr/selectableItemBackground">
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/group_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/group"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:layout_weight="1"
-                android:layout_gravity="start" />
-
-            <TextView
-                android:id="@+id/group_setText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/not_set"
-                android:textSize="18sp"
-                android:layout_weight="1"
-                android:layout_gravity="start" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <Space
@@ -178,15 +131,15 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/exit"
+        android:id="@+id/activity_settings_ll_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="Exit"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="OnClick"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <Space
             android:layout_width="20dp"
@@ -197,15 +150,63 @@
             android:layout_height="match_parent"
             android:layout_weight="0.2"
             android:orientation="vertical">
+
             <TextView
-                android:id="@+id/account_exit"
+                android:id="@+id/activity_settings_tv_group_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/account_exit"
-                android:textSize="18sp"
-                android:textColor="@color/black"
+                android:layout_gravity="start"
                 android:layout_weight="1"
-                android:layout_gravity="start" />
+                android:text="@string/group"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/activity_settings_tv_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:text="@string/not_set"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/activity_settings_ll_accountExit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="Exit"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/activity_settings_tv_accountExit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:text="@string/account_exit"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -226,13 +227,12 @@
             android:layout_weight="0.1" />
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="18sp"
             android:text="@string/home_screen"
-            android:textColor="@color/mb_red"/>
+            android:textColor="@color/mb_red"
+            android:textSize="18sp" />
 
 
         <Space
@@ -241,7 +241,7 @@
             android:layout_weight="1" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/timer"
+        android:id="@+id/activity_settings_ll_timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -258,7 +258,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/timer_text"
+                android:id="@+id/activity_settings_tv_timer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timer"
@@ -274,7 +274,7 @@
             android:layout_weight="1" />
 
         <Switch
-            android:id="@+id/timer_switch"
+            android:id="@+id/activity_settings_sw_timer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
 

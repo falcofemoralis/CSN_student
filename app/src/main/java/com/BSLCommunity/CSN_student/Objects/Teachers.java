@@ -46,20 +46,11 @@ public class Teachers {
                 //парсим полученный список учителей
                 Gson gson = new Gson();
                 TeachersList[] teachersList = gson.fromJson(response, TeachersList[].class);
-                String teacherName = null;
-                JSONObject teacherJSONObject = null;
 
                 if(teachersList.length!=0){
                     //добавляем в массив из класса Teachers учителей
-                    for (int i = 0; i < teachersList.length; ++i){
-                        try {
-                            teacherJSONObject = new JSONObject(teachersList[i].FIO);
-                            teacherName = teacherJSONObject.getString(Locale.getDefault().getLanguage());
-                            Teachers.teachersList.put(teachersList[i].teacher_id,teacherName);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    for (int i = 0; i < teachersList.length; ++i)
+                            Teachers.teachersList.put(teachersList[i].teacher_id,teachersList[i].FIO);
                 }
 
                 try {

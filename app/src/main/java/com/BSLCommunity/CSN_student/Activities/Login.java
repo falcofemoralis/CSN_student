@@ -36,8 +36,8 @@ public class Login extends AppCompatActivity {
 
     //кнопка логина
     public void OnClick(View v) {
-        EditText NickName = (EditText) findViewById(R.id.Nick) ;
-        EditText Password = (EditText) findViewById(R.id.pass) ;
+        EditText NickName = (EditText) findViewById(R.id.activity_login_et_nickname) ;
+        EditText Password = (EditText) findViewById(R.id.activity_login_et_password) ;
         User.login(getApplicationContext(), Login.this, NickName.getText().toString().toLowerCase(),Password.getText().toString());
     }
 
@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity {
 
     //кнопка перехода в регистрацию
     protected void createClickableSpan() {
-        TextView text = findViewById(R.id.Span_2);
+        TextView text = findViewById(R.id.activity_login_tv_span2);
 
         SpannableString ss = new SpannableString(text.getText());
 

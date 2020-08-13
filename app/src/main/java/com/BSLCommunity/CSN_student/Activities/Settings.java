@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -13,12 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 
-import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.User;
-import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -28,8 +23,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,9 +48,9 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
         setContentView(R.layout.activity_settings);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         prefEditor = encryptedSharedPreferences.edit();
-        nickname_setText = (TextView) findViewById(R.id.nickname_setText);
-        password_setText = (TextView) findViewById(R.id.password_setText);
-        group_setText = (TextView) findViewById(R.id.group_setText);
+        nickname_setText = (TextView) findViewById(R.id.activity_settings_tv_nickname);
+        password_setText = (TextView) findViewById(R.id.activity_settings_tv_password);
+        group_setText = (TextView) findViewById(R.id.activity_settings_tv_group);
 
         nickname_setText.setText(encryptedSharedPreferences.getString(KEY_NICKNAME, ""));
         password_setText.setText(encryptedSharedPreferences.getString(KEY_PASSWORD, ""));
@@ -70,7 +63,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
         group = encryptedSharedPreferences.getString(KEY_GROUP, "");
         oldGroup = group;
 
-        Switch timerSwitch = (Switch) findViewById(R.id.timer_switch);
+        Switch timerSwitch = (Switch) findViewById(R.id.activity_settings_sw_timer);
         if (encryptedSharedPreferences.getBoolean(Settings.KEY_TIMER_SETTING, true))
             timerSwitch.setChecked(true);
         else timerSwitch.setChecked(false);
@@ -95,7 +88,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
     @Override
     public void applyText(String text, int applyKey) {
         switch (applyKey) {
-            case R.id.nickname:
+            case R.id.activity_settings_ll_nickname:
                 if (text.equals("")) {
                     Toast.makeText(Settings.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
@@ -104,7 +97,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
                 prefEditor.putString(KEY_NICKNAME, text).apply();
                 setData();
                 break;
-            case R.id.password:
+            case R.id.activity_settings_ll_password:
                 if (text.equals("")) {
                     Toast.makeText(Settings.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
@@ -113,7 +106,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
                 prefEditor.putString(KEY_PASSWORD, text).apply();
                 setData();
                 break;
-            case R.id.group:
+            case R.id.activity_settings_ll_group:
                 group_setText.setText(text);
                 prefEditor.putString(KEY_GROUP, text).apply();
                 setData();

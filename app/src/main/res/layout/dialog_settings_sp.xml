@@ -6,13 +6,12 @@
     android:orientation="vertical">
 
     <Spinner
-        android:id="@+id/group"
+        android:id="@+id/activity_registration_sp_groups"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:layout_weight="0.1"
-        android:entries="@array/group_arrays"
         android:prompt="@string/group_prompt"
         android:textAlignment="center"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black" />
 </RelativeLayout>

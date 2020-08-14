@@ -90,7 +90,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
 
     //создание спиннера групп
     protected void createSpinner() {
-        groupSpinner = findViewById(R.id.group_spin);
+        groupSpinner = findViewById(R.id.activity_lessons_schedule_sp_main);
         List<String> listAdapter = new ArrayList<>();
 
         //Выбор расписания в зависимости от пришедшего значения с активити
@@ -152,7 +152,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
 
     //получение необходимых полей с активити расписание
     protected void getScheduleElements() {
-        type_week = findViewById(R.id.type_week);
+        type_week = findViewById(R.id.activity_lessons_schedule_bt_weekType);
 
         //получеам id текстовых полей с activity_lessons_schedule и сохраняем их в массиве schedule[][]
         //i - пары, j - дни

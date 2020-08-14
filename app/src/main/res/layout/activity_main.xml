@@ -33,7 +33,7 @@
             android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/timeUntil"
+                    android:id="@+id/activity_main_tv_timer_text"
                     android:layout_width="187dp"
                     android:layout_height="48dp"
                     android:layout_margin="15dp"
@@ -45,7 +45,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/Time"
+                    android:id="@+id/activity_main_tv_timerCounter"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_margin="15dp"
@@ -59,21 +59,19 @@
      </LinearLayout>
 
     <ScrollView
-        android:id="@+id/scroll"
-        android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="100">
+        android:layout_weight="100"
+        android:background="@color/background">
 
         <LinearLayout
-            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/subjectsBtn"
+                android:id="@+id/activity_main_bt_subjects"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -95,7 +93,7 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/ratingBtn"
+                android:id="@+id/activity_main_bt_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -117,7 +115,7 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/lessons_scheduleBtn"
+                android:id="@+id/activity_main_bt_lessonsShedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -139,7 +137,7 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/teachers_scheduleBtn"
+                android:id="@+id/activity_main_bt_teachersSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -158,7 +156,7 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/settingsBtn"
+                android:id="@+id/activity_main_bt_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

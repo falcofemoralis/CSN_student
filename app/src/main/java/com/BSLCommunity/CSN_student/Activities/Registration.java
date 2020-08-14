@@ -49,9 +49,9 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     //обработчик регистрации юзера
     public void OnClick(View view) {
-        EditText NickName = (EditText) findViewById(R.id.Nick);
-        EditText Password = (EditText) findViewById(R.id.pass);
-        EditText RepeatPassword = (EditText) findViewById(R.id.checkPass);
+        EditText NickName = (EditText) findViewById(R.id.activity_registration_et_nickname);
+        EditText Password = (EditText) findViewById(R.id.activity_registration_et_password);
+        EditText RepeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
 
         if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
             User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(Groups.groupsLists[(int)id].id));
@@ -62,7 +62,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     //создание спиннера групп
     protected void createGroupSpinner() {
-        Spinner groupSpinner = findViewById(R.id.group);
+        Spinner groupSpinner = findViewById(R.id.activity_registration_sp_groups);
 
         List<String> listAdapter = new ArrayList<>();
         if (Groups.groupsLists.length != 0) {
@@ -82,7 +82,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     //создание спиннера курсов
     protected void createCourseSpinner() {
-        Spinner courseSpinner = findViewById(R.id.course);
+        Spinner courseSpinner = findViewById(R.id.activity_registration_sp_courses);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.courses,
@@ -98,7 +98,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
-            case R.id.course:
+            case R.id.activity_registration_sp_courses:
                 getGroups(this,  Integer.parseInt(parent.getItemAtPosition(position).toString()), new Callable<Void>() {
                     @Override
                     public Void call(){
@@ -107,7 +107,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
                     }
                 });
                 break;
-            case R.id.group:
+            case R.id.activity_registration_sp_groups:
                 this.id = id;
                 break;
         }
@@ -127,7 +127,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     //кнопка перехода в логин
     protected void createClickableSpan() {
-        TextView text = findViewById(R.id.Span_2a);
+        TextView text = findViewById(R.id.activity_registration_span2);
 
         SpannableString ss = new SpannableString(text.getText());
 

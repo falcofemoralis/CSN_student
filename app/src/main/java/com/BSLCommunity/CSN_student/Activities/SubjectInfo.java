@@ -1,23 +1,28 @@
 package com.BSLCommunity.CSN_student.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Space;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.Objects.Subjects;
+import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.Rating;
 import com.android.volley.AuthFailureError;
@@ -37,353 +42,296 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.security.auth.Subject;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Teachers.getTeachers;
 
-public class SubjectInfo extends AppCompatActivity {
-    String FILE_NAME = "data_disc_";
-    final int BUTTON_TEXT_SIZE = 10, TEXT_SIZE = 13;
-    int FALSE, TRUE, TEXT_WHITE; // FALSE(Не сдано) - красный, TRUE(Сдано) - светозеленый
-    Drawable FALSE_2, TRUE_2, LAB_STYLE;
+public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    int[] colors = { //цвета кнопок выбора
+            R.color.not_passed,
+            R.color.in_process,
+            R.color.done_without_report,
+            R.color.done_with_report,
+            R.color.waiting_acceptation,
+            R.color.passed_without_report,
+            R.color.passed_with_report};
+    ArrayList<Integer> teacherIds;  //список учителей для установки
+    int labsCount = 0, subjectValue = 0; //labsCount - кол-во лаб у предмета, subjectValue - ценность предмета
+    final int TEXT_SIZE = 13; //размер текста
+    public ArrayList<Integer> labValues = new ArrayList<>(); //зачения лаб
 
-    RequestQueue requestQueue;
-    Button res; // Кнопка результата
-    Button buts[][], IDZ; // Кнопки "Сдано" и "Защита"
-    int complete = 0, Labs, count_idz = 0; // complete - подсчет сданих лаб, Labs - хранит количество лабораторних
-    public static ArrayList<Rating> discs = new ArrayList<>(); //Дисциплины
-    Rating current; // текущая дисциплина
-    LinearLayout mainView;
-    static boolean whole = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_info);
-        /*Intent intent = getIntent();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        createValueSpinner();
+        setSubjectName();
 
-        loadRating();
-        FILE_NAME += encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, "") + ".json";
-
-        res = (Button) findViewById(R.id.res);
-
-        //Cмена статуса для кнопок сдачи
-        View.OnClickListener ButtonChangeStatus = new View.OnClickListener() {
+        getTeachers(this, new Callable<Void>() {
             @Override
-            public void onClick(View v) {
-                Button but = (Button) v;
-                //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
-                if (((ColorDrawable) but.getBackground()).getColor() == FALSE) {
-                    ++complete;
-                    but.setBackgroundColor(TRUE);
-                } else {
-                    --complete;
-                    but.setBackgroundColor(FALSE);
-                }
-
-                res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка поля среднего прогресса по дисциплине
+            public Void call() {
+                setTeachers();
+                return null;
             }
-        };
+        });
 
-        //Смена статуса для кнопок защиты (с закругленными углами)
-        View.OnClickListener CornerButtonChangeStatus = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Button but = (Button) v;
-                //Смена статуса после нажатия TRUE - сдано, FALSE - не сдано
-                if (((Drawable) but.getBackground() == FALSE_2)) {
-                    ++complete;
-                    but.setBackground(TRUE_2);
-                } else {
-                    --complete;
-                    but.setBackground(FALSE_2);
-                }
-
-                res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка поля среднего прогресса по дисциплине
-            }
-        };
-
-
-        FILE_NAME += encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, "") + ".json";
-
-        FALSE = getResources().getColor(R.color.mb_red);
-        TRUE = getResources().getColor(R.color.mb_green);
-        TEXT_WHITE = getResources().getColor(R.color.white);
-
-        FALSE_2 = getResources().getDrawable(R.drawable.lab_choose);
-        TRUE_2 = getResources().getDrawable(R.drawable.lab_choose_accepted);
-        LAB_STYLE = getResources().getDrawable(R.drawable.lab_style);
-
-        // Достать объект Дисциплина с json, возвращает массив дисциплин
-        // num = GetCode(intent.getIntExtra("button_id", 0)); // индекс для выбора дисциплины из массива дисциплин
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Rating>>() {
-        }.getType();
-        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
-       // current = discs.get(num);
-        Labs = current.getLabs(); // количество лабораторных
-
-        mainView = findViewById(R.id.Discp_main);
-
-        if (current.getIDZ() == -1)
-            buts = new Button[Labs][2];
-        else {
-            count_idz = 1;
-            buts = new Button[Labs + 1][2];
+        try {
+            labsCount = Subjects.getInstance(this).getLabCount(getIntent().getIntExtra("button_id", 0));
+            loadLabs();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        for (int i = 0; i < Labs; ++i) {
-            LinearLayout newLine = new LinearLayout(this);
-            newLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            newLine.setOrientation(LinearLayout.HORIZONTAL);
-
-            TextView lab = new TextView(this);
-            lab.setText(getResources().getString(R.string.Lab) + (i + 1));
-            lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            lab.setTextSize(TEXT_SIZE);
-            lab.setTextColor(TEXT_WHITE);
-            lab.setGravity(Gravity.CENTER);
-            lab.setLayoutParams(new LinearLayout.LayoutParams((int) (230 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-            lab.setBackground(LAB_STYLE);
-            newLine.addView(lab);
-
-            buts[i][0] = new Button(this);
-            buts[i][0].setText(getResources().getString(R.string.Passed));
-            buts[i][0].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            buts[i][0].setTextSize(BUTTON_TEXT_SIZE);
-            buts[i][0].setTextColor(TEXT_WHITE);
-            buts[i][0].setGravity(Gravity.CENTER);
-            buts[i][0].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            buts[i][0].setOnClickListener(ButtonChangeStatus);
-            newLine.addView(buts[i][0]);
-
-            buts[i][1] = new Button(this);
-            buts[i][1].setText(getResources().getString(R.string.Protection));
-            buts[i][1].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            buts[i][1].setTextSize(BUTTON_TEXT_SIZE);
-            buts[i][1].setTextColor(TEXT_WHITE);
-            buts[i][1].setGravity(Gravity.CENTER);
-            buts[i][1].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            buts[i][1].setOnClickListener(CornerButtonChangeStatus);
-            newLine.addView(buts[i][1]);
-
-            mainView.addView(newLine);
-        }
-
-        Space space = new Space(this);
-        space.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (24 * this.getResources().getDisplayMetrics().density)));
-        mainView.addView(space);
-
-        if (current.getIDZ() != -1) {
-            LinearLayout newLine = new LinearLayout(this);
-            newLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            newLine.setOrientation(LinearLayout.HORIZONTAL);
-
-            TextView IDZText = new TextView(this);
-            IDZText.setText(getResources().getString(R.string.IHW));
-            IDZText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            IDZText.setTextSize(TEXT_SIZE);
-            IDZText.setTextColor(TEXT_WHITE);
-            IDZText.setGravity(Gravity.CENTER);
-            IDZText.setLayoutParams(new LinearLayout.LayoutParams((int) (150 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-            IDZText.setBackground(LAB_STYLE);
-            newLine.addView(IDZText);
-
-            IDZ = new Button(this);
-            IDZ.setText(getResources().getString(R.string.Passed));
-            IDZ.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            IDZ.setTextSize(BUTTON_TEXT_SIZE);
-            IDZ.setTextColor(TEXT_WHITE);
-            IDZ.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            IDZ.setOnClickListener(CornerButtonChangeStatus);
-            newLine.addView(IDZ);
-
-            mainView.addView(newLine);
-        }
-
-        res = findViewById(R.id.res);
-
-       // RestoreAll(discs.get(num)); // Загрузка данных
-
- */
-    }
-
-    // Загрузка информации о дисциплине
-    protected void RestoreAll(Rating current) {
-        boolean[][] compl_but = current.getComplete();
-        // Установка состояний кнопок в зависимости от прогресса по текущей дисциплине
-        for (int i = 0, size = Labs; i < size; ++i) {
-            if (compl_but[i][0]) {
-                buts[i][0].setBackgroundColor(TRUE);
-                ++complete;
-            } else
-                buts[i][0].setBackgroundColor(FALSE);
-
-            if (compl_but[i][1]) {
-                buts[i][1].setBackground(TRUE_2);
-                ++complete;
-            } else
-                buts[i][1].setBackground(FALSE_2);
-        }
-
-        if (current.getIDZ() == 1) {
-            IDZ.setBackground(TRUE_2);
-            ++complete;
-        } else if (current.getIDZ() == 0)
-            IDZ.setBackground(FALSE_2);
-
-
-        ((Button) (findViewById(R.id.Disc))).setText(current.getStringName(this)); // Установка имени дисциплины
-        ((Button) (findViewById(R.id.val))).setText(current.getStringValue(this)); // Установка стоимости дисциплины
-        ((Button) (findViewById(R.id.teach))).setText(current.getStringTeacher(this)); // Установка ФИО преподавателя
-        res.setText(Integer.toString(complete * 100 / (Labs * 2 + count_idz)) + "%"); // Установка среднего прогресса по дисциплине
     }
 
     @Override
     protected void onPause() {
+        int subjectId = getIntent().getIntExtra("button_id", 0);
+        Subjects subjects = Subjects.getInstance(this);
+        subjects.saveLabCount(this, subjectId, labsCount);  //сохраням кол-во лаб
+        subjects.saveSubjectValue(this, subjectId, subjectValue); //сохраням ценность предмета
+        subjects.saveLabValue(this, subjectId, labValues, labsCount); //сохраням тип лабы
+        subjects.saveSubject(this); //сохраняем в JSON
         super.onPause();
-        boolean[][] compl_but = new boolean[Labs][2];
+    }
 
-        // Сохранение состояния кнопок Сдано и Защита
-        for (int i = 0; i < Labs; ++i) {
-            if (((ColorDrawable) buts[i][0].getBackground()).getColor() == TRUE)
-                compl_but[i][0] = true;
-            else
-                compl_but[i][0] = false;
+    //спине выбора ценности предмета
+    protected void createValueSpinner() {
+        Spinner valueSpinner = findViewById(R.id.activity_subject_info_sp_values);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.values,
+                R.layout.spinner_subjectinfo_layout
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+        valueSpinner.setAdapter(adapter);
 
-            if ((buts[i][1].getBackground() == TRUE_2))
-                compl_but[i][1] = true;
-            else
-                compl_but[i][1] = false;
+        try {
+            valueSpinner.setSelection(Subjects.getInstance(this).getSubjectValue(getIntent().getIntExtra("button_id", 0)));
+        } catch (Exception e) {
+            valueSpinner.setSelection(subjectValue);
         }
 
-        // Обновить содержимое текущей дисциплины
-        current.setComplete(compl_but);
-
-        if (current.getIDZ() != -1)
-            if (IDZ.getBackground() == TRUE_2)
-                current.setIDZ((byte) 1);
-            else
-                current.setIDZ((byte) 0);
-
-        // Сохранение данных о дисциплинах с json
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(discs);
-        JSONHelper.create(this, FILE_NAME, jsonString);
-
-        updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), current.getName(), gson.toJson(compl_but), current.getIDZ(), this);
+        valueSpinner.setOnItemSelectedListener(this);
     }
 
-    public static void updateRating(final String NickName, final String NameDiscp, final String status, final byte IDZ, final Context context) {
-        String url = Main.MAIN_URL + "updateRating.php";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Toast.makeText(Disciplines.this, "data saved successfully", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
-                prefEditor.putBoolean(Settings.KEY_OFFLINE_DATA, true);
-                prefEditor.apply();
-                Toast.makeText(context, "No connection with server, data saved locally", Toast.LENGTH_LONG).show();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", NickName);
-                parameters.put("NameDiscp", NameDiscp);
-                parameters.put("Status", status);
-                parameters.put("IDZ", Byte.toString(IDZ));
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
-    }
-
+    //выбор элемента на спинере
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.activity_subject_info_sp_values) {
+            subjectValue = (int) id;
+        } else {
+            Drawable drawable = parent.getBackground();
+            drawable.setTint(getColor(colors[(int) id]));
+            labValues.set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
+            setProgress();
+        }
     }
 
-    public static void saveJSON(Context context) {
-        SharedPreferences.Editor prefEditor = encryptedSharedPreferences.edit();
-        prefEditor.putBoolean(Settings.KEY_OFFLINE_DATA, false);
-        prefEditor.apply();
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(discs);
-        JSONHelper.create(context, Main.FILE_NAME, jsonString);
-        whole = true;
+    //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
-    public static void getStatus(final String NickName, final int i, final Context context) {
-        String url = Main.MAIN_URL + "getStatus.php";
+    //устанавлиаем название предмета
+    public void setSubjectName() {
+        int subjectId = getIntent().getIntExtra("button_id", 0);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                int count = 0;
-                if (!response.equals("null")) {
-                    JSONObject obj;
-                    try {
-                        obj = new JSONObject(response);
-                        byte IDZ = (byte) obj.getInt("IDZ");
-                        Gson gson = new Gson();
-                        boolean[][] compl = gson.fromJson(obj.getString("status"), boolean[][].class);
-                        discs.get(i).setComplete(compl);
-                        discs.get(i).setIDZ(IDZ);
-
-                        compl = discs.get(0).getComplete();
-                        compl[0][0] = true;
-
-                        ++count;
-                        if (count == discs.size())
-                            saveJSON(context);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (whole) {
-                    Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_LONG).show();
-                    whole = false;
-                }
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NickName", NickName);
-                parameters.put("NameDiscp", discs.get(i).getName());
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
+        Button subjectNameBtn = (Button) findViewById(R.id.activity_subject_info_bt_subjectName);
+        try {
+            JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[subjectId - 1].NameDiscipline);
+            subjectNameBtn.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void loadRating() {
-        ArrayList<Rating> discs = new ArrayList<>();
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Rating>>() {
-        }.getType();
-        discs = gson.fromJson(JSONHelper.read(this, FILE_NAME), listType);
+    //устанавливаем преподователей
+    public void setTeachers() {
+        int subjectId = getIntent().getIntExtra("button_id", 0);
 
-        for (int i = 0; i < discs.size(); ++i) {
-            Rating temp = discs.get(i);
-            updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
+        //получаем id учителя
+        teacherIds = new ArrayList<>(); //список учителей для установки
+        getTeacherId(Subjects.subjectsList[subjectId - 1].Code_Lector);
+        getTeacherId(Subjects.subjectsList[subjectId - 1].Code_Practice);
+        getTeacherId(Subjects.subjectsList[subjectId - 1].Code_Assistant);
+
+        //поле где находятся кнопки в виде (tableRow)
+        TableLayout teacherLayout = (TableLayout) findViewById(R.id.activity_subject_info_tl_teachers); //поле где будут кнопки
+
+        //референс tablerow (1+1)
+        TableRow refRow = (TableRow) findViewById(R.id.activity_subject_info_tr_ref);
+
+        //референсы кнопок
+        Button refBtnText = (Button) findViewById(R.id.activity_subject_info_bt_ref_text);
+        Button refBtn = (Button) findViewById(R.id.activity_subject_info_bt_ref);
+
+        //выключаем референсы
+        refRow.setVisibility(View.GONE);
+        refBtnText.setVisibility(View.GONE);
+        refBtn.setVisibility(View.GONE);
+
+        for (int i = 0; i < teacherIds.size(); ++i) {
+            //создаем еще новый TableRow
+            TableRow tableRow = new TableRow(this);
+            tableRow.setLayoutParams(refRow.getLayoutParams());
+
+            //новые конпки с параметрами
+            Button newTeacherText = new Button(this);
+            Button newTeacher = new Button(this);
+
+            //устанавливаем необходимые параметры
+            addTeacher(newTeacherText, refBtnText);
+            addTeacher(newTeacher, refBtn);
+
+            //устанавливаем тип препода
+            switch (i) {
+                case 0:
+                    newTeacherText.setText(getString(R.string.lector));
+                    break;
+                case 1:
+                    newTeacherText.setText(getString(R.string.practice));
+                    break;
+                case 2:
+                    newTeacherText.setText(getString(R.string.assistant));
+                    break;
+            }
+
+            //устанавливаем имя препода
+            try {
+                JSONObject teacherJSONObject = new JSONObject(Teachers.teachersList.get(teacherIds.get(i)));
+                newTeacher.setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            //добавляем в лаяут
+            tableRow.addView(newTeacherText);
+            tableRow.addView(newTeacher);
+            teacherLayout.addView(tableRow);
+
+            //добавляем пробел
+            addSpace(teacherLayout);
+        }
+    }
+
+    //получение id преподавателя
+    private void getTeacherId(int id) {
+        try {
+            teacherIds.add(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //создаем кнопку с учителем
+    private void addTeacher(Button btn, Button refBtn) {
+        btn.setLayoutParams(refBtn.getLayoutParams());
+        btn.setBackground(getDrawable(R.drawable.dark_background2));
+        btn.setTextColor(getColor(R.color.white));
+        btn.setTextSize(TEXT_SIZE);
+    }
+
+    //обработчик добавления новой лабы
+    public void addLabOnClick(View view) {
+        addLab(labsCount + 1, 0);
+        labsCount++;
+    }
+
+    //удаление лабы
+    public void removeLabOnClick(View view) {
+        if (labsCount > 0) {
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_subject_info_ll_labs);
+            linearLayout.removeViewAt((labsCount * 2) - 1); //удаляем пробел (последняя позиция)
+            linearLayout.removeViewAt((labsCount * 2) - 2); //удаляем TableRow с кнопками лабы (предпоследняя позиция)
+            labValues.remove(labsCount - 1);
+            labsCount--;
+        }
+        setProgress();
+    }
+
+    //загружаем лабы
+    public void loadLabs() {
+        int SubjectId = getIntent().getIntExtra("button_id", 0);
+        for (int i = 1; i <= labsCount; ++i)
+            addLab(i, Subjects.getInstance(this).subjectInfo[SubjectId - 1].labValue[i - 1]);
+        setProgress();
+    }
+
+    //создаем кнопку с лабой
+    private void addLab(int number, int value) {
+        labValues.add(value); //добавляем в лист значений, то что лаба имеет значение спиннера 0 (not passed)
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_subject_info_ll_labs);
+
+        //создаем новую полосу название лабы + тип лабы
+        LinearLayout newLine = new LinearLayout(this);
+        newLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        newLine.setOrientation(LinearLayout.HORIZONTAL);
+
+        //создаем новое название лабы
+        TextView labName = new TextView(this);
+        labName.setText(getResources().getString(R.string.Lab) + " " + number);
+        labName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        labName.setTextSize(TEXT_SIZE);
+        labName.setTextColor(getColor(R.color.white));
+        labName.setGravity(Gravity.CENTER);
+        labName.setLayoutParams(new LinearLayout.LayoutParams((int) (190 * this.getResources().getDisplayMetrics().density), LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        labName.setBackground(getDrawable(R.drawable.lab_style));
+        newLine.addView(labName);
+
+        //создаем новый выбора типа лабы
+        Spinner lab = new Spinner(this, Spinner.MODE_DIALOG);
+        lab.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        lab.setGravity(Gravity.CENTER);
+        lab.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        lab.setBackground(getDrawable(R.drawable.lab_choose));
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.lab_types,
+                R.layout.spinner_registration_layout
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+        lab.setAdapter(adapter);
+        lab.setId(View.generateViewId());
+        lab.setTag(number);
+        lab.setSelection(value);
+        lab.setOnItemSelectedListener(this);
+        newLine.addView(lab);
+
+        //добавляем в лаяут списка лаб
+        linearLayout.addView(newLine);
+
+        //добавляем промежуток между лабами
+        addSpace(linearLayout);
+    }
+
+    //создаем пробел
+    private void addSpace(@NonNull LinearLayout linearLayout) {
+        Space space = (Space) findViewById(R.id.activity_subject_info_space);
+        Space newSpace = new Space(this);
+        newSpace.setLayoutParams(space.getLayoutParams());
+        linearLayout.addView(newSpace);
+    }
+
+    //устанавливаем прогресс в нижней части экрана
+    private void setProgress(){
+        Button progress = (Button) findViewById(R.id.activity_subject_info_bt_progress);
+
+        int completed = 0;
+        for(int i=0;i<labValues.size();++i)
+            if(labValues.get(i)==6)
+                completed++;
+
+        try {
+            progress.setText(Integer.toString(completed * 100 / (labsCount)) + "%");
+        }catch (Exception e){
+            System.out.println(e);
+            progress.setText("0%");
         }
     }
 }
-

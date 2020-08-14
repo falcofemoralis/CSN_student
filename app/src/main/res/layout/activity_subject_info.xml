@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="16sp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/Main_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
@@ -30,144 +29,202 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/Disc"
+                    android:id="@+id/activity_subject_info_bt_subjectName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/dark_background2"
-                    android:text="@string/Arch_Comp"
+                    android:text="@string/not_set"
                     android:textColor="@color/white"
                     android:textSize="13sp" />
 
                 <Space
+                    android:id="@+id/activity_subject_info_space"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableRow
+                    android:id="@+id/activity_subject_info_tl_teachers"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/button6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/text_style"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:clickable="false"
-                        android:text="@string/lector"
-                        android:textSize="10sp" />
+                    <TableRow
+                        android:id="@+id/activity_subject_info_tr_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
+                        <Button
+                            android:id="@+id/activity_subject_info_bt_value_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/dark_background2"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:text="@string/valueOfSubject"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
 
-                    <Button
-                        android:id="@+id/teach"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/text_style"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:clickable="false"
-                        android:text="@string/teacher_CA"
-                        android:textSize="10sp" />
-
-                </TableRow>
+                        <Spinner
+                            android:id="@+id/activity_subject_info_sp_values"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/dark_background2"
+                            android:entries="@array/values"
+                            android:textAlignment="center" />
+                    </TableRow>
 
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
+
+                    <TableRow
+                        android:id="@+id/activity_subject_info_tr_ref"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/activity_subject_info_bt_ref_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/dark_background2"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:text="@string/lector"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+
+                        <Button
+                            android:id="@+id/activity_subject_info_bt_ref"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/dark_background2"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:text="@string/not_set"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_weight="1" />
 
                 <TableRow
+                    android:id="@+id/activity_subject_info_tr_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/Teach"
-                        android:layout_width="13dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/text_style"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:clickable="false"
-                        android:text="@string/valueOfSubject"
-                        android:textSize="10sp" />
+                    <Space
+                        android:layout_width="63dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
                     <Button
-                        android:id="@+id/val"
+                        android:id="@+id/activity_subject_info_bt_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/text_style"
-                        android:gravity="center"
-                        android:textColor="@color/white"
+                        android:background="@drawable/add_btn"
                         android:clickable="false"
-                        android:text="@string/test"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:gravity="center"
+                        android:onClick="addLabOnClick"
+                        android:text="AddLab"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <Space
+                        android:layout_width="87dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/activity_subject_info_bt_remove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/remove_btn"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:onClick="removeLabOnClick"
+                        android:text="REMOVELAB"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <Space
+                        android:layout_width="63dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
                 </TableRow>
-            </TableLayout>
 
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/Discp_main"
+                    android:id="@+id/activity_subject_info_ll_labs"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"/>
-
-                <LinearLayout
-                    android:id="@+id/Line1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/progress2"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/Progress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="#00FFFFFF"
-                        android:textColor="@color/white"
-                        android:stateListAnimator="@null"
-                        android:text="@string/Progress"
-                        android:textSize="10sp" />
-
-                    <Button
-                        android:id="@+id/res"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:backgroundTint="#00FFFFFF"
-                        android:stateListAnimator="@null"
-                        android:textColor="@color/white"
-                        android:text="X %"
-                        android:textSize="10sp" />
                 </LinearLayout>
-                
+
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="24dp" />
+                    android:layout_height="20dp"
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="12"
+        android:background="@drawable/progress2"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/activity_subject_info_bt_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:stateListAnimator="@null"
+            android:text="@string/Progress"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/activity_subject_info_bt_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:stateListAnimator="@null"
+            android:text="0 %"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</LinearLayout>

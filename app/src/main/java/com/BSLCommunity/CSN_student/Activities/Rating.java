@@ -82,12 +82,12 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         STYLE_GREEN = getResources().getDrawable(R.drawable.text_but_rating_style_green);
         STYLE_RED = getResources().getDrawable(R.drawable.text_but_rating_style_red);
 
-        mainLayout = findViewById(R.id.mainLayout);
+        mainLayout = findViewById(R.id.activity_subject_list_ll_main);
         table = findViewById(R.id.table);
 
         //тут береться предмет со спиннера
         //setData() -> getRating(subject) -> если успешно setTable(users)
-        createSpinner();
+       // createSpinner();
         getRating(sub_spin.getSelectedItemPosition(), fromLocal());
     }
 
@@ -297,7 +297,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         mainLayout.addView(table);
     }
 
-    protected void createSpinner() {
+  /*  protected void createSpinner() {
         sub_spin = findViewById(R.id.subjectSpinner);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
@@ -317,7 +317,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
         gr_spin.setAdapter(adapter);
         gr_spin.setOnItemSelectedListener(this);
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

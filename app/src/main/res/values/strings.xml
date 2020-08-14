@@ -1,11 +1,5 @@
 <resources>
     <string name="app_name">CSN student</string>
-    <string name="Alg_and_metod">Algorithms and methods of calculation</string>
-    <string name="Arch_Comp">Computer architecture</string>
-    <string name="CompScheme">Computer circuitry</string>
-    <string name="DataBase">Organization of databases</string>
-    <string name="OBG">Fundamentals of Safety</string>
-    <string name="S_metod_prog">Modern programming methods</string>
     <string name="Overall">Overall</string>
     <string name="course_2">2 Course</string>
     <string name="subjects">Subjects :</string>
@@ -31,10 +25,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="group_title">Group</string>
     <string name="Base_settings">User settings</string>
-    <string-array name="group_arrays">
-        <item>КНТ-518</item>
-        <item>КНТ-528</item>
-    </string-array>
     <string name="group_prompt">Choose a group</string>
     <string name="timeUntil">The end of the pair</string>
     <string name="start">Start of </string>
@@ -71,14 +61,6 @@
     <string name="diff_exam">Diff.Exam</string>
     <string name="group">Group</string>
     <string name="IHW">IHW</string>
-    <string-array name="subjects_values">
-        <item>Algorithms and methods of calculation</item>
-        <item>Computer architecture</item>
-        <item>Computer circuitry</item>
-        <item>Organization of databases</item>
-        <item>Fundamentals of Safety</item>
-        <item>Modern programming methods</item>
-    </string-array>
     <string name="home_screen">Home screen</string>
     <string name="timer">Timer</string>
     <string name="account_exit">Exit from account</string>
@@ -105,5 +87,7 @@
     <string name="wed">\t\t\t\tWED\t\t\t\t</string>
     <string name="thu">\t\t\t\tTHU\t\t\t\t</string>
     <string name="fri">\t\t\t\tFRI\t\t\t\t</string>
+    <string name="practice">Practice</string>
+    <string name="assistant">Assistant</string>
 </resources>
 

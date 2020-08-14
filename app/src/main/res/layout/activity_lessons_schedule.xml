@@ -39,14 +39,13 @@
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/group_spin"
+                android:id="@+id/activity_lessons_schedule_sp_main"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
                 android:background="@drawable/text_but_schedule_style"
-                android:textSize="18sp"
-                android:entries="@array/group_arrays"
-                android:prompt="@string/group_prompt"/>
+                android:prompt="@string/group_prompt"
+                android:textSize="18sp" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -54,7 +53,7 @@
                 android:layout_weight="0.1" />
 
             <Button
-                android:id="@+id/type_week"
+                android:id="@+id/activity_lessons_schedule_bt_weekType"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"

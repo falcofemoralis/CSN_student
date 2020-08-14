@@ -27,8 +27,6 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import static com.BSLCommunity.CSN_student.Activities.SubjectInfo.discs;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
@@ -46,8 +44,8 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        Time = (TextView) findViewById(R.id.Time);
-        TimeUntil = (TextView) findViewById(R.id.timeUntil);
+        Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
+        TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
 
         setSettingsFile(this);
         //checkData();
@@ -59,19 +57,19 @@ public class Main extends AppCompatActivity {
 
         Intent intent = null;
         switch (view.getId()) {
-            case R.id.subjectsBtn:
+            case R.id.activity_main_bt_subjects:
                 intent = new Intent(this, SubjectList.class);
                 break;
-            case R.id.ratingBtn:
+            case R.id.activity_main_bt_rating:
                 intent = new Intent(this, Rating.class);
                 break;
-            case R.id.lessons_scheduleBtn:
+            case R.id.activity_main_bt_lessonsShedule:
                 intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Groups");
                 break;
-            case R.id.settingsBtn:
+            case R.id.activity_main_bt_settings:
                 intent = new Intent(this, Settings.class);
                 break;
-            case R.id.teachers_scheduleBtn:
+            case R.id.activity_main_bt_teachersSchedule:
                 intent =new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
                 break;
         }
@@ -104,10 +102,10 @@ public class Main extends AppCompatActivity {
         if (checkConnection()) {
             if (offline_data)
                 showDialog();
-            else
-                loadStatusFromServer();
-        } else
-            loadStatusFromDevice();
+           // else
+             //   loadStatusFromServer();
+        } //else
+          //  loadStatusFromDevice();
     }
 
     protected void showDialog() {
@@ -126,10 +124,10 @@ public class Main extends AppCompatActivity {
             }.getType();
 
             String test = JSONHelper.read(Main.this, "data_disc.json");
-            discs = gson.fromJson(test, listType);
+           // discs = gson.fromJson(test, listType);
 
-            for (int i = 0; i < discs.size(); ++i)
-                SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
+           // for (int i = 0; i < discs.size(); ++i)
+               // SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
             return;
         }
 
@@ -138,14 +136,14 @@ public class Main extends AppCompatActivity {
         alertDialog.setPositiveButton(R.string.device, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                loadStatusFromDevice();
+              //  loadStatusFromDevice();
             }
         });
 
         alertDialog.setNegativeButton(R.string.server, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                loadStatusFromServer();
+                //loadStatusFromServer();
             }
         });
 
@@ -161,7 +159,7 @@ public class Main extends AppCompatActivity {
         return isConnected;
     }
 
-    protected void loadStatusFromServer() {
+   /* protected void loadStatusFromServer() {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Rating>>() {
         }.getType();
@@ -181,5 +179,5 @@ public class Main extends AppCompatActivity {
             Rating temp = discs.get(i);
             SubjectInfo.updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
         }
-    }
+    }*/
 }

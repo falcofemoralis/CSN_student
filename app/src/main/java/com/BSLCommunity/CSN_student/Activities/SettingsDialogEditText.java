@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.Objects.Settings;
 
 import java.util.ArrayList;
@@ -42,22 +41,22 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
         View view;
 
         switch (applyKey) {
-            case R.id.nickname:
-                view = inflater.inflate(R.layout.dialog_settings, null);
-                EditText = view.findViewById(R.id.editText_dialog);
+            case R.id.activity_settings_ll_nickname:
+                view = inflater.inflate(R.layout.dialog_settings_et, null);
+                EditText = view.findViewById(R.id.activity_settings_et_dialog);
                 EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.PrefKeys.NICKNAME.getKey(), ""));
                 title = getResources().getString(R.string.nickname);
                 break;
-            case R.id.password:
-                view = inflater.inflate(R.layout.dialog_settings, null);
-                EditText = view.findViewById(R.id.editText_dialog);
+            case R.id.activity_settings_ll_password:
+                view = inflater.inflate(R.layout.dialog_settings_et, null);
+                EditText = view.findViewById(R.id.activity_settings_et_dialog);
                 EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.PrefKeys.PASSWORD.getKey(), ""));
                 title = getResources().getString(R.string.password);
                 break;
-            case R.id.group:
-                view = inflater.inflate(R.layout.dialog_settings2, null);
+            case R.id.activity_settings_ll_group:
+                view = inflater.inflate(R.layout.dialog_settings_sp, null);
                 try {
-                    groupSpinner = view.findViewById(R.id.group);
+                    groupSpinner = view.findViewById(R.id.activity_registration_sp_groups);
 
                     //создаем лист групп
                     List<String> groupsAdapter = new ArrayList<String>();
@@ -80,7 +79,7 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 title = getResources().getString(R.string.group);
                 break;
             default:
-                view = inflater.inflate(R.layout.dialog_settings, null);
+                view = inflater.inflate(R.layout.dialog_settings_et, null);
                 title = "";
         }
 
@@ -97,13 +96,13 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String text;
                         switch (applyKey) {
-                            case R.id.nickname:
+                            case R.id.activity_settings_ll_nickname:
                                 text = EditText.getText().toString();
                                 break;
-                            case R.id.password:
+                            case R.id.activity_settings_ll_password:
                                 text = EditText.getText().toString();
                                 break;
-                            case R.id.group:
+                            case R.id.activity_settings_ll_group:
                                 text = groupSpinner.getSelectedItem().toString();
                                 break;
                             default:

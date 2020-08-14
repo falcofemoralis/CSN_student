@@ -31,8 +31,7 @@ function getScheduleById($connect, $id)
 
 //GET запрос на получение всех групп по курсу id URI: .../groups
 function getGroupsOnCourse($connect)
-{
-    
+{ 
     $course = $_GET['Course'];
     
     $query = "  SELECT groups.Code_Group as id, groups.GroupName 

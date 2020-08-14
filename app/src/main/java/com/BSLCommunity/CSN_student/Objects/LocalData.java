@@ -16,11 +16,12 @@ import org.json.JSONException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 public class LocalData {
 
     // Константы типо объектов хранящихся в локальном хранилище
-    public static enum TypeData {
+    public enum TypeData {
         groups,
         teachers
     }
@@ -30,13 +31,13 @@ public class LocalData {
     public static HashMap<Integer, Date> updateListTeachers = new HashMap<Integer, Date>();
 
     // Загрзка Апдейта списка групп (список который хранит время изменения каждой группы на сервере)
-    public static void downloadUpdateList(final Context appContext, final HashMap<Integer, Date> updateList, final TypeData entity) {
+    public static void downloadUpdateList(final Context appContext, final HashMap<Integer, Date> updateList, final TypeData entity, final Callable<Void> ... callBacks) {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = Main.MAIN_URL + entity.toString() + "/updateList";
+        String url = Main.MAIN_URL + String.format("api/%s/updateList", entity.toString());
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -51,11 +52,18 @@ public class LocalData {
                         Date lastUpdate;
                         try {
                             lastUpdate = sdf.parse(date);
-                            updateList.put(id,  lastUpdate);
-                        } catch (Exception e) {}
+                            updateList.put(id, lastUpdate);
+                        } catch (Exception e) { }
                     }
 
-                } catch (JSONException e) {
+                    if (callBacks != null) {
+                        // Вызов всех callBacks
+                        for (int i = 0; i < callBacks.length; ++i)
+                            try {
+                                callBacks[i].call();
+                            } catch (Exception e) { }
+                    }
+                } catch(JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -67,21 +75,20 @@ public class LocalData {
         requestQueue.add(request);
     }
 
+
+
     /* Проверка нуждаются ли данные в обновлении
     * Параметры:
     * appContext - контекст всего приложения
     * type - тип объекта (учитель или группа)
     * fileDate - Время последнего изменения файла
     * */
-    public static void checkUpdate(Context appContext, TypeData type, Date fileDate) {
+    public static void checkUpdate(final Context appContext, final TypeData type) {
 
         // Выбор действия в зависимости от типа данных
         switch (type)
         {
             case groups:
-                if (updateListGroups.isEmpty())
-                    downloadUpdateList(appContext, updateListGroups, type);
-
                 // Проверяем актуальность данных в группах
                 for (int i = 0; i < Groups.groupsLists.size(); ++i) {
                     Groups.GroupsList localGroup = Groups.groupsLists.get(i);
@@ -90,8 +97,6 @@ public class LocalData {
                 }
                 break;
             case teachers:
-                if (updateListTeachers.isEmpty())
-                    downloadUpdateList(appContext, updateListTeachers, type);
 
                 break;
         }

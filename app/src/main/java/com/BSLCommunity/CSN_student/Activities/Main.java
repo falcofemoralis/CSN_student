@@ -16,9 +16,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
-import com.BSLCommunity.CSN_student.Objects.Groups;
+import com.BSLCommunity.CSN_student.Objects.LocalData;
 import com.BSLCommunity.CSN_student.Objects.Timer;
-import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +27,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static com.BSLCommunity.CSN_student.Activities.Disciplines.discs;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
@@ -51,8 +51,20 @@ public class Main extends AppCompatActivity {
 
         com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile(this);
 
-        // Загружаем информацию о группах
-        Groups.init(getApplicationContext(), User.getInstance().course, null);
+        // Скачиваем все необходимые апдейт листы для проверки актуальности данных
+        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                return null;
+            }
+        });
+        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                return null;
+            }
+        });
+
 
         //checkData();
     }

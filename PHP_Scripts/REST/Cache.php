@@ -38,14 +38,16 @@ function createJSON($connect, $entity)
 
 
 // GET запрос на получение апдейт листа групп URI: .../entity/updateList
-function getUpdateList($enity)
+function getUpdateList($entity)
 {
-    $fp = fopen($enity . '.json', 'r');
-    $json = fread($fp, filesize($enity . '.json'));
+    $fp = fopen($entity . '.json', 'r');
+    $json = fread($fp, filesize($entity . '.json'));
     
     $data = json_decode($json);
     
-    echo json_encode($data);
+    $updateList = $data->{$entity};
+    
+    echo json_encode($updateList);
 }
 
 

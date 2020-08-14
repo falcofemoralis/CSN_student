@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
@@ -38,18 +37,22 @@ public class Groups {
         public Date lastUpdate;
 
         public class ScheduleList {
+            public int half, day, pair;
             public String subject;
             public String type;
             public int room;
 
-            public ScheduleList(String subject, String type, int room) {
+            public ScheduleList(int half, int day, int pair, String subject, String type, int room) {
+                this.half = half;
+                this.day = day;
+                this.pair = pair;
                 this.room = room;
                 this.subject = subject;
                 this.type = type;
             }
         }
         // ScheduleList[Половина][День][Пара]
-        public ScheduleList[][][] scheduleList = new GroupsList.ScheduleList[2][7][8];
+        public ArrayList<ScheduleList> scheduleList = new ArrayList<ScheduleList>();
 
         public GroupsList(int id, String GroupName, Date lastUpdate) {
             this.id = id;
@@ -59,7 +62,7 @@ public class Groups {
 
         // Добавляет расписание в группу
         public void addSchedule(int half, int day, int pair, String subject, String type, int room) {
-            scheduleList[half][day][pair] = new GroupsList.ScheduleList(subject, type, room);
+            scheduleList.add(new ScheduleList(half, day, pair, subject, type, room));
         }
 
     }
@@ -97,15 +100,6 @@ public class Groups {
             // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
             return;
         }
-    }
-
-    /* Функция получение групп по курсу, возвращает массив строк названий групп групп
-     * */
-    public static String[] getGroupNames(final Context appContext, int course, final Spinner groupSpinner, final int spinnerLayout) {
-        String[] groupNames = new String[groupsLists.size()];
-        for (int i = 0; i < groupsLists.size(); ++i)
-            groupNames[i] = groupsLists.get(i).GroupName;
-        return groupNames;
     }
 
     /* Функция получение групп по курсу из базы
@@ -183,11 +177,13 @@ public class Groups {
                     }
 
                     // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
-                    for(int i = 0; i <  callBacks.length; ++i) {
-                        try {
-                            callBacks[i].call();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    if (callBacks != null) {
+                        for (int i = 0; i < callBacks.length; ++i) {
+                            try {
+                                callBacks[i].call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     // Сохранение данных если это необходимо

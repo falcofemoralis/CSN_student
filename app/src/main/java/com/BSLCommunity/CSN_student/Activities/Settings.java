@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -13,10 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 
-import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
@@ -27,8 +23,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -177,7 +171,6 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
             public void onClick(DialogInterface dialog, int which) {
                 prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
                 User.deleteUser();
-                Groups.deleteGroups();
                 Toast.makeText(Settings.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();
             }

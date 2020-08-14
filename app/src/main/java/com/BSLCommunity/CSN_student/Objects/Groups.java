@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class Groups {
 
@@ -56,7 +57,7 @@ public class Groups {
             this.lastUpdate = lastUpdate;
         }
 
-        // Добавляет расписание в группу 
+        // Добавляет расписание в группу
         public void addSchedule(int half, int day, int pair, String subject, String type, int room) {
             scheduleList[half][day][pair] = new GroupsList.ScheduleList(subject, type, room);
         }
@@ -64,37 +65,37 @@ public class Groups {
     }
     public static ArrayList<GroupsList> groupsLists = new ArrayList<GroupsList>();
 
-    //реализация синглтона
-    public static Groups instance = null;
-    public static Groups getInstance(Context context) {
-        if (instance == null)
-            return init(context);
-        return instance;
-    }
-
-    //удаление списка групп
-    public static void deleteGroups() {
-        instance = null;
-    }
-
-    /* Инициализация групп (извлекается из локального файла)
-     * В случае неудачи будет возвращен null как признак того что группы не был создан
+    /* Инициализация групп (извлекается из локального файла или в противном случае выкачивается из сервера)
+     * Параметры:
+     * context - контекст приложения
+     * course - учебный курс
+     * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null (на случай если необходимо будет скачать данные с сервера)
      */
-    private static Groups init(Context context) {
+    public static void init(Context context, int course, final Callable<Void> ... callBacks) {
 
         try {
-            // Извлечение локальных данных пользователя
-            instance = new Groups();
-
             //загружаем расписание из отдельного json файла
             String response = JSONHelper.read(context, DATA_FILE_NAME);
+
+            if (response.equals("NOT FOUND")) {
+                downloadFromServer(context, course, callBacks);
+                return;
+            }
+
             Gson gson = new Gson();
             Type listType = new TypeToken<List<GroupsList>>() {}.getType();
-            instance.groupsLists = gson.fromJson(response, listType);
-            return instance;
+            groupsLists = gson.fromJson(response, listType);
+            // После скачивания всех данных вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
+            for(int i = 0; i <  callBacks.length; ++i) {
+                try {
+                    callBacks[i].call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (Exception ex) {
             // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
-            return null;
+            return;
         }
     }
 
@@ -111,8 +112,9 @@ public class Groups {
      * Параметры:
      * appContext - application context
      * course - номер курса
+     * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null
      * */
-    public static void downloadFromServer(final Context appContext, int course) {
+    public static void downloadFromServer(final Context appContext, int course, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = Main.MAIN_URL + "api/groups?Course=" + course;
 
@@ -132,7 +134,7 @@ public class Groups {
                         // Добавляем группу в список
                         groupsLists.add(new GroupsList(id, GroupName, new Date()));
                         // Скачиваем расписание группы, если все остальные группы скачаны, то после скачивания последней - сохраняем данные
-                        getSchedule(appContext, id, i == (JSONArray.length()  - 1) );
+                        getSchedule(appContext, id, i == (JSONArray.length()  - 1), callBacks);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -152,8 +154,9 @@ public class Groups {
     * appContext - контекст приложения
     * id - id группы
     * saveData - сохранять данные или нет ? true - сохранить, false - не сохранять
+    * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null
     * */
-    public static void getSchedule(final Context appContext, final int id, final boolean saveData) {
+    public static void getSchedule(final Context appContext, final int id, final boolean saveData, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = Main.MAIN_URL + String.format("api/groups/%d/schedule", id);
 
@@ -179,6 +182,15 @@ public class Groups {
                         groupsList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, Integer.parseInt(room));
                     }
 
+                    // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
+                    for(int i = 0; i <  callBacks.length; ++i) {
+                        try {
+                            callBacks[i].call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // Сохранение данных если это необходимо
                     if (saveData)
                         save(appContext);
 

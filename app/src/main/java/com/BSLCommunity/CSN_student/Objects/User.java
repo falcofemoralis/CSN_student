@@ -3,12 +3,9 @@ package com.BSLCommunity.CSN_student.Objects;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
-import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,16 +14,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import com.BSLCommunity.CSN_student.Objects.Groups;
 
 
 // Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
@@ -113,7 +106,7 @@ public class User {
                     instance.saveData(); // Сохраняем данные
 
                     //скачиваем группы
-                    Groups.getGroups(appContext, instance.course);
+                    Groups.init(appContext, instance.course);
 
                     //запоминаем что пользователь зарегистрировался
                     SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();

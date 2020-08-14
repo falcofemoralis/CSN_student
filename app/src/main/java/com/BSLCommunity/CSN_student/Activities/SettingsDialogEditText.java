@@ -58,13 +58,12 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 try {
                     groupSpinner = view.findViewById(R.id.group);
 
-                    Groups groups = Groups.getInstance(getContext());
                     //создаем лист групп
                     List<String> groupsAdapter = new ArrayList<String>();
-                    if (groups.groupsLists.size() != 0) {
+                    if (Groups.groupsLists.size() != 0) {
                         //добавляем в массив из класса Groups группы
-                        for (int j = 0; j < groups.groupsLists.size(); ++j)
-                            groupsAdapter.add(groups.groupsLists.get(j).GroupName);
+                        for (int j = 0; j < Groups.groupsLists.size(); ++j)
+                            groupsAdapter.add(Groups.groupsLists.get(j).GroupName);
                     } else {
                         //в том случае если групп по курсу нету
                         groupsAdapter.add("No groups");

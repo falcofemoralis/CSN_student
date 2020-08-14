@@ -25,8 +25,7 @@ import com.BSLCommunity.CSN_student.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.BSLCommunity.CSN_student.Objects.Groups.getGroups;
+import java.util.concurrent.Callable;
 
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -56,27 +55,10 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         EditText RepeatPassword = (EditText) findViewById(R.id.checkPass);
 
         if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
-            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(Groups.getInstance(this).groupsLists.get((int)id).id));
+            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), Integer.toString((Groups.groupsLists.get((int)id).id)));
         } else {
             Toast.makeText(this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    //создание спиннера групп
-    protected void createGroupSpinner() {
-        groupSpinner = findViewById(R.id.group);
-
-        //создаем лист групп
-        List<String> groups = new ArrayList<String>();
-        groups.add("Downloading...");
-
-        //устанавливаем спинер выбора групп
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.color_spinner_layout, groups);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
-        groupSpinner.setAdapter(dataAdapter);
-
-        //устанавливаем спинер
-        groupSpinner.setOnItemSelectedListener(this);
     }
 
     //создание спиннера курсов
@@ -85,7 +67,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.courses,
-                R.layout.color_spinner_layout
+                R.layout.spinner_dropdown_schedule
         );
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
@@ -93,13 +75,40 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         courseSpinner.setOnItemSelectedListener(this);
     }
 
+    //создание спиннера групп
+    protected void createGroupSpinner() {
+        Spinner groupSpinner = findViewById(R.id.group);
+
+        List<String> listAdapter = new ArrayList<>();
+        if (Groups.groupsLists.size() != 0) {
+            //добавляем в массив из класса Groups группы
+            for (int j = 0; j < Groups.groupsLists.size(); ++j)
+                listAdapter.add(Groups.groupsLists.get(j).GroupName);
+        }
+
+        //устанавливаем спинер выбора групп
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_dropdown_schedule, listAdapter);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_schedule);
+        groupSpinner.setAdapter(dataAdapter);
+
+        //устанавливаем спинер
+        groupSpinner.setOnItemSelectedListener(this);
+    }
+
+
     //выбор элемента на спинере (используется свитч для определения на каком спинере был выбран элемент)
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.course:
                 //загружаются группы на спинер в зависимости от курса
-                getGroups(this, Integer.parseInt(parent.getItemAtPosition(position).toString()), groupSpinner, R.layout.color_spinner_layout);
+                Groups.downloadFromServer(this,  Integer.parseInt(parent.getItemAtPosition(position).toString()), new Callable<Void>() {
+                    @Override
+                    public Void call(){
+                        createGroupSpinner();
+                        return null;
+                    }
+                });
                 break;
             case R.id.group:
                 //+1 т.к спиннер хранит группы от 0, а в базе от 1
@@ -144,4 +153,6 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+
 }

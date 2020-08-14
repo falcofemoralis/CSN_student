@@ -16,18 +16,25 @@ import org.json.JSONObject;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 import static com.BSLCommunity.CSN_student.Objects.Subjects.getSubjectsList;
+import static com.BSLCommunity.CSN_student.Objects.Subjects.subjectsList;
 
 public class SubjectList extends AppCompatActivity {
+    Button refBtn;
+    Boolean shouldExecuteOnResume = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
+        refBtn = (Button) findViewById(R.id.activity_subject_list_reference);
+        refBtn.setVisibility(View.GONE); //выключаем референсную кнопку
 
         //получаем список групп
         getSubjectsList(this, new Callable<Void>() {
             @Override
             public Void call(){
                 setSubjectsList();
+                setProgress();
                 return null;
             }
         });
@@ -35,15 +42,15 @@ public class SubjectList extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        if(shouldExecuteOnResume)  setProgress();
+        else shouldExecuteOnResume = true;
         super.onResume();
     }
 
-
+    //создаем список предметов
     public void setSubjectsList(){
-        //достаем параметры референсной кнопки  затем ее выключаем
-        Button refBtn = (Button) findViewById(R.id.activity_subject_list_reference);
+        //достаем параметры референсной кнопки
         ViewGroup.LayoutParams refParams = refBtn.getLayoutParams();
-        refBtn.setVisibility(View.GONE);
 
         //устанавливаем кнопки  предметов
         String subjectName = "";
@@ -84,29 +91,26 @@ public class SubjectList extends AppCompatActivity {
         }
     }
 
+    //устанавливаем прогресс внизу экрана
+    public void setProgress() {
+        Subjects subjects = Subjects.getInstance(this);
 
+        int allLabsCount = 0, allCompleted=0;
+        for(int i=0; i< subjectsList.length;++i){
+            allLabsCount += subjects.subjectInfo[i].labsCount;
 
-
-
-    /*public void setProgress() {
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Subjects>>() {
-        }.getType();
-        discs = gson.fromJson(JSONHelper.read(this, Main.FILE_NAME), listType);
-
-        int sum = 0, all = 0;
-        for (int i = 0; i < discs.size(); ++i) {
-            Subjects temp = discs.get(i);
-
-            boolean[][] temp_bool = temp.getComplete();
-            for (int j = 0; j < temp_bool.length; ++j) {
-                sum += temp_bool[j][0] ? 1 : 0;
-                sum += temp_bool[j][1] ? 1 : 0;
-            }
-            all += temp.getLabs();
+            for(int j=0;j<subjects.subjectInfo[i].labsCount;++j)
+              if(subjects.subjectInfo[i].labValue[j] == 6) allCompleted++;
         }
-        all *= 2;
 
-        ((Button) findViewById(R.id.res)).setText(Integer.toString(sum * 100 / all) + "%");
-    }*/
+
+        Button progress = (Button) findViewById(R.id.activity_subject_list_bt_progress);
+
+        try {
+            progress.setText(Integer.toString(allCompleted * 100 / (allLabsCount)) + "%");
+        }catch (Exception e){
+            System.out.println(e);
+            progress.setText("0%");
+        }
+    }
 }

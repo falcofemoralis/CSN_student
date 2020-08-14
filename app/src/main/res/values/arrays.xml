@@ -21,5 +21,21 @@
     <string-array name="downloading">
         <item>Downloading</item>
     </string-array>
+
+    <string-array name="values">
+        <item>Exam</item>
+        <item>Test</item>
+        <item>Diff.Test</item>
+    </string-array>
+
+    <string-array name="lab_types">
+        <item>Not passed</item>
+        <item>In process</item>
+        <item>Done without report</item>
+        <item>Done with report</item>
+        <item>Waiting acceptation</item>
+        <item>Passed without report</item>
+        <item>Passed with report</item>
+    </string-array>
 </resources>
 

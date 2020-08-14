@@ -27,8 +27,6 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import static com.BSLCommunity.CSN_student.Activities.SubjectInfo.discs;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
@@ -104,10 +102,10 @@ public class Main extends AppCompatActivity {
         if (checkConnection()) {
             if (offline_data)
                 showDialog();
-            else
-                loadStatusFromServer();
-        } else
-            loadStatusFromDevice();
+           // else
+             //   loadStatusFromServer();
+        } //else
+          //  loadStatusFromDevice();
     }
 
     protected void showDialog() {
@@ -126,10 +124,10 @@ public class Main extends AppCompatActivity {
             }.getType();
 
             String test = JSONHelper.read(Main.this, "data_disc.json");
-            discs = gson.fromJson(test, listType);
+           // discs = gson.fromJson(test, listType);
 
-            for (int i = 0; i < discs.size(); ++i)
-                SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
+           // for (int i = 0; i < discs.size(); ++i)
+               // SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
             return;
         }
 
@@ -138,14 +136,14 @@ public class Main extends AppCompatActivity {
         alertDialog.setPositiveButton(R.string.device, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                loadStatusFromDevice();
+              //  loadStatusFromDevice();
             }
         });
 
         alertDialog.setNegativeButton(R.string.server, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                loadStatusFromServer();
+                //loadStatusFromServer();
             }
         });
 
@@ -161,7 +159,7 @@ public class Main extends AppCompatActivity {
         return isConnected;
     }
 
-    protected void loadStatusFromServer() {
+   /* protected void loadStatusFromServer() {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Rating>>() {
         }.getType();
@@ -181,5 +179,5 @@ public class Main extends AppCompatActivity {
             Rating temp = discs.get(i);
             SubjectInfo.updateRating(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), temp.getName(), gson.toJson(temp.getComplete()), temp.getIDZ(), this);
         }
-    }
+    }*/
 }

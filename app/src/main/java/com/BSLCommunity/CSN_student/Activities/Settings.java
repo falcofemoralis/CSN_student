@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
@@ -25,6 +26,8 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.security.auth.Subject;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
@@ -171,6 +174,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
             public void onClick(DialogInterface dialog, int which) {
                 prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
                 User.deleteUser();
+                Subjects.deleteSubjects();
                 Toast.makeText(Settings.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();
             }

@@ -62,7 +62,7 @@ public class Rating {
         return complete;
     }
 
-    public String getStringName(Context context) {
+ /*   public String getStringName(Context context) {
         switch (this.name) {
             case "Алгоритми та методи обчислень":
                 return context.getResources().getString(R.string.Alg_and_metod);
@@ -111,5 +111,5 @@ public class Rating {
             default:
                 return "";
         }
-    }
+    }*/
 }

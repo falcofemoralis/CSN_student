@@ -31,8 +31,8 @@
             android:layout_height="match_parent"
             android:layout_weight="0.495"
             android:background="@drawable/text_but_schedule_style"
-            android:textSize="18sp"
-            android:prompt="@string/group_prompt"/>
+            android:prompt="@string/group_prompt"
+            android:textSize="18sp" />
 
     </LinearLayout>
     

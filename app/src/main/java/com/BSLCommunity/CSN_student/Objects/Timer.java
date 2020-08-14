@@ -105,7 +105,6 @@ public class Timer extends AppCompatActivity {
                         endTime = lessons[i - 1][1] - currentTime;
                         TimeUntil.setText(res.getString(R.string.timeUntil));
                     } else {
-                        System.out.println(res.getString(R.string.start));
                         endTime = lessons[i][0] - currentTime;
                         TimeUntil.setText(res.getString(R.string.start) + " " + romeNum[i] + " " + res.getString(R.string.lesson));
                     }

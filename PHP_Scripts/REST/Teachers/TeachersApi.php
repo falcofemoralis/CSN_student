@@ -10,8 +10,7 @@ class TeachersApi extends Api
     // Добавление в базу новых данных
     protected function createAction()
     {
-        createJSON($this->connect, 'teachers');
-        getUpdateList('teachers');
+        echo "invalid method";
     }
     
     // Обновление данных

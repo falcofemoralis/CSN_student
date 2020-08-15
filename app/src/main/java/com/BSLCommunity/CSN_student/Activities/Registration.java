@@ -22,11 +22,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
+import com.BSLCommunity.CSN_student.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-
-import static com.BSLCommunity.CSN_student.Objects.Groups.getGroups;
 
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -54,7 +54,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         EditText RepeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
 
         if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
-            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(),String.valueOf(Groups.groupsLists[(int)id].id));
+            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), Integer.toString((Groups.groupsLists.get((int) id).id)));
         } else {
             Toast.makeText(this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
         }
@@ -65,10 +65,10 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         Spinner groupSpinner = findViewById(R.id.activity_registration_sp_groups);
 
         List<String> listAdapter = new ArrayList<>();
-        if (Groups.groupsLists.length != 0) {
+        if (Groups.groupsLists.size() != 0) {
             //добавляем в массив из класса Groups группы
-            for (int j = 0; j < Groups.groupsLists.length; ++j)
-                listAdapter.add(Groups.groupsLists[j].GroupName);
+            for (int j = 0; j < Groups.groupsLists.size(); ++j)
+                listAdapter.add(Groups.groupsLists.get(j).GroupName);
         }
 
         //устанавливаем спинер выбора групп
@@ -99,9 +99,10 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.activity_registration_sp_courses:
-                getGroups(this,  Integer.parseInt(parent.getItemAtPosition(position).toString()), new Callable<Void>() {
+                //загружаются группы на спинер в зависимости от курса
+                Groups.downloadFromServer(this, Integer.parseInt(parent.getItemAtPosition(position).toString()), new Callable<Void>() {
                     @Override
-                    public Void call(){
+                    public Void call() {
                         createGroupSpinner();
                         return null;
                     }
@@ -149,4 +150,6 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+
 }

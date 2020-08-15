@@ -70,6 +70,9 @@ public class Login extends AppCompatActivity {
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+
+
 }
 
 

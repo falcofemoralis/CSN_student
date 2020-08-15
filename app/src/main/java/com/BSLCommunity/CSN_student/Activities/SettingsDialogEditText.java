@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
-
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.Settings;
@@ -60,10 +58,10 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
 
                     //создаем лист групп
                     List<String> groupsAdapter = new ArrayList<String>();
-                    if (Groups.groupsLists.length != 0) {
+                    if (Groups.groupsLists.size() != 0) {
                         //добавляем в массив из класса Groups группы
-                        for (int j = 0; j < Groups.groupsLists.length; ++j)
-                            groupsAdapter.add(Groups.groupsLists[j].GroupName);
+                        for (int j = 0; j < Groups.groupsLists.size(); ++j)
+                            groupsAdapter.add(Groups.groupsLists.get(j).GroupName);
                     } else {
                         //в том случае если групп по курсу нету
                         groupsAdapter.add("No groups");

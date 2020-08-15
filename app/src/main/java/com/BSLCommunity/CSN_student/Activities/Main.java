@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.Objects.LocalData;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.Rating;
@@ -27,6 +28,8 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
+
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
@@ -48,7 +51,21 @@ public class Main extends AppCompatActivity {
         TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
 
         setSettingsFile(this);
-        //checkData();
+
+        // Скачиваем все необходимые апдейт листы для проверки актуальности данных
+        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                return null;
+            }
+        });
+        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                return null;
+            }
+        });
+
     }
 
     public void OnClick(View view) {
@@ -70,7 +87,7 @@ public class Main extends AppCompatActivity {
                 intent = new Intent(this, Settings.class);
                 break;
             case R.id.activity_main_bt_teachersSchedule:
-                intent =new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
+                intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
                 break;
         }
         startActivity(intent);
@@ -102,10 +119,10 @@ public class Main extends AppCompatActivity {
         if (checkConnection()) {
             if (offline_data)
                 showDialog();
-           // else
-             //   loadStatusFromServer();
+            // else
+            //   loadStatusFromServer();
         } //else
-          //  loadStatusFromDevice();
+        //  loadStatusFromDevice();
     }
 
     protected void showDialog() {
@@ -124,10 +141,10 @@ public class Main extends AppCompatActivity {
             }.getType();
 
             String test = JSONHelper.read(Main.this, "data_disc.json");
-           // discs = gson.fromJson(test, listType);
+            // discs = gson.fromJson(test, listType);
 
-           // for (int i = 0; i < discs.size(); ++i)
-               // SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
+            // for (int i = 0; i < discs.size(); ++i)
+            // SubjectInfo.getStatus(encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, ""), i, this);
             return;
         }
 
@@ -136,7 +153,7 @@ public class Main extends AppCompatActivity {
         alertDialog.setPositiveButton(R.string.device, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              //  loadStatusFromDevice();
+                //  loadStatusFromDevice();
             }
         });
 

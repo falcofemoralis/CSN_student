@@ -47,6 +47,7 @@ public class SubjectList extends AppCompatActivity {
         super.onResume();
     }
 
+    static int n=0;
     //создаем список предметов
     public void setSubjectsList(){
         //достаем параметры референсной кнопки
@@ -55,6 +56,7 @@ public class SubjectList extends AppCompatActivity {
         //устанавливаем кнопки  предметов
         String subjectName = "";
         for(int i=0; i< Subjects.subjectsList.length;++i){
+           n++;
             try{
                 //получаем имя предмета по локализации
                 JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[i].NameDiscipline);
@@ -69,7 +71,7 @@ public class SubjectList extends AppCompatActivity {
                     Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
                     view.startAnimation(click);
                     Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
-                    intent.putExtra("button_id", view.getId());
+                    intent.putExtra("button_id", n);
                     startActivity(intent);
                 }
             };
@@ -96,7 +98,7 @@ public class SubjectList extends AppCompatActivity {
         Subjects subjects = Subjects.getInstance(this);
 
         int allLabsCount = 0, allCompleted=0;
-        for(int i=0; i< subjectsList.length;++i){
+        for(int i=0; i< subjects.subjectInfo.length;++i){
             allLabsCount += subjects.subjectInfo[i].labsCount;
 
             for(int j=0;j<subjects.subjectInfo[i].labsCount;++j)

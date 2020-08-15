@@ -2,7 +2,6 @@ package com.BSLCommunity.CSN_student.Managers;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.os.Debug;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -43,12 +42,7 @@ public class JSONHelper {
             }
             return sb.toString();
         } catch (FileNotFoundException fileNotFound) {
-            try {
-                return loadJSONFromAsset(context, fileName);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+            return "NOT FOUND";
         } catch (IOException ioException) {
             return null;
         }

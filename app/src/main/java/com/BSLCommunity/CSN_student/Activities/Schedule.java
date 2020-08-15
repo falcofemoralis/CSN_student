@@ -19,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import org.json.JSONArray;
+import com.BSLCommunity.CSN_student.Objects.LocalData;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import static com.BSLCommunity.CSN_student.Objects.Teachers.getTeachers;
-import static com.BSLCommunity.CSN_student.Objects.Groups.getGroups;
 
 /*
  * Класс для сериализации
@@ -58,14 +57,14 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     TextView type_week; //тип недели
     Spinner groupSpinner; //спинер выбора группы
     ScheduleList[][][] scheduleList;  //сохраненое расписание
-    private boolean isFirst = true; //инициализация первого раза
     String entity; //тип расписания
+
+    int[] idGroups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
-        getScheduleElements();
 
         if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")){
             entity = "teachers";
@@ -78,23 +77,28 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             });
         }else{
             entity = "groups";
-            getGroups(this, User.getInstance().course, new Callable<Void>() {
+            // Загружаем информацию о группах и после проверяем актуальность данных
+            Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
                 @Override
-                public Void call(){
+                public Void call() throws Exception {
+                    LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
                     createSpinner();
                     return null;
                 }
             });
         }
+        getScheduleElements();
     }
 
     //создание спиннера групп
     protected void createSpinner() {
         groupSpinner = findViewById(R.id.activity_lessons_schedule_sp_main);
+
+        User user = User.getInstance();
+        int id = 0;
         List<String> listAdapter = new ArrayList<>();
 
-        //Выбор расписания в зависимости от пришедшего значения с активити
-        if (entity == "teachers"){
+        if (entity.equals("teachers")) {
             for (Map.Entry<Integer, String> entry : Teachers.teachersList.entrySet()) {
                 try {
                     JSONObject teacherJSONObject = new JSONObject(entry.getValue());
@@ -110,11 +114,21 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             groupSpinner.setAdapter(dataAdapter);
             groupSpinner.setSelection(0);
         }
-        else {
-            if (Groups.groupsLists.length != 0) {
+        else{
+            //создаем лист групп
+            if (Groups.groupsLists.size() != 0) {
                 //добавляем в массив из класса Groups группы
-                for (int j = 0; j < Groups.groupsLists.length; ++j)
-                    listAdapter.add(Groups.groupsLists[j].GroupName);
+                idGroups = new int[Groups.groupsLists.size()];
+                for (int j = 0; j < Groups.groupsLists.size(); ++j) {
+                    listAdapter.add(Groups.groupsLists.get(j).GroupName);
+                    idGroups[j] = Groups.groupsLists.get(j).id;
+                    //узнаем ид группы юзера в спинере для дальнейшем установки в кач-ве дефолтного значения
+                    if (Groups.groupsLists.get(j).id == user.groupId)
+                        id = j;
+                }
+            } else {
+                //в том случае если групп по курсу нету
+                listAdapter.add("No groups");
             }
 
             //устанавливаем спинер
@@ -122,9 +136,8 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
             groupSpinner.setAdapter(dataAdapter);
 
-            User user = User.getInstance();
-            for (int i = 0; i < Groups.groupsLists.length; ++i)
-                if (user.groupId == Groups.groupsLists[i].id)
+            for (int i = 0; i < Groups.groupsLists.size(); ++i)
+                if (user.groupId == Groups.groupsLists.get(i).id)
                     groupSpinner.setSelection(i);
         }
         groupSpinner.setOnItemSelectedListener(this);
@@ -133,7 +146,13 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     //если в спинере была выбрана группа
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        downloadSchedule(entity, id);
+        if (!entity.equals("teachers")) {
+            try {
+                updateSchedule(idGroups[(int)id]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
@@ -163,66 +182,15 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         }
     }
 
-    //скачиваем расписание с сервера
-    public void downloadSchedule(String entity, long id) {
-        //обьект запроса
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-
-        int groupId;   //переменная id группы
-        final String ScheduleFileName = "Schedule_" + id; //сохранения расписания
-        String url;
-
-        if(entity == "teachers"){
-            url = Main.MAIN_URL + String.format("api/" + entity +"/%1$s/schedule", id+1);
-        } else {
-            groupId = Groups.groupsLists[(int) id].id;
-            url = Main.MAIN_URL + String.format("api/" + entity + "/%1$s/schedule", groupId);
-        }
-
-        StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    //сохраняем расписание в отдельный json файл
-                    JSONHelper.create(Schedule.this, ScheduleFileName, response);
-                    updateSchedule(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    setSchedule();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Schedule.this, "local schedule", Toast.LENGTH_SHORT).show();
-                try {
-                    //загружаем расписание из отдельного json файла
-                    String response = JSONHelper.read(Schedule.this, ScheduleFileName);
-                    updateSchedule(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
-
     //обновляем данные json строки в массив расписания
-    protected void updateSchedule(String response) throws JSONException {
-        JSONArray JSONObject = new JSONArray(response);
+    protected void updateSchedule(int id) throws JSONException {
 
-        //парсим расписание
+        Groups.GroupsList group =  Groups.findById(id);
+        //Обновляем расписание
         scheduleList = new ScheduleList[2][100][100];
-        for (int i = 0; i < JSONObject.length(); ++i) {
-            JSONObject dayJSONObject = JSONObject.getJSONObject(i);
-            String day = dayJSONObject.getString("Day");
-            String half = dayJSONObject.getString("Half");
-            String pair = dayJSONObject.getString("Pair");
-            String discipline = dayJSONObject.getString("NameDiscipline");
-            String room = dayJSONObject.getString("Room");
-            String type = dayJSONObject.getString("SubjectType");
-
-            scheduleList[Integer.parseInt(half)][Integer.parseInt(day) - 1][Integer.parseInt(pair) - 1] = new ScheduleList(discipline, type, Integer.parseInt(room));
+        for (int i = 0; i <  group.scheduleList.size(); ++i) {
+            Groups.GroupsList.ScheduleList groupScheduleList = group.scheduleList.get(i);
+            scheduleList[groupScheduleList.half][groupScheduleList.day][groupScheduleList.pair] = new ScheduleList(groupScheduleList.subject, groupScheduleList.type, groupScheduleList.room);
         }
         setSchedule();
     }

@@ -8,15 +8,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.BSLCommunity.CSN_student.Objects.Subjects;
+import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Locale;
 import java.util.concurrent.Callable;
+
 import static com.BSLCommunity.CSN_student.Objects.Subjects.getSubjectsList;
-import static com.BSLCommunity.CSN_student.Objects.Subjects.subjectsList;
 
 public class SubjectList extends AppCompatActivity {
     Button refBtn;
@@ -47,7 +50,6 @@ public class SubjectList extends AppCompatActivity {
         super.onResume();
     }
 
-    static int n=0;
     //создаем список предметов
     public void setSubjectsList(){
         //достаем параметры референсной кнопки
@@ -55,8 +57,7 @@ public class SubjectList extends AppCompatActivity {
 
         //устанавливаем кнопки  предметов
         String subjectName = "";
-        for(int i=0; i< Subjects.subjectsList.length;++i){
-           n++;
+        for(int i = 0; i< Subjects.subjectsList.length; ++i){
             try{
                 //получаем имя предмета по локализации
                 JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[i].NameDiscipline);
@@ -71,7 +72,7 @@ public class SubjectList extends AppCompatActivity {
                     Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
                     view.startAnimation(click);
                     Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
-                    intent.putExtra("button_id", n);
+                    intent.putExtra("button_id", view.getId());
                     startActivity(intent);
                 }
             };
@@ -95,14 +96,20 @@ public class SubjectList extends AppCompatActivity {
 
     //устанавливаем прогресс внизу экрана
     public void setProgress() {
-        Subjects subjects = Subjects.getInstance(this);
+        SubjectsInfo subjectsInfo = SubjectsInfo.getInstance(this);
 
         int allLabsCount = 0, allCompleted=0;
-        for(int i=0; i< subjects.subjectInfo.length;++i){
-            allLabsCount += subjects.subjectInfo[i].labsCount;
+        for(int i = 0; i< subjectsInfo.subjectInfo.length; ++i){
+            allLabsCount += (subjectsInfo.subjectInfo[i].labsCount + subjectsInfo.subjectInfo[i].ihwCount + subjectsInfo.subjectInfo[i].otherCount);
 
-            for(int j=0;j<subjects.subjectInfo[i].labsCount;++j)
-              if(subjects.subjectInfo[i].labValue[j] == 6) allCompleted++;
+            for(int j = 0; j< subjectsInfo.subjectInfo[i].labsCount; ++j)
+              if(subjectsInfo.subjectInfo[i].labValue[j] == 6) allCompleted++;
+
+            for(int j = 0; j< subjectsInfo.subjectInfo[i].ihwCount; ++j)
+                if(subjectsInfo.subjectInfo[i].ihwValue[j] == 6) allCompleted++;
+
+            for(int j = 0; j< subjectsInfo.subjectInfo[i].otherCount; ++j)
+                if(subjectsInfo.subjectInfo[i].otherValue[j] == 6) allCompleted++;
         }
 
 

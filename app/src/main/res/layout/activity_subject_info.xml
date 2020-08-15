@@ -179,15 +179,16 @@
                                 android:layout_weight="1" />
 
                             <Button
-                                android:id="@+id/activity_subject_info_bt_add"
+                                android:id="@+id/activity_subject_info_bt_addLab"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/add_btn"
                                 android:clickable="false"
                                 android:gravity="center"
-                                android:onClick="addLabOnClick"
-                                android:text="AddLab"
+                                android:onClick="addOnClick"
+                                android:tag="loadLab"
+                                android:text="Add Lab"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -197,15 +198,16 @@
                                 android:layout_weight="1" />
 
                             <Button
-                                android:id="@+id/activity_subject_info_bt_remove"
+                                android:id="@+id/activity_subject_info_bt_removeLab"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/remove_btn"
                                 android:clickable="false"
                                 android:gravity="center"
-                                android:onClick="removeLabOnClick"
-                                android:text="REMOVELAB"
+                                android:onClick="removeOnClick"
+                                android:tag="removeLab"
+                                android:text="REMOVE LAB"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -245,15 +247,16 @@
                                 android:layout_weight="1" />
 
                             <Button
-                                android:id="@+id/activity_subject_info_bt_add"
+                                android:id="@+id/activity_subject_info_bt_addIHW"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/add_btn"
                                 android:clickable="false"
                                 android:gravity="center"
-                                android:onClick="addLabOnClick"
-                                android:text="AddLab"
+                                android:onClick="addOnClick"
+                                android:tag="loadIHW"
+                                android:text="Add IHW"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -263,15 +266,16 @@
                                 android:layout_weight="1" />
 
                             <Button
-                                android:id="@+id/activity_subject_info_bt_remove"
+                                android:id="@+id/activity_subject_info_bt_removeIHW"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/remove_btn"
                                 android:clickable="false"
                                 android:gravity="center"
-                                android:onClick="removeLabOnClick"
-                                android:text="REMOVELAB"
+                                android:onClick="removeOnClick"
+                                android:tag="removeIHW"
+                                android:text="REMOV IHW"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -310,15 +314,16 @@
                                 android:layout_weight="1" />
 
                             <Button
-                                android:id="@+id/activity_subject_info_bt_add"
+                                android:id="@+id/activity_subject_info_bt_addOther"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/add_btn"
                                 android:clickable="false"
                                 android:gravity="center"
-                                android:onClick="addLabOnClick"
-                                android:text="AddLab"
+                                android:onClick="addOnClick"
+                                android:tag="loadOther"
+                                android:text="Add OTHER"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -328,15 +333,16 @@
                                 android:layout_weight="1" />
 
                             <Button
-                                android:id="@+id/activity_subject_info_bt_remove"
+                                android:id="@+id/activity_subject_info_bt_removeOther"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@drawable/remove_btn"
                                 android:clickable="false"
                                 android:gravity="center"
-                                android:onClick="removeLabOnClick"
-                                android:text="REMOVELAB"
+                                android:onClick="removeOnClick"
+                                android:tag="removeOther"
+                                android:text="REMOV OTHER"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 

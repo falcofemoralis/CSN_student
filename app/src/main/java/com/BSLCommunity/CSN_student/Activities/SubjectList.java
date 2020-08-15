@@ -2,12 +2,15 @@ package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.R;
@@ -47,7 +50,6 @@ public class SubjectList extends AppCompatActivity {
         super.onResume();
     }
 
-    static int n=0;
     //создаем список предметов
     public void setSubjectsList(){
         //достаем параметры референсной кнопки
@@ -56,7 +58,6 @@ public class SubjectList extends AppCompatActivity {
         //устанавливаем кнопки  предметов
         String subjectName = "";
         for(int i=0; i< Subjects.subjectsList.length;++i){
-           n++;
             try{
                 //получаем имя предмета по локализации
                 JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[i].NameDiscipline);
@@ -71,7 +72,7 @@ public class SubjectList extends AppCompatActivity {
                     Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
                     view.startAnimation(click);
                     Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
-                    intent.putExtra("button_id", n);
+                    intent.putExtra("button_id", view.getId());
                     startActivity(intent);
                 }
             };

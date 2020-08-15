@@ -3,8 +3,6 @@ package com.BSLCommunity.CSN_student.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,37 +16,18 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Objects.Rating;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
-import javax.security.auth.Subject;
-
-import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Teachers.getTeachers;
 
 public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -64,7 +43,8 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     int labsCount = 0, subjectValue = 0; //labsCount - кол-во лаб у предмета, subjectValue - ценность предмета
     final int TEXT_SIZE = 13; //размер текста
     public ArrayList<Integer> labValues = new ArrayList<>(); //зачения лаб
-
+    public boolean isClicked = false; //состояния нажатия кнопки Refactor
+    int[] tableRows = {R.id.activity_subject_info_tr_edit_lab, R.id.activity_subject_info_tr_edit_ihw, R.id.activity_subject_info_tr_edit_other}; //id кнопок добавления\удаления
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,7 +226,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     //удаление лабы
     public void removeLabOnClick(View view) {
         if (labsCount > 0) {
-            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_subject_info_ll_labs);
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_subject_info_ll_labs_main);
             linearLayout.removeViewAt((labsCount * 2) - 1); //удаляем пробел (последняя позиция)
             linearLayout.removeViewAt((labsCount * 2) - 2); //удаляем TableRow с кнопками лабы (предпоследняя позиция)
             labValues.remove(labsCount - 1);
@@ -266,7 +246,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     //создаем кнопку с лабой
     private void addLab(int number, int value) {
         labValues.add(value); //добавляем в лист значений, то что лаба имеет значение спиннера 0 (not passed)
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_subject_info_ll_labs);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_subject_info_ll_labs_main);
 
         //создаем новую полосу название лабы + тип лабы
         LinearLayout newLine = new LinearLayout(this);
@@ -333,5 +313,20 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             System.out.println(e);
             progress.setText("0%");
         }
+    }
+
+    public void refactorOnClick(View view) {
+        for (int i = 0; i < tableRows.length; ++i)
+            changeState(mGetId(tableRows[i]), isClicked);
+        isClicked = !isClicked;
+    }
+
+    private void changeState(TableRow tableRow, boolean state) {
+        if (state) tableRow.setVisibility(View.GONE);
+        else tableRow.setVisibility(View.VISIBLE);
+    }
+
+    private TableRow mGetId(int id){
+        return findViewById(id);
     }
 }

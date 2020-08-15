@@ -122,51 +122,31 @@
                     android:layout_weight="1" />
 
                 <TableRow
-                    android:id="@+id/activity_subject_info_tr_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
                     <Space
-                        android:layout_width="63dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="0.5" />
 
                     <Button
-                        android:id="@+id/activity_subject_info_bt_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/add_btn"
                         android:clickable="false"
                         android:gravity="center"
-                        android:onClick="addLabOnClick"
-                        android:text="AddLab"
+                        android:onClick="refactorOnClick"
+                        android:text="Refactor"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
                     <Space
-                        android:layout_width="87dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <Button
-                        android:id="@+id/activity_subject_info_bt_remove"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/remove_btn"
-                        android:clickable="false"
-                        android:gravity="center"
-                        android:onClick="removeLabOnClick"
-                        android:text="REMOVELAB"
-                        android:textColor="@color/white"
-                        android:textSize="13sp" />
-
-                    <Space
-                        android:layout_width="63dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="0.5" />
 
                 </TableRow>
 
@@ -176,17 +156,206 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/activity_subject_info_ll_labs"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/activity_subject_info_ll_labs"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_weight="1" />
+                        <TableRow
+                            android:id="@+id/activity_subject_info_tr_edit_lab"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <Space
+                                android:layout_width="63dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/activity_subject_info_bt_add"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/add_btn"
+                                android:clickable="false"
+                                android:gravity="center"
+                                android:onClick="addLabOnClick"
+                                android:text="AddLab"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                            <Space
+                                android:layout_width="87dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/activity_subject_info_bt_remove"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/remove_btn"
+                                android:clickable="false"
+                                android:gravity="center"
+                                android:onClick="removeLabOnClick"
+                                android:text="REMOVELAB"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                            <Space
+                                android:layout_width="63dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                        </TableRow>
+
+                        <LinearLayout
+                            android:id="@+id/activity_subject_info_ll_labs_main"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/activity_subject_info_ll_ihw"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TableRow
+                            android:id="@+id/activity_subject_info_tr_edit_ihw"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <Space
+                                android:layout_width="63dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/activity_subject_info_bt_add"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/add_btn"
+                                android:clickable="false"
+                                android:gravity="center"
+                                android:onClick="addLabOnClick"
+                                android:text="AddLab"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                            <Space
+                                android:layout_width="87dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/activity_subject_info_bt_remove"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/remove_btn"
+                                android:clickable="false"
+                                android:gravity="center"
+                                android:onClick="removeLabOnClick"
+                                android:text="REMOVELAB"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                            <Space
+                                android:layout_width="63dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                        </TableRow>
+
+                        <LinearLayout
+                            android:id="@+id/activity_subject_info_ll_ihw_main"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/activity_subject_info_ll_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TableRow
+                            android:id="@+id/activity_subject_info_tr_edit_other"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <Space
+                                android:layout_width="63dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/activity_subject_info_bt_add"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/add_btn"
+                                android:clickable="false"
+                                android:gravity="center"
+                                android:onClick="addLabOnClick"
+                                android:text="AddLab"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                            <Space
+                                android:layout_width="87dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/activity_subject_info_bt_remove"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/remove_btn"
+                                android:clickable="false"
+                                android:gravity="center"
+                                android:onClick="removeLabOnClick"
+                                android:text="REMOVELAB"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                            <Space
+                                android:layout_width="63dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                        </TableRow>
+
+                        <LinearLayout
+                            android:id="@+id/activity_subject_info_ll_other_main"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

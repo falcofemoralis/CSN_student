@@ -181,7 +181,7 @@
                             <Button
                                 android:id="@+id/activity_subject_info_bt_addLab"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@drawable/add_btn"
                                 android:clickable="false"
@@ -200,7 +200,7 @@
                             <Button
                                 android:id="@+id/activity_subject_info_bt_removeLab"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@drawable/remove_btn"
                                 android:clickable="false"
@@ -217,6 +217,20 @@
                                 android:layout_weight="1" />
 
                         </TableRow>
+
+                        <TextView
+                            android:id="@+id/activity_subject_info_tv_labs_headText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Labs"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_weight="1" />
 
                         <LinearLayout
                             android:id="@+id/activity_subject_info_ll_labs_main"
@@ -249,7 +263,7 @@
                             <Button
                                 android:id="@+id/activity_subject_info_bt_addIHW"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@drawable/add_btn"
                                 android:clickable="false"
@@ -268,14 +282,14 @@
                             <Button
                                 android:id="@+id/activity_subject_info_bt_removeIHW"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@drawable/remove_btn"
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="removeOnClick"
                                 android:tag="removeIHW"
-                                android:text="REMOV IHW"
+                                android:text="REMOVE IHW"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -285,6 +299,21 @@
                                 android:layout_weight="1" />
 
                         </TableRow>
+
+                        <TextView
+                            android:id="@+id/activity_subject_info_tv_ihw_headText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="IHW"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_weight="1" />
 
                         <LinearLayout
                             android:id="@+id/activity_subject_info_ll_ihw_main"
@@ -316,7 +345,7 @@
                             <Button
                                 android:id="@+id/activity_subject_info_bt_addOther"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@drawable/add_btn"
                                 android:clickable="false"
@@ -335,14 +364,14 @@
                             <Button
                                 android:id="@+id/activity_subject_info_bt_removeOther"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@drawable/remove_btn"
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="removeOnClick"
                                 android:tag="removeOther"
-                                android:text="REMOV OTHER"
+                                android:text="Remove other"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -352,6 +381,21 @@
                                 android:layout_weight="1" />
 
                         </TableRow>
+
+                        <TextView
+                            android:id="@+id/activity_subject_info_tv_other_headText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Other"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_weight="1" />
 
                         <LinearLayout
                             android:id="@+id/activity_subject_info_ll_other_main"

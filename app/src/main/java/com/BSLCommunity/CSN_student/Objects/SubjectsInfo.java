@@ -16,6 +16,7 @@ import java.util.concurrent.Callable;
 
 public class SubjectsInfo {
     public static SubjectsInfo instance = null;
+    public static final String FILE_NAME  = "subjectsInfo";
 
     public static SubjectsInfo getInstance(Context context) {
         if (instance == null)
@@ -33,8 +34,8 @@ public class SubjectsInfo {
                 instance.subjectInfo[i] = new SubjectInfo();
 
             //загрузка данных
-            String JSONstring = JSONHelper.read(context, "subjectsInfo");
-            if (JSONstring != null) {
+            String JSONstring = JSONHelper.read(context, FILE_NAME);
+            if (JSONstring != null || JSONstring.equals("")) {
                 Gson gson = new Gson();
                 instance.subjectInfo = gson.fromJson(JSONstring, SubjectInfo[].class);
             }
@@ -45,7 +46,8 @@ public class SubjectsInfo {
         }
     }
 
-    public static void deleteSubjects() {
+    public static void deleteSubjects(Context context) {
+        JSONHelper.delete(context, FILE_NAME);
         instance = null;
     }
 
@@ -89,6 +91,6 @@ public class SubjectsInfo {
     public void saveSubject(Context context) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(subjectInfo);
-        JSONHelper.create(context, "subjectsInfo", jsonString);
+        JSONHelper.create(context, FILE_NAME, jsonString);
     }
 }

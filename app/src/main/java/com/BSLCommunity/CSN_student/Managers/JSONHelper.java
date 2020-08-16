@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -63,6 +64,11 @@ public class JSONHelper {
         } catch (IOException ioException) {
             return;
         }
+    }
 
+    //удаление json файла
+    public static void delete(Context context, String fileName) {
+        File file = context.getFileStreamPath(fileName);
+        file.delete();
     }
 }

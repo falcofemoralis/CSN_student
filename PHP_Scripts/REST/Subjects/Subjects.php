@@ -4,18 +4,24 @@
 function getSubjectsByCourse($connect)
 {
 	$course = $_GET["Course"];
+    $semestr;
 
-	$date1 = date('Y')."-08-11"; 
-	$date2 = date('Y-m-d'); 
+	$dateFirstFebrary = "02-01"; 
+	$dateFirstSeptember = "09-01"; 
+
+	$datecurrent = date('m-d'); 
 	
-	if($date1 > $date2)
-	    $course += ($course-1);
+	if($datecurrent < $dateFirstFebrary)
+	    $semestr = ($course * 2)-1;
 	else
-	    $course *= 2;
-
-   $query = "SELECT disciplines.Code_Discipline, disciplines.NameDiscipline, disciplines.Code_Lector, disciplines.Code_Practice, disciplines.Code_Assistant
+	    $semestr = $course * 2;
+	 
+	 if($datecurrent > $dateFirstSeptember) 
+    	 $semestr -=1;
+	    
+   $query = "SELECT disciplines.NameDiscipline, disciplines.Code_Lector, disciplines.Code_Practice, disciplines.Code_Assistant
             FROM `disciplines`
-            where disciplines.Semestr = $course ";
+            where disciplines.Semestr = $semestr ";
    
    $result = mysqli_query($connect, $query);
    

@@ -172,7 +172,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
             public void onClick(DialogInterface dialog, int which) {
                 prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
                 User.deleteUser();
-                SubjectsInfo.deleteSubjects();
+                SubjectsInfo.deleteSubjects(getApplicationContext());
                 Groups.groupsLists.clear();
                 Toast.makeText(Settings.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();

@@ -15,8 +15,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.Activities.Schedule.Schedule;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
+import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.Rating;
@@ -52,7 +54,7 @@ public class Main extends AppCompatActivity {
 
         setSettingsFile(this);
 
-        // Скачиваем все необходимые апдейт листы для проверки актуальности данных
+        // Скачиваем все необходимые апдейт листы для проверки актуальности данных и проверяем данные
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -62,9 +64,18 @@ public class Main extends AppCompatActivity {
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
+                Teachers.init(getApplicationContext(), new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
+                        return null;
+                    }
+                });
                 return null;
             }
         });
+
+
 
     }
 

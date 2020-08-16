@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -12,13 +13,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -39,24 +33,7 @@ public class Groups {
         public String GroupName;
         public Date lastUpdate;
 
-        public class ScheduleList {
-            public int half, day, pair;
-            public String subject;
-            public String type;
-            public int room;
-
-            public ScheduleList(int half, int day, int pair, String subject, String type, int room) {
-                this.half = half;
-                this.day = day;
-                this.pair = pair;
-                this.room = room;
-                this.subject = subject;
-                this.type = type;
-            }
-        }
-
-        // ScheduleList[Половина][День][Пара]
-        public ArrayList<ScheduleList> scheduleList = new ArrayList<ScheduleList>();
+        public ArrayList<ScheduleList> scheduleList = new ArrayList<>();
 
         public GroupsList(int id, String GroupName, Date lastUpdate) {
             this.id = id;
@@ -65,10 +42,9 @@ public class Groups {
         }
 
         // Добавляет расписание в группу
-        public void addSchedule(int half, int day, int pair, String subject, String type, int room) {
+        public void addSchedule(int half, int day, int pair, String subject, String type, String room) {
             scheduleList.add(new ScheduleList(half, day, pair, subject, type, room));
         }
-
     }
 
     public static ArrayList<GroupsList> groupsLists = new ArrayList<>();
@@ -80,6 +56,9 @@ public class Groups {
      * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null (на случай если необходимо будет скачать данные с сервера)
      */
     public static void init(Context context, int course, final Callable<Void>... callBacks) {
+
+        if (!groupsLists.isEmpty())
+            return;
 
         try {
             //загружаем расписание из отдельного json файла
@@ -178,7 +157,7 @@ public class Groups {
                         String type = dayJSONObject.getString("SubjectType");
 
                         // Добавляем расписание в список
-                        groupsList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, Integer.parseInt(room));
+                        groupsList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, room);
                     }
 
                     // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо

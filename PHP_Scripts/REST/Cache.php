@@ -1,8 +1,13 @@
 <?php
 
+require_once 'DataBase.php';
+
 // Создание JSON фалйа (апдейт листа)
-function createJSON($connect, $entity)
+function createJSON($entity)
 {
+    echo $entity;
+    $db = new DataBase();
+    $connect = $db->getConnection();
     
     if ($entity == 'groups')
         $query = "SELECT groups.Code_Group as id FROM groups";
@@ -23,8 +28,6 @@ function createJSON($connect, $entity)
         {
             $id = $row['id'];
             $lastUpdate = date("Y-n-d G:i:s");
-                        
-            echo $lastUpdate;
                         
             $groups[] = array('id'=>$id, 'lastUpdate'=>$lastUpdate);
         }

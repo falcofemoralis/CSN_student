@@ -22,8 +22,6 @@ import org.json.JSONObject;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
-import static com.BSLCommunity.CSN_student.Objects.Subjects.getSubjectsList;
-
 public class SubjectList extends AppCompatActivity {
     Button refBtn;
     Boolean shouldExecuteOnResume = false;
@@ -47,7 +45,7 @@ public class SubjectList extends AppCompatActivity {
         refBtn.setVisibility(View.GONE); //выключаем референсную кнопку
 
         //получаем список групп
-        getSubjectsList(this, new Callable<Void>() {
+        Subjects.getSubjectsList(this, new Callable<Void>() {
             @Override
             public Void call() {
                 setSubjectsList();

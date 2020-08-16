@@ -23,7 +23,7 @@ class SubjectsApi extends Api
     {
 		if (!empty($this->requestUri))
         {
-            getSubjectsByCourse($this->connect);
+            getSubjectsByGroup($this->connect);
         }
         else 
             echo "invalid method"; 

@@ -24,6 +24,7 @@ import com.BSLCommunity.CSN_student.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -48,6 +49,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     public ArrayList<Integer> otherValues = new ArrayList<>(); //зачения заметок
     public boolean isClicked = false; //состояния нажатия кнопки Refactor
     int[] tableRows = {R.id.activity_subject_info_tr_edit_lab, R.id.activity_subject_info_tr_edit_ihw, R.id.activity_subject_info_tr_edit_other}; //id кнопок добавления\удаления
+    TextView labsHeadText, ihwHeadText, otherHeadText;
 
     //тип работы
     public enum Types {
@@ -66,7 +68,11 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
         //получем необходимые объекты
         subjectsInfo = SubjectsInfo.getInstance(this);
-        subjectId = (getIntent().getIntExtra("button_id", 0) - 1);
+        subjectId = (getIntent().getIntExtra("button_id", 0));
+
+        labsHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_labs_headText);
+        ihwHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_ihw_headText);
+        otherHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_other_headText);
 
         setSubjectName(); //ставим имя предмета
         createValueSpinner(); //создаем спиннер ценностей предмета
@@ -221,14 +227,17 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             case "loadLab":
                 addWorkRow(labsCount + 1, 0, labValues, R.id.activity_subject_info_ll_labs_main, getResources().getString(R.string.Lab), Types.lab);
                 labsCount++;
+                labsHeadText.setVisibility(View.VISIBLE);
                 break;
             case "loadIHW":
-                addWorkRow(labsCount + 1, 0, ihwValues, R.id.activity_subject_info_ll_ihw_main, getResources().getString(R.string.IHW), Types.ihw);
+                addWorkRow(ihwCount + 1, 0, ihwValues, R.id.activity_subject_info_ll_ihw_main, getResources().getString(R.string.IHW), Types.ihw);
                 ihwCount++;
+                ihwHeadText.setVisibility(View.VISIBLE);
                 break;
             case "loadOther":
-                addWorkRow(labsCount + 1, 0, otherValues, R.id.activity_subject_info_ll_other_main, getResources().getString(R.string.other), Types.other);
+                addWorkRow(otherCount + 1, 0, otherValues, R.id.activity_subject_info_ll_other_main, getResources().getString(R.string.other), Types.other);
                 otherCount++;
+                otherHeadText.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -241,18 +250,21 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
                     removeWorkRow(R.id.activity_subject_info_ll_labs_main, labsCount, labValues);
                     --labsCount;
                 }
+                if (labsCount == 0) labsHeadText.setVisibility(View.GONE);
                 break;
             case "removeIHW":
                 if (ihwCount > 0) {
                     removeWorkRow(R.id.activity_subject_info_ll_ihw_main, ihwCount, ihwValues);
                     --ihwCount;
                 }
+                if (ihwCount == 0) ihwHeadText.setVisibility(View.GONE);
                 break;
             case "removeOther":
                 if (otherCount > 0) {
                     removeWorkRow(R.id.activity_subject_info_ll_other_main, otherCount, otherValues);
                     --otherCount;
                 }
+                if (otherCount == 0) otherHeadText.setVisibility(View.GONE);
                 break;
         }
         setProgress();
@@ -267,6 +279,10 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].ihwValue[i], ihwValues, R.id.activity_subject_info_ll_ihw_main, getResources().getString(R.string.IHW), Types.ihw);
         for (int i = 0; i < otherCount; ++i)
             addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].otherValue[i], otherValues, R.id.activity_subject_info_ll_other_main, getResources().getString(R.string.other), Types.other);
+
+        if (labsCount == 0) labsHeadText.setVisibility(View.GONE);
+        if (ihwCount == 0) ihwHeadText.setVisibility(View.GONE);
+        if (otherCount == 0) otherHeadText.setVisibility(View.GONE);
 
         //ставим прогресс
         setProgress();
@@ -286,7 +302,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         newLine.setOrientation(LinearLayout.HORIZONTAL);
 
         //создаем новое название
-        TextView name = new TextView(this);
+        final TextView name = new TextView(this);
         name.setText(NameText + " " + number);
         name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         name.setTextSize(TEXT_SIZE);
@@ -316,28 +332,13 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
                 Drawable drawable = parent.getBackground();
                 drawable.setTint(getColor(colors[(int) id]));
 
-                if (type == Types.lab){
-                    System.out.println("!!!!!!!!!!!!!!!!!="+Integer.parseInt(parent.getTag().toString()) );
-                    System.out.println("!!!!!!!!!!!!!!!!!="+id );
-                    System.out.println("!!!!!!!!!!!!!!!!!="+labValues.size());
-
+                if (type == Types.lab)
                     labValues.set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
-                }
-                else if (type == Types.ihw){
-                    System.out.println("!!!!!!!!!!!!!!!!!="+Integer.parseInt(parent.getTag().toString()) );
-                    System.out.println("!!!!!!!!!!!!!!!!!="+id );
-                    System.out.println("!!!!!!!!!!!!!!!!!="+ihwValues.size());
-
+                else if (type == Types.ihw)
                     ihwValues.set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
-
-                }
-                else if (type == Types.other){
-                    System.out.println("!!!!!!!!!!!!!!!!!="+Integer.parseInt(parent.getTag().toString()) );
-                    System.out.println("!!!!!!!!!!!!!!!!!="+id );
-                    System.out.println("!!!!!!!!!!!!!!!!!="+otherValues.size());
-
+                else if (type == Types.other)
                     otherValues.set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
-                }
+
                 setProgress();
             }
 
@@ -362,10 +363,10 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
     //удаляем работу
     private void removeWorkRow(int id, int count, ArrayList<Integer> countValues) {
-            LinearLayout linearLayout = (LinearLayout) findViewById(id);
-            linearLayout.removeViewAt((count * 2) - 1); //удаляем пробел (последняя позиция)
-            linearLayout.removeViewAt((count * 2) - 2); //удаляем TableRow с кнопками лабы (предпоследняя позиция)
-            countValues.remove(count - 1);
+        LinearLayout linearLayout = (LinearLayout) findViewById(id);
+        linearLayout.removeViewAt((count * 2) - 1); //удаляем пробел (последняя позиция)
+        linearLayout.removeViewAt((count * 2) - 2); //удаляем TableRow с кнопками лабы (предпоследняя позиция)
+        countValues.remove(count - 1);
     }
 
     //создаем пробел

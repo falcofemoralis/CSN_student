@@ -17,14 +17,14 @@ import java.util.concurrent.Callable;
 
 public class Subjects {
     public class SubjectsList {
-        public int Code_Discipline, Code_Lector, Code_Practice, Code_Assistant;
+        public int Code_Lector, Code_Practice, Code_Assistant;
         public String NameDiscipline;
     }
     public static SubjectsList[] subjectsList;
 
     public static void getSubjectsList(final Context context, final Callable<Void> methodParam) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = Main.MAIN_URL + String.format("api/subjects/?Course=%1$s", 2);
+        String url = Main.MAIN_URL + String.format("api/subjects/?Course=%1$s", User.getInstance().course);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

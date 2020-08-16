@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,24 +33,8 @@ public class Teachers {
         public String FIO;
         public Date lastUpdate;
 
-        public class ScheduleList {
-            public int half, day, pair;
-            public String subject;
-            public String type;
-            public int room;
-
-            public ScheduleList(int half, int day, int pair, String subject, String type, int room) {
-                this.half = half;
-                this.day = day;
-                this.pair = pair;
-                this.room = room;
-                this.subject = subject;
-                this.type = type;
-            }
-        }
-
         // ScheduleList[Половина][День][Пара]
-        public ArrayList<Teachers.TeacherList.ScheduleList> scheduleList = new ArrayList<>();
+        public ArrayList<ScheduleList> scheduleList = new ArrayList<>();
 
         public TeacherList(int id, String FIO, Date lastUpdate) {
             this.id = id;
@@ -58,10 +43,9 @@ public class Teachers {
         }
 
         // Добавляет расписание в группу
-        public void addSchedule(int half, int day, int pair, String subject, String type, int room) {
-            scheduleList.add(new Teachers.TeacherList.ScheduleList(half, day, pair, subject, type, room));
+        public void addSchedule(int half, int day, int pair, String subject, String type, String room) {
+            scheduleList.add(new ScheduleList(half, day, pair, subject, type, room));
         }
-
     }
 
     public static ArrayList<Teachers.TeacherList> teacherLists = new ArrayList<>();
@@ -121,7 +105,7 @@ public class Teachers {
                         // Добавляем учителя в список
                         teacherLists.add(new TeacherList(id, FIO, new Date()));
                         // Скачиваем расписание учителя, если все остальные учителя скачаны, то после скачивания последнего - сохраняем данные
-                        getSchedule(appContext, id, i == (JSONArray.length() - 1), callBacks);
+                        downloadScheduleFromServer(appContext, id, i == (JSONArray.length() - 1), callBacks);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -144,7 +128,7 @@ public class Teachers {
      * saveData - сохранять данные или нет ? true - сохранить, false - не сохранять
      * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null
      * */
-    public static void getSchedule(final Context appContext, final int id, final boolean saveData, final Callable<Void>... callBacks) {
+    public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean saveData, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = Main.MAIN_URL + String.format("api/teachers/%d/schedule", id);
 
@@ -166,7 +150,7 @@ public class Teachers {
                         String type = dayJSONObject.getString("SubjectType");
 
                         // Добавляем расписание в список
-                        teacherList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, Integer.parseInt(room));
+                        teacherList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, room);
                     }
 
                     // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
@@ -210,4 +194,6 @@ public class Teachers {
                 return teacherLists.get(i);
         return null;
     }
+
+
 }

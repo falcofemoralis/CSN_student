@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.Activities.Schedule.Schedule;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
 import com.BSLCommunity.CSN_student.Objects.Timer;

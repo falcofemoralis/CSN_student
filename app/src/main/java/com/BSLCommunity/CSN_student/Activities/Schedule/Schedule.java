@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student.Activities;
+package com.BSLCommunity.CSN_student.Activities.Schedule;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +15,6 @@ import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,24 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
-/*
- * Класс для сериализации
- *
- * subject - предмет (строка JSON)
- * type - тип предмета (строка JSON)
- * room - номер аудитории
- * */
-class ScheduleList {
-    public String subject;
-    public String type;
-    public int room;
-
-    public ScheduleList(String subject, String type, int room) {
-        this.room = room;
-        this.subject = subject;
-        this.type = type;
-    }
-}
 
 //форма расписание предметов группы
 public class Schedule extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -53,7 +34,9 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     ScheduleList[][][] scheduleList;  //сохраненое расписание
     String entity; //тип расписания
 
-    int[] idElements;
+    int[] idElements; // id сущностей в спиннере (в порядке расположения их в спиннере)
+    int selectedItemId; // ID выбранного элемента в спиннере
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +53,8 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                     return null;
                 }
             });
-        }else{
+        }
+        else{
             entity = "groups";
             // Загружаем информацию о группах и после проверяем актуальность данных
             Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
@@ -89,9 +73,9 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     protected void createSpinner() {
         spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
 
-        User user = User.getInstance();
-        int id = 0;
-        List<String> listAdapter = new ArrayList<>();
+        User user = User.getInstance(); // Данные пользователя
+        int selectFirst = 0; // Для выбора расписания которое будет показано при загрузке самого окна
+        List<String> listAdapter = new ArrayList<>(); // Список строк в спиннере
 
         if (entity.equals("teachers")) {
 
@@ -100,21 +84,22 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                 //добавляем в массив из класса Groups группы
                 idElements = new int[Teachers.teacherLists.size()];
                 for (int j = 0; j < Teachers.teacherLists.size(); ++j) {
-                    listAdapter.add(Teachers.teacherLists.get(j).FIO);
+                    try {
+                        JSONObject FIOJson = new JSONObject(Teachers.teacherLists.get(j).FIO);
+                        listAdapter.add(FIOJson.getString(Locale.getDefault().getLanguage()));
+                    }
+                    catch (Exception e) {}
                     idElements[j] = Teachers.teacherLists.get(j).id;
                 }
+                // Выбор первого учителя не имеет смысла
+                selectFirst = 0;
             } else {
                 //в том случае если групп по курсу нету
                 listAdapter.add("No teachers");
             }
 
-            //устанавливаем спинер
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
-            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
-            spinner.setAdapter(dataAdapter);
-            spinner.setSelection(0);
         }
-        else{
+        else {
             //создаем лист групп
             if (Groups.groupsLists.size() != 0) {
                 //добавляем в массив из класса Groups группы
@@ -122,32 +107,29 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                 for (int j = 0; j < Groups.groupsLists.size(); ++j) {
                     listAdapter.add(Groups.groupsLists.get(j).GroupName);
                     idElements[j] = Groups.groupsLists.get(j).id;
+                    // Если id группы совпадает с id группы пользователя - эта группа и будет показана первой
+                    if (user.groupId == idElements[j])
+                        selectFirst = j;
                 }
             } else {
                 //в том случае если групп по курсу нету
                 listAdapter.add("No groups");
             }
-
-            //устанавливаем спинер
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
-            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
-            spinner.setAdapter(dataAdapter);
-
-            for (int i = 0; i < Groups.groupsLists.size(); ++i)
-                if (user.groupId == Groups.groupsLists.get(i).id)
-                    spinner.setSelection(i);
         }
+
+        //устанавливаем спинер
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+        spinner.setAdapter(dataAdapter);
+        spinner.setSelection(selectFirst);
         spinner.setOnItemSelectedListener(this);
     }
 
     //если в спинере была выбрана группа
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            try {
-                updateSchedule(idElements[(int)id]);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        selectedItemId = (int)id;
+        setSchedule(idElements[selectedItemId]);
     }
 
     //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
@@ -161,7 +143,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             type_week.setText(getResources().getString(R.string.numerator));
         else
             type_week.setText(getResources().getString(R.string.denominator));
-        setSchedule();
+        setSchedule(idElements[selectedItemId]);
     }
 
     //получение необходимых полей с активити расписание
@@ -177,51 +159,38 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         }
     }
 
-    //обновляем данные json строки в массив расписания
-    protected void updateSchedule(int id) throws JSONException {
-
-        if (entity.equals("teachers")) {
-            Teachers.TeacherList teacher = Teachers.findById(id);
-            //Обновляем расписание
-            scheduleList = new ScheduleList[2][100][100];
-            for (int i = 0; i < teacher.scheduleList.size(); ++i) {
-                Teachers.TeacherList.ScheduleList teacherScheduleList = teacher.scheduleList.get(i);
-                scheduleList[teacherScheduleList.half][teacherScheduleList.day][teacherScheduleList.pair] = new ScheduleList(teacherScheduleList.subject, teacherScheduleList.type, teacherScheduleList.room);
-            }
-        } else {
-            Groups.GroupsList group = Groups.findById(id);
-            //Обновляем расписание
-            scheduleList = new ScheduleList[2][100][100];
-            for (int i = 0; i < group.scheduleList.size(); ++i) {
-                Groups.GroupsList.ScheduleList groupScheduleList = group.scheduleList.get(i);
-                scheduleList[groupScheduleList.half][groupScheduleList.day][groupScheduleList.pair] = new ScheduleList(groupScheduleList.subject, groupScheduleList.type, groupScheduleList.room);
-            }
-        }
-        setSchedule();
-    }
-
     //устанавливаем расписание
-    protected void setSchedule() {
+    protected void setSchedule(int id) {
+        ArrayList<ScheduleList> scheduleList = entity.equals("teachers") ? Teachers.findById(id).scheduleList : Groups.findById(id).scheduleList;
+        clearSchedule();
+
         //получаем неделю в зависимости от выбранной недели
         int numType = type_week.getText().equals(getResources().getString(R.string.denominator)) ? 1 : 0;
 
-        for (int i = 0; i < MAX_DAYS; ++i) {
-            for (int j = 0; j < MAX_PAIR; ++j) {
+        for (int i = 0; i < scheduleList.size(); ++i) {
+            ScheduleList list = scheduleList.get(i); // Чтобы не вызывать постоянно метод get (Код будет выглядеть короче)
+
+            if (list.half == numType)
                 try {
                     //парсим предмет по установленому языку в приложении
-                    JSONObject subjectJSONObject = new JSONObject(scheduleList[numType][i][j].subject);
+                    JSONObject subjectJSONObject = new JSONObject(list.subject);
                     String subject = subjectJSONObject.getString(Locale.getDefault().getLanguage());
 
-                    JSONObject typeJSONObject = new JSONObject(scheduleList[numType][i][j].type);
+                    JSONObject typeJSONObject = new JSONObject(list.type);
                     String type = typeJSONObject.getString(Locale.getDefault().getLanguage());
 
-                    scheduleTextView[i][j].setText(subject + " " + type + " (" + scheduleList[numType][i][j].room + ")");
+                    scheduleTextView[list.day][list.pair].setText(subject + " " + type + " (" + list.room + ")");
                 } catch (Exception e) {
-                    //если поле пустое
-                    scheduleTextView[i][j].setText("");
+                    // Не смогло преобразовать текстовое поле
+                    scheduleTextView[list.day][list.pair].setText("JSON parse Error");
                 }
-            }
         }
+    }
+
+    protected void clearSchedule() {
+        for (int i = 0; i < MAX_DAYS; ++i)
+            for (int j = 0; j < MAX_PAIR; ++j)
+                scheduleTextView[i][j].setText("");
     }
 }
 

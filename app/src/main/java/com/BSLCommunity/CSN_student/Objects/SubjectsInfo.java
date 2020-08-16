@@ -1,18 +1,13 @@
 package com.BSLCommunity.CSN_student.Objects;
 
-import android.content.Context;;
-import android.widget.Toast;
-import com.BSLCommunity.CSN_student.Activities.Main;
+import android.content.Context;
+
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
+
+;
 
 public class SubjectsInfo {
     public static SubjectsInfo instance = null;

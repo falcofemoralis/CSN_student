@@ -17,6 +17,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.BSLCommunity.CSN_student.Objects.LocalData;
+import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
@@ -28,9 +33,9 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
 import java.util.concurrent.Callable;
 
-import static com.BSLCommunity.CSN_student.Objects.Teachers.getTeachers;
 
 public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     int[] colors = { //цвета кнопок выбора
@@ -83,14 +88,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         otherCount = subjectsInfo.subjectInfo[subjectId].otherCount;
         loadData();
 
-        //ставим преподавателей
-        getTeachers(this, new Callable<Void>() {
-            @Override
-            public Void call() {
-                setTeachers();
-                return null;
-            }
-        });
+        setTeachers();
     }
 
     //функция вызывается при закрытие активити, в которой идет сохранение данных
@@ -150,9 +148,9 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     public void setTeachers() {
         //получаем id преподов
         teacherIds = new ArrayList<>(); //список преподов для установки
-        teacherIds.add(Subjects.subjectsList[subjectId].Code_Lector);
-        teacherIds.add(Subjects.subjectsList[subjectId].Code_Practice);
-        teacherIds.add(Subjects.subjectsList[subjectId].Code_Assistant);
+        mGetTeacherId(Subjects.subjectsList[subjectId].Code_Lector);
+        mGetTeacherId(Subjects.subjectsList[subjectId].Code_Practice);
+        mGetTeacherId(Subjects.subjectsList[subjectId].Code_Assistant);
 
         //поле где находятся кнопки в виде (tableRow)
         TableLayout teacherLayout = (TableLayout) findViewById(R.id.activity_subject_info_tl_teachers); //поле где будут кнопки
@@ -197,7 +195,8 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
             //устанавливаем имя препода
             try {
-                JSONObject teacherJSONObject = new JSONObject(Teachers.teachersList.get(teacherIds.get(i)));
+                String FIO = Teachers.findById(teacherIds.get(i)).FIO;
+                JSONObject teacherJSONObject = new JSONObject(Teachers.findById(teacherIds.get(i)).FIO);
                 newTeacher.setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -418,5 +417,9 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     //получение view TableRow по id
     private TableRow mGetId(int id) {
         return findViewById(id);
+    }
+
+    private void mGetTeacherId(int id){
+        if(id!=0) teacherIds.add(id);
     }
 }

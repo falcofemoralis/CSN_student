@@ -29,7 +29,7 @@
             android:name=".Activities.Login"
             android:theme="@style/NoActionBar"></activity>
         <activity
-            android:name=".Activities.Schedule"
+            android:name=".Activities.Schedule.Schedule"
             android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".Activities.SubjectInfo"

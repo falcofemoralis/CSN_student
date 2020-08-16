@@ -5,6 +5,8 @@
 $requestUri = explode('/', stristr($_SERVER['REQUEST_URI'] . '?', '?', true));
 array_shift($requestUri); // Делается сдвиг потому первый элемент всегда пустой ''
 
+$typesData = array('teachers', 'groups');
+
 if (array_shift($requestUri) == 'api')
 {
     $apiName = array_shift($requestUri);
@@ -31,6 +33,11 @@ if (array_shift($requestUri) == 'api')
             $subjectsApi = new SubjectsApi($requestUri);
             $subjectsApi->run();
             break;
+		case "cache":
+		    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['password'] == '4fb3a58c295349029ada9a93a3b4eeb28979d40b5078f7c2deecdb88992811f7')
+		        for ($i = 0; $i < 2; $i++)
+		            createJSON($typesData[$i]);
+		    break;
     }
 }
 

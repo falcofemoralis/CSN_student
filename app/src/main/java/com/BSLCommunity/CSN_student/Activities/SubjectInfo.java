@@ -1,10 +1,5 @@
 package com.BSLCommunity.CSN_student.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,38 +13,18 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.BSLCommunity.CSN_student.Objects.Subjects;
-import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Objects.Rating;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
-import javax.security.auth.Subject;
-
-import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
-import static com.BSLCommunity.CSN_student.Objects.Teachers.getTeachers;
 
 public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     int[] colors = { //цвета кнопок выбора
@@ -72,14 +47,6 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_subject_info);
         createValueSpinner();
         setSubjectName();
-
-        getTeachers(this, new Callable<Void>() {
-            @Override
-            public Void call() {
-                setTeachers();
-                return null;
-            }
-        });
 
         try {
             labsCount = Subjects.getInstance(this).getLabCount(getIntent().getIntExtra("button_id", 0));
@@ -204,7 +171,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
             //устанавливаем имя препода
             try {
-                JSONObject teacherJSONObject = new JSONObject(Teachers.teachersList.get(teacherIds.get(i)));
+                JSONObject teacherJSONObject = new JSONObject();//Teachers.teacherLists.get(teacherIds.get(i)));
                 newTeacher.setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -34,7 +34,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://a0459938.xsph.ru/";
+    public static String MAIN_URL = "http://192.168.1.3/";
     public static String FILE_NAME = "data_disc";
     public static String GROUP_FILE_NAME = "groups";
 

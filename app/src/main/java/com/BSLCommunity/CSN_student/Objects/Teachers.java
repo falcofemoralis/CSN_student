@@ -52,6 +52,9 @@ public class Teachers {
 
     public static void init(Context context, final Callable<Void>... callBacks) {
 
+        if (!teacherLists.isEmpty())
+            return;
+
         try {
             //загружаем расписание из отдельного json файла
             String response = JSONHelper.read(context, DATA_FILE_NAME);

@@ -2,7 +2,7 @@
     <string name="app_name">CSN student</string>
     <string name="Overall">Overall</string>
     <string name="course_2">2 Course</string>
-    <string name="subjects">Subjects :</string>
+    <string name="subjectsInfo">Subjects :</string>
     <string name="lector">Lector:</string>
     <string name="valueOfSubject">Value :</string>
     <string name="Exam">Exam</string>
@@ -89,5 +89,6 @@
     <string name="fri">\t\t\t\tFRI\t\t\t\t</string>
     <string name="practice">Practice</string>
     <string name="assistant">Assistant</string>
+    <string name="other">Other</string>
 </resources>
 

@@ -21,10 +21,8 @@ class SubjectsApi extends Api
     // Просмотр данных
     protected function viewAction()
     {
-		if (!empty($this->requestUri))
-        {
+	if (!empty($this->requestUri)) 
             getSubjectsByCourse($this->connect);
-        }
         else 
             echo "invalid method"; 
     }

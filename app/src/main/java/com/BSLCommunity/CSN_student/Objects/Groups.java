@@ -57,6 +57,9 @@ public class Groups {
      */
     public static void init(Context context, int course, final Callable<Void>... callBacks) {
 
+        if (!groupsLists.isEmpty())
+            return;
+
         try {
             //загружаем расписание из отдельного json файла
             String response = JSONHelper.read(context, DATA_FILE_NAME);

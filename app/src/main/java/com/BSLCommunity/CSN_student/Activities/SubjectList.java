@@ -8,19 +8,34 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.BSLCommunity.CSN_student.Objects.Subjects;
+import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Locale;
 import java.util.concurrent.Callable;
-import static com.BSLCommunity.CSN_student.Objects.Subjects.getSubjectsList;
-import static com.BSLCommunity.CSN_student.Objects.Subjects.subjectsList;
 
 public class SubjectList extends AppCompatActivity {
     Button refBtn;
     Boolean shouldExecuteOnResume = false;
+    static class IdGenerator {
+        static int n = 0;
+
+        static int getId() {
+            return n++;
+        }
+
+        static void reset() {
+            n = 0;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +45,9 @@ public class SubjectList extends AppCompatActivity {
         refBtn.setVisibility(View.GONE); //выключаем референсную кнопку
 
         //получаем список групп
-        getSubjectsList(this, new Callable<Void>() {
+        Subjects.getSubjectsList(this, new Callable<Void>() {
             @Override
-            public Void call(){
+            public Void call() {
                 setSubjectsList();
                 setProgress();
                 return null;
@@ -42,28 +57,33 @@ public class SubjectList extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        if(shouldExecuteOnResume)  setProgress();
+        if (shouldExecuteOnResume) setProgress();
         else shouldExecuteOnResume = true;
         super.onResume();
     }
 
-    static int n=0;
+    @Override
+    protected void onPause() {
+        IdGenerator.reset();
+        super.onPause();
+    }
+
     //создаем список предметов
-    public void setSubjectsList(){
+    public void setSubjectsList() {
         //достаем параметры референсной кнопки
         ViewGroup.LayoutParams refParams = refBtn.getLayoutParams();
 
         //устанавливаем кнопки  предметов
         String subjectName = "";
-        for(int i=0; i< Subjects.subjectsList.length;++i){
-           n++;
-            try{
+        for (int i = 0; i < Subjects.subjectsList.length; ++i) {
+            try {
                 //получаем имя предмета по локализации
                 JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[i].NameDiscipline);
                 subjectName = subjectJSONObject.getString(Locale.getDefault().getLanguage());
-            }catch (JSONException e){
+            } catch (JSONException e) {
             }
 
+            final int subjectId = IdGenerator.getId();
             //обработчик нажатию на кнопку
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
@@ -71,7 +91,7 @@ public class SubjectList extends AppCompatActivity {
                     Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
                     view.startAnimation(click);
                     Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
-                    intent.putExtra("button_id", n);
+                    intent.putExtra("button_id", subjectId);
                     startActivity(intent);
                 }
             };
@@ -91,18 +111,29 @@ public class SubjectList extends AppCompatActivity {
             //добавляем кнопку на поле
             layout.addView(subjectBtn);
         }
+
+        if (Subjects.subjectsList.length == 0) {
+            TextView noSubjects = (TextView) findViewById(R.id.activity_subject_list_tv_noSubjects);
+            noSubjects.setVisibility(View.VISIBLE);
+        }
     }
 
     //устанавливаем прогресс внизу экрана
     public void setProgress() {
-        Subjects subjects = Subjects.getInstance(this);
+        SubjectsInfo subjectsInfo = SubjectsInfo.getInstance(this);
 
-        int allLabsCount = 0, allCompleted=0;
-        for(int i=0; i< subjects.subjectInfo.length;++i){
-            allLabsCount += subjects.subjectInfo[i].labsCount;
+        int allLabsCount = 0, allCompleted = 0;
+        for (int i = 0; i < subjectsInfo.subjectInfo.length; ++i) {
+            allLabsCount += (subjectsInfo.subjectInfo[i].labsCount + subjectsInfo.subjectInfo[i].ihwCount + subjectsInfo.subjectInfo[i].otherCount);
 
-            for(int j=0;j<subjects.subjectInfo[i].labsCount;++j)
-              if(subjects.subjectInfo[i].labValue[j] == 6) allCompleted++;
+            for (int j = 0; j < subjectsInfo.subjectInfo[i].labsCount; ++j)
+                if (subjectsInfo.subjectInfo[i].labValue[j] == 6) allCompleted++;
+
+            for (int j = 0; j < subjectsInfo.subjectInfo[i].ihwCount; ++j)
+                if (subjectsInfo.subjectInfo[i].ihwValue[j] == 6) allCompleted++;
+
+            for (int j = 0; j < subjectsInfo.subjectInfo[i].otherCount; ++j)
+                if (subjectsInfo.subjectInfo[i].otherValue[j] == 6) allCompleted++;
         }
 
 
@@ -110,7 +141,7 @@ public class SubjectList extends AppCompatActivity {
 
         try {
             progress.setText(Integer.toString(allCompleted * 100 / (allLabsCount)) + "%");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             progress.setText("0%");
         }

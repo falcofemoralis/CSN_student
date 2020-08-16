@@ -1,21 +1,16 @@
 <?php
 
-//GET запрос на предметы по course URI: .../subjects/course
-function getSubjectsByCourse($connect)
+//GET запрос на предметы по group URI: .../subjects/course
+function getSubjectsByGroup($connect)
 {
-	$course = $_GET["Course"];
+    $group = $_GET["Code_Group"];
 
-	$date1 = date('Y')."-08-11"; 
-	$date2 = date('Y-m-d'); 
-	
-	if($date1 > $date2)
-	    $course += ($course-1);
-	else
-	    $course *= 2;
-
-   $query = "SELECT disciplines.Code_Discipline, disciplines.NameDiscipline, disciplines.Code_Lector, disciplines.Code_Practice, disciplines.Code_Assistant
-            FROM `disciplines`
-            where disciplines.Semestr = $course ";
+    $query = "SELECT disciplines.NameDiscipline, disciplines.Code_Lector, disciplines.Code_Practice, disciplines.Code_Assistant
+        FROM disciplines INNER JOIN (SELECT DISTINCT schedule_list.Code_Discp
+        FROM schedule_list
+        WHERE schedule_list.Code_Schedule = 
+        (SELECT schedule.Code_Schedule from schedule WHERE schedule.Code_Group = $group)
+        ORDER BY schedule_list.Code_Discp) AS subjects ON disciplines.Code_Discipline = subjects.Code_Discp";
    
    $result = mysqli_query($connect, $query);
    

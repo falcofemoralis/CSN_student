@@ -48,6 +48,16 @@
             android:orientation="vertical">
 
 
+            <TextView
+                android:id="@+id/activity_subject_list_tv_noSubjects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No subjects"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/activity_subject_list_reference"
                 android:layout_width="match_parent"

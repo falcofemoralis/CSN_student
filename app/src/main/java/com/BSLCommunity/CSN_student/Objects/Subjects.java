@@ -24,8 +24,7 @@ public class Subjects {
 
     public static void getSubjectsList(final Context context, final Callable<Void> methodParam) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = Main.MAIN_URL + String.format("api/subjects/?Code_Group=%1$s", User.getInstance().groupId);
-
+        String url = Main.MAIN_URL + String.format("api/subjects/?Code_Group=%1$s",   User.getInstance().groupId);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

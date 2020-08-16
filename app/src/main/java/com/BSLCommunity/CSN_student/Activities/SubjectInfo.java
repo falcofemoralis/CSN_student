@@ -148,9 +148,9 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     public void setTeachers() {
         //получаем id преподов
         teacherIds = new ArrayList<>(); //список преподов для установки
-        teacherIds.add(Subjects.subjectsList[subjectId].Code_Lector);
-        teacherIds.add(Subjects.subjectsList[subjectId].Code_Practice);
-        teacherIds.add(Subjects.subjectsList[subjectId].Code_Assistant);
+        mGetTeacherId(Subjects.subjectsList[subjectId].Code_Lector);
+        mGetTeacherId(Subjects.subjectsList[subjectId].Code_Practice);
+        mGetTeacherId(Subjects.subjectsList[subjectId].Code_Assistant);
 
         //поле где находятся кнопки в виде (tableRow)
         TableLayout teacherLayout = (TableLayout) findViewById(R.id.activity_subject_info_tl_teachers); //поле где будут кнопки
@@ -195,6 +195,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
             //устанавливаем имя препода
             try {
+                String FIO = Teachers.findById(teacherIds.get(i)).FIO;
                 JSONObject teacherJSONObject = new JSONObject(Teachers.findById(teacherIds.get(i)).FIO);
                 newTeacher.setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
             } catch (JSONException e) {
@@ -416,5 +417,9 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     //получение view TableRow по id
     private TableRow mGetId(int id) {
         return findViewById(id);
+    }
+
+    private void mGetTeacherId(int id){
+        if(id!=0) teacherIds.add(id);
     }
 }

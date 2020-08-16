@@ -37,7 +37,7 @@ function viewTeacherSchedules($connect, $id)
 // GET запрос возвращающий всех учителей URI: .../teachers/all
 function getAllTeacher($connect)
 {
-    $query = "  SELECT teachers.Code_Teacher as teacher_id, teachers.FIO FROM teachers";
+    $query = "  SELECT teachers.Code_Teacher as id, teachers.FIO FROM teachers";
     
     $result = mysqli_query($connect, $query);
     

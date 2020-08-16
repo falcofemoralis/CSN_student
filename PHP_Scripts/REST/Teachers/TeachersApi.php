@@ -26,6 +26,8 @@ class TeachersApi extends Api
         {
             if ($this->requestUri[0] == 'all')
                 getAllTeacher($this->connect);
+            else if ($this->requestUri[0] == 'updateList')
+                getUpdateList('teachers'); 
             else
             {
                 $id = array_shift($this->requestUri);

@@ -26,6 +26,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         createClickableSpan();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        findViewById(R.id.activity_login_bt_login).setClickable(true);
     }
 
     //возращает активити в исходное состояние
@@ -36,6 +37,7 @@ public class Login extends AppCompatActivity {
 
     //кнопка логина
     public void OnClick(View v) {
+        v.setClickable(false);
         EditText NickName = (EditText) findViewById(R.id.activity_login_et_nickname) ;
         EditText Password = (EditText) findViewById(R.id.activity_login_et_password) ;
         User.login(getApplicationContext(), Login.this, NickName.getText().toString().toLowerCase(),Password.getText().toString());

@@ -86,10 +86,9 @@ public class LocalData {
     public static void checkUpdate(final Context appContext, final TypeData type) {
 
         // Выбор действия в зависимости от типа данных
-        switch (type)
-        {
+        switch (type) {
             case groups:
-                // Проверяем актуальность данных в группах
+                // Проверяем актуальность данных в группах и скачиваем новые по необходимости
                 for (int i = 0; i < Groups.groupsLists.size(); ++i) {
                     Groups.GroupsList localGroup = Groups.groupsLists.get(i);
                     if (localGroup.lastUpdate.before(updateListGroups.get(localGroup.id)))
@@ -97,7 +96,12 @@ public class LocalData {
                 }
                 break;
             case teachers:
-
+                // Проверяем актуальность данных об учителях и скачиваем новые по необходимости
+                for (int i = 0; i < Teachers.teacherLists.size(); ++i) {
+                    Teachers.TeacherList localTeacher = Teachers.teacherLists.get(i);
+                    if (localTeacher.lastUpdate.before(updateListTeachers.get(localTeacher.id)))
+                        Teachers.downloadScheduleFromServer(appContext, localTeacher.id, true);
+                }
                 break;
         }
     }

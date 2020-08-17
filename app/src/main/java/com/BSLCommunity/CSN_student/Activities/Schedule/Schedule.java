@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Objects.Groups;
-import com.BSLCommunity.CSN_student.Objects.LocalData;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
@@ -20,7 +19,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 
 //форма расписание предметов группы
@@ -43,29 +41,12 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
 
-        if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")){
+        if (getIntent().getExtras().getString("typeSchedule").equals("Teachers"))
             entity = "teachers";
-            Teachers.init(getApplicationContext(), new Callable<Void>() {
-                @Override
-                public Void call(){
-                    LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
-                    createSpinner();
-                    return null;
-                }
-            });
-        }
-        else{
+        else
             entity = "groups";
-            // Загружаем информацию о группах и после проверяем актуальность данных
-            Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
-                    createSpinner();
-                    return null;
-                }
-            });
-        }
+
+        createSpinner();
         getScheduleElements();
     }
 

@@ -204,4 +204,8 @@ public class Groups {
         return null;
     }
 
+    public static void delete(final Context appContext) {
+        JSONHelper.delete(appContext, DATA_FILE_NAME);
+    }
+
 }

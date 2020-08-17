@@ -17,11 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Activities.Schedule.Schedule;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
+import com.BSLCommunity.CSN_student.Objects.Rating;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Objects.Rating;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -58,16 +60,24 @@ public class Main extends AppCompatActivity {
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
+                Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
+                        return null;
+                    }
+                });
                 return null;
             }
         });
+
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 Teachers.init(getApplicationContext(), new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
+                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
                         return null;
                     }
                 });

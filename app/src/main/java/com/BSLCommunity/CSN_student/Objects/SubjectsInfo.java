@@ -1,14 +1,13 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
+import android.widget.Button;
 
+import com.BSLCommunity.CSN_student.Activities.SubjectInfo;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
-
-;
-
+import static com.BSLCommunity.CSN_student.Activities.SubjectInfo.Types;
 public class SubjectsInfo {
     public static SubjectsInfo instance = null;
     public static final String FILE_NAME  = "subjectsInfo";
@@ -47,9 +46,10 @@ public class SubjectsInfo {
     }
 
     public static class SubjectInfo {
-        public int labsCount, ihwCount, otherCount;
         public int subjectValue;
+        public int labsCount, ihwCount, otherCount;
         public int[] labValue, ihwValue, otherValue;
+        public String[] labName, ihwName, otherName;
     }
     public SubjectInfo[] subjectInfo;
 
@@ -65,21 +65,38 @@ public class SubjectsInfo {
         instance.subjectInfo[subjectId].subjectValue = id;
     }
 
-    public void saveValues(int subjectId,
+    public void saveData(int subjectId,
                            ArrayList<Integer> labValues, int labsCount,
                            ArrayList<Integer> ihwValues, int ihwCount,
-                           ArrayList<Integer> otherValues, int otherCount){
-        instance.subjectInfo[subjectId].labValue = new int[labsCount];
-        for (int i=0;i<labsCount;++i)
-            instance.subjectInfo[subjectId].labValue[i] = labValues.get(i);
+                           ArrayList<Integer> otherValues, int otherCount,
+                           ArrayList<Button> labNames,
+                           ArrayList<Button> ihwNames,
+                           ArrayList<Button> otherNames
+    ){
 
-        instance.subjectInfo[subjectId].ihwValue = new int[ihwCount];
-        for (int i=0;i<ihwCount;++i)
-            instance.subjectInfo[subjectId].ihwValue[i] = ihwValues.get(i);
+        SubjectInfo subjectInfo =  instance.subjectInfo[subjectId];
+        subjectInfo.labValue = new int[labsCount];
+        subjectInfo.labName = new String[labsCount];
 
-        instance.subjectInfo[subjectId].otherValue = new int[otherCount];
-        for (int i=0;i<otherCount;++i)
-            instance.subjectInfo[subjectId].otherValue[i] = otherValues.get(i);
+        for (int i=0;i<labsCount;++i){
+            subjectInfo.labValue[i] = labValues.get(i);
+            subjectInfo.labName[i] = labNames.get(i).getText().toString();
+        }
+
+        subjectInfo.ihwValue = new int[ihwCount];
+        subjectInfo.ihwName = new String[ihwCount];
+        for (int i=0;i<ihwCount;++i){
+            subjectInfo.ihwValue[i] = ihwValues.get(i);
+            subjectInfo.ihwName[i] = ihwNames.get(i).getText().toString();
+        }
+
+        subjectInfo.otherValue = new int[otherCount];
+        subjectInfo.otherName = new String[otherCount];
+        for (int i=0;i<otherCount;++i){
+            subjectInfo.otherValue[i] = otherValues.get(i);
+            subjectInfo.otherName[i] = otherNames.get(i).getText().toString();
+        }
+
     }
 
     //сохраням данный в JSON файл

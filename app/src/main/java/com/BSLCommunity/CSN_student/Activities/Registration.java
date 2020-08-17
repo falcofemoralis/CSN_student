@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Objects.Groups;
-import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
@@ -99,6 +98,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.activity_registration_sp_courses:
+                Groups.groupsLists.clear();
                 //загружаются группы на спинер в зависимости от курса
                 Groups.downloadFromServer(this, Integer.parseInt(parent.getItemAtPosition(position).toString()), new Callable<Void>() {
                     @Override

@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Settings extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
@@ -171,9 +172,12 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
+                // Удаление данных
                 User.deleteUser();
                 SubjectsInfo.deleteSubjects(getApplicationContext());
                 Groups.groupsLists.clear();
+                Groups.delete(getApplicationContext());
+
                 Toast.makeText(Settings.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();
             }

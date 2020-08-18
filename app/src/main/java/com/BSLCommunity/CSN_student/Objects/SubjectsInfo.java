@@ -16,18 +16,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SubjectsInfo {
     public static SubjectsInfo instance = null;
-    public static final String FILE_NAME  = "subjectsInfo";
+    public static final String FILE_NAME = "subjectsInfo";
 
     public static SubjectsInfo getInstance(Context context) {
         if (instance == null)
@@ -40,13 +42,13 @@ public class SubjectsInfo {
             // Извлечение локальных данных пользователя
             instance = new SubjectsInfo();
 
-            instance.subjectInfo = new SubjectInfo[Subjects.subjectsList.length];
-            for(int i=0; i<Subjects.subjectsList.length;++i)
-                instance.subjectInfo[i] = new SubjectInfo();
-
             //загрузка данных
             String JSONstring = JSONHelper.read(context, FILE_NAME);
-            if (JSONstring != null || JSONstring.equals("")) {
+            if (JSONstring != null && !JSONstring.equals("") && !JSONstring.equals("NOT FOUND")) {
+                instance.subjectInfo = new SubjectInfo[Subjects.subjectsList.length];
+                for (int i = 0; i < Subjects.subjectsList.length; ++i)
+                    instance.subjectInfo[i] = new SubjectInfo();
+
                 Gson gson = new Gson();
                 instance.subjectInfo = gson.fromJson(JSONstring, SubjectInfo[].class);
             }
@@ -68,6 +70,7 @@ public class SubjectsInfo {
         public int[] labValue, ihwValue, otherValue;
         public String[] labName, ihwName, otherName;
     }
+
     public SubjectInfo[] subjectInfo;
 
     //сохраняем кол-во лаб по дисциплине
@@ -83,33 +86,33 @@ public class SubjectsInfo {
     }
 
     public void saveData(int subjectId,
-                           ArrayList<Integer> labValues, int labsCount,
-                           ArrayList<Integer> ihwValues, int ihwCount,
-                           ArrayList<Integer> otherValues, int otherCount,
-                           ArrayList<Button> labNames,
-                           ArrayList<Button> ihwNames,
-                           ArrayList<Button> otherNames
-    ){
+                         ArrayList<Integer> labValues, int labsCount,
+                         ArrayList<Integer> ihwValues, int ihwCount,
+                         ArrayList<Integer> otherValues, int otherCount,
+                         ArrayList<Button> labNames,
+                         ArrayList<Button> ihwNames,
+                         ArrayList<Button> otherNames
+    ) {
 
-        SubjectInfo subjectInfo =  instance.subjectInfo[subjectId];
+        SubjectInfo subjectInfo = instance.subjectInfo[subjectId];
         subjectInfo.labValue = new int[labsCount];
         subjectInfo.labName = new String[labsCount];
 
-        for (int i=0;i<labsCount;++i){
+        for (int i = 0; i < labsCount; ++i) {
             subjectInfo.labValue[i] = labValues.get(i);
             subjectInfo.labName[i] = labNames.get(i).getText().toString();
         }
 
         subjectInfo.ihwValue = new int[ihwCount];
         subjectInfo.ihwName = new String[ihwCount];
-        for (int i=0;i<ihwCount;++i){
+        for (int i = 0; i < ihwCount; ++i) {
             subjectInfo.ihwValue[i] = ihwValues.get(i);
             subjectInfo.ihwName[i] = ihwNames.get(i).getText().toString();
         }
 
         subjectInfo.otherValue = new int[otherCount];
         subjectInfo.otherName = new String[otherCount];
-        for (int i=0;i<otherCount;++i){
+        for (int i = 0; i < otherCount; ++i) {
             subjectInfo.otherValue[i] = otherValues.get(i);
             subjectInfo.otherName[i] = otherNames.get(i).getText().toString();
         }
@@ -146,6 +149,32 @@ public class SubjectsInfo {
                 return params;
             }
         };
+        requestQueue.add(request);
+    }
+
+    public static void downloadRating(final Context context) throws JSONException {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        String url = Main.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null && !response.equals("")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String rating = jsonObject.getString("JSON_RATING");
+                        JSONHelper.create(context,FILE_NAME, rating);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+            }
+        });
         requestQueue.add(request);
     }
 }

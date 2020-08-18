@@ -30,7 +30,7 @@ function readUser($connect)
 function getUserRating($connect, $id)
 {
     $query = "  SELECT rating.JSON_RATING FROM rating
-                WHERE rating.Code_User = '$id'";
+                WHERE rating.Code_User = $id";
 
     $result = mysqli_query($connect, $query) or die (mysqli_error($connect));
     $res = mysqli_fetch_assoc($result);

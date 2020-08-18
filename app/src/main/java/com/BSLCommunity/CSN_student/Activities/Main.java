@@ -19,6 +19,7 @@ import com.BSLCommunity.CSN_student.Activities.Schedule.Schedule;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
+import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.Objects.User;

@@ -2,12 +2,29 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 import android.widget.Button;
+import android.widget.Toast;
 
-import com.BSLCommunity.CSN_student.Activities.SubjectInfo;
+import com.BSLCommunity.CSN_student.Activities.Main;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import static com.BSLCommunity.CSN_student.Activities.SubjectInfo.Types;
+import java.util.HashMap;
+import java.util.Map;
+
 public class SubjectsInfo {
     public static SubjectsInfo instance = null;
     public static final String FILE_NAME  = "subjectsInfo";
@@ -100,9 +117,35 @@ public class SubjectsInfo {
     }
 
     //сохраням данный в JSON файл
-    public void saveSubject(Context context) {
+    public void saveSubject(Context context) throws JSONException {
         Gson gson = new Gson();
         String jsonString = gson.toJson(subjectInfo);
         JSONHelper.create(context, FILE_NAME, jsonString);
+        updateRating(context);
+    }
+
+    public static void updateRating(final Context context) throws JSONException {
+        final String JSONString = JSONHelper.read(context, FILE_NAME);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String url = Main.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
+        JsonArrayRequest request = new JsonArrayRequest
+                (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        requestQueue.add(request);
     }
 }

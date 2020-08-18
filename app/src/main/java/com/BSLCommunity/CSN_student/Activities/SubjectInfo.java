@@ -107,7 +107,12 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         subjectsInfo.saveSubjectValue(subjectId, subjectValue); //сохраням ценность предмета
         subjectsInfo.saveCount(subjectId, labsCount, ihwCount, otherCount);  //сохраням кол-во
         subjectsInfo.saveData(subjectId, labValues, labsCount, ihwValues, ihwCount, otherValues, otherCount, labNames, ihwNames, otherNames); //сохраням данные
-        subjectsInfo.saveSubject(this); //сохраняем в JSON
+        try {
+            subjectsInfo.saveSubject(this); //сохраняем в JSON
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.toString(),Toast.LENGTH_SHORT).show();
+        }
         super.onPause();
     }
 

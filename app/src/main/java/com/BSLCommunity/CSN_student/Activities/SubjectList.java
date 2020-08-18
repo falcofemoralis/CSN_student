@@ -124,18 +124,13 @@ public class SubjectList extends AppCompatActivity {
 
         int allLabsCount = 0, allCompleted = 0;
         for (int i = 0; i < subjectsInfo.subjectInfo.length; ++i) {
-            allLabsCount += (subjectsInfo.subjectInfo[i].labsCount + subjectsInfo.subjectInfo[i].ihwCount + subjectsInfo.subjectInfo[i].otherCount);
+            for (int j = 0; j < subjectsInfo.subjectInfo[i].counts.length; ++j) {
+                allLabsCount += subjectsInfo.subjectInfo[i].counts[j];
 
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].labsCount; ++j)
-                if (subjectsInfo.subjectInfo[i].labValue[j] == 6) allCompleted++;
-
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].ihwCount; ++j)
-                if (subjectsInfo.subjectInfo[i].ihwValue[j] == 6) allCompleted++;
-
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].otherCount; ++j)
-                if (subjectsInfo.subjectInfo[i].otherValue[j] == 6) allCompleted++;
+                for (int k = 0; k < subjectsInfo.subjectInfo[i].counts[j]; ++k)
+                    if (subjectsInfo.subjectInfo[i].values[j][k] == 6) allCompleted++;
+            }
         }
-
 
         Button progress = (Button) findViewById(R.id.activity_subject_list_bt_progress);
 

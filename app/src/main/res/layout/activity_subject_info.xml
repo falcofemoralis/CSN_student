@@ -187,7 +187,7 @@
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="addOnClick"
-                                android:tag="loadLab"
+                                android:tag="lab"
                                 android:text="Add Lab"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
@@ -206,7 +206,7 @@
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="removeOnClick"
-                                android:tag="removeLab"
+                                android:tag="lab"
                                 android:text="REMOVE LAB"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
@@ -269,7 +269,7 @@
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="addOnClick"
-                                android:tag="loadIHW"
+                                android:tag="ihw"
                                 android:text="Add IHW"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
@@ -288,7 +288,7 @@
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="removeOnClick"
-                                android:tag="removeIHW"
+                                android:tag="ihw"
                                 android:text="REMOVE IHW"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
@@ -351,7 +351,7 @@
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="addOnClick"
-                                android:tag="loadOther"
+                                android:tag="other"
                                 android:text="Add OTHER"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
@@ -370,7 +370,7 @@
                                 android:clickable="false"
                                 android:gravity="center"
                                 android:onClick="removeOnClick"
-                                android:tag="removeOther"
+                                android:tag="other"
                                 android:text="Remove other"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />

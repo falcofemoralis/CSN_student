@@ -31,27 +31,41 @@ public class SubjectsInfo {
     public static SubjectsInfo instance = null;
     public static final String FILE_NAME = "subjectsInfo";
 
+    public static class SubjectInfo {
+        public int subjectValue;
+        public int[] counts;
+        public int[][] values;
+        public String[][] names;
+    }
+
     public static SubjectsInfo getInstance(Context context) {
         if (instance == null)
             return init(context);
         return instance;
     }
+    public SubjectInfo[] subjectInfo;
 
     private static SubjectsInfo init(Context context) {
         try {
             // Извлечение локальных данных пользователя
             instance = new SubjectsInfo();
 
+            instance.subjectInfo = new SubjectInfo[Subjects.subjectsList.length];
+            for (int i = 0; i < Subjects.subjectsList.length; ++i){
+                instance.subjectInfo[i] = new SubjectInfo();
+                instance.subjectInfo[i].counts = new int[3];
+                instance.subjectInfo[i].values = new int[3][];
+                instance.subjectInfo[i].names = new String[3][];
+            }
+
             //загрузка данных
             String JSONstring = JSONHelper.read(context, FILE_NAME);
             if (JSONstring != null && !JSONstring.equals("") && !JSONstring.equals("NOT FOUND")) {
-                instance.subjectInfo = new SubjectInfo[Subjects.subjectsList.length];
-                for (int i = 0; i < Subjects.subjectsList.length; ++i)
-                    instance.subjectInfo[i] = new SubjectInfo();
-
                 Gson gson = new Gson();
                 instance.subjectInfo = gson.fromJson(JSONstring, SubjectInfo[].class);
             }
+
+
             return instance;
         } catch (Exception e) {
             // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
@@ -64,63 +78,25 @@ public class SubjectsInfo {
         instance = null;
     }
 
-    public static class SubjectInfo {
-        public int subjectValue;
-        public int labsCount, ihwCount, otherCount;
-        public int[] labValue, ihwValue, otherValue;
-        public String[] labName, ihwName, otherName;
-    }
-
-    public SubjectInfo[] subjectInfo;
-
-    //сохраняем кол-во лаб по дисциплине
-    public void saveCount(int subjectId, int labsCount, int ihwCount, int otherCount) {
-        instance.subjectInfo[subjectId].labsCount = labsCount;
-        instance.subjectInfo[subjectId].ihwCount = ihwCount;
-        instance.subjectInfo[subjectId].otherCount = otherCount;
-    }
-
-    //сохраняем ценность предмета
-    public void saveSubjectValue(int subjectId, int id) {
-        instance.subjectInfo[subjectId].subjectValue = id;
-    }
-
-    public void saveData(int subjectId,
-                         ArrayList<Integer> labValues, int labsCount,
-                         ArrayList<Integer> ihwValues, int ihwCount,
-                         ArrayList<Integer> otherValues, int otherCount,
-                         ArrayList<Button> labNames,
-                         ArrayList<Button> ihwNames,
-                         ArrayList<Button> otherNames
-    ) {
-
+    public void saveData(int subjectId, int subjectValue, int types_count, ArrayList< ArrayList<Integer>> values, ArrayList< ArrayList<Button>> names, int counts[]) {
         SubjectInfo subjectInfo = instance.subjectInfo[subjectId];
-        subjectInfo.labValue = new int[labsCount];
-        subjectInfo.labName = new String[labsCount];
 
-        for (int i = 0; i < labsCount; ++i) {
-            subjectInfo.labValue[i] = labValues.get(i);
-            subjectInfo.labName[i] = labNames.get(i).getText().toString();
+        subjectInfo.subjectValue = subjectValue;
+
+        for(int i=0;i<types_count;++i){
+            subjectInfo.counts[i] = counts[i];
+            subjectInfo.values[i] = new int[counts[i]];
+            subjectInfo.names[i] = new String[counts[i]];
+
+            for (int j = 0; j < counts[i]; ++j) {
+                subjectInfo.values[i][j] = values.get(i).get(j);
+                subjectInfo.names[i][j] = names.get(i).get(j).getText().toString();
+            }
         }
-
-        subjectInfo.ihwValue = new int[ihwCount];
-        subjectInfo.ihwName = new String[ihwCount];
-        for (int i = 0; i < ihwCount; ++i) {
-            subjectInfo.ihwValue[i] = ihwValues.get(i);
-            subjectInfo.ihwName[i] = ihwNames.get(i).getText().toString();
-        }
-
-        subjectInfo.otherValue = new int[otherCount];
-        subjectInfo.otherName = new String[otherCount];
-        for (int i = 0; i < otherCount; ++i) {
-            subjectInfo.otherValue[i] = otherValues.get(i);
-            subjectInfo.otherName[i] = otherNames.get(i).getText().toString();
-        }
-
     }
 
     //сохраням данный в JSON файл
-    public void saveSubject(Context context) throws JSONException {
+    public void saveDataToFile(Context context) throws JSONException {
         Gson gson = new Gson();
         String jsonString = gson.toJson(subjectInfo);
         JSONHelper.create(context, FILE_NAME, jsonString);

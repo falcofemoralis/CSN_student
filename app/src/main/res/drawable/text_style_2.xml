@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item >
-        <shape android:shape="rectangle">
-            <solid android:color="@color/background">
-            </solid>
-
-            <corners android:radius="50dp">
-            </corners>
-        </shape>
-    </item>
-</layer-list>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tint="@color/mainColor2"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0">
+    <path
+        android:fillColor="@color/mainColor2"
+        android:pathData=""/>
+</vector>

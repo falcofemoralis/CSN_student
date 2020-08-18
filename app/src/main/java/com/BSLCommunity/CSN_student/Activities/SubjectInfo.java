@@ -42,6 +42,15 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 
 public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SubjectInfoDialogEditText.DialogListener {
+    //тип работы
+    public enum Types {
+        lab,
+        ihw,
+        other
+
+    }
+    public final  int TYPES_COUNT = 3;
+
     int[] colors = { //цвета кнопок выбора
             R.color.not_passed,
             R.color.in_process,
@@ -50,64 +59,67 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             R.color.waiting_acceptation,
             R.color.passed_without_report,
             R.color.passed_with_report};
-    ArrayList<Integer> teacherIds;  //список учителей для установки
-    int labsCount = 0, subjectValue = 0, ihwCount = 0, otherCount = 0; //labsCount - кол-во лаб у предмета, subjectValue - ценность предмета, ihwCount - кол-во ИДЗ
     final int TEXT_SIZE = 13; //размер текста
+    int[] tableRows = {R.id.activity_subject_info_tr_edit_lab, R.id.activity_subject_info_tr_edit_ihw, R.id.activity_subject_info_tr_edit_other}; //id кнопок добавления\удаления
+    int[] workLayouts = {  R.id.activity_subject_info_ll_labs_main, R.id.activity_subject_info_ll_ihw_main, R.id.activity_subject_info_ll_other_main};
+    String[] workNames = new String[TYPES_COUNT];
 
-    public ArrayList<Integer> labValues = new ArrayList<>(); //значения лаб
-    public ArrayList<Integer> ihwValues = new ArrayList<>(); //значения ИДЗ
-    public ArrayList<Integer> otherValues = new ArrayList<>(); //значения заметок
+    ArrayList<Integer> teacherIds;  //список учителей для установки
+    int subjectId; //id предмета
+    int subjectValue = 0; //subjectValue - ценность предмета
 
-    public ArrayList<Button> labNames = new ArrayList<>(); //названия лаб
-    public ArrayList<Button> ihwNames = new ArrayList<>(); //названия ИДЗ
-    public ArrayList<Button> otherNames= new ArrayList<>(); //названия заметок
+    SubjectsInfo.SubjectInfo subjectInfo; //данные робот
+    int counts[] = {0,0,0}; //количество робот
+    public ArrayList< ArrayList<Integer>> values = new ArrayList<>(); //ценность робот
+    public ArrayList<ArrayList<Button>> names = new ArrayList<>(); //названия робот
+    TextView[] headTexts = new TextView[TYPES_COUNT];
 
     public boolean isClicked = false; //состояния нажатия кнопки Refactor
-    int[] tableRows = {R.id.activity_subject_info_tr_edit_lab, R.id.activity_subject_info_tr_edit_ihw, R.id.activity_subject_info_tr_edit_other}; //id кнопок добавления\удаления
-    TextView labsHeadText, ihwHeadText, otherHeadText;
 
-    //тип работы
-    public enum Types {
-        lab,
-        ihw,
-        other
-    }
 
-    SubjectsInfo subjectsInfo; //данные
-    int subjectId; //id предмета. Ставится в классе SubjectList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_info);
 
-        //получем необходимые объекты
-        subjectsInfo = SubjectsInfo.getInstance(this);
-        subjectId = (getIntent().getIntExtra("button_id", 0));
+        headTexts[0] = (TextView) findViewById(R.id.activity_subject_info_tv_labs_headText);
+        headTexts[1] = (TextView) findViewById(R.id.activity_subject_info_tv_ihw_headText);
+        headTexts[2] = (TextView) findViewById(R.id.activity_subject_info_tv_other_headText);
 
-        labsHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_labs_headText);
-        ihwHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_ihw_headText);
-        otherHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_other_headText);
+        workNames[0] = getResources().getString(R.string.Lab);
+        workNames[1] = getResources().getString(R.string.IHW);
+        workNames[2] = getResources().getString(R.string.other);
+
+        //получем необходимые объекты
+        subjectId = (getIntent().getIntExtra("button_id", 0));
+        subjectInfo = SubjectsInfo.getInstance(this).subjectInfo[subjectId];
+
+        for(int i=0; i<TYPES_COUNT;++i)
+            counts[i] = subjectInfo.counts[i];
+
+        for(int i=0; i<TYPES_COUNT;++i){
+            values.add(new ArrayList<Integer>());
+            names.add(new ArrayList<Button>());
+        }
 
         setSubjectName(); //ставим имя предмета
         createValueSpinner(); //создаем спиннер ценностей предмета
-
-        //загружаем информацию про кол-во работ
-        labsCount = subjectsInfo.subjectInfo[subjectId].labsCount;
-        ihwCount = subjectsInfo.subjectInfo[subjectId].ihwCount;
-        otherCount = subjectsInfo.subjectInfo[subjectId].otherCount;
         loadData();
-
         setTeachers();
     }
 
     //функция вызывается при закрытие активити, в которой идет сохранение данных
     @Override
     protected void onPause() {
-        subjectsInfo.saveSubjectValue(subjectId, subjectValue); //сохраням ценность предмета
-        subjectsInfo.saveCount(subjectId, labsCount, ihwCount, otherCount);  //сохраням кол-во
-        subjectsInfo.saveData(subjectId, labValues, labsCount, ihwValues, ihwCount, otherValues, otherCount, labNames, ihwNames, otherNames); //сохраням данные
-        subjectsInfo.saveSubject(this); //сохраняем в JSON
+       SubjectsInfo instance = SubjectsInfo.getInstance(this);
+       instance.saveData(subjectId,subjectValue,TYPES_COUNT,values,names,counts);
+        try {
+            instance.saveDataToFile(this); //сохраняем в JSON
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.toString(),Toast.LENGTH_SHORT).show();
+        }
         super.onPause();
     }
 
@@ -134,7 +146,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         valueSpinner.setAdapter(adapter);
 
         try {
-            valueSpinner.setSelection(subjectsInfo.subjectInfo[subjectId].subjectValue);
+            valueSpinner.setSelection(subjectInfo.subjectValue);
         } catch (Exception e) {
             valueSpinner.setSelection(subjectValue);
         }
@@ -232,74 +244,53 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
     //обработчик добавления новой работы
     public void addOnClick(View view) {
-        switch (view.getTag().toString()) {
-            case "loadLab":
-                addWorkRow(labsCount + 1, 0, labValues, R.id.activity_subject_info_ll_labs_main, getResources().getString(R.string.Lab), Types.lab, null);
-                labsCount++;
-                labsHeadText.setVisibility(View.VISIBLE);
-                break;
-            case "loadIHW":
-                addWorkRow(ihwCount + 1, 0, ihwValues, R.id.activity_subject_info_ll_ihw_main, getResources().getString(R.string.IHW), Types.ihw, null);
-                ihwCount++;
-                ihwHeadText.setVisibility(View.VISIBLE);
-                break;
-            case "loadOther":
-                addWorkRow(otherCount + 1, 0, otherValues, R.id.activity_subject_info_ll_other_main, getResources().getString(R.string.other), Types.other, null);
-                otherCount++;
-                otherHeadText.setVisibility(View.VISIBLE);
-                break;
-        }
+        int id = mGetTypeIdByBtnTag(view.getTag().toString()); //получаем id типа
+        addWorkRow(counts[id] + 1
+                , 0, values.get(id),
+                workLayouts[id],
+                workNames[id],
+                mGetTypeId(id),
+                null);
+
+        counts[id]++;
+        headTexts[id].setVisibility(View.VISIBLE);
     }
 
     //обработчик удаление работы
     public void removeOnClick(View view) {
-        switch (view.getTag().toString()) {
-            case "removeLab":
-                if (labsCount > 0) {
-                    removeWorkRow(R.id.activity_subject_info_ll_labs_main, labsCount, labValues);
-                    --labsCount;
-                }
-                if (labsCount == 0) labsHeadText.setVisibility(View.GONE);
-                break;
-            case "removeIHW":
-                if (ihwCount > 0) {
-                    removeWorkRow(R.id.activity_subject_info_ll_ihw_main, ihwCount, ihwValues);
-                    --ihwCount;
-                }
-                if (ihwCount == 0) ihwHeadText.setVisibility(View.GONE);
-                break;
-            case "removeOther":
-                if (otherCount > 0) {
-                    removeWorkRow(R.id.activity_subject_info_ll_other_main, otherCount, otherValues);
-                    --otherCount;
-                }
-                if (otherCount == 0) otherHeadText.setVisibility(View.GONE);
-                break;
+        int id = mGetTypeIdByBtnTag(view.getTag().toString()); //получаем id типа
+
+        if (counts[id] > 0) {
+            removeWorkRow(workLayouts[id], counts[id], values.get(id));
+            --counts[id];
         }
+        if (counts[0] == 0) headTexts[0].setVisibility(View.GONE);
         setProgress();
     }
 
     //загружаем работы
     public void loadData() {
-        //добавляем полосы работ (лаб, идз и прочего)
-        for (int i = 0; i < labsCount; ++i)
-            addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].labValue[i], labValues, R.id.activity_subject_info_ll_labs_main, getResources().getString(R.string.Lab), Types.lab, subjectsInfo.subjectInfo[subjectId].labName[i]);
-        for (int i = 0; i < ihwCount; ++i)
-            addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].ihwValue[i], ihwValues, R.id.activity_subject_info_ll_ihw_main, getResources().getString(R.string.IHW), Types.ihw, subjectsInfo.subjectInfo[subjectId].ihwName[i]);
-        for (int i = 0; i < otherCount; ++i)
-            addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].otherValue[i], otherValues, R.id.activity_subject_info_ll_other_main, getResources().getString(R.string.other), Types.other, subjectsInfo.subjectInfo[subjectId].otherName[i]);
+        //добавляем полосы работ
+        for(int i=0; i<TYPES_COUNT;++i){
+            for (int j = 0; j < subjectInfo.counts[i];++j)
+                addWorkRow(j+1,
+                        subjectInfo.values[i][j],
+                        values.get(i),
+                        workLayouts[i],
+                        workNames[i],
+                        mGetTypeId(i),
+                        subjectInfo.names[i][j]);
 
-        if (labsCount == 0) labsHeadText.setVisibility(View.GONE);
-        if (ihwCount == 0) ihwHeadText.setVisibility(View.GONE);
-        if (otherCount == 0) otherHeadText.setVisibility(View.GONE);
+            if(counts[i] == 0) headTexts[i].setVisibility(View.GONE);
+        }
 
         //ставим прогресс
         setProgress();
     }
 
     //добавляем кнопку с работой
-    private void addWorkRow(int number, int value, ArrayList<Integer> count, int layoutId, String name, Types type, String workName) {
-        count.add(value); //добавляем в лист значений, то что лаба имеет значение спиннера 0 (not passed)
+    private void addWorkRow(int number, int value,ArrayList<Integer> values, int layoutId, String name, Types type, String workName) {
+        values.add(value); //добавляем в лист значений, то что лаба имеет значение спиннера 0 (not passed)
         newWorkRow((LinearLayout) findViewById(layoutId), name, number, value, type, workName);
     }
 
@@ -309,7 +300,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //создаем кнопку с работой
-    private void newWorkRow(LinearLayout linearLayout, String nameText, final int number, int value, final Types type, String workName) {
+    private void newWorkRow(LinearLayout linearLayout, String nameText, final int number, final int value, final Types type, String workName) {
         //создаем новую полосу название + ценность
         LinearLayout newLine = new LinearLayout(this);
         newLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -342,12 +333,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
         name.setOnClickListener(onClickListener);
         newLine.addView(name);
-
-        switch (type){
-            case lab: labNames.add(name); break;
-            case ihw: ihwNames.add(name);  break;
-            case other: otherNames.add(name);  break;
-        }
+        names.get(type.ordinal()).add(name);
 
         //создаем новый выбора типа лабы
         Spinner object = new Spinner(this, Spinner.MODE_DIALOG);
@@ -368,18 +354,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             public void onItemSelected(AdapterView<?> parent, View container, int position, long id) {
                 Drawable drawable = parent.getBackground();
                 drawable.setTint(getColor(colors[(int) id]));
-                switch (type) {
-                    case lab:
-                        labValues.set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
-                        break;
-                    case ihw:
-                        ihwValues.set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
-                        break;
-                    case other:
-                        otherValues.set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
-                        break;
-                }
-
+                values.get(type.ordinal()).set(Integer.parseInt(parent.getTag().toString()) - 1, (int) id);
                 setProgress();
             }
 
@@ -423,20 +398,17 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         Button progress = (Button) findViewById(R.id.activity_subject_info_bt_progress);
 
         int completed = 0;
-        for (int i = 0; i < labValues.size(); ++i)
-            if (labValues.get(i) == 6)
-                completed++;
+        int count = 0;
+        for(int i=0; i<TYPES_COUNT;++i)
+            for (int j = 0; j < values.get(i).size(); ++j)
+                if (values.get(i).get(j) == 6)
+                    completed++;
 
-        for (int i = 0; i < ihwValues.size(); ++i)
-            if (ihwValues.get(i) == 6)
-                completed++;
-
-        for (int i = 0; i < otherValues.size(); ++i)
-            if (otherValues.get(i) == 6)
-                completed++;
+        for(int i=0; i<TYPES_COUNT;++i)
+            count += counts[i];
 
         try {
-            progress.setText(Integer.toString(completed * 100 / (labsCount + ihwCount + otherCount)) + "%");
+            progress.setText(Integer.toString(completed * 100 / (count)) + "%");
         } catch (Exception e) {
             System.out.println(e);
             progress.setText("0%");
@@ -446,7 +418,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     //режим добавление\удаления работ
     public void refactorOnClick(View view) {
         for (int i = 0; i < tableRows.length; ++i)
-            changeState(mGetId(tableRows[i]), isClicked);
+            changeState(mGetTableRowId(tableRows[i]), isClicked);
         isClicked = !isClicked;
     }
 
@@ -457,11 +429,35 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //получение view TableRow по id
-    private TableRow mGetId(int id) {
+    private TableRow mGetTableRowId(int id) {
         return findViewById(id);
     }
 
     private void mGetTeacherId(int id){
         if(id!=0) teacherIds.add(id);
+    }
+
+    private int mGetTypeIdByBtnTag(String type){
+        switch (type) {
+            case "lab":
+                return 0;
+            case "ihw":
+                return 1;
+            case "other":
+                return 2;
+        }
+        return -1;
+    }
+
+    private Types mGetTypeId(int id){
+        switch (id) {
+            case 0:
+                return Types.lab;
+            case 1:
+                return Types.ihw;
+            case 2:
+                return Types.other;
+        }
+        return null;
     }
 }

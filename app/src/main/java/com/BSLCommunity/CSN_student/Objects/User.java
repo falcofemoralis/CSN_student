@@ -72,6 +72,7 @@ public class User {
             // Если хотя бы один из элементов данных отсутствует, можно считать - они повреждены (ошибка записи, пользователь каким то образом стер, просто стерлись данные)
             if (instance.id == -1 || instance.groupId == -1 || instance.course == -1 || instance.nickName == null || instance.password == null || instance.nameGroup == null)
                 return null;
+
             return instance;
         }
         catch (Exception ex) {
@@ -111,6 +112,9 @@ public class User {
                     //запоминаем что пользователь зарегистрировался
                     SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();
                     prefEditor.putBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), true).apply();
+
+                    //скачиваем рейтинг юзера
+                    SubjectsInfo.downloadRating(appContext);
 
                     //запускаем главное окно
                     activityContext.startActivity(new Intent(appContext, Main.class));

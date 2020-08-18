@@ -30,3 +30,5 @@ function getSubjectsByGroup($connect)
     mysqli_close($connect);
 }
 
+
+

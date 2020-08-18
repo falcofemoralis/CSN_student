@@ -30,7 +30,7 @@ function readUser($connect)
 function getUserRating($connect, $id)
 {
     $query = "  SELECT rating.JSON_RATING FROM rating
-                WHERE rating.Code_User = '$id'";
+                WHERE rating.Code_User = $id";
 
     $result = mysqli_query($connect, $query) or die (mysqli_error($connect));
     $res = mysqli_fetch_assoc($result);
@@ -138,25 +138,23 @@ function updateUser($connect, $id)
 function updateUserRating($connect, $id) 
 {
     $json = file_get_contents('php://input');
-    $data = json_decode($json);
-    
-    $rating = $data->{'Rating'};
-    
+
     // Проверка на то, все ли данные пришли
-    if ($rating == NULL )
+    if ($json == NULL )
     {
         echo "ERROR";
         return;
     }
     
     $query = "  UPDATE rating
-                SET rating.JSON_RATING = '$rating'
+                SET rating.JSON_RATING = '$json'
                 WHERE Code_user = '$id'";
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     mysqli_close($connect);
     
 }
+
 
 
 

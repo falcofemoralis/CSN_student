@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Space;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,10 +44,8 @@ public class SubjectList extends AppCompatActivity {
     }
 
     // Лаяут всех дисциплин
-    LinearLayout tableSubjects;
+    TableLayout tableSubjects;
 
-    // Счетчик установленных дисциплин
-    int countSetSubjects = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,124 +78,147 @@ public class SubjectList extends AppCompatActivity {
         super.onPause();
     }
 
+    // Создаем дисциплину
+    protected void createSubject(TableRow rowSubject, int numberSubject) {
+
+        // Создание лаяута для кнопки и текстовых полей о статистике по предмету
+        LinearLayout subjectLayout = new LinearLayout(this);
+        ViewGroup.LayoutParams paramsLayout = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+        subjectLayout.setOrientation(TableRow.VERTICAL);
+        subjectLayout.setLayoutParams(paramsLayout);
+
+        // Создание кнопки предмета
+        Button subjectBt = new Button(this);
+        ViewGroup.LayoutParams paramsBt = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.2f);
+        subjectBt.setLayoutParams(paramsBt);// Устанавливаем параметры макета
+
+        try {
+            //получаем имя предмета по локализации
+            JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[numberSubject].NameDiscipline);
+            subjectBt.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage())); // Устаналиваем название дисциплины
+        } catch (JSONException e) { }
+        subjectBt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12); // Устанавливаем размер текста
+        subjectBt.setMaxEms(1); // Для того чтобы текст не растягивал кнопки
+        subjectBt.setBackgroundResource(R.drawable.ic_subject_list_v2); // Устанавливаем фон для кнопки
+
+        final int subjectId = IdGenerator.getId();
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
+                view.startAnimation(click);
+                Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
+                intent.putExtra("button_id", subjectId);
+                startActivity(intent);
+            }
+        };
+        subjectBt.setOnClickListener(onClickListener); // Добавляем функционал кнопке
+        subjectLayout.addView(subjectBt); // Добавляем кнопку
+
+
+        // Создание текстового поля прогресса
+        TextView progressText = new TextView(this);
+        ViewGroup.LayoutParams paramsText = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.9f);
+        progressText.setBackgroundResource(R.drawable.subject_progress_subject_list_v2); // Устанавливаем фон для текста
+        progressText.setLayoutParams(paramsText); // Устанавливаем параметры макета
+        progressText.setGravity(Gravity.CENTER); // Устанавливаем позицию текста в центре кнопки
+        progressText.setTextColor( ContextCompat.getColor(this, R.color.white)); // Устанавливаем цвет текста
+        progressText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);  // Устанавливаем размер текста
+        progressText.setText("23 %");
+
+        subjectLayout.addView(progressText); // Добавляем текст
+
+        rowSubject.addView(subjectLayout); // Добавляем дисциплину
+    }
+
+    // Создаем кнопку полной статистики
+    protected void createFullStatistics(TableRow rowSubject) {
+        // Создание лаяута для кнопки и текстовых полей о статистике по предмету
+        LinearLayout subjectLayout = new LinearLayout(this);
+        ViewGroup.LayoutParams paramsLayout = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+        subjectLayout.setOrientation(TableRow.VERTICAL);
+        subjectLayout.setLayoutParams(paramsLayout);
+
+        // Создание кнопки статистики
+        Button subjectBt = new Button(this);
+        ViewGroup.LayoutParams paramsBt = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.2f);
+        subjectBt.setLayoutParams(paramsBt);// Устанавливаем параметры макета
+        subjectBt.setText("Full statistics");
+        subjectBt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12); // Устанавливаем размер текста
+        subjectBt.setMaxEms(1); // Для того чтобы текст не растягивал кнопки
+        subjectBt.setBackgroundResource(R.drawable.ic_subject_list_v2); // Устанавливаем фон для кнопки
+
+        final int subjectId = IdGenerator.getId();
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
+                view.startAnimation(click);
+                Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
+                intent.putExtra("button_id", subjectId);
+                startActivity(intent);
+            }
+        };
+        subjectBt.setOnClickListener(onClickListener); // Добавляем функционал кнопке
+        subjectLayout.addView(subjectBt); // Добавляем кнопку
+
+        // Коррекция кнопки
+        subjectLayout.addView(new Space(this), new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.9f));;
+
+        rowSubject.addView(subjectLayout); // Добавляем дисциплину
+    }
+
 
     //создаем список предметов
     public void setSubjectsList() {
 
-        LinearLayout rowSubject = null;
+        TableRow rowSubject = null;
 
-        for (countSetSubjects = 0; countSetSubjects < Subjects.subjectsList.length; ++countSetSubjects) {
+        int i;
+        for (i = 0; i <= Subjects.subjectsList.length; ++i) {
             // В одном ряду может быть лишь 3 кнопки, если уже три созданы, создается следующая колонка
-            if (countSetSubjects % 3 == 0) {
-                ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2f);
-                rowSubject = new LinearLayout(this);
-                rowSubject.setOrientation(LinearLayout.HORIZONTAL);
-                this.addContentView(rowSubject, params);
+            if (i % 3 == 0) {
+
+                // Добавляем последний разделитель между краем экрана и крайней правой кнопкой
+                if (rowSubject != null) {
+                    // Создаем разделитель
+                    Space space = new Space(this);
+                    space.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+                    rowSubject.addView(space); // Добавляем разделитель
+
+                    tableSubjects.addView(new Space(this), new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+                }
+
+                ViewGroup.LayoutParams params = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2f);
+                rowSubject = new TableRow(this);
+                rowSubject.setOrientation(TableRow.HORIZONTAL);
+                tableSubjects.addView(rowSubject, params);
             }
 
             // Создаем разделитель
-            Space space = new Space(this);
-            space.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f));
-            rowSubject.addView(space); // Добавляем разделитель
+            rowSubject.addView(new Space(this), new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
 
-            // Создаем предмет
-
-            // Создание лаяута для кнопки и текстовых полей о статистике по предмету
-            LinearLayout subjectLayout = new LinearLayout(this);
-            ViewGroup.LayoutParams paramsLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
-            subjectLayout.setOrientation(LinearLayout.VERTICAL);
-            subjectLayout.setLayoutParams(paramsLayout);
-
-            // Создание кнопки предмета
-            Button subjectBt = new Button(this);
-            ViewGroup.LayoutParams paramsBt = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.2f);
-            subjectBt.setLayoutParams(paramsBt);// Устанавливаем параметры макета
-
-            try {
-                //получаем имя предмета по локализации
-                JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[countSetSubjects].NameDiscipline);
-                subjectBt.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage())); // Устаналиваем название дисциплины
-            } catch (JSONException e) { }
-            subjectBt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12); // Устанавливаем размер текста
-            subjectBt.setBackgroundResource(R.drawable.ic_subject_list); // Устанавливаем фон для кнопки
-
-            subjectLayout.addView(subjectBt); // Добавляем кнопку
-            final int subjectId = IdGenerator.getId();
-            View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
-                    view.startAnimation(click);
-                    Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
-                    intent.putExtra("button_id", subjectId);
-                    startActivity(intent);
-                }
-            };
-            subjectBt.setOnClickListener(onClickListener); // Добавляем функционал кнопке
-
-            // Создание текстового поля прогресса
-            TextView progressText = new TextView(this);
-            ViewGroup.LayoutParams paramsText = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.9f);
-            subjectBt.setBackgroundResource(R.drawable.subject_progress_subject_list); // Устанавливаем фон для текста
-            progressText.setLayoutParams(paramsText); // Устанавливаем параметры макета
-            progressText.setGravity(Gravity.CENTER); // Устанавливаем позицию текста в центре кнопки
-            progressText.setTextColor( ContextCompat.getColor(this, R.color.white)); // Устанавливаем цвет текста
-            progressText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);  // Устанавливаем размер текста
-            progressText.setText("23 %");
-
-            subjectLayout.addView(progressText); // Добавляем текст
-
-            rowSubject.addView(subjectLayout); // Добавляем дисциплину
+            if (i == Subjects.subjectsList.length)
+                createFullStatistics(rowSubject);
+            else
+                createSubject(rowSubject, i);
         }
 
-        /*
-        //достаем параметры референсной кнопки
-        ViewGroup.LayoutParams refParams = refBtn.getLayoutParams();
+        // Заполняем пустое пространство
+        for (; i < 9; ++i) {
 
-        //устанавливаем кнопки  предметов
-        String subjectName = "";
-        for (int i = 0; i < Subjects.subjectsList.length; ++i) {
-            try {
-                //получаем имя предмета по локализации
-                JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[i].NameDiscipline);
-                subjectName = subjectJSONObject.getString(Locale.getDefault().getLanguage());
-            } catch (JSONException e) {
-            }
+            // Создаем разделитель
+            rowSubject.addView(new Space(this), new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
 
-            final int subjectId = IdGenerator.getId();
-            //обработчик нажатию на кнопку
-            View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
-                    view.startAnimation(click);
-                    Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
-                    intent.putExtra("button_id", subjectId);
-                    startActivity(intent);
-                }
-            };
+            // Создаем разделитель (место где должна была быть кнопка)
+            rowSubject.addView(new Space(this), new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
-            LinearLayout layout = (LinearLayout) findViewById(R.id.activity_subject_list_ll_main); //поле где будут кнопки
-            Button subjectBtn = new Button(this); //новая кнопка
-
-            //даем параметры кнопки
-            subjectBtn.setLayoutParams(refParams);
-            subjectBtn.setBackground(getDrawable(R.drawable.button_style));
-            subjectBtn.setTextColor(getColor(R.color.white));
-            subjectBtn.setTextSize(12);
-            subjectBtn.setOnClickListener(onClickListener);
-            subjectBtn.setText(subjectName);
-            subjectBtn.setId(View.generateViewId());
-
-            //добавляем кнопку на поле
-            layout.addView(subjectBtn);
         }
 
-        if (Subjects.subjectsList.length == 0) {
-            TextView noSubjects = (TextView) findViewById(R.id.activity_subject_list_tv_noSubjects);
-            noSubjects.setVisibility(View.VISIBLE);
-        }*/
+        // Создаем последний разделитель справа
+        rowSubject.addView(new Space(this), new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
     }
+
 
     //устанавливаем прогресс внизу экрана
     public void setProgress() {

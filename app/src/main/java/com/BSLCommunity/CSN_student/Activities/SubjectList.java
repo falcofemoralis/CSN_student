@@ -43,9 +43,8 @@ public class SubjectList extends AppCompatActivity {
         }
     }
 
-    // Лаяут всех дисциплин
-    TableLayout tableSubjects;
-
+    TableLayout tableSubjects; // Лаяут всех дисциплин
+    int[] progresses; // Прогресс для каждого предмета
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +57,8 @@ public class SubjectList extends AppCompatActivity {
         Subjects.getSubjectsList(this, new Callable<Void>() {
             @Override
             public Void call() {
-                setSubjectsList();
                 setProgress();
+                setSubjectsList();
                 return null;
             }
         });
@@ -123,8 +122,8 @@ public class SubjectList extends AppCompatActivity {
         progressText.setLayoutParams(paramsText); // Устанавливаем параметры макета
         progressText.setGravity(Gravity.CENTER); // Устанавливаем позицию текста в центре кнопки
         progressText.setTextColor( ContextCompat.getColor(this, R.color.white)); // Устанавливаем цвет текста
-        progressText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);  // Устанавливаем размер текста
-        progressText.setText("23 %");
+        progressText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);  // Устанавливаем размер текста
+        progressText.setText(progresses[numberSubject] + "%");
 
         subjectLayout.addView(progressText); // Добавляем текст
 
@@ -168,7 +167,6 @@ public class SubjectList extends AppCompatActivity {
         rowSubject.addView(subjectLayout); // Добавляем дисциплину
     }
 
-
     //создаем список предметов
     public void setSubjectsList() {
 
@@ -178,17 +176,14 @@ public class SubjectList extends AppCompatActivity {
         for (i = 0; i <= Subjects.subjectsList.length; ++i) {
             // В одном ряду может быть лишь 3 кнопки, если уже три созданы, создается следующая колонка
             if (i % 3 == 0) {
-
                 // Добавляем последний разделитель между краем экрана и крайней правой кнопкой
                 if (rowSubject != null) {
-                    // Создаем разделитель
-                    Space space = new Space(this);
-                    space.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
-                    rowSubject.addView(space); // Добавляем разделитель
-
+                    // Создаем разделители
+                    rowSubject.addView(new Space(this), new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
                     tableSubjects.addView(new Space(this), new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
                 }
 
+                // Создаем новый пустой ряд для кнопок
                 ViewGroup.LayoutParams params = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2f);
                 rowSubject = new TableRow(this);
                 rowSubject.setOrientation(TableRow.HORIZONTAL);
@@ -224,27 +219,39 @@ public class SubjectList extends AppCompatActivity {
     public void setProgress() {
         SubjectsInfo subjectsInfo = SubjectsInfo.getInstance(this);
 
-        int allLabsCount = 0, allCompleted = 0;
-        for (int i = 0; i < subjectsInfo.subjectInfo.length; ++i) {
-            allLabsCount += (subjectsInfo.subjectInfo[i].labsCount + subjectsInfo.subjectInfo[i].ihwCount + subjectsInfo.subjectInfo[i].otherCount);
+        progresses = new int[subjectsInfo.subjectInfo.length];
+        int sumProgress = 0; // Общий прогресс в процентах
 
+
+        for (int i = 0; i < subjectsInfo.subjectInfo.length; ++i) {
+            int subjectComplete = 0, subjectAllWork;
+
+
+            // Считаем сколько он выполнил лабораторных, ИДЗ, других дел
             for (int j = 0; j < subjectsInfo.subjectInfo[i].labsCount; ++j)
-                if (subjectsInfo.subjectInfo[i].labValue[j] == 6) allCompleted++;
+                if (subjectsInfo.subjectInfo[i].labValue[j] == 6) subjectComplete++;
 
             for (int j = 0; j < subjectsInfo.subjectInfo[i].ihwCount; ++j)
-                if (subjectsInfo.subjectInfo[i].ihwValue[j] == 6) allCompleted++;
+                if (subjectsInfo.subjectInfo[i].ihwValue[j] == 6) subjectComplete++;
 
             for (int j = 0; j < subjectsInfo.subjectInfo[i].otherCount; ++j)
-                if (subjectsInfo.subjectInfo[i].otherValue[j] == 6) allCompleted++;
+                if (subjectsInfo.subjectInfo[i].otherValue[j] == 6) subjectComplete++;
+
+            // Считаем сколько всего предстоит работы пользователю
+            subjectAllWork = (subjectsInfo.subjectInfo[i].labsCount + subjectsInfo.subjectInfo[i].ihwCount + subjectsInfo.subjectInfo[i].otherCount);
+
+            // Считаем процент выполненной работы студент за дисциплину
+            progresses[i] = subjectAllWork * 100 / (subjectComplete);
+            sumProgress += progresses[i];
         }
 
-
+        // Подсчитываем общий процент и выводим на экран
         Button progress = (Button) findViewById(R.id.activity_subject_list_bt_progress);
 
         try {
-            progress.setText(Integer.toString(allCompleted * 100 / (allLabsCount)) + "%");
+            progress.setText(sumProgress / progresses.length + "%");
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             progress.setText("0%");
         }
     }

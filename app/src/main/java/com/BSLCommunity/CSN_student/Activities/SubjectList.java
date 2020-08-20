@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -18,7 +16,6 @@ import android.widget.Space;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -26,17 +23,11 @@ import androidx.core.content.ContextCompat;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 public class SubjectList extends AppCompatActivity {
     Button refBtn;
@@ -53,9 +44,9 @@ public class SubjectList extends AppCompatActivity {
         }
     }
 
-    BitmapDrawable img;
     TableLayout tableSubjects; // Лаяут всех дисциплин
     int[] progresses; // Прогресс для каждого предмета
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,37 +54,8 @@ public class SubjectList extends AppCompatActivity {
         setContentView(R.layout.activity_subject_list);
 
         tableSubjects = findViewById(R.id.activity_subject_list_ll_table_subjects);
-
-        getImageFromServer();
-        //получаем список групп
-        Subjects.getSubjectsList(this, new Callable<Void>() {
-            @Override
-            public Void call() {
-                setProgress();
-                setSubjectsList();
-                return null;
-            }
-        });
-    }
-
-    protected void getImageFromServer() {
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-
-        ImageRequest imageRequest = new ImageRequest("http://192.168.1.3", new Response.Listener<Bitmap>() {
-
-            @Override
-            public void onResponse(Bitmap response) {
-                img = new BitmapDrawable(response);
-            }
-        }, 0, 0, null, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        requestQueue.add(imageRequest);
+        setProgress();
+        setSubjectsList();
     }
 
     @Override
@@ -112,6 +74,8 @@ public class SubjectList extends AppCompatActivity {
     // Создаем кнопку одной дисциплины
     protected void createSubject(TableRow rowSubject, int numberSubject) {
 
+        Subjects.SubjectsList subject = Subjects.subjectsList[numberSubject];
+
         // Создание лаяута для кнопки и текстовых полей о статистике по предмету
         LinearLayout subjectLayout = new LinearLayout(this);
         ViewGroup.LayoutParams paramsLayout = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
@@ -125,7 +89,7 @@ public class SubjectList extends AppCompatActivity {
 
         try {
             //получаем имя предмета по локализации
-            JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[numberSubject].NameDiscipline);
+            JSONObject subjectJSONObject = new JSONObject(subject.NameDiscipline);
             subjectBt.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage())); // Устаналиваем название дисциплины
         } catch (JSONException e) { }
         subjectBt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12); // Устанавливаем размер текста
@@ -133,15 +97,16 @@ public class SubjectList extends AppCompatActivity {
         subjectBt.setGravity(Gravity.BOTTOM);
         subjectBt.setGravity(Gravity.CENTER);
 
-        // Устанавливаем изображение дисциплины
-        WindowManager w = getWindowManager();
-        Point size = new Point();
-        w.getDefaultDisplay().getSize(size);
 
-        int sizeIm = (int)(size.x * 0.5 / 4.2);
-
-        img.setBounds( 0, 0, sizeIm, sizeIm);
-        subjectBt.setCompoundDrawables(null, img, null, null);
+        BitmapDrawable img = Subjects.getSubjectImage(getApplicationContext(), subject);
+        // Устанавливаем изображение дисциплины, если оно есть
+        if (img != null) {
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+            int sizeIm = (int) (size.x * 0.5 / 4.2);
+            img.setBounds(0, 0, sizeIm, sizeIm);
+            subjectBt.setCompoundDrawables(null, img, null, null);
+        }
 
         subjectBt.setBackgroundResource(R.drawable.ic_subject_list_v2); // Устанавливаем фон для кнопки
 

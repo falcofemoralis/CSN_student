@@ -32,8 +32,14 @@ public class Subjects {
     }
     public static SubjectsList[] subjectsList;
 
+    // Инциализация (не готово)
     public static void init(Context context, int course, final Callable<Void>... callBacks) {}
 
+    /* Загрузка данных о дисциплине с сервера
+     * Параметры:
+     * context - контекст приложения или активитиы
+     * callback - дальнейшие действия которые необходимо будет выполнить после запроса
+     * */
     public static void downloadFromServer(final Context context, final Callable<Void> callback) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String url = Main.MAIN_URL + String.format("api/subjects/?Code_Group=%1$s",   User.getInstance().groupId);
@@ -75,6 +81,13 @@ public class Subjects {
         requestQueue.add(request);
     }
 
+
+    /* Загрузка изображения с сервера (формат Bitmap)
+    * Параметры:
+    * context - контекст приложения или активити
+    * subject - объект дисциплина, из него берется название изображени
+    * callback - дальнейшие действия которые необходимо будет выполнить после запроса
+    * */
     public static void downloadImageFromServer(final Context context, final SubjectsList subject, final Callable<Void> callback) {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -106,10 +119,16 @@ public class Subjects {
         requestQueue.add(imageRequest);
     }
 
-    // Берем изображение с устройства
+
+    /* Загрузка изображения с устройства
+     * Параметры:
+     * context - контекст приложения
+     * subject - объект дисциплина, из него берется название изображени
+     * */
     public static BitmapDrawable getSubjectImage(final Context context, final SubjectsList subject) {
         File imageFile = new File(context.getDir("images", context.MODE_PRIVATE) + "/" + subject.Image);
 
+        // Если изображение найдено - возвращаем, если не найдено - его не существует для данной дисциплины
         if (imageFile.exists()) {
             Bitmap bmp = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
             return new BitmapDrawable(bmp);
@@ -125,7 +144,11 @@ public class Subjects {
         JSONHelper.create(appContext, DATA_FILE_NAME, jsonString);
     }
 
-    // Сохраняем изображение дисциплин в дирректорию .../files/images
+    /* Сохраняем изображение дисциплин в дирректорию .../files/images
+    * bmp - изображение
+    * nameImage - название изображения
+    *  context - контекст приложения
+    * */
     public static void saveImage(BitmapDrawable bmp, String nameImage, Context context) {
 
         try {

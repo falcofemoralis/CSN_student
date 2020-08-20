@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -94,7 +95,6 @@ public class SubjectList extends AppCompatActivity {
         } catch (JSONException e) { }
         subjectBt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12); // Устанавливаем размер текста
         subjectBt.setMaxEms(1); // Для того чтобы текст не растягивал кнопки
-        subjectBt.setGravity(Gravity.BOTTOM);
         subjectBt.setGravity(Gravity.CENTER);
 
 
@@ -103,13 +103,14 @@ public class SubjectList extends AppCompatActivity {
         if (img != null) {
             Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
-            int sizeIm = (int) (size.x * 0.5 / 4.2);
+            int sizeIm = (int) (size.x * 0.5 / 4.2); // Временное решение (не нашел способа растягивать нормально изображение)
             img.setBounds(0, 0, sizeIm, sizeIm);
             subjectBt.setCompoundDrawables(null, img, null, null);
         }
 
         subjectBt.setBackgroundResource(R.drawable.ic_subject_list_v2); // Устанавливаем фон для кнопки
 
+        // Устанавливаем функционал кнопке
         final int subjectId = IdGenerator.getId();
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -157,6 +158,13 @@ public class SubjectList extends AppCompatActivity {
         subjectBt.setMaxEms(1); // Для того чтобы текст не растягивал кнопки
         subjectBt.setBackgroundResource(R.drawable.ic_subject_list_v2); // Устанавливаем фон для кнопки
 
+        BitmapDrawable img = new BitmapDrawable(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.statistics));;
+        // Устанавливаем изображение дисциплины, если оно есть
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+        int sizeIm = (int) (size.x * 0.5 / 4.2);
+        img.setBounds(0, 0, sizeIm, sizeIm);
+        subjectBt.setCompoundDrawables(null, img, null, null);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override

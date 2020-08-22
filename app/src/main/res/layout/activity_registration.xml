@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3D57AF"
+    android:background="@drawable/test_back"
     android:orientation="vertical"
     tools:context=".Activities.Registration">
 
@@ -95,7 +95,7 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2" />
+        android:layout_weight="0.1" />
 
     <Spinner
         android:id="@+id/activity_registration_sp_groups"
@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="0.03"
-        android:background="@drawable/button_style"
+        android:background="@drawable/test_bt_login"
         android:onClick="OnClick"
         android:text="@string/sign_up"
         android:textAlignment="center"

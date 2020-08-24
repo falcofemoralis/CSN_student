@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/test_back"
+    android:background="@drawable/design_v2_background"
     android:orientation="vertical">
 
     <ScrollView
@@ -19,6 +17,7 @@
             android:padding="16dp">
 
             <Button
+                android:id="@+id/activity_subject_info_bt_subjectName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/test"
@@ -26,128 +25,145 @@
                 android:text="Data Base"
                 android:textColor="@color/test_color_text"/>
 
+            <TableLayout
+                android:id="@+id/activity_subject_info_tl_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp"
+                    android:weightSum="1">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.32"
+                        android:text="Value"
+                        android:textColor="@color/test_color_text"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.06"/>
+
+
+                    <Spinner
+                        android:id="@+id/activity_subject_info_sp_values"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.62"
+                        android:background="@drawable/test"
+                        android:textColor="@color/test_color_text"/>
+
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp"
+                    android:weightSum="1">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.32"
+                        android:text="Lector"
+                        android:textColor="@color/test_color_text"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.06"/>
+
+
+                    <Button
+                        android:id="@+id/activity_subject_info_bt_lector"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.62"
+                        android:text=""
+                        android:gravity="center"
+                        android:textColor="@color/test_color_text"/>
+
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp"
+                    android:weightSum="1">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.32"
+                        android:text="@string/practice"
+                        android:textColor="@color/test_color_text"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.06"/>
+
+
+                    <Button
+                        android:id="@+id/activity_subject_info_bt_practice"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.62"
+                        android:textColor="@color/test_color_text"/>
+
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp"
+                    android:weightSum="1">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.32"
+                        android:text="@string/assistant"
+                        android:textColor="@color/test_color_text"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.06"/>
+
+
+                    <Button
+                        android:id="@+id/activity_subject_info_bt_assistant"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.62"
+                        android:textColor="@color/test_color_text"/>
+
+
+                </TableRow>
+
+            </TableLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:weightSum="1">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.32"
-                    android:text="Value"
-                    android:textColor="@color/test_color_text"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.06"/>
-
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.62"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:weightSum="1">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.32"
-                    android:text="Lector"
-                    android:textColor="@color/test_color_text"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.06"/>
-
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.62"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:weightSum="1">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.32"
-                    android:text="@string/assistant"
-                    android:textColor="@color/test_color_text"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.06"/>
-
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.62"/>
-
-
-            </LinearLayout>
-
-m            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:weightSum="1">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.32"
-                    android:text="@string/assistant"
-                    android:textColor="@color/test_color_text"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.06"/>
-
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test"
-                    android:layout_weight="0.62"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
+                android:id="@+id/activity_subject_info_ll_labs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -155,88 +171,40 @@ m            <LinearLayout
                 android:weightSum="1">
 
                 <Button
+                    android:id="@+id/activity_subject_info_bt_labs"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test2"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:background="@drawable/design_v2_button"
                     android:text="LABS"
-                    android:textColor="@color/test_color_text"/>
+                    android:textColor="@color/test_color_text"
+                    android:onClick="openWork"/>
 
-                <LinearLayout
+                <TableLayout
+                    android:id="@+id/activity_subject_info_tb_labs_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal">
+                    android:visibility="gone">
 
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.4"
-                        android:text="Laboratory 1"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.4"
-                        android:text="@string/Passed"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.1"
-                        android:text="50"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/mb_red_dark"
-                        android:layout_weight="0.1"
-                        android:text="X"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
+                </TableLayout>
 
                 <Button
+                    android:id="@+id/activity_subject_info_bt_add_lab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/test_lab_add"
+                    android:background="@drawable/design_v2_bt_add_work_element"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
                     android:text="+"
-                    android:textSize="25dp"
-                    android:textColor="@color/test_color_text"/>
+                    android:visibility="gone"
+                    android:textSize="25sp"
+                    android:textColor="@color/test_color_text"
+                    android:onClick="addElementWork"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activity_subject_info_ll_ihw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -244,173 +212,76 @@ m            <LinearLayout
                 android:weightSum="1">
 
                 <Button
+                    android:id ="@+id/activity_subject_info_bt_ihw"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/test2"
+                    android:layout_height="0dp"
+                    android:background="@drawable/design_v2_button"
                     android:layout_weight="1"
                     android:text="IHW"
-                    android:textColor="@color/test_color_text"/>
+                    android:textColor="@color/test_color_text"
+                    android:onClick="openWork"/>
 
-                <LinearLayout
+                <TableLayout
+                    android:id="@+id/activity_subject_info_tb_ihw_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal">
+                    android:visibility="gone">
 
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.4"
-                        android:text="IHW 1"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.4"
-                        android:text="@string/Passed"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.1"
-                        android:text="50"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/mb_red_dark"
-                        android:layout_weight="0.1"
-                        android:text="X"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
+                </TableLayout>
 
                 <Button
+                    android:id="@+id/activity_subject_info_bt_add_ihw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/test_lab_add"
+                    android:background="@drawable/design_v2_bt_add_work_element"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
                     android:text="+"
                     android:textSize="25dp"
-                    android:textColor="@color/test_color_text"/>
+                    android:visibility="gone"
+                    android:textColor="@color/test_color_text"
+                    android:onClick="addElementWork"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activity_subject_info_ll_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="50dp"
+                android:paddingTop="25dp"
                 android:weightSum="1">
 
                 <Button
+                    android:id ="@+id/activity_subject_info_bt_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/test2"
+                    android:background="@drawable/design_v2_button"
                     android:layout_weight="1"
-                    android:text="IHW"
-                    android:textColor="@color/test_color_text"/>
+                    android:text="Other"
+                    android:textColor="@color/test_color_text"
+                    android:onClick="openWork"/>
 
-                <LinearLayout
+                <TableLayout
+                    android:id="@+id/activity_subject_info_tb_other_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal">
+                    android:visibility="gone">
 
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.4"
-                        android:text="IHW 1"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.4"
-                        android:text="@string/Passed"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/gray"
-                        android:layout_weight="0.1"
-                        android:text="50"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/mb_red_dark"
-                        android:layout_weight="0.1"
-                        android:text="X"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:orientation="horizontal"/>
+                </TableLayout>
 
                 <Button
+                    android:id="@+id/activity_subject_info_bt_add_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/test_lab_add"
+                    android:background="@drawable/design_v2_bt_add_work_element"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
                     android:text="+"
                     android:textSize="25dp"
-                    android:textColor="@color/test_color_text"/>
+                    android:visibility="gone"
+                    android:textColor="@color/test_color_text"
+                    android:onClick="addElementWork"/>
 
             </LinearLayout>
 
@@ -418,5 +289,35 @@ m            <LinearLayout
 
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/activity_subject_info_ll_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.02"
+        android:background="@drawable/progress"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/activity_subject_info_bt_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:text="@string/Overall"
+            android:backgroundTint="#00FFFFFF"
+            android:stateListAnimator="@null"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/activity_subject_info_bt_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:backgroundTint="#00FFFFFF"
+            android:stateListAnimator="@null"
+            android:textColor="@color/white"
+            android:text="0 %"/>
+    </LinearLayout>
 
 </LinearLayout>

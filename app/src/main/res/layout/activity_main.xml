@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/design_v2_background"
     android:layout_weight="1">
 
     <LinearLayout
@@ -61,8 +62,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="100"
-        android:background="@color/background">
+        android:layout_weight="100">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,14 +76,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:background="@drawable/button_style"
+                android:background="@drawable/design_v2_button"
                 android:drawableTop="@drawable/ic_school_black_24dp"
                 android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
                 android:text="Subjects"
-                android:textColor="#000000">
+                android:textColor="@color/white">
 
             </Button>
 
@@ -98,14 +98,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:background="@drawable/button_style"
+                android:background="@drawable/design_v2_button"
                 android:drawableTop="@drawable/ic_group_black_24dp"
                 android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
                 android:text="@string/Rating"
-                android:textColor="#000000">
+                android:textColor="@color/white">
 
             </Button>
 
@@ -120,14 +120,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:background="@drawable/button_style"
+                android:background="@drawable/design_v2_button"
                 android:drawableTop="@drawable/ic_school_black_24dp"
                 android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
                 android:text="@string/Lessons_schedule"
-                android:textColor="#000000">
+                android:textColor="@color/white">
 
             </Button>
 
@@ -141,14 +141,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/button_style"
+                android:background="@drawable/design_v2_button"
                 android:drawableTop="@drawable/ic_school_black_24dp"
                 android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
                 android:text="@string/Teachers_schedule"
-                android:textColor="#000000"></Button>
+                android:textColor="@color/white"></Button>
 
             <Space
                 android:layout_width="match_parent"
@@ -161,14 +161,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:background="@drawable/button_style"
+                android:background="@drawable/design_v2_button"
                 android:drawableTop="@drawable/ic_settings_black_24dp"
                 android:onClick="OnClick"
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:stateListAnimator="@null"
                 android:text="@string/title_activity_settings"
-                android:textColor="#000000">
+                android:textColor="@color/white">
 
             </Button>
 

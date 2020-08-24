@@ -224,7 +224,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 }
 
                 if (userL.idz >= 0) {
-                    idz.setText("  " + getResources().getString(R.string.IHW) + "  ");
+                    idz.setText("  " + getResources().getString(R.string.ihw) + "  ");
                     idz.setTextColor(COLOR_WHITE);
                     idz.setTextSize(TextSizeHeader);
                     idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

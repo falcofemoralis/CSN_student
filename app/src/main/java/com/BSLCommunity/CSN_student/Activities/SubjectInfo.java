@@ -1,32 +1,18 @@
 package com.BSLCommunity.CSN_student.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.BSLCommunity.CSN_student.Objects.LocalData;
-import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
@@ -34,12 +20,9 @@ import com.BSLCommunity.CSN_student.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Locale;
-
-import java.util.concurrent.Callable;
 
 public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SubjectInfoDialogEditText.DialogListener {
     int[] colors = { //цвета кнопок выбора
@@ -52,7 +35,6 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             R.color.passed_with_report};
     ArrayList<Integer> teacherIds;  //список учителей для установки
     int labsCount = 0, subjectValue = 0, ihwCount = 0, otherCount = 0; //labsCount - кол-во лаб у предмета, subjectValue - ценность предмета, ihwCount - кол-во ИДЗ
-    final int TEXT_SIZE = 13; //размер текста
 
     public ArrayList<Integer> labValues = new ArrayList<>(); //значения лаб
     public ArrayList<Integer> ihwValues = new ArrayList<>(); //значения ИДЗ
@@ -60,11 +42,9 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
     public ArrayList<Button> labNames = new ArrayList<>(); //названия лаб
     public ArrayList<Button> ihwNames = new ArrayList<>(); //названия ИДЗ
-    public ArrayList<Button> otherNames= new ArrayList<>(); //названия заметок
+    public ArrayList<Button> otherNames = new ArrayList<>(); //названия заметок
 
-    public boolean isClicked = false; //состояния нажатия кнопки Refactor
-    int[] tableRows = {R.id.activity_subject_info_tr_edit_lab, R.id.activity_subject_info_tr_edit_ihw, R.id.activity_subject_info_tr_edit_other}; //id кнопок добавления\удаления
-    TextView labsHeadText, ihwHeadText, otherHeadText;
+    LinearLayout labsButton, ihwButton, otherButton;
 
     //тип работы
     public enum Types {
@@ -85,20 +65,19 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         subjectsInfo = SubjectsInfo.getInstance(this);
         subjectId = (getIntent().getIntExtra("button_id", 0));
 
-        labsHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_labs_headText);
-        ihwHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_ihw_headText);
-        otherHeadText = (TextView) findViewById(R.id.activity_subject_info_tv_other_headText);
+        labsButton = findViewById(R.id.activity_subject_info_ll_labs);
+        ihwButton = findViewById(R.id.activity_subject_info_ll_ihw);
+        otherButton = findViewById(R.id.activity_subject_info_ll_other);
 
         setSubjectName(); //ставим имя предмета
         createValueSpinner(); //создаем спиннер ценностей предмета
+        setTeachers();
+        loadData();
 
         //загружаем информацию про кол-во работ
         labsCount = subjectsInfo.subjectInfo[subjectId].labsCount;
         ihwCount = subjectsInfo.subjectInfo[subjectId].ihwCount;
         otherCount = subjectsInfo.subjectInfo[subjectId].otherCount;
-        loadData();
-
-        setTeachers();
     }
 
     //функция вызывается при закрытие активити, в которой идет сохранение данных
@@ -162,74 +141,136 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         mGetTeacherId(Subjects.subjectsList[subjectId].Code_Practice);
         mGetTeacherId(Subjects.subjectsList[subjectId].Code_Assistant);
 
-        //поле где находятся кнопки в виде (tableRow)
-        TableLayout teacherLayout = (TableLayout) findViewById(R.id.activity_subject_info_tl_teachers); //поле где будут кнопки
 
-        //референс tablerow
-        TableRow refRow = (TableRow) findViewById(R.id.activity_subject_info_tr_ref);
+        // Поля где необходимо установить имена преподавателей
+        Button btLector = findViewById(R.id.activity_subject_info_bt_lector);
+        Button btPractice = findViewById(R.id.activity_subject_info_bt_practice);
+        Button btAssistant = findViewById(R.id.activity_subject_info_bt_assistant);
+        Button[] btTeachers = new Button[]{btLector, btPractice, btAssistant};
 
-        //референсы кнопок
-        Button refBtnText = (Button) findViewById(R.id.activity_subject_info_bt_ref_text);
-        Button refBtn = (Button) findViewById(R.id.activity_subject_info_bt_ref);
 
-        //выключаем референсы
-        refRow.setVisibility(View.GONE);
-        refBtnText.setVisibility(View.GONE);
-        refBtn.setVisibility(View.GONE);
-
+        // Устаанавлваем имена преподавателей
         for (int i = 0; i < teacherIds.size(); ++i) {
-            //создаем еще новый TableRow
-            TableRow tableRow = new TableRow(this);
-            tableRow.setLayoutParams(refRow.getLayoutParams());
-
-            //новые конпки с параметрами
-            Button newTeacherText = new Button(this);
-            Button newTeacher = new Button(this);
-
-            //устанавливаем необходимые параметры
-            newTeacherRow(newTeacherText, refBtnText);
-            newTeacherRow(newTeacher, refBtn);
-
-            //устанавливаем тип препода
-            switch (i) {
-                case 0:
-                    newTeacherText.setText(getString(R.string.lector));
-                    break;
-                case 1:
-                    newTeacherText.setText(getString(R.string.practice));
-                    break;
-                case 2:
-                    newTeacherText.setText(getString(R.string.assistant));
-                    break;
-            }
-
-            //устанавливаем имя препода
             try {
-                String FIO = Teachers.findById(teacherIds.get(i)).FIO;
                 JSONObject teacherJSONObject = new JSONObject(Teachers.findById(teacherIds.get(i)).FIO);
-                newTeacher.setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
+                btTeachers[i].setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            //добавляем в лаяут
-            tableRow.addView(newTeacherText);
-            tableRow.addView(newTeacher);
-            teacherLayout.addView(tableRow);
-
-            //добавляем пробел
-            addSpace(teacherLayout);
         }
     }
 
-    //создаем полосу препода
-    private void newTeacherRow(Button btn, Button refBtn) {
-        btn.setLayoutParams(refBtn.getLayoutParams());
-        btn.setBackground(getDrawable(R.drawable.dark_background2));
-        btn.setTextColor(getColor(R.color.white));
-        btn.setTextSize(TEXT_SIZE);
+    //устанавливаем прогресс в нижней части экрана
+    private void setProgress() {
+        Button progress = (Button) findViewById(R.id.activity_subject_info_bt_progress);
+
+        int completed = 0;
+        for (int i = 0; i < labValues.size(); ++i)
+            if (labValues.get(i) == 6)
+                completed++;
+
+        for (int i = 0; i < ihwValues.size(); ++i)
+            if (ihwValues.get(i) == 6)
+                completed++;
+
+        for (int i = 0; i < otherValues.size(); ++i)
+            if (otherValues.get(i) == 6)
+                completed++;
+
+        try {
+            progress.setText(Integer.toString(completed * 100 / (labsCount + ihwCount + otherCount)) + "%");
+        } catch (Exception e) {
+            System.out.println(e);
+            progress.setText("0%");
+        }
     }
 
+    //загружаем работы
+    public void loadData() {
+
+        //добавляем полосы работ (лаб, идз и прочего)
+        for (int i = 0; i < labsCount; ++i)
+            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_labs_data), getString(R.string.lab));
+        for (int i = 0; i < ihwCount; ++i)
+            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_ihw_data), getString(R.string.ihw));
+        for (int i = 0; i < otherCount; ++i)
+            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_other_data), getString(R.string.other));
+
+        //ставим прогресс
+        setProgress();
+    }
+
+    boolean isOpenLab = false, isOpenIHW = false, isOpenOther = false; // Флаги показывающие открыта ли вкладка с работой или нет (лабораторные, ИДЗ, другие)
+    // Открываем список какой либо работы
+    public void openWork(View view) {
+
+        Button addBt = null;
+        TableLayout infoTL = null;
+
+        switch (view.getId()) {
+            case R.id.activity_subject_info_bt_labs:
+                addBt = findViewById(R.id.activity_subject_info_bt_add_lab);
+                infoTL = findViewById(R.id.activity_subject_info_tb_labs_data);
+                isOpenLab = !isOpenLab;
+                drawWork(addBt, infoTL, isOpenLab);
+                break;
+            case R.id.activity_subject_info_bt_ihw:
+                addBt = findViewById(R.id.activity_subject_info_bt_add_ihw);
+                infoTL = findViewById(R.id.activity_subject_info_tb_ihw_data);
+                isOpenIHW = !isOpenIHW;
+                drawWork(addBt, infoTL, isOpenIHW);
+                break;
+            case R.id.activity_subject_info_bt_other:
+                addBt = findViewById(R.id.activity_subject_info_bt_add_other);
+                infoTL = findViewById(R.id.activity_subject_info_tb_other_data);
+                isOpenOther = !isOpenOther;
+                drawWork(addBt, infoTL, isOpenOther);
+                break;
+        }
+    }
+
+    // Открываем вкладку с выбраным типо работы
+    private void drawWork(Button addBt, TableLayout infoTL, boolean isOpen) {
+        if (isOpen) {
+            addBt.setVisibility(View.VISIBLE);
+            infoTL.setVisibility(View.VISIBLE);
+        }
+        else {
+            addBt.setVisibility(View.GONE);
+            infoTL.setVisibility(View.GONE);
+        }
+    }
+
+    public void addElementWork(View view) {
+        TableLayout infoTL = null;
+        String textElement = null;
+
+        switch (view.getId()) {
+            case R.id.activity_subject_info_bt_add_lab:
+                infoTL = findViewById(R.id.activity_subject_info_tb_labs_data);
+                textElement = getString(R.string.lab);
+                break;
+            case R.id.activity_subject_info_bt_add_ihw:
+                infoTL = findViewById(R.id.activity_subject_info_tb_ihw_data);
+                textElement = getString(R.string.ihw);
+                break;
+            case R.id.activity_subject_info_bt_add_other:
+                infoTL = findViewById(R.id.activity_subject_info_tb_other_data);
+                textElement = getString(R.string.other);
+                break;
+        }
+
+       drawElementWork(infoTL, textElement);
+    }
+
+    private void drawElementWork(TableLayout infoTL, String textElement) {
+        TableRow elementWork = (TableRow) LayoutInflater.from(this).inflate(R.layout.inflate_work_element, null);
+        Button textViewElement = (Button) elementWork.getChildAt(0);
+        textViewElement.setText(textElement + ' ' + (infoTL.getChildCount() + 1));
+        infoTL.addView(elementWork);
+    }
+
+    /*
     //обработчик добавления новой работы
     public void addOnClick(View view) {
         switch (view.getTag().toString()) {
@@ -279,30 +320,8 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         setProgress();
     }
 
-    //загружаем работы
-    public void loadData() {
-        //добавляем полосы работ (лаб, идз и прочего)
-        for (int i = 0; i < labsCount; ++i)
-            addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].labValue[i], labValues, R.id.activity_subject_info_ll_labs_main, getResources().getString(R.string.Lab), Types.lab, subjectsInfo.subjectInfo[subjectId].labName[i]);
-        for (int i = 0; i < ihwCount; ++i)
-            addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].ihwValue[i], ihwValues, R.id.activity_subject_info_ll_ihw_main, getResources().getString(R.string.IHW), Types.ihw, subjectsInfo.subjectInfo[subjectId].ihwName[i]);
-        for (int i = 0; i < otherCount; ++i)
-            addWorkRow(i + 1, subjectsInfo.subjectInfo[subjectId].otherValue[i], otherValues, R.id.activity_subject_info_ll_other_main, getResources().getString(R.string.other), Types.other, subjectsInfo.subjectInfo[subjectId].otherName[i]);
 
-        if (labsCount == 0) labsHeadText.setVisibility(View.GONE);
-        if (ihwCount == 0) ihwHeadText.setVisibility(View.GONE);
-        if (otherCount == 0) otherHeadText.setVisibility(View.GONE);
-
-        //ставим прогресс
-        setProgress();
-    }
-
-    //добавляем кнопку с работой
-    private void addWorkRow(int number, int value, ArrayList<Integer> count, int layoutId, String name, Types type, String workName) {
-        count.add(value); //добавляем в лист значений, то что лаба имеет значение спиннера 0 (not passed)
-        newWorkRow((LinearLayout) findViewById(layoutId), name, number, value, type, workName);
-    }
-
+*/
     @Override
     public void applyText(String text, Types type, int number, Button name) {
         name.setText(text);
@@ -310,10 +329,13 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
     //создаем кнопку с работой
     private void newWorkRow(LinearLayout linearLayout, String nameText, final int number, int value, final Types type, String workName) {
+
         //создаем новую полосу название + ценность
         LinearLayout newLine = new LinearLayout(this);
         newLine.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         newLine.setOrientation(LinearLayout.HORIZONTAL);
+
+       /*
 
         //создаем новое название
         final Button name = new Button(this);
@@ -349,18 +371,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             case other: otherNames.add(name);  break;
         }
 
-        //создаем новый выбора типа лабы
-        Spinner object = new Spinner(this, Spinner.MODE_DIALOG);
-        object.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        object.setGravity(Gravity.CENTER);
-        object.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-        object.setBackground(getDrawable(R.drawable.lab_choose));
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.lab_types,
-                R.layout.spinner_registration_layout
-        );
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+
 
         //обработчик нажатию на кнопку
         AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -400,66 +411,18 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
         //добавляем промежуток между лабами
         addSpace(linearLayout);
+        */
     }
 
-    //удаляем работу
-    private void removeWorkRow(int id, int count, ArrayList<Integer> countValues) {
-        LinearLayout linearLayout = (LinearLayout) findViewById(id);
-        linearLayout.removeViewAt((count * 2) - 1); //удаляем пробел (последняя позиция)
-        linearLayout.removeViewAt((count * 2) - 2); //удаляем TableRow с кнопками лабы (предпоследняя позиция)
-        countValues.remove(count - 1);
-    }
 
-    //создаем пробел
-    private void addSpace(@NonNull LinearLayout linearLayout) {
-        Space space = (Space) findViewById(R.id.activity_subject_info_space);
-        Space newSpace = new Space(this);
-        newSpace.setLayoutParams(space.getLayoutParams());
-        linearLayout.addView(newSpace);
-    }
-
-    //устанавливаем прогресс в нижней части экрана
-    private void setProgress() {
-        Button progress = (Button) findViewById(R.id.activity_subject_info_bt_progress);
-
-        int completed = 0;
-        for (int i = 0; i < labValues.size(); ++i)
-            if (labValues.get(i) == 6)
-                completed++;
-
-        for (int i = 0; i < ihwValues.size(); ++i)
-            if (ihwValues.get(i) == 6)
-                completed++;
-
-        for (int i = 0; i < otherValues.size(); ++i)
-            if (otherValues.get(i) == 6)
-                completed++;
-
-        try {
-            progress.setText(Integer.toString(completed * 100 / (labsCount + ihwCount + otherCount)) + "%");
-        } catch (Exception e) {
-            System.out.println(e);
-            progress.setText("0%");
-        }
-    }
-
+    /*
     //режим добавление\удаления работ
     public void refactorOnClick(View view) {
         for (int i = 0; i < tableRows.length; ++i)
             changeState(mGetId(tableRows[i]), isClicked);
         isClicked = !isClicked;
     }
-
-    //меняем режим  добавление\удаления работ
-    private void changeState(TableRow tableRow, boolean state) {
-        if (state) tableRow.setVisibility(View.GONE);
-        else tableRow.setVisibility(View.VISIBLE);
-    }
-
-    //получение view TableRow по id
-    private TableRow mGetId(int id) {
-        return findViewById(id);
-    }
+    */
 
     private void mGetTeacherId(int id){
         if(id!=0) teacherIds.add(id);

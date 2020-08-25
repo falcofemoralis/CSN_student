@@ -58,8 +58,6 @@
                         android:layout_weight="0.62"
                         android:background="@drawable/test"
                         android:textColor="@color/test_color_text"/>
-
-
                 </TableRow>
 
                 <TableRow

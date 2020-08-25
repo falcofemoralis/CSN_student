@@ -1,13 +1,11 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
-import android.widget.Button;
 
-import com.BSLCommunity.CSN_student.Activities.SubjectInfo;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.google.gson.Gson;
+
 import java.util.ArrayList;
-import static com.BSLCommunity.CSN_student.Activities.SubjectInfo.Types;
 public class SubjectsInfo {
     public static SubjectsInfo instance = null;
     public static final String FILE_NAME  = "subjectsInfo";
@@ -28,11 +26,12 @@ public class SubjectsInfo {
                 instance.subjectInfo[i] = new SubjectInfo();
 
             //загрузка данных
-            String JSONstring = JSONHelper.read(context, FILE_NAME);
-            if (JSONstring != null || JSONstring.equals("")) {
+            String JSONString = JSONHelper.read(context, FILE_NAME);
+            if (!JSONString.equals("NOT FOUND")) {
                 Gson gson = new Gson();
-                instance.subjectInfo = gson.fromJson(JSONstring, SubjectInfo[].class);
+                instance.subjectInfo = gson.fromJson(JSONString, SubjectInfo[].class);
             }
+
             return instance;
         } catch (Exception e) {
             // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
@@ -48,8 +47,36 @@ public class SubjectsInfo {
     public static class SubjectInfo {
         public int subjectValue;
         public int labsCount, ihwCount, otherCount;
-        public int[] labValue, ihwValue, otherValue;
-        public String[] labName, ihwName, otherName;
+        public ArrayList<Integer> labValues, ihwValues, otherValues;
+        public ArrayList<String> labName, ihwName, otherName;
+
+        public SubjectInfo() {
+            labValues = new ArrayList<Integer>();
+            ihwValues = new ArrayList<Integer>();
+            otherValues = new ArrayList<Integer>();
+
+            labName = new ArrayList<String>();
+            ihwName = new ArrayList<String>();
+            otherName = new ArrayList<String>();
+        }
+
+        public void addNewLab() {
+            ++labsCount;
+            labValues.add(0);
+            labName.add("");
+        }
+
+        public void addNewIHW() {
+            ++ihwCount;
+            ihwValues.add(0);
+            ihwName.add("");
+        }
+
+        public void addNewOther() {
+            ++otherCount;
+            otherValues.add(0);
+            otherName.add("");
+        }
     }
     public SubjectInfo[] subjectInfo;
 
@@ -63,40 +90,6 @@ public class SubjectsInfo {
     //сохраняем ценность предмета
     public void saveSubjectValue(int subjectId, int id) {
         instance.subjectInfo[subjectId].subjectValue = id;
-    }
-
-    public void saveData(int subjectId,
-                           ArrayList<Integer> labValues, int labsCount,
-                           ArrayList<Integer> ihwValues, int ihwCount,
-                           ArrayList<Integer> otherValues, int otherCount,
-                           ArrayList<Button> labNames,
-                           ArrayList<Button> ihwNames,
-                           ArrayList<Button> otherNames
-    ){
-
-        SubjectInfo subjectInfo =  instance.subjectInfo[subjectId];
-        subjectInfo.labValue = new int[labsCount];
-        subjectInfo.labName = new String[labsCount];
-
-        for (int i=0;i<labsCount;++i){
-            subjectInfo.labValue[i] = labValues.get(i);
-            subjectInfo.labName[i] = labNames.get(i).getText().toString();
-        }
-
-        subjectInfo.ihwValue = new int[ihwCount];
-        subjectInfo.ihwName = new String[ihwCount];
-        for (int i=0;i<ihwCount;++i){
-            subjectInfo.ihwValue[i] = ihwValues.get(i);
-            subjectInfo.ihwName[i] = ihwNames.get(i).getText().toString();
-        }
-
-        subjectInfo.otherValue = new int[otherCount];
-        subjectInfo.otherName = new String[otherCount];
-        for (int i=0;i<otherCount;++i){
-            subjectInfo.otherValue[i] = otherValues.get(i);
-            subjectInfo.otherName[i] = otherNames.get(i).getText().toString();
-        }
-
     }
 
     //сохраням данный в JSON файл

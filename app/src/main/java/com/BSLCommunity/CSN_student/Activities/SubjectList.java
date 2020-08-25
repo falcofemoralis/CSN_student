@@ -243,13 +243,13 @@ public class SubjectList extends AppCompatActivity {
 
             // Считаем сколько он выполнил лабораторных, ИДЗ, других дел
             for (int j = 0; j < subjectsInfo.subjectInfo[i].labsCount; ++j)
-                if (subjectsInfo.subjectInfo[i].labValue[j] == 6) subjectComplete++;
+                if (subjectsInfo.subjectInfo[i].labValues.get(j) == 6) subjectComplete++;
 
             for (int j = 0; j < subjectsInfo.subjectInfo[i].ihwCount; ++j)
-                if (subjectsInfo.subjectInfo[i].ihwValue[j] == 6) subjectComplete++;
+                if (subjectsInfo.subjectInfo[i].ihwValues.get(j) == 6) subjectComplete++;
 
             for (int j = 0; j < subjectsInfo.subjectInfo[i].otherCount; ++j)
-                if (subjectsInfo.subjectInfo[i].otherValue[j] == 6) subjectComplete++;
+                if (subjectsInfo.subjectInfo[i].otherValues.get(j) == 6) subjectComplete++;
 
             // Считаем сколько всего предстоит работы пользователю
             subjectAllWork = (subjectsInfo.subjectInfo[i].labsCount + subjectsInfo.subjectInfo[i].ihwCount + subjectsInfo.subjectInfo[i].otherCount);

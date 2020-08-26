@@ -25,6 +25,15 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SubjectInfoDialogEditText.DialogListener {
+    //тип работы
+    public enum Types {
+        lab,
+        ihw,
+        other
+
+    }
+    public final  int TYPES_COUNT = 3;
+
     int[] colors = { //цвета кнопок выбора
             R.color.not_passed,
             R.color.in_process,
@@ -33,34 +42,37 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             R.color.waiting_acceptation,
             R.color.passed_without_report,
             R.color.passed_with_report};
+
     ArrayList<Integer> teacherIds;  //список учителей для установки
 
     SubjectsInfo.SubjectInfo subjectInfo = null;
 
     // Выпадающие списки работ
-    LinearLayout labsButton, ihwButton, otherButton;
-
-    //тип работы
-    public enum Types {
-        lab,
-        ihw,
-        other
-    }
+    LinearLayout labsLL, ihwLL, otherLL;
 
     int subjectId; //id предмета. Ставится в классе SubjectList
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_info);
 
+       /* headTexts[0] = (TextView) findViewById(R.id.activity_subject_info_tv_labs_headText);
+        headTexts[1] = (TextView) findViewById(R.id.activity_subject_info_tv_ihw_headText);
+        headTexts[2] = (TextView) findViewById(R.id.activity_subject_info_tv_other_headText);
+
+        workNames[0] = getResources().getString(R.string.Lab);
+        workNames[1] = getResources().getString(R.string.IHW);
+        workNames[2] = getResources().getString(R.string.other); */
+
         //получем необходимые объекты
         subjectId = (getIntent().getIntExtra("button_id", 0));
         subjectInfo = SubjectsInfo.getInstance(this).subjectInfo[subjectId];
 
-        labsButton = findViewById(R.id.activity_subject_info_ll_labs);
-        ihwButton = findViewById(R.id.activity_subject_info_ll_ihw);
-        otherButton = findViewById(R.id.activity_subject_info_ll_other);
+        labsLL = findViewById(R.id.activity_subject_info_ll_labs);
+        ihwLL = findViewById(R.id.activity_subject_info_ll_ihw);
+        otherLL = findViewById(R.id.activity_subject_info_ll_other);
 
         setSubjectName(); //ставим имя предмета
         createValueSpinner(); //создаем спиннер ценностей предмета
@@ -72,7 +84,7 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     //функция вызывается при закрытие активити, в которой идет сохранение данных
     @Override
     protected void onPause() {
-        SubjectsInfo.getInstance(this).saveSubject(this); //сохраняем в JSON
+        SubjectsInfo.getInstance(this).save(this); //сохраняем в JSON
         super.onPause();
     }
 
@@ -124,15 +136,18 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         // Определяем вид работы и устанавливаем её статус
         switch (parentTL.getId()) {
             case R.id.activity_subject_info_tb_labs_data:
-                subjectInfo.labValues.set(parentTL.indexOfChild(elementWork), (int)id);
+                subjectInfo.labs.values.set(parentTL.indexOfChild(elementWork), (int)id);
                 break;
             case R.id.activity_subject_info_tb_ihw_data:
-                subjectInfo.ihwValues.set(parentTL.indexOfChild(elementWork), (int)id);
+                subjectInfo.ihw.values.set(parentTL.indexOfChild(elementWork), (int)id);
                 break;
             case R.id.activity_subject_info_tb_other_data:
-                subjectInfo.otherValues.set(parentTL.indexOfChild(elementWork), (int)id);
+                subjectInfo.others.values.set(parentTL.indexOfChild(elementWork), (int)id);
                 break;
         }
+
+        parent.setBackgroundResource(colors[(int)id]); // Устанавка цвета относительно выбранного варианта
+        setProgress(); // Обновление прогресса
     }
 
     //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
@@ -173,23 +188,23 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
 
         int completed = 0;
         // Считаем количество завершенных лаб (статус которы "Сдано с отчетом")
-        for (int i = 0; i < subjectInfo.labValues.size(); ++i)
-            if (subjectInfo.labValues.get(i) == 6)
+        for (int i = 0; i < subjectInfo.labs.values.size(); ++i)
+            if (subjectInfo.labs.values.get(i) == 6)
                 completed++;
 
         // Считаем количество завершенных ИДЗ (статус которы "Сдано с отчетом")
-        for (int i = 0; i < subjectInfo.ihwValues.size(); ++i)
-            if (subjectInfo.ihwValues.get(i) == 6)
+        for (int i = 0; i < subjectInfo.ihw.values.size(); ++i)
+            if (subjectInfo.ihw.values.get(i) == 6)
                 completed++;
 
         // Считаем количество завершенных других работ (статус которы "Сдано с отчетом")
-        for (int i = 0; i <  subjectInfo.otherValues.size(); ++i)
-            if (subjectInfo.otherValues.get(i) == 6)
+        for (int i = 0; i <  subjectInfo.others.values.size(); ++i)
+            if (subjectInfo.others.values.get(i) == 6)
                 completed++;
 
         // Устанравливаем прогресс предмета
         try {
-            progress.setText(Integer.toString(completed * 100 / (subjectInfo.labsCount +  subjectInfo.ihwCount +  subjectInfo.otherCount)) + "%");
+            progress.setText(Integer.toString(completed * 100 / (subjectInfo.labs.count +  subjectInfo.ihw.count +  subjectInfo.others.count)) + "%");
         } catch (Exception e) {
             System.out.println(e);
             progress.setText("0%");
@@ -200,12 +215,12 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
     public void loadData() {
 
         //добавляем полосы работ (лаб, идз и прочего)
-        for (int i = 0; i < subjectInfo.labsCount; ++i)
-            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_labs_data), getString(R.string.lab), subjectInfo.labValues.get(i));
-        for (int i = 0; i < subjectInfo.ihwCount; ++i)
-            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_ihw_data), getString(R.string.ihw), subjectInfo.ihwValues.get(i));
-        for (int i = 0; i < subjectInfo.otherCount; ++i)
-            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_other_data), getString(R.string.other), subjectInfo.otherValues.get(i));
+        for (int i = 0; i < subjectInfo.labs.count; ++i)
+            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_labs_data), getString(R.string.lab), subjectInfo.labs.values.get(i));
+        for (int i = 0; i < subjectInfo.ihw.count; ++i)
+            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_ihw_data), getString(R.string.ihw), subjectInfo.ihw.values.get(i));
+        for (int i = 0; i < subjectInfo.others.count; ++i)
+            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_other_data), getString(R.string.other), subjectInfo.others.values.get(i));
 
         //ставим прогресс
         setProgress();
@@ -262,17 +277,17 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
             case R.id.activity_subject_info_bt_add_lab:
                 infoTL = findViewById(R.id.activity_subject_info_tb_labs_data);
                 textElement = getString(R.string.lab);
-                subjectInfo.addNewLab();
+                subjectInfo.labs.addWork();;
                 break;
             case R.id.activity_subject_info_bt_add_ihw:
                 infoTL = findViewById(R.id.activity_subject_info_tb_ihw_data);
                 textElement = getString(R.string.ihw);
-                subjectInfo.addNewIHW();
+                subjectInfo.ihw.addWork();;
                 break;
             case R.id.activity_subject_info_bt_add_other:
                 infoTL = findViewById(R.id.activity_subject_info_tb_other_data);
                 textElement = getString(R.string.other);
-                subjectInfo.addNewOther();
+                subjectInfo.others.addWork();;
                 break;
         }
 
@@ -303,71 +318,39 @@ public class SubjectInfo extends AppCompatActivity implements AdapterView.OnItem
         spinner.setOnItemSelectedListener(this);
     }
 
-    /*
-    //обработчик добавления новой работы
-    public void addOnClick(View view) {
-        switch (view.getTag().toString()) {
-            case "loadLab":
-                addWorkRow(labsCount + 1, 0, labValues, R.id.activity_subject_info_ll_labs_main, getResources().getString(R.string.Lab), Types.lab, null);
-                labsCount++;
-                labsHeadText.setVisibility(View.VISIBLE);
-                break;
-            case "loadIHW":
-                addWorkRow(ihwCount + 1, 0, ihwValues, R.id.activity_subject_info_ll_ihw_main, getResources().getString(R.string.IHW), Types.ihw, null);
-                ihwCount++;
-                ihwHeadText.setVisibility(View.VISIBLE);
-                break;
-            case "loadOther":
-                addWorkRow(otherCount + 1, 0, otherValues, R.id.activity_subject_info_ll_other_main, getResources().getString(R.string.other), Types.other, null);
-                otherCount++;
-                otherHeadText.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
-    //обработчик удаление работы
-    public void removeOnClick(View view) {
-        switch (view.getTag().toString()) {
-            case "removeLab":
-                if (labsCount > 0) {
-                    removeWorkRow(R.id.activity_subject_info_ll_labs_main, labsCount, labValues);
-                    --labsCount;
-                }
-                if (labsCount == 0) labsHeadText.setVisibility(View.GONE);
-                break;
-            case "removeIHW":
-                if (ihwCount > 0) {
-                    removeWorkRow(R.id.activity_subject_info_ll_ihw_main, ihwCount, ihwValues);
-                    --ihwCount;
-                }
-                if (ihwCount == 0) ihwHeadText.setVisibility(View.GONE);
-                break;
-            case "removeOther":
-                if (otherCount > 0) {
-                    removeWorkRow(R.id.activity_subject_info_ll_other_main, otherCount, otherValues);
-                    --otherCount;
-                }
-                if (otherCount == 0) otherHeadText.setVisibility(View.GONE);
-                break;
-        }
-        setProgress();
-    }
-
-
-*/
     @Override
     public void applyText(String text, Types type, int number, Button name) {
         name.setText(text);
     }
 
     /*
+    //удаляем работу
+    private void removeWorkRow(int id, int count, ArrayList<Integer> countValues) {
+        LinearLayout linearLayout = (LinearLayout) findViewById(id);
+        linearLayout.removeViewAt((count * 2) - 1); //удаляем пробел (последняя позиция)
+        linearLayout.removeViewAt((count * 2) - 2); //удаляем TableRow с кнопками лабы (предпоследняя позиция)
+        countValues.remove(count - 1);
+    }
+
     //режим добавление\удаления работ
     public void refactorOnClick(View view) {
         for (int i = 0; i < tableRows.length; ++i)
-            changeState(mGetId(tableRows[i]), isClicked);
+            changeState(mGetTableRowId(tableRows[i]), isClicked);
         isClicked = !isClicked;
     }
     */
+
+    //меняем режим  добавление\удаления работ
+    private void changeState(TableRow tableRow, boolean state) {
+        if (state) tableRow.setVisibility(View.GONE);
+        else tableRow.setVisibility(View.VISIBLE);
+    }
+
+    //получение view TableRow по id
+    private TableRow mGetTableRowId(int id) {
+        return findViewById(id);
+    }
+
     private void mGetTeacherId(int id){
         if(id!=0) teacherIds.add(id);
     }

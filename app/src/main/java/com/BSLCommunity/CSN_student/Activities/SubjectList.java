@@ -238,21 +238,21 @@ public class SubjectList extends AppCompatActivity {
 
 
         for (int i = 0; i < subjectsInfo.subjectInfo.length; ++i) {
+
             int subjectComplete = 0, subjectAllWork;
 
-
             // Считаем сколько он выполнил лабораторных, ИДЗ, других дел
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].labsCount; ++j)
-                if (subjectsInfo.subjectInfo[i].labValues.get(j) == 6) subjectComplete++;
+            for (int j = 0; j < subjectsInfo.subjectInfo[i].labs.count; ++j)
+                if (subjectsInfo.subjectInfo[i].labs.values.get(j) == 6) subjectComplete++;
 
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].ihwCount; ++j)
-                if (subjectsInfo.subjectInfo[i].ihwValues.get(j) == 6) subjectComplete++;
+            for (int j = 0; j < subjectsInfo.subjectInfo[i].ihw.count; ++j)
+                if (subjectsInfo.subjectInfo[i].ihw.values.get(j) == 6) subjectComplete++;
 
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].otherCount; ++j)
-                if (subjectsInfo.subjectInfo[i].otherValues.get(j) == 6) subjectComplete++;
+            for (int j = 0; j < subjectsInfo.subjectInfo[i].others.count; ++j)
+                if (subjectsInfo.subjectInfo[i].others.values.get(j) == 6) subjectComplete++;
 
             // Считаем сколько всего предстоит работы пользователю
-            subjectAllWork = (subjectsInfo.subjectInfo[i].labsCount + subjectsInfo.subjectInfo[i].ihwCount + subjectsInfo.subjectInfo[i].otherCount);
+            subjectAllWork = (subjectsInfo.subjectInfo[i].labs.count + subjectsInfo.subjectInfo[i].ihw.count + subjectsInfo.subjectInfo[i].others.count);
 
             // Считаем процент выполненной работы студент за дисциплину
             progresses[i] = subjectComplete != 0 ? subjectComplete * 100 / (subjectAllWork) : 0;

@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.Main;
@@ -12,18 +11,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +30,33 @@ public class SubjectsInfo {
 
     public static class SubjectInfo {
         public int subjectValue;
-        public int[] counts;
-        public int[][] values;
-        public String[][] names;
+
+        public class Work {
+            public int count;
+            public ArrayList<Integer> values;
+            public ArrayList<String> names;
+            public ArrayList<Integer> marks;
+
+            public Work() {
+                values = new ArrayList<Integer>();
+                names = new ArrayList<String>();
+                marks = new ArrayList<Integer>();
+            }
+
+            public void addWork() {
+                ++count;
+                values.add(0);
+                names.add("");
+                marks.add(0);
+            }
+        }
+        public Work labs, ihw, others;
+
+        public SubjectInfo() {
+            labs = new Work();
+            ihw = new Work();
+            others = new Work();
+        }
     }
 
     public static SubjectsInfo getInstance(Context context) {
@@ -51,20 +72,15 @@ public class SubjectsInfo {
             instance = new SubjectsInfo();
 
             instance.subjectInfo = new SubjectInfo[Subjects.subjectsList.length];
-            for (int i = 0; i < Subjects.subjectsList.length; ++i){
+            for (int i = 0; i < Subjects.subjectsList.length; ++i)
                 instance.subjectInfo[i] = new SubjectInfo();
-                instance.subjectInfo[i].counts = new int[3];
-                instance.subjectInfo[i].values = new int[3][];
-                instance.subjectInfo[i].names = new String[3][];
-            }
 
             //загрузка данных
-            String JSONstring = JSONHelper.read(context, FILE_NAME);
-            if (JSONstring != null && !JSONstring.equals("") && !JSONstring.equals("NOT FOUND")) {
+            String JSONString = JSONHelper.read(context, FILE_NAME);
+            if (!JSONString.equals("NOT FOUND")) {
                 Gson gson = new Gson();
-                instance.subjectInfo = gson.fromJson(JSONstring, SubjectInfo[].class);
+                instance.subjectInfo = gson.fromJson(JSONString, SubjectInfo[].class);
             }
-
 
             return instance;
         } catch (Exception e) {
@@ -78,29 +94,16 @@ public class SubjectsInfo {
         instance = null;
     }
 
-    public void saveData(int subjectId, int subjectValue, int types_count, ArrayList< ArrayList<Integer>> values, ArrayList< ArrayList<Button>> names, int counts[]) {
-        SubjectInfo subjectInfo = instance.subjectInfo[subjectId];
-
-        subjectInfo.subjectValue = subjectValue;
-
-        for(int i=0;i<types_count;++i){
-            subjectInfo.counts[i] = counts[i];
-            subjectInfo.values[i] = new int[counts[i]];
-            subjectInfo.names[i] = new String[counts[i]];
-
-            for (int j = 0; j < counts[i]; ++j) {
-                subjectInfo.values[i][j] = values.get(i).get(j);
-                subjectInfo.names[i][j] = names.get(i).get(j).getText().toString();
-            }
-        }
-    }
-
     //сохраням данный в JSON файл
-    public void saveDataToFile(Context context) throws JSONException {
+    public void save(Context context) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(subjectInfo);
         JSONHelper.create(context, FILE_NAME, jsonString);
-        updateRating(context);
+        try {
+            updateRating(context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void updateRating(final Context context) throws JSONException {
@@ -108,8 +111,7 @@ public class SubjectsInfo {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String url = Main.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
-        JsonArrayRequest request = new JsonArrayRequest
-                (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                     }

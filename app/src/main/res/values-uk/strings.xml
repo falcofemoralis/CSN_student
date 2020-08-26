@@ -31,10 +31,6 @@
     <string name="title_activity_settings">Налаштування</string>
     <string name="group_title">Група</string>
     <string name="Base_settings">Налаштування юзера</string>
-    <string-array name="group_arrays">
-        <item>КНТ-518</item>
-        <item>КНТ-528</item>
-    </string-array>
     <string name="group_prompt"> Виберіть групу</string>
     <string name="timeUntil">Кінець пари</string>
     <string name="start">Початок</string>
@@ -70,15 +66,7 @@
     <string name="test_exam">Залік/Іспит</string>
     <string name="diff_exam">Діфф.залік</string>
     <string name="group">Група</string>
-    <string name="IHW">ІДЗ</string>
-    <string-array name="subjects_values">
-        <item>Алгоритми та методи обчислень</item>
-        <item>Архітектура комп᾿ютерів</item>
-        <item>Комп᾿ютерна схемотехніка</item>
-        <item>Організація баз данних</item>
-        <item>Основи безпеки життєдіяльності</item>
-        <item>Сучасні методи програмування</item>
-    </string-array>
+    <string name="ihw">ІДЗ</string>
     <string name="home_screen">Головний екран</string>
     <string name="timer">Таймер</string>
     <string name="account_exit">Вийти з акаунту</string>

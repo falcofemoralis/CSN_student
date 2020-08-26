@@ -19,7 +19,7 @@ import com.BSLCommunity.CSN_student.Activities.Schedule.Schedule;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
-import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
+import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.Objects.User;
@@ -38,7 +38,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://a0459938.xsph.ru/";
+    public static String MAIN_URL = "http://192.168.1.3/";
     public static String FILE_NAME = "data_disc";
     public static String GROUP_FILE_NAME = "groups";
 
@@ -85,6 +85,12 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        Subjects.downloadFromServer(getApplicationContext(), new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                return null;
+            }
+        });
 
 
     }

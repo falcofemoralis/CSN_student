@@ -1,20 +1,19 @@
 package com.BSLCommunity.CSN_student.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
@@ -82,7 +81,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         STYLE_GREEN = getResources().getDrawable(R.drawable.text_but_rating_style_green);
         STYLE_RED = getResources().getDrawable(R.drawable.text_but_rating_style_red);
 
-        mainLayout = findViewById(R.id.activity_subject_list_ll_main);
+        //mainLayout = findViewById(R.id.activity_subject_list_ll_main);
         table = findViewById(R.id.table);
 
         //тут береться предмет со спиннера
@@ -225,7 +224,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 }
 
                 if (userL.idz >= 0) {
-                    idz.setText("  " + getResources().getString(R.string.IHW) + "  ");
+                    idz.setText("  " + getResources().getString(R.string.ihw) + "  ");
                     idz.setTextColor(COLOR_WHITE);
                     idz.setTextSize(TextSizeHeader);
                     idz.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

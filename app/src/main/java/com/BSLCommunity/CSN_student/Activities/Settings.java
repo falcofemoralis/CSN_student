@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.Activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Objects.Groups;
+import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
@@ -175,9 +177,10 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
                 // Удаление данных
                 User.deleteUser();
                 SubjectsInfo.deleteSubjects(getApplicationContext());
-                Groups.groupsLists.clear();
                 Groups.delete(getApplicationContext());
+                Subjects.delete(getApplicationContext());
 
+                startActivity(new Intent(getApplicationContext(), Login.class));
                 Toast.makeText(Settings.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();
             }

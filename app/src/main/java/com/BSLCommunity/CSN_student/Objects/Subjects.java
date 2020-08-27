@@ -32,8 +32,22 @@ public class Subjects {
     }
     public static SubjectsList[] subjectsList;
 
-    // Инциализация (не готово)
-    public static void init(Context context, int course, final Callable<Void>... callBacks) {}
+    // Инциализация
+    public static void init(Context context, final Callable<Void> callBacks) {
+
+        if (subjectsList != null)
+            return;
+
+        String response = JSONHelper.read(context, DATA_FILE_NAME);
+
+        if (response.equals("NOT FOUND")) {
+            downloadFromServer(context, callBacks);
+            return;
+        }
+
+        Gson gson = new Gson();
+        subjectsList = gson.fromJson(response, SubjectsList[].class);
+    }
 
     /* Загрузка данных о дисциплине с сервера
      * Параметры:
@@ -55,9 +69,14 @@ public class Subjects {
                     e.printStackTrace();
                 }
 
-                for (int i = 0; i < subjectsList.length; ++i)
-                    downloadImageFromServer(context, subjectsList[i], callback);
+                // Начинаем скачивание изображений
+                downloadImageFromServer(context, 0);
 
+                try {
+                    callback.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -81,44 +100,36 @@ public class Subjects {
         requestQueue.add(request);
     }
 
-
     /* Загрузка изображения с сервера (формат Bitmap)
     * Параметры:
     * context - контекст приложения или активити
     * subject - объект дисциплина, из него берется название изображени
     * callback - дальнейшие действия которые необходимо будет выполнить после запроса
     * */
-    public static void downloadImageFromServer(final Context context, final SubjectsList subject, final Callable<Void> callback) {
+    public static void downloadImageFromServer(final Context context, final int numSubject) {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = Main.MAIN_URL + String.format("api/subjects?image=%s", subject.Image);
+
+        String url = Main.MAIN_URL + String.format("api/subjects?image=%s", subjectsList[numSubject].Image);
         ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
 
             @Override
             public void onResponse(Bitmap response) {
-                saveImage(new BitmapDrawable(response), subject.Image, context);
-                try {
-                    callback.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                saveImage(new BitmapDrawable(response), subjectsList[numSubject].Image, context);
+                // Если изображение не последней дисциплины - скачивается следующее. Сделано в запросе для того чтобы ограничить скорость отправки самих запросов, иначе возникают проблемы
+                // Временный вариант, есть более умные способы ограничивать частоту запросов
+                if (subjectsList.length - 1 != numSubject)
+                    downloadImageFromServer(context, numSubject + 1);
             }
         }, 0, 0, null, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
-
-                try {
-                    callback.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Toast.makeText(context, "image not found", Toast.LENGTH_SHORT).show();
             }
         });
 
         requestQueue.add(imageRequest);
     }
-
 
     /* Загрузка изображения с устройства
      * Параметры:
@@ -163,5 +174,21 @@ public class Subjects {
             Toast.makeText(context, nameImage + " can't save", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    // Удаление данных
+    public static void delete(Context context) {
+        // Удаление файла с информацией о дисциплинах
+        JSONHelper.delete(context, DATA_FILE_NAME);
+
+        // Удаление всех изображений
+        for (int i = 0; i < subjectsList.length; ++i) {
+            File imageFile = new File(context.getDir("images", context.MODE_PRIVATE) + "/" + subjectsList[i].Image);
+
+             if (imageFile.exists())
+                imageFile.delete();
+        }
+
+        subjectsList = null;
     }
 }

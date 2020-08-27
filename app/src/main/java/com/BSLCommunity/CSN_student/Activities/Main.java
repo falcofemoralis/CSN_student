@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -27,6 +29,8 @@ import com.BSLCommunity.CSN_student.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -38,7 +42,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://192.168.1.3/";
+    public static String MAIN_URL = "http://a0459938.xsph.ru/";
     public static String FILE_NAME = "data_disc";
     public static String GROUP_FILE_NAME = "groups";
 
@@ -60,6 +64,12 @@ public class Main extends AppCompatActivity {
         if (!is_registered) {
             startActivity(new Intent(this, Login.class));
             return;
+        } else {
+            TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
+            TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
+
+            courseTextView.setText(String.valueOf(User.getInstance().course) + " Course");
+            groupTextView.setText(User.getInstance().nameGroup + " Group");
         }
 
         // Скачиваем все необходимые апдейт листы для проверки актуальности данных и проверяем данные
@@ -97,8 +107,6 @@ public class Main extends AppCompatActivity {
                 return null;
             }
         });
-
-
     }
 
     public void OnClick(View view) {

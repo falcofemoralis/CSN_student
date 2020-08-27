@@ -28,4 +28,8 @@
     <color name="passed_without_report">#9ef0ae</color>
     <color name="passed_with_report">#95e35e</color>
     <color name="test_color_text">#ffffff</color>
+    <color name="new_dark_color">#000f2a</color>
+    <color name="main_activity_icon_color1">#304ffe</color>
+    <color name="main_activity_icon_color2">#21c5df</color>
+    <color name="main_activity_icon_color3">#fb3038</color>
 </resources>

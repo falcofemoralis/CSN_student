@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +34,14 @@ import java.util.concurrent.Callable;
 // Форма регистрации пользователя
 public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     long id; //выбранный код группы со спиннера
+    ProgressBar progressBar; //анимация загрузки в спиннере групп
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        progressBar = (ProgressBar) findViewById(R.id.activity_registration_pb_groups);
+        progressBar.setIndeterminateDrawable(new ThreeBounce());
         createCourseSpinner();
         createClickableSpan();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -65,6 +72,8 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
         List<String> listAdapter = new ArrayList<>();
         if (Groups.groupsLists.size() != 0) {
+            progressBar.setVisibility(View.GONE);
+
             //добавляем в массив из класса Groups группы
             for (int j = 0; j < Groups.groupsLists.size(); ++j)
                 listAdapter.add(Groups.groupsLists.get(j).GroupName);

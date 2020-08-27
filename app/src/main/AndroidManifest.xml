@@ -13,21 +13,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".Activities.Main"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/MainActivityActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Activities.Registration"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/TransparentActivityActionBar"></activity>
         <activity
             android:name=".Activities.Login"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/TransparentActivityActionBar"></activity>
         <activity
             android:name=".Activities.Schedule.Schedule"
             android:theme="@style/NoActionBar"></activity>

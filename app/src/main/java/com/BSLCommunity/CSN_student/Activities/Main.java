@@ -60,6 +60,18 @@ public class Main extends AppCompatActivity {
 
         setSettingsFile(this);
 
+        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings.KEY_IS_REGISTERED, false);
+        if (!is_registered) {
+            startActivity(new Intent(this, Login.class));
+            return;
+        } else {
+            TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
+            TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
+
+            courseTextView.setText(String.valueOf(User.getInstance().course) + " Course");
+            groupTextView.setText(User.getInstance().nameGroup + " Group");
+        }
+
         // Скачиваем все необходимые апдейт листы для проверки актуальности данных и проверяем данные
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
             @Override
@@ -89,7 +101,7 @@ public class Main extends AppCompatActivity {
             }
         });
 
-        Subjects.downloadFromServer(getApplicationContext(), new Callable<Void>() {
+        Subjects.init(getApplicationContext(), new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 return null;
@@ -126,16 +138,6 @@ public class Main extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         timer.checkTimer(TimeUntil, Time, getResources());
-
-        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings.KEY_IS_REGISTERED, false);
-        if (!is_registered) startActivity(new Intent(this, Login.class));
-        else {
-            TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
-            TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
-
-            courseTextView.setText(String.valueOf(User.getInstance().course) + " Course");
-            groupTextView.setText(User.getInstance().nameGroup + " Group");
-        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -13,6 +14,8 @@ import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 
 import org.json.JSONObject;
 
@@ -35,12 +38,16 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     int[] idElements; // id сущностей в спиннере (в порядке расположения их в спиннере)
     int selectedItemId; // ID выбранного элемента в спиннере
 
+    ProgressBar progressBar; //анимация загрузки в спиннере
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
-
+        progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
+        Sprite iIndeterminateDrawable = new ThreeBounce();
+        iIndeterminateDrawable.setColor(getColor(R.color.background));
+        progressBar.setIndeterminateDrawable(iIndeterminateDrawable);
         if (getIntent().getExtras().getString("typeSchedule").equals("Teachers"))
             entity = "teachers";
         else
@@ -62,6 +69,8 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
 
             //создаем лист групп
             if (Teachers.teacherLists.size() != 0) {
+                progressBar.setVisibility(View.GONE);
+
                 //добавляем в массив из класса Groups группы
                 idElements = new int[Teachers.teacherLists.size()];
                 for (int j = 0; j < Teachers.teacherLists.size(); ++j) {
@@ -76,7 +85,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                 selectFirst = 0;
             } else {
                 //в том случае если групп по курсу нету
-                listAdapter.add("No teachers");
+              //  listAdapter.add("No teachers");
             }
 
         }
@@ -94,7 +103,7 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                 }
             } else {
                 //в том случае если групп по курсу нету
-                listAdapter.add("No groups");
+               // listAdapter.add("No groups");
             }
         }
 
@@ -110,7 +119,11 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         selectedItemId = (int)id;
-        setSchedule(idElements[selectedItemId]);
+        try {
+            setSchedule(idElements[selectedItemId]);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
     }
 
     //нужен для реализации интерфейса AdapterView.OnItemSelectedListener

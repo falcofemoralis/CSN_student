@@ -82,8 +82,6 @@ public class Groups {
                 }
             }
         } catch (Exception ex) {
-            // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
-            return;
         }
     }
 
@@ -206,6 +204,7 @@ public class Groups {
 
     public static void delete(final Context appContext) {
         JSONHelper.delete(appContext, DATA_FILE_NAME);
+        groupsLists.clear();
     }
 
 }

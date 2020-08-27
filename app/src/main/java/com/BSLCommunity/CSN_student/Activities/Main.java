@@ -29,6 +29,8 @@ import com.BSLCommunity.CSN_student.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -40,7 +42,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class Main extends AppCompatActivity {
-    public static String MAIN_URL = "http://192.168.1.3/";
+    public static String MAIN_URL = "http://a0459938.xsph.ru/";
     public static String FILE_NAME = "data_disc";
     public static String GROUP_FILE_NAME = "groups";
 
@@ -127,7 +129,13 @@ public class Main extends AppCompatActivity {
 
         Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings.KEY_IS_REGISTERED, false);
         if (!is_registered) startActivity(new Intent(this, Login.class));
-        else return;
+        else {
+            TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
+            TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
+
+            courseTextView.setText(String.valueOf(User.getInstance().course) + " Course");
+            groupTextView.setText(User.getInstance().nameGroup + " Group");
+        }
     }
 
     @Override

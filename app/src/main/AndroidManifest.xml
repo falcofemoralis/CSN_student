@@ -26,10 +26,10 @@
 
         <activity
             android:name=".Activities.Registration"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/TransparentActivityActionBar"></activity>
         <activity
             android:name=".Activities.Login"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/TransparentActivityActionBar"></activity>
         <activity
             android:name=".Activities.Schedule.Schedule"
             android:theme="@style/NoActionBar"></activity>

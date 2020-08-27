@@ -19,4 +19,11 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="TransparentActivityActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/new_dark_color</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
 </resources>

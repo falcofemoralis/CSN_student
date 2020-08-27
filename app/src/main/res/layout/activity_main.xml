@@ -37,10 +37,12 @@
                     android:layout_width="187dp"
                     android:layout_height="48dp"
                     android:background="@drawable/activity_main_text"
+                    android:elevation="10dp"
                     android:gravity="center"
                     android:text="@string/timeUntil"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp" />
 
                 <TextView
@@ -48,9 +50,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@drawable/activity_main_text"
+                    android:elevation="10dp"
                     android:gravity="center"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -67,7 +71,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/activity_main_tv_course2"
+                    android:id="@+id/activity_main_tv_course"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -78,7 +82,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/activity_main_tv_course"
+                    android:id="@+id/activity_main_tv_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -106,6 +110,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_main_button"
                     android:drawableTop="@drawable/ic_subjects_schedule"
+                    android:elevation="10dp"
                     android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
@@ -130,12 +135,15 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_main_button"
                     android:drawableTop="@drawable/ic_teacher_schedule"
+                    android:elevation="10dp"
                     android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
                     android:text="@string/Teachers_schedule"
-                    android:textColor="#FFFFFF"></Button>
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"></Button>
 
             </TableRow>
 
@@ -157,12 +165,15 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_main_button"
                     android:drawableTop="@drawable/ic_subjects"
+                    android:elevation="10dp"
                     android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
                     android:text="Subjects"
-                    android:textColor="#FFFFFF">
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp">
 
                 </Button>
 
@@ -179,12 +190,15 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_main_button"
                     android:drawableTop="@drawable/ic_rating"
+                    android:elevation="10dp"
                     android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
                     android:text="@string/Rating"
-                    android:textColor="#FFFFFF">
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp">
 
                 </Button>
 
@@ -208,12 +222,15 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_main_button"
                     android:drawableTop="@drawable/ic_settings"
+                    android:elevation="10dp"
                     android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
                     android:text="Settings"
-                    android:textColor="#FFFFFF">
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp">
 
                 </Button>
 
@@ -227,16 +244,24 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:elevation="10dp"
                     android:background="#00FFFFFF"
                     android:paddingTop="20dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
                     android:text="@string/Rating"
-                    android:textColor="#00FFFFFF">
+                    android:textAllCaps="false"
+                    android:textColor="#00FFFFFF"
+                    android:textSize="17sp">
 
                 </Button>
 
             </TableRow>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="21dp"
+                android:layout_weight="0.1" />
 
         </LinearLayout>
     </ScrollView>

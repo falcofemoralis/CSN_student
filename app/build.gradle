@@ -38,4 +38,6 @@ dependencies {
     implementation "androidx.security:security-crypto:1.1.0-alpha01"
     //noinspection GradleCompatible
     implementation 'com.android.support:design:29.0.0'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
 }

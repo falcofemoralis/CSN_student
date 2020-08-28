@@ -32,4 +32,5 @@
     <color name="main_activity_icon_color1">#304ffe</color>
     <color name="main_activity_icon_color2">#21c5df</color>
     <color name="main_activity_icon_color3">#fb3038</color>
+    <color name="main_activity_color1">#304ffe</color>
 </resources>

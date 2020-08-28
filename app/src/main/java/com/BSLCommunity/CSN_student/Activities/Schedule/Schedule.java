@@ -48,6 +48,10 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         Sprite iIndeterminateDrawable = new ThreeBounce();
         iIndeterminateDrawable.setColor(getColor(R.color.background));
         progressBar.setIndeterminateDrawable(iIndeterminateDrawable);
+
+        spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
+        spinner.setEnabled(false);
+
         if (getIntent().getExtras().getString("typeSchedule").equals("Teachers"))
             entity = "teachers";
         else
@@ -59,11 +63,10 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
 
     //создание спиннера групп
     protected void createSpinner() {
-        spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
-
         User user = User.getInstance(); // Данные пользователя
         int selectFirst = 0; // Для выбора расписания которое будет показано при загрузке самого окна
         List<String> listAdapter = new ArrayList<>(); // Список строк в спиннере
+        ArrayAdapter<String> dataAdapter = null;
 
         if (entity.equals("teachers")) {
 
@@ -81,6 +84,11 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                     catch (Exception e) {}
                     idElements[j] = Teachers.teacherLists.get(j).id;
                 }
+                spinner.setPrompt(getString(R.string.teachers_prompt));
+                spinner.setEnabled(true);
+                dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
+                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+                spinner.setAdapter(dataAdapter);
                 // Выбор первого учителя не имеет смысла
                 selectFirst = 0;
             } else {
@@ -92,6 +100,8 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         else {
             //создаем лист групп
             if (Groups.groupsLists.size() != 0) {
+                progressBar.setVisibility(View.GONE);
+
                 //добавляем в массив из класса Groups группы
                 idElements = new int[Groups.groupsLists.size()];
                 for (int j = 0; j < Groups.groupsLists.size(); ++j) {
@@ -101,6 +111,11 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
                     if (user.groupId == idElements[j])
                         selectFirst = j;
                 }
+                spinner.setPrompt(getString(R.string.group_prompt));
+                spinner.setEnabled(true);
+                dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_groups_layout, listAdapter);
+                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+                spinner.setAdapter(dataAdapter);
             } else {
                 //в том случае если групп по курсу нету
                // listAdapter.add("No groups");
@@ -108,9 +123,6 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
         }
 
         //устанавливаем спинер
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
-        spinner.setAdapter(dataAdapter);
         spinner.setSelection(selectFirst);
         spinner.setOnItemSelectedListener(this);
     }
@@ -137,7 +149,11 @@ public class Schedule extends AppCompatActivity implements AdapterView.OnItemSel
             type_week.setText(getResources().getString(R.string.numerator));
         else
             type_week.setText(getResources().getString(R.string.denominator));
-        setSchedule(idElements[selectedItemId]);
+        try {
+            setSchedule(idElements[selectedItemId]);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
     }
 
     //получение необходимых полей с активити расписание

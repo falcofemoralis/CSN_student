@@ -1,11 +1,11 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/background</item>
         <item name="colorPrimaryDark">@color/StBar</item>
         <item name="colorAccent">@color/mainColor2</item>
     </style>
+
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowLightStatusBar">false</item>
         <item name="colorPrimary">@color/white</item>
@@ -19,11 +19,23 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="TransparentActivityActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ScheduleActivityActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimary">@color/StBar</item>
+        <item name="colorPrimaryDark">@color/StBar</item>
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
+    <style name="TransparentActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/new_dark_color</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="TransparentStatusBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="TransparentNavigationBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
 </resources>

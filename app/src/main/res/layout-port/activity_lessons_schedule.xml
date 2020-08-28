@@ -4,8 +4,11 @@
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:paddingLeft="15dp"
+    android:paddingTop="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,19 +39,19 @@
                 <Spinner
                     android:id="@+id/activity_lessons_schedule_sp_main"
                     style="@style/Widget.AppCompat.Spinner.Underlined"
-                    android:layout_width="138dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="17dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginEnd="-1dp"
                     android:layout_weight="0.3"
                     android:background="@drawable/text_but_schedule_style"
                     android:gravity="center_horizontal|center_vertical"
-                    android:prompt="@string/group_prompt"
-                    android:spinnerMode="dropdown"
+                    android:spinnerMode="dialog"
                     android:textAlignment="center"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="visible" />
 
                 <ProgressBar
                     android:id="@+id/activity_lessons_schedule_pb_main"
@@ -59,9 +62,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="30dp"
+                    android:fitsSystemWindows="true"
                     android:indeterminate="true"
-                    android:indeterminateTint="@color/background"
-                    android:fitsSystemWindows="true" />
+                    android:indeterminateTint="@color/background" />
 
             </RelativeLayout>
 
@@ -72,14 +75,14 @@
 
             <Button
                 android:id="@+id/activity_lessons_schedule_bt_weekType"
-                android:layout_width="200dp"
+                android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:background="@drawable/text_but_schedule_style"
                 android:onClick="changeTypeWeek"
                 android:text="@string/numerator"
                 android:textColor="@color/background"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

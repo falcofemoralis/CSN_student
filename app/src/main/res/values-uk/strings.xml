@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">CSN student</string>
-    <string name="Alg_and_metod">Алгоритми та методи обчислень</string>
-    <string name="Arch_Comp">Архітектура комп᾿ютерів</string>
-    <string name="CompScheme">Комп᾿ютерна схемотехніка</string>
-    <string name="DataBase">Організація баз данних</string>
-    <string name="OBG">Основи безпеки життєдіяльності</string>
-    <string name="S_metod_prog">Сучасні методи програмування</string>
     <string name="Overall">Загалом</string>
-    <string name="course_2">2 курс</string>
     <string name="subjectsInfo">Дисципліни :</string>
     <string name="lector">Викладач:</string>
     <string name="valueOfSubject">Цінність :</string>
@@ -58,11 +51,6 @@
     <string name="successfully_registration">Успішна реєстрація</string>
     <string name="test">Залік</string>
     <string name="Lab">Лабороторна</string>
-    <string name="teacher_AMO">Кудерметов Равіль Камілович</string>
-    <string name="teacher_CA">Скрупський Степан Юрійович</string>
-    <string name="teacher_CS">Сгадов Сергій Олександрович</string>
-    <string name="teacher_OBD">Паромова Тетяна Олександрівна</string>
-    <string name="teacher_OBG">Скуйбіда Олена Леонідівна</string>
     <string name="test_exam">Залік/Іспит</string>
     <string name="diff_exam">Діфф.залік</string>
     <string name="group">Група</string>

@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">CSN student</string>
-    <string name="Alg_and_metod">Алгоритмы и методы вычислений</string>
-    <string name="Arch_Comp"> Архитектура компьютеров</string>
-    <string name="CompScheme">Компьютерная схемотехника</string>
-    <string name="DataBase">Организация баз данных</string>
-    <string name="OBG">Основы безопасности жизнедеятельности</string>
-    <string name="S_metod_prog">Современные методы программирования</string>
     <string name="Overall">В общем</string>
-    <string name="course_2">2 курс</string>
     <string name="subjectsInfo">Дисциплины :</string>
     <string name="lector">Преподаватель:</string>
     <string name="valueOfSubject">Ценность  :</string>
@@ -58,11 +51,6 @@
     <string name="successfully_registration">Успешная регистрация</string>
     <string name="test">Зачет</string>
     <string name="Lab">Лабораторная</string>
-    <string name="teacher_AMO">Кудерметов Равиль Камилович</string>
-    <string name="teacher_CA">Скрупський Степан Юрьевич</string>
-    <string name="teacher_CS">Сгадов Сергей Александрович</string>
-    <string name="teacher_OBD">Паромова Татьяна Александровна</string>
-    <string name="teacher_OBG">Скуйбида Елена Леонидовна</string>
     <string name="test_exam">Зачет/Экзамен</string>
     <string name="diff_exam">Дифф.зачет</string>
     <string name="group">Группа</string>

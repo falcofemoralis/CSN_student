@@ -4,7 +4,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.BSLCommunity.CSN_student"
         minSdkVersion 23
@@ -39,5 +39,9 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:design:29.0.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    implementation( 'com.github.thekhaeng:pushdown-anim-click:1.1.1' ){
+        exclude group: 'com.android.support'
+    }
 
 }

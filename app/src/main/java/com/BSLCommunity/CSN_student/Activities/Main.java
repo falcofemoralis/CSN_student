@@ -1,21 +1,34 @@
 package com.BSLCommunity.CSN_student.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.transition.Scene;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionManager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MotionEventCompat;
 
 import com.BSLCommunity.CSN_student.Activities.Schedule.Schedule;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
@@ -28,6 +41,7 @@ import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.thekhaeng.pushdownanim.PushDownAnim;
 
 import org.w3c.dom.Text;
 
@@ -41,7 +55,7 @@ import java.util.concurrent.Callable;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements View.OnTouchListener {
     public static String MAIN_URL = "http://a0459938.xsph.ru/";
     public static String FILE_NAME = "data_disc";
     public static String GROUP_FILE_NAME = "groups";
@@ -49,11 +63,35 @@ public class Main extends AppCompatActivity {
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        /*
+        нужно будет сократить
+        <--------------->
+         */
+        Button subjects_schedule = (Button) findViewById(R.id.activity_main_bt_lessonsShedule);
+        subjects_schedule.setOnTouchListener(this);
+
+        Button teacher_schedule = (Button) findViewById(R.id.activity_main_bt_teachersSchedule);
+        teacher_schedule.setOnTouchListener(this);
+
+        Button subjects = (Button) findViewById(R.id.activity_main_bt_subjects);
+        subjects.setOnTouchListener(this);
+
+        Button rating = (Button) findViewById(R.id.activity_main_bt_rating);
+        rating.setOnTouchListener(this);
+
+        Button settings = (Button) findViewById(R.id.activity_main_bt_settings);
+        settings.setOnTouchListener(this);
+        /*
+        <--------------->
+         */
+
 
         Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
         TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
@@ -109,11 +147,46 @@ public class Main extends AppCompatActivity {
         });
     }
 
-    public void OnClick(View view) {
-        Animation click = AnimationUtils.loadAnimation(this, R.anim.btn_click);
-        view.startAnimation(click);
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
-        Intent intent = null;
+        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN ) {
+            transitionDrawable.startTransition(150);
+            Animation click = AnimationUtils.loadAnimation(Main.this, R.anim.btn_pressed);
+            view.startAnimation(click);
+        }else if(motionEvent.getAction()==MotionEvent.ACTION_UP) {
+
+
+            Intent intent = null;
+            switch (view.getId()) {
+                case R.id.activity_main_bt_subjects:
+                    intent = new Intent(this, SubjectList.class);
+                    break;
+                case R.id.activity_main_bt_rating:
+                    intent = new Intent(this, Rating.class);
+                    break;
+                case R.id.activity_main_bt_lessonsShedule:
+                    intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Groups");
+                    break;
+                case R.id.activity_main_bt_settings:
+                    intent = new Intent(this, Settings.class);
+                    break;
+                case R.id.activity_main_bt_teachersSchedule:
+                    intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
+                    break;
+            }
+            startActivity(intent);
+
+            transitionDrawable.reverseTransition(150);
+            Animation click = AnimationUtils.loadAnimation(Main.this, R.anim.btn_unpressed);
+            view.startAnimation(click);
+        }
+        return true;
+    }
+
+    public void OnClick(View view) {
+      /*  Intent intent = null;
         switch (view.getId()) {
             case R.id.activity_main_bt_subjects:
                 intent = new Intent(this, SubjectList.class);
@@ -131,7 +204,7 @@ public class Main extends AppCompatActivity {
                 intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
                 break;
         }
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     @Override

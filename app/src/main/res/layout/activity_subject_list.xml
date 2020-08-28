@@ -20,9 +20,9 @@
             android:layout_gravity="center"
             android:layout_weight="0.8"
             android:gravity="center"
-            android:text="@string/course_2"
+            android:text="n Course"
             android:textColor="@color/white"
-            android:textSize="25dp"/>
+            android:textSize="25dp" />
 
         <Space
             android:layout_width="match_parent"

@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="@string/course_2"
+                    android:text="n Course"
                     android:textColor="@color/white"
                     android:textSize="35dp"
                     android:textStyle="bold" />
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="КНТ-528 Group"
+                    android:text="n Group"
                     android:textColor="#B6B6B6"
                     android:textSize="18dp" />
             </LinearLayout>

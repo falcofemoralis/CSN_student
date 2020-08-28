@@ -11,7 +11,7 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     android:textColor="@color/background"
     android:textDirection="rtl"
-    android:textSize="14sp">
+    android:textSize="18sp">
 
 
 </CheckedTextView>

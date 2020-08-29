@@ -1,25 +1,21 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
-
-import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 public class LocalData {
-
     // Константы типо объектов хранящихся в локальном хранилище
     public enum TypeData {
         groups,
@@ -35,7 +31,7 @@ public class LocalData {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = Main.MAIN_URL + String.format("api/%s/updateList", entity.toString());
+        String url = MainActivity.MAIN_URL + String.format("api/%s/updateList", entity.toString());
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

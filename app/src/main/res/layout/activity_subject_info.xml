@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/design_v2_background"
+    android:background="@drawable/activity_background"
     android:orientation="vertical">
 
     <ScrollView
@@ -20,13 +20,12 @@
                 android:id="@+id/activity_subject_info_bt_subjectName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/test"
+                android:background="@drawable/activity_button_unpressed"
                 android:gravity="center"
                 android:text="Data Base"
-                android:textColor="@color/test_color_text"/>
+                android:textColor="@color/white" />
 
             <TableLayout
-                android:id="@+id/activity_subject_info_tl_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -40,15 +39,15 @@
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/test"
                         android:layout_weight="0.32"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="Value"
-                        android:textColor="@color/test_color_text"/>
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.06"/>
+                        android:layout_weight="0.06" />
 
 
                     <Spinner
@@ -56,8 +55,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.62"
-                        android:background="@drawable/test"
-                        android:textColor="@color/test_color_text"/>
+                        android:background="@drawable/activity_button_unpressed"
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -70,25 +69,26 @@
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/test"
                         android:layout_weight="0.32"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="Lector"
-                        android:textColor="@color/test_color_text"/>
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.06"/>
+                        android:layout_weight="0.06" />
 
 
                     <Button
                         android:id="@+id/activity_subject_info_bt_lector"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/test"
                         android:layout_weight="0.62"
+                        android:background="@drawable/activity_button_unpressed"
                         android:gravity="center"
-                        android:textColor="@color/test_color_text"/>
+                        android:text=""
+                        android:textColor="@color/white" />
 
 
                 </TableRow>
@@ -103,26 +103,26 @@
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/test"
                         android:layout_weight="0.32"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="@string/practice"
-                        android:textColor="@color/test_color_text"/>
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.06"/>
+                        android:layout_weight="0.06" />
 
 
                     <Button
                         android:id="@+id/activity_subject_info_bt_practice"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/test"
-                        android:layout_weight="0.62"
-                        android:gravity="center"
-                        android:textColor="@color/test_color_text"/>
 
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.62"
+                        android:background="@drawable/activity_button_unpressed"
+                        android:gravity="center"
+                        android:textColor="@color/white" />
 
                 </TableRow>
 
@@ -136,24 +136,24 @@
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/test"
                         android:layout_weight="0.32"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="@string/assistant"
-                        android:textColor="@color/test_color_text"/>
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.06"/>
+                        android:layout_weight="0.06" />
 
 
                     <Button
                         android:id="@+id/activity_subject_info_bt_assistant"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/test"
                         android:layout_weight="0.62"
-                        android:textColor="@color/test_color_text"/>
+                        android:background="@drawable/activity_button_unpressed"
+                        android:textColor="@color/white" />
 
 
                 </TableRow>
@@ -173,30 +173,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/design_v2_button"
+                    android:background="@drawable/activity_subject_info_work_button"
+                    android:onClick="openWork"
                     android:text="LABS"
-                    android:textColor="@color/test_color_text"
-                    android:onClick="openWork"/>
+                    android:textColor="@color/white" />
 
                 <TableLayout
                     android:id="@+id/activity_subject_info_tb_labs_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone">
-                </TableLayout>
+                    android:visibility="gone"></TableLayout>
 
                 <Button
                     android:id="@+id/activity_subject_info_bt_add_lab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/design_v2_bt_add_work_element"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
+                    android:background="@drawable/activity_subject_info_addbutton"
+                    android:onClick="addElementWork"
                     android:text="+"
-                    android:visibility="gone"
+                    android:textColor="@color/white"
                     android:textSize="25sp"
-                    android:textColor="@color/test_color_text"
-                    android:onClick="addElementWork"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -209,14 +208,14 @@
                 android:weightSum="1">
 
                 <Button
-                    android:id ="@+id/activity_subject_info_bt_ihw"
+                    android:id="@+id/activity_subject_info_bt_ihw"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:background="@drawable/design_v2_button"
                     android:layout_weight="1"
+                    android:background="@drawable/activity_subject_info_work_button"
+                    android:onClick="openWork"
                     android:text="IHW"
-                    android:textColor="@color/test_color_text"
-                    android:onClick="openWork"/>
+                    android:textColor="@color/white" />
 
                 <TableLayout
                     android:id="@+id/activity_subject_info_tb_ihw_data"
@@ -230,14 +229,14 @@
                     android:id="@+id/activity_subject_info_bt_add_ihw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/design_v2_bt_add_work_element"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
+                    android:background="@drawable/activity_subject_info_addbutton"
+                    android:onClick="addElementWork"
                     android:text="+"
+                    android:textColor="@color/white"
                     android:textSize="25dp"
-                    android:visibility="gone"
-                    android:textColor="@color/test_color_text"
-                    android:onClick="addElementWork"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -250,14 +249,14 @@
                 android:weightSum="1">
 
                 <Button
-                    android:id ="@+id/activity_subject_info_bt_other"
+                    android:id="@+id/activity_subject_info_bt_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/design_v2_button"
                     android:layout_weight="1"
+                    android:background="@drawable/activity_subject_info_work_button"
+                    android:onClick="openWork"
                     android:text="Other"
-                    android:textColor="@color/test_color_text"
-                    android:onClick="openWork"/>
+                    android:textColor="@color/white" />
 
                 <TableLayout
                     android:id="@+id/activity_subject_info_tb_other_data"
@@ -271,14 +270,14 @@
                     android:id="@+id/activity_subject_info_bt_add_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/design_v2_bt_add_work_element"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
+                    android:background="@drawable/activity_subject_info_addbutton"
+                    android:onClick="addElementWork"
                     android:text="+"
+                    android:textColor="@color/white"
                     android:textSize="25dp"
-                    android:visibility="gone"
-                    android:textColor="@color/test_color_text"
-                    android:onClick="addElementWork"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -287,34 +286,32 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/activity_subject_info_ll_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.02"
-        android:background="@drawable/progress"
+        android:layout_weight="0.03"
+        android:background="@drawable/activity_subject_list_bottom"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/activity_subject_info_bt_progress_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:clickable="false"
-            android:text="@string/Overall"
             android:backgroundTint="#00FFFFFF"
+            android:clickable="false"
             android:stateListAnimator="@null"
-            android:textColor="@color/white"/>
+            android:text="@string/Overall"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/activity_subject_info_bt_progress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:clickable="false"
             android:backgroundTint="#00FFFFFF"
+            android:clickable="false"
             android:stateListAnimator="@null"
-            android:textColor="@color/white"
-            android:text="0 %"/>
+            android:text="0 %"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </LinearLayout>

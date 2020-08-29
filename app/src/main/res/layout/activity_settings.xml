@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/activity_background"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".Activities.Settings">
+    tools:context=".Activities.SettingsActivity">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/Base_settings"
-            android:textColor="@color/mb_red"
+            android:textColor="@color/main_color_3"
             android:textSize="18sp" />
 
 
@@ -56,13 +60,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_nickname_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:text="@string/nickname"
-                android:textColor="@color/black"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
             <TextView
@@ -72,6 +75,7 @@
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:text="@string/not_set"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -104,13 +108,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_password_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:text="@string/password"
-                android:textColor="@color/black"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
             <TextView
@@ -121,6 +124,7 @@
                 android:layout_weight="1"
                 android:inputType="textPassword"
                 android:text="@string/not_set"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -152,13 +156,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_group_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:text="@string/group"
-                android:textColor="@color/black"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
             <TextView
@@ -168,6 +171,7 @@
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:text="@string/not_set"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -178,7 +182,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/activity_settings_ll_accountExit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -199,13 +202,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_accountExit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:text="@string/account_exit"
-                android:textColor="@color/black"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -231,7 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/home_screen"
-            android:textColor="@color/mb_red"
+            android:textColor="@color/main_color_3"
             android:textSize="18sp" />
 
 
@@ -240,8 +242,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
     </LinearLayout>
+
     <LinearLayout
-        android:id="@+id/activity_settings_ll_timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -258,14 +260,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_timer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/timer"
-                android:textSize="18sp"
-                android:textColor="@color/black"
+                android:layout_gravity="start"
                 android:layout_weight="1"
-                android:layout_gravity="start" />
+                android:text="@string/timer"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <Space
@@ -276,8 +277,12 @@
         <Switch
             android:id="@+id/activity_settings_sw_timer"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
 
 </LinearLayout>

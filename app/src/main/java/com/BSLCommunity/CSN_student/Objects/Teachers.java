@@ -2,8 +2,7 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 import android.widget.Toast;
-
-import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.android.volley.Request;
@@ -14,10 +13,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,14 +86,14 @@ public class Teachers {
      * */
     public static void downloadFromServer(final Context appContext, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = Main.MAIN_URL + "api/teachers/all";
+        String url = MainActivity.MAIN_URL + "api/teachers/all";
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 //сохраняем группы в файл
-                JSONHelper.create(appContext, Main.GROUP_FILE_NAME, response);
+                JSONHelper.create(appContext, MainActivity.GROUP_FILE_NAME, response);
 
                 //парсим полученный список групп
                 try {
@@ -133,7 +130,7 @@ public class Teachers {
      * */
     public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean saveData, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = Main.MAIN_URL + String.format("api/teachers/%d/schedule", id);
+        String url = MainActivity.MAIN_URL + String.format("api/teachers/%d/schedule", id);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

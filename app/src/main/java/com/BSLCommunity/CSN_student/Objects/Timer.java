@@ -1,20 +1,13 @@
 package com.BSLCommunity.CSN_student.Objects;
 
-
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.BSLCommunity.CSN_student.Activities.Main;
-import com.BSLCommunity.CSN_student.Activities.Settings;
+import com.BSLCommunity.CSN_student.Activities.SettingsActivity;
 import com.BSLCommunity.CSN_student.R;
-
 import java.util.Calendar;
-
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Timer extends AppCompatActivity {
@@ -76,7 +69,7 @@ public class Timer extends AppCompatActivity {
     }
 
     public void checkTimer(TextView TimeUntil, TextView Time, Resources res) {
-        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings.KEY_TIMER_SETTING, true);
+        boolean timer_settings = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
         if (!timer_settings) {
             Time.setVisibility(View.GONE);
             TimeUntil.setVisibility(View.GONE);
@@ -121,7 +114,7 @@ public class Timer extends AppCompatActivity {
     }
 
     public void resetTimer() {
-        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings.KEY_TIMER_SETTING, true);
+        boolean timer_settings = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
         if (timer_settings) start.cancel();
     }
 }

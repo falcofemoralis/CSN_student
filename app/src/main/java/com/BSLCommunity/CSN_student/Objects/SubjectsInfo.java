@@ -2,8 +2,7 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 import android.widget.Toast;
-
-import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,11 +13,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -137,7 +134,7 @@ public class SubjectsInfo {
         final String JSONString = JSONHelper.read(context, FILE_NAME);
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = Main.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
+        String url = MainActivity.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
         JsonArrayRequest request = new JsonArrayRequest (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -160,7 +157,7 @@ public class SubjectsInfo {
     public static void downloadRating(final Context context) throws JSONException {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-        String url = Main.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
+        String url = MainActivity.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

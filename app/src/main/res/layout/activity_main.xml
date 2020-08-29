@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:background="@drawable/activity_main_background"
+    android:background="@drawable/activity_background"
     android:orientation="vertical">
 
     <ScrollView
@@ -15,6 +15,7 @@
         android:layout_weight="100">
 
         <LinearLayout
+            android:id="@+id/activity_main_ll_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
@@ -108,7 +109,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/fade"
+                    android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_subjects_schedule"
                     android:elevation="10dp"
                     android:onClick="OnClick"
@@ -133,7 +134,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/fade"
+                    android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_teacher_schedule"
                     android:elevation="10dp"
                     android:onClick="OnClick"
@@ -163,7 +164,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/fade"
+                    android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_subjects"
                     android:elevation="10dp"
                     android:onClick="OnClick"
@@ -188,7 +189,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/fade"
+                    android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_rating"
                     android:elevation="10dp"
                     android:onClick="OnClick"
@@ -220,7 +221,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/fade"
+                    android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_settings"
                     android:elevation="10dp"
                     android:onClick="OnClick"

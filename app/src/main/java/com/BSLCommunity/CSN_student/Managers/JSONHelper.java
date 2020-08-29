@@ -2,7 +2,6 @@ package com.BSLCommunity.CSN_student.Managers;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;

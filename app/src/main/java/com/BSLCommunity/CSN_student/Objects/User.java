@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
-
-import com.BSLCommunity.CSN_student.Activities.Main;
+import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,13 +13,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 
 // Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
 public class User {
@@ -89,7 +85,7 @@ public class User {
      * */
     public static void login(final Context appContext, final Context activityContext, final String nickName, final String password) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = Main.MAIN_URL + String.format("api/users/login?NickName=%1$s&Password=%2$s", nickName,password);
+        String url = MainActivity.MAIN_URL + String.format("api/users/login?NickName=%1$s&Password=%2$s", nickName,password);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -117,7 +113,7 @@ public class User {
                     SubjectsInfo.downloadRating(appContext);
 
                     //запускаем главное окно
-                    activityContext.startActivity(new Intent(appContext, Main.class));
+                    activityContext.startActivity(new Intent(appContext, MainActivity.class));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(appContext, R.string.no_user, Toast.LENGTH_SHORT).show();
@@ -142,7 +138,7 @@ public class User {
     public static void registration(final Context appContext, final Context activityContext, final String nickName, final String password, final String codeGroup) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = Main.MAIN_URL + "api/users";
+        String url = MainActivity.MAIN_URL + "api/users";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -189,7 +185,7 @@ public class User {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = Main.MAIN_URL + "/api/users/1";
+        String url = MainActivity.MAIN_URL + "/api/users/1";
 
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override

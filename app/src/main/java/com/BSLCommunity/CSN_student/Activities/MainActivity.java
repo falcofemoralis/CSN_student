@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
 
             startActivity(intent);
-            overridePendingTransition(R.anim.popup_context_in, R.anim.alpha);
+            overridePendingTransition(R.anim.popup_context_in, R.anim.no_animation);
 
             transitionDrawable.reverseTransition(150);
             Animation click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed);

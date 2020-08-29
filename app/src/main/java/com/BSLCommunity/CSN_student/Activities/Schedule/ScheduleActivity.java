@@ -44,6 +44,7 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_schedule);
+
         progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
         Sprite iIndeterminateDrawable = new ThreeBounce();
         iIndeterminateDrawable.setColor(getColor(R.color.background));
@@ -202,5 +203,6 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
             for (int j = 0; j < MAX_PAIR; ++j)
                 scheduleTextView[i][j].setText("");
     }
+    
 }
 

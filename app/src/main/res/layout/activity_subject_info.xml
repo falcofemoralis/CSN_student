@@ -86,7 +86,6 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.62"
-                        android:background="@drawable/test"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/test_color_text" />
@@ -118,11 +117,12 @@
                     <Button
                         android:id="@+id/activity_subject_info_bt_practice"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.62"
-                        android:background="@drawable/test"
-                        android:textColor="@color/test_color_text" />
 
+                        android:layout_height="match_parent"
+                        android:background="@drawable/test"
+                        android:layout_weight="0.62"
+                        android:gravity="center"
+                        android:textColor="@color/test_color_text"/>
 
                 </TableRow>
 
@@ -150,9 +150,9 @@
                     <Button
                         android:id="@+id/activity_subject_info_bt_assistant"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.62"
+                        android:layout_height="match_parent"
                         android:background="@drawable/test"
+                        android:layout_weight="0.62"
                         android:textColor="@color/test_color_text" />
 
 

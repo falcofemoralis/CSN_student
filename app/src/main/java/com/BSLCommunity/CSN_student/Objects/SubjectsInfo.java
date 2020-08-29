@@ -31,10 +31,10 @@ public class SubjectsInfo {
         public int subjectValue;
 
         public class Work {
-            public int count; // Количество лабораторных
+            public int count; // Количество работ
             public ArrayList<Integer> values; // Статус выполнения каждой работы
-            public ArrayList<String> names;
-            public ArrayList<Integer> marks;
+            public ArrayList<String> names; // Название каждой работы
+            public ArrayList<Integer> marks; // Оценка за каждую работу
 
             public Work() {
                 values = new ArrayList<Integer>();
@@ -65,6 +65,25 @@ public class SubjectsInfo {
             ihw = new Work();
             others = new Work();
         }
+
+        public int calculateProgress() {
+            final int COMPLETE = 6;
+
+            int subjectComplete = 0;
+
+            // Считаем сколько он выполнил лабораторных, ИДЗ, других дел
+            for (int i = 0; i < labs.count; ++i)
+                if (labs.values.get(i) == COMPLETE) subjectComplete++;
+
+            for (int i = 0; i < ihw.count; ++i)
+                if (ihw.values.get(i) == COMPLETE) subjectComplete++;
+
+            for (int i = 0; i < others.count; ++i)
+                if (others.values.get(i) == COMPLETE) subjectComplete++;
+
+            int sumCount = (labs.count + ihw.count + others.count);
+            return sumCount > 0 ? 100 * subjectComplete / sumCount : 0;
+        }
     }
 
     public static SubjectsInfo getInstance(Context context) {
@@ -76,8 +95,6 @@ public class SubjectsInfo {
 
     private static SubjectsInfo init(Context context) {
         try {
-
-
             // Извлечение локальных данных пользователя
             instance = new SubjectsInfo();
 

@@ -10,10 +10,6 @@
     <string name="start">Start of </string>
     <string name="lesson">pair in</string>
     <string name="first_lesson">Start of 1 pair in </string>
-    <string name="localdata_is_found">Local data found for</string>
-    <string name="get_data_dialog">Get data from server or device?</string>
-    <string name="device">Device</string>
-    <string name="server">Server</string>
     <string name="sign_in">Sign in!</string>
     <string name="login">Login</string>
     <string name="enter_nickname">Enter nickname</string>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_main_background"
+    android:background="@drawable/activity_background"
     android:orientation="vertical">
 
     <ScrollView
@@ -20,10 +20,10 @@
                 android:id="@+id/activity_subject_info_bt_subjectName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/test"
+                android:background="@drawable/activity_button_unpressed"
                 android:gravity="center"
                 android:text="Data Base"
-                android:textColor="@color/test_color_text" />
+                android:textColor="@color/white" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -40,9 +40,9 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.32"
-                        android:background="@drawable/test"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="Value"
-                        android:textColor="@color/test_color_text" />
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
@@ -55,8 +55,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.62"
-                        android:background="@drawable/test"
-                        android:textColor="@color/test_color_text" />
+                        android:background="@drawable/activity_button_unpressed"
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -70,9 +70,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.32"
-                        android:background="@drawable/test"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="Lector"
-                        android:textColor="@color/test_color_text" />
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
@@ -85,10 +85,10 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.62"
-                        android:background="@drawable/test"
+                        android:background="@drawable/activity_button_unpressed"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/test_color_text" />
+                        android:textColor="@color/white" />
 
 
                 </TableRow>
@@ -104,9 +104,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.32"
-                        android:background="@drawable/test"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="@string/practice"
-                        android:textColor="@color/test_color_text" />
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
@@ -119,10 +119,10 @@
                         android:layout_width="0dp"
 
                         android:layout_height="match_parent"
-                        android:background="@drawable/test"
                         android:layout_weight="0.62"
+                        android:background="@drawable/activity_button_unpressed"
                         android:gravity="center"
-                        android:textColor="@color/test_color_text"/>
+                        android:textColor="@color/white" />
 
                 </TableRow>
 
@@ -137,9 +137,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.32"
-                        android:background="@drawable/test"
+                        android:background="@drawable/activity_button_unpressed"
                         android:text="@string/assistant"
-                        android:textColor="@color/test_color_text" />
+                        android:textColor="@color/white" />
 
                     <Space
                         android:layout_width="0dp"
@@ -151,9 +151,9 @@
                         android:id="@+id/activity_subject_info_bt_assistant"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/test"
                         android:layout_weight="0.62"
-                        android:textColor="@color/test_color_text" />
+                        android:background="@drawable/activity_button_unpressed"
+                        android:textColor="@color/white" />
 
 
                 </TableRow>
@@ -173,10 +173,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/subjectinfo_btn"
+                    android:background="@drawable/activity_subject_info_work_button"
                     android:onClick="openWork"
                     android:text="LABS"
-                    android:textColor="@color/test_color_text" />
+                    android:textColor="@color/white" />
 
                 <TableLayout
                     android:id="@+id/activity_subject_info_tb_labs_data"
@@ -190,10 +190,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
-                    android:background="@drawable/design_v2_bt_add_work_element"
+                    android:background="@drawable/activity_subject_info_addbutton"
                     android:onClick="addElementWork"
                     android:text="+"
-                    android:textColor="@color/test_color_text"
+                    android:textColor="@color/white"
                     android:textSize="25sp"
                     android:visibility="gone" />
 
@@ -212,10 +212,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/subjectinfo_btn"
+                    android:background="@drawable/activity_subject_info_work_button"
                     android:onClick="openWork"
                     android:text="IHW"
-                    android:textColor="@color/test_color_text" />
+                    android:textColor="@color/white" />
 
                 <TableLayout
                     android:id="@+id/activity_subject_info_tb_ihw_data"
@@ -231,10 +231,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
-                    android:background="@drawable/design_v2_bt_add_work_element"
+                    android:background="@drawable/activity_subject_info_addbutton"
                     android:onClick="addElementWork"
                     android:text="+"
-                    android:textColor="@color/test_color_text"
+                    android:textColor="@color/white"
                     android:textSize="25dp"
                     android:visibility="gone" />
 
@@ -253,10 +253,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/subjectinfo_btn"
+                    android:background="@drawable/activity_subject_info_work_button"
                     android:onClick="openWork"
                     android:text="Other"
-                    android:textColor="@color/test_color_text" />
+                    android:textColor="@color/white" />
 
                 <TableLayout
                     android:id="@+id/activity_subject_info_tb_other_data"
@@ -272,10 +272,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
-                    android:background="@drawable/design_v2_bt_add_work_element"
+                    android:background="@drawable/activity_subject_info_addbutton"
                     android:onClick="addElementWork"
                     android:text="+"
-                    android:textColor="@color/test_color_text"
+                    android:textColor="@color/white"
                     android:textSize="25dp"
                     android:visibility="gone" />
 
@@ -289,7 +289,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.03"
-        android:background="@drawable/progress"
+        android:background="@drawable/activity_subject_list_bottom"
         android:orientation="horizontal">
 
         <Button

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_main_background"
+    android:background="@drawable/activity_background"
     android:orientation="vertical"
     android:padding="24dp"
     tools:context=".Activities.SettingsActivity">
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/Base_settings"
-            android:textColor="@color/mb_red"
+            android:textColor="@color/main_color_3"
             android:textSize="18sp" />
 
 
@@ -233,7 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/home_screen"
-            android:textColor="@color/mb_red"
+            android:textColor="@color/main_color_3"
             android:textSize="18sp" />
 
 

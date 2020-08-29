@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    android:background="@color/background">
+    android:background="@color/schedule_color_1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                     android:layout_marginEnd="80dp"
                     android:fitsSystemWindows="true"
                     android:indeterminate="true"
-                    android:indeterminateTint="@color/background" />
+                    android:indeterminateTint="@color/schedule_color_1" />
 
             </RelativeLayout>
 
@@ -73,7 +73,7 @@
                 android:background="@drawable/text_but_schedule_style"
                 android:onClick="changeTypeWeek"
                 android:text="@string/numerator"
-                android:textColor="@color/background"
+                android:textColor="@color/schedule_color_1"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -175,7 +175,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="I"
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="24sp" />
 
                     <TextView
@@ -185,7 +185,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -195,7 +195,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -205,7 +205,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -215,7 +215,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -225,7 +225,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                 </TableRow>
@@ -240,7 +240,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="II"
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="24sp" />
 
                     <TextView
@@ -250,7 +250,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -260,7 +260,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -270,7 +270,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -280,7 +280,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -290,7 +290,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                 </TableRow>
@@ -305,7 +305,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="III"
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="24sp" />
 
                     <TextView
@@ -315,7 +315,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -325,7 +325,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -335,7 +335,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -345,7 +345,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -355,7 +355,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                 </TableRow>
@@ -370,7 +370,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="IV"
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="24sp" />
 
                     <TextView
@@ -380,7 +380,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -390,7 +390,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -400,7 +400,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -410,7 +410,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -420,7 +420,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                 </TableRow>
@@ -435,7 +435,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text="V"
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="24sp" />
 
                     <TextView
@@ -445,7 +445,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -455,7 +455,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -465,7 +465,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -475,7 +475,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
 
                     <TextView
@@ -485,7 +485,7 @@
                         android:background="@drawable/text_but_schedule_style2"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/background"
+                        android:textColor="@color/schedule_color_1"
                         android:textSize="14sp" />
                 </TableRow>
 

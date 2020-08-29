@@ -10,10 +10,6 @@
     <string name="start">Початок</string>
     <string name="lesson">пара в</string>
     <string name="first_lesson">Початок 1 пари в</string>
-    <string name="localdata_is_found">Знайдені локальні дані за</string>
-    <string name="get_data_dialog">Отримати дані з сервера чи пристрою?</string>
-    <string name="device">Пристрій</string>
-    <string name="server">Сервер</string>
     <string name="sign_in">Увійти!</string>
     <string name="login">Вхід</string>
     <string name="enter_nickname">Введіть псевдонім</string>

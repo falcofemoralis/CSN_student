@@ -7,7 +7,7 @@
     android:padding="5dp"
     android:text="debug"
     android:textAlignment="center"
-    android:textColor="@color/background"
+    android:textColor="@color/schedule_color_1"
     android:textSize="18sp">
 
 </TextView>

@@ -136,10 +136,10 @@ public class SubjectListActivity extends AppCompatActivity {
 
         // Ссылка на кнопку в шаблоне
         Button subjectBt = (Button) subjectLayout.getChildAt(0);
-        subjectBt.setText("Full statistics");
+        subjectBt.setText("Full ic_statistics");
 
         // Устанавка изображения дисциплины, если оно есть
-        BitmapDrawable img = new BitmapDrawable(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.statistics));;
+        BitmapDrawable img = new BitmapDrawable(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_statistics));;
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         int sizeIm = (int) (size.x * 0.5 / 4.2);

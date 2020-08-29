@@ -52,7 +52,7 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
 
         progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
         Sprite iIndeterminateDrawable = new ThreeBounce();
-        iIndeterminateDrawable.setColor(getColor(R.color.background));
+        iIndeterminateDrawable.setColor(getColor(R.color.schedule_color_1));
         progressBar.setIndeterminateDrawable(iIndeterminateDrawable);
 
         spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
@@ -202,13 +202,6 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
         for (int i = 0; i < MAX_DAYS; ++i)
             for (int j = 0; j < MAX_PAIR; ++j)
                 scheduleTextView[i][j].setText("");
-    }
-
-    @Override
-    protected void onPause() {
-        finish();
-        overridePendingTransition(R.anim.fade_out, R.anim.fade_in); //1 значение для активити из которого выходим, 2 значение для активити в которое заходим
-        super.onPause();
     }
 
     public void setAnimation(int gravity) {

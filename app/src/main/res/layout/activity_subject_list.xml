@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:background="@drawable/activity_main_background"
+    android:background="@drawable/activity_background"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/dark_background"
+        android:background="@drawable/activity_subject_list_head"
         android:orientation="vertical">
 
         <TextView
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/progress"
+        android:background="@drawable/activity_subject_list_bottom"
         android:orientation="horizontal">
 
         <Button

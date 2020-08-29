@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Used in rating -->
     <color name="red">#F56D6D</color>
     <color name="green">#9AFF35</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#F1F1F1</color>
-    <color name="StBar">#262673</color>
-    <color name="background">#3D57AF</color>
-    <color name="mainColor2">#FD3A46</color>
-    <color name="mb_red">#ffff4444</color>
+    <color name="schedule_color_1">#3D57AF</color>
+    <color name="schedule_color_2">#262673</color>
+    <color name="background">#000f2a</color>
+    <color name="button">#1a2840</color>
+    <color name="main_color_1">#304ffe</color>
+    <color name="main_color_2">#21c5df</color>
+    <color name="main_color_3">#FF474F</color>
+    <color name="add_button">#9FD2FF</color>
     <color name="not_passed">#ffff4444</color>
     <color name="in_process">#ffb872</color>
     <color name="done_without_report">#ffe376</color>
@@ -16,9 +22,4 @@
     <color name="waiting_acceptation">#1455c9</color>
     <color name="passed_without_report">#9ef0ae</color>
     <color name="passed_with_report">#95e35e</color>
-    <color name="test_color_text">#ffffff</color>
-    <color name="new_dark_color">#000f2a</color>
-    <color name="main_activity_icon_color1">#304ffe</color>
-    <color name="main_activity_icon_color2">#21c5df</color>
-    <color name="main_activity_color1">#304ffe</color>
 </resources>

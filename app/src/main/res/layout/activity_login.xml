@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_main_background"
+    android:background="@drawable/activity_background"
     android:orientation="vertical"
     tools:context=".Activities.LoginActivity">
 
@@ -19,7 +19,7 @@
         android:layout_gravity="center"
         android:layout_weight="0.08"
         android:elevation="100dp"
-        app:srcCompat="@drawable/icon" />
+        app:srcCompat="@drawable/app_icon" />
 
     <Space
         android:layout_width="match_parent"

@@ -16,15 +16,12 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -157,6 +154,4 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
-
-
 }

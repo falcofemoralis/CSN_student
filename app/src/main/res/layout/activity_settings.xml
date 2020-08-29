@@ -60,7 +60,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_nickname_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -109,7 +108,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_password_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -158,7 +156,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_group_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -185,7 +182,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/activity_settings_ll_accountExit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -206,7 +202,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_accountExit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -249,7 +244,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/activity_settings_ll_timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -266,7 +260,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/activity_settings_tv_timer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"

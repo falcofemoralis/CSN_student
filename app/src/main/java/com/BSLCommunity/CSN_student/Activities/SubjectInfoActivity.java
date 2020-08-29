@@ -16,17 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -38,7 +34,6 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         other
 
     }
-    public final  int TYPES_COUNT = 3;
 
     int[] colors = { //цвета кнопок выбора
             R.color.not_passed,
@@ -50,12 +45,8 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
             R.color.passed_with_report};
 
     ArrayList<Integer> teacherIds;  //список учителей для установки
-
     SubjectsInfo.SubjectInfo subjectInfo = null;
-
-    // Выпадающие списки работ
-    LinearLayout labsLL, ihwLL, otherLL;
-
+    LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
     int subjectId; //id предмета. Ставится в классе SubjectList
 
     @Override
@@ -299,8 +290,6 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
                 drawWork(addBt, infoTL, isOpenOther);
                 break;
         }
-
-
     }
 
     // Открываем вкладку с выбраным типо работы

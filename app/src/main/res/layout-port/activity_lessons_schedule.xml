@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -112,7 +111,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_mon"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style3"
@@ -139,7 +137,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_mon_1"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -149,7 +146,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text1_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -166,7 +162,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_mon_2"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -176,7 +171,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text2_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -193,7 +187,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_mon_3"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -203,7 +196,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text3_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -220,7 +212,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_mon_4"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -230,7 +221,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text4_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -247,7 +237,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_mon_5"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -257,7 +246,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text5_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -305,7 +293,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_tue"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style3"
@@ -315,7 +302,6 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/text3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -332,7 +318,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_tue_1"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -342,7 +327,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text1_3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -359,7 +343,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_tue_2"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -369,7 +352,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text2_3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -386,7 +368,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_tue_3"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -396,7 +377,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text3_3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -413,7 +393,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_tue_4"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -423,7 +402,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text4_3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -440,7 +418,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_tue_5"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -450,7 +427,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text5_3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -498,7 +474,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_wed"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style3"
@@ -508,7 +483,6 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/text4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -525,7 +499,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_wed_1"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -535,7 +508,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text1_4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -552,7 +524,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_wed_2"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -562,7 +533,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text2_4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -579,7 +549,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_wed_3"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -589,7 +558,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text3_4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -606,7 +574,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_wed_4"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -616,7 +583,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text4_4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -633,7 +599,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_wed_5"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -643,7 +608,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text5_4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -691,7 +655,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_thur"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style3"
@@ -701,7 +664,6 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/text5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -718,7 +680,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_thur_1"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -728,7 +689,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text1_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -745,7 +705,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_thur_2"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -755,7 +714,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text2_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -772,7 +730,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_thur_3"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -782,7 +739,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text3_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -799,7 +755,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_thur_4"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -809,7 +764,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text4_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -826,7 +780,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_thur_5"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -836,7 +789,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text5_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -884,7 +836,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_fri"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style3"
@@ -894,7 +845,6 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/text6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -911,7 +861,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_fri_1"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -921,7 +870,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text1_6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -938,7 +886,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_fri_2"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -948,7 +895,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text2_6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -965,7 +911,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_fri_3"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -975,7 +920,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text3_6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -992,7 +936,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_fri_4"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -1002,7 +945,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text4_6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -1019,7 +961,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/text_pair_fri_5"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/text_but_schedule_style2"
@@ -1029,7 +970,6 @@
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/text5_6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"

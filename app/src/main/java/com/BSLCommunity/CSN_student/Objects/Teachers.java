@@ -2,7 +2,6 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
@@ -14,10 +13,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;

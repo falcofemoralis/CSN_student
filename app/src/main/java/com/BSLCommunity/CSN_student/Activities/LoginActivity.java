@@ -11,10 +11,8 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
@@ -72,9 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
-
-
-
 }
 
 

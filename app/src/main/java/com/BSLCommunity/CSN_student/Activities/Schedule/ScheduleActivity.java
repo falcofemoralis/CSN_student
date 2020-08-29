@@ -1,35 +1,23 @@
 package com.BSLCommunity.CSN_student.Activities.Schedule;
 
-import android.accessibilityservice.AccessibilityService;
-import android.os.Build;
 import android.os.Bundle;
-import android.transition.ChangeBounds;
-import android.transition.Explode;
-import android.transition.Fade;
 import android.transition.Slide;
-import android.transition.Visibility;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
-
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,8 +57,6 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
 
         spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
         spinner.setEnabled(false);
-
-
 
         createSpinner();
         getScheduleElements();

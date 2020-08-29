@@ -9,13 +9,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
-
 import com.BSLCommunity.CSN_student.R;
-
 
 public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
     private android.widget.EditText EditText;

@@ -1,18 +1,13 @@
 package com.BSLCommunity.CSN_student.Objects;
 
-
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Activities.SettingsActivity;
 import com.BSLCommunity.CSN_student.R;
-
 import java.util.Calendar;
-
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Timer extends AppCompatActivity {

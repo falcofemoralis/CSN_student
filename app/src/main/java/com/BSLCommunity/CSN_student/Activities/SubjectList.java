@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.Locale;
 
 public class SubjectList extends AppCompatActivity {
-    Button refBtn;
+
     Boolean shouldExecuteOnResume = false;
     static class IdGenerator {
         static int n = 0;
@@ -52,8 +52,8 @@ public class SubjectList extends AppCompatActivity {
         setContentView(R.layout.activity_subject_list);
 
         tableSubjects = findViewById(R.id.activity_subject_list_ll_table_subjects);
-        setProgress();
         setSubjectsList();
+        setProgress();
     }
 
     @Override
@@ -110,12 +110,6 @@ public class SubjectList extends AppCompatActivity {
             }
         };
         subjectBt.setOnClickListener(onClickListener); // Добавляем функционал кнопке
-
-
-        // Создание текстового поля прогресса
-        TextView progressText = (TextView) subjectLayout.getChildAt(1);
-        progressText.setText(progresses[numberSubject] + " %");
-
         rowSubject.addView(subjectLayout); // Добавляем дисциплину
     }
 
@@ -194,33 +188,16 @@ public class SubjectList extends AppCompatActivity {
         }
     }
 
-    //устанавливаем прогресс внизу экрана
+    // Устанавливаем прогресс внизу экрана
     public void setProgress() {
         SubjectsInfo subjectsInfo = SubjectsInfo.getInstance(this);
 
         progresses = new int[subjectsInfo.subjectInfo.length];
-        int sumProgress = 0; // Общий прогресс в процентах
+        int sumProgress = 0; // Общий прогресс (сумма процентов каждой дисциплины)
 
-
+        // Подсчет процента прогресса каждой дисциплины
         for (int i = 0; i < subjectsInfo.subjectInfo.length; ++i) {
-
-            int subjectComplete = 0, subjectAllWork;
-
-            // Считаем сколько он выполнил лабораторных, ИДЗ, других дел
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].labs.count; ++j)
-                if (subjectsInfo.subjectInfo[i].labs.values.get(j) == 6) subjectComplete++;
-
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].ihw.count; ++j)
-                if (subjectsInfo.subjectInfo[i].ihw.values.get(j) == 6) subjectComplete++;
-
-            for (int j = 0; j < subjectsInfo.subjectInfo[i].others.count; ++j)
-                if (subjectsInfo.subjectInfo[i].others.values.get(j) == 6) subjectComplete++;
-
-            // Считаем сколько всего предстоит работы пользователю
-            subjectAllWork = (subjectsInfo.subjectInfo[i].labs.count + subjectsInfo.subjectInfo[i].ihw.count + subjectsInfo.subjectInfo[i].others.count);
-
-            // Считаем процент выполненной работы студент за дисциплину
-            progresses[i] = subjectComplete != 0 ? subjectComplete * 100 / (subjectAllWork) : 0;
+            progresses[i] = subjectsInfo.subjectInfo[i].calculateProgress();
             sumProgress += progresses[i];
         }
 
@@ -232,6 +209,25 @@ public class SubjectList extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println(e.toString());
             progress.setText("0%");
+        }
+
+        // Обновление прогресса всех
+        updateProgresses();
+    }
+
+    // Обновление прогрессов дисциплин
+    public void updateProgresses() {
+        for (int i = 0; i < tableSubjects.getChildCount(); ++i) {
+            TableRow row = (TableRow) tableSubjects.getChildAt(i);
+
+            for (int j = 0; j < row.getChildCount(); ++j) {
+                TextView textProgressSubject = (TextView) ((LinearLayout) row.getChildAt(j)).getChildAt(1);
+                int index = i * 3 + j;
+                if (index != progresses.length)
+                    textProgressSubject.setText(progresses[index] + " %");
+                else
+                    return;
+            }
         }
     }
 }

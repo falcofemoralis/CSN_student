@@ -15,12 +15,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +31,10 @@ public class SubjectsInfo {
         public int subjectValue;
 
         public class Work {
-            public int count;
-            public ArrayList<Integer> values;
-            public ArrayList<String> names;
-            public ArrayList<Integer> marks;
+            public int count; // Количество работ
+            public ArrayList<Integer> values; // Статус выполнения каждой работы
+            public ArrayList<String> names; // Название каждой работы
+            public ArrayList<Integer> marks; // Оценка за каждую работу
 
             public Work() {
                 values = new ArrayList<Integer>();
@@ -43,11 +42,20 @@ public class SubjectsInfo {
                 marks = new ArrayList<Integer>();
             }
 
+            // Добавление пустого объекта
             public void addWork() {
                 ++count;
                 values.add(0);
                 names.add("");
                 marks.add(0);
+            }
+
+            // Удаление элемента по индексу
+            public void deleteWork(int index) {
+                --count;
+                values.remove(index);
+                names.remove(index);
+                marks.remove(index);
             }
         }
         public Work labs, ihw, others;
@@ -56,6 +64,25 @@ public class SubjectsInfo {
             labs = new Work();
             ihw = new Work();
             others = new Work();
+        }
+
+        public int calculateProgress() {
+            final int COMPLETE = 6;
+
+            int subjectComplete = 0;
+
+            // Считаем сколько он выполнил лабораторных, ИДЗ, других дел
+            for (int i = 0; i < labs.count; ++i)
+                if (labs.values.get(i) == COMPLETE) subjectComplete++;
+
+            for (int i = 0; i < ihw.count; ++i)
+                if (ihw.values.get(i) == COMPLETE) subjectComplete++;
+
+            for (int i = 0; i < others.count; ++i)
+                if (others.values.get(i) == COMPLETE) subjectComplete++;
+
+            int sumCount = (labs.count + ihw.count + others.count);
+            return sumCount > 0 ? 100 * subjectComplete / sumCount : 0;
         }
     }
 

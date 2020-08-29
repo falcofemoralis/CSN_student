@@ -8,11 +8,14 @@
     android:paddingRight="18dp"
     android:orientation="horizontal">
 
-    <Button
+    <EditText
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/gray"
-        android:layout_weight="0.4"/>
+        android:layout_weight="0.35"
+        android:textSize="18sp"
+        android:hint="Enter name"
+        android:gravity="center"/>
 
     <Spinner
         android:layout_width="0dp"
@@ -22,12 +25,24 @@
         android:textAlignment="center"
         android:entries="@array/lab_types" />
 
+
     <EditText
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/gray"
-        android:layout_weight="0.2"
-        android:text="0"
+        android:layout_weight="0.15"
+        android:hint="mark"
+        android:textSize="18sp"
         android:gravity="center"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.1"
+        android:background="@color/red"
+        android:gravity="center"
+        android:onClick="deleteElementWork"
+        android:text="X"
+        android:textSize="18sp" />
 
 </TableRow>

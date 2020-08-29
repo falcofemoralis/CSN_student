@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,12 +9,11 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -30,7 +30,6 @@ import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -124,11 +123,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onTouch(View view, MotionEvent motionEvent) {
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
-        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN ) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             transitionDrawable.startTransition(150);
-            Animation click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed);
-            view.startAnimation(click);
-        }else if(motionEvent.getAction()==MotionEvent.ACTION_UP) {
+            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             Intent intent = null;
             switch (view.getId()) {
                 case R.id.activity_main_bt_subjects:
@@ -148,12 +146,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     break;
             }
 
-            startActivity(intent);
-            overridePendingTransition(R.anim.popup_context_in, R.anim.no_animation);
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+            startActivity(intent, options.toBundle());
 
             transitionDrawable.reverseTransition(150);
-            Animation click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed);
-            view.startAnimation(click);
+            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed));
         }
         return true;
     }

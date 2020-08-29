@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -49,6 +52,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAnimation();
         setContentView(R.layout.activity_settings);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         prefEditor = encryptedSharedPreferences.edit();
@@ -194,5 +198,14 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
 
         alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    public void setAnimation() {
+        Slide slide = new Slide();
+        slide.setSlideEdge(Gravity.LEFT);
+        slide.setDuration(400);
+        slide.setInterpolator(new AccelerateDecelerateInterpolator());
+        getWindow().setExitTransition(slide);
+        getWindow().setEnterTransition(slide);
     }
 }

@@ -86,6 +86,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.62"
+                        android:background="@drawable/test"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/test_color_text" />
@@ -173,7 +174,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/activity_main_text"
+                    android:background="@drawable/subjectinfo_btn"
                     android:onClick="openWork"
                     android:text="LABS"
                     android:textColor="@color/test_color_text" />
@@ -212,7 +213,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/activity_main_text"
+                    android:background="@drawable/subjectinfo_btn"
                     android:onClick="openWork"
                     android:text="IHW"
                     android:textColor="@color/test_color_text" />
@@ -253,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/activity_main_text"
+                    android:background="@drawable/subjectinfo_btn"
                     android:onClick="openWork"
                     android:text="Other"
                     android:textColor="@color/test_color_text" />

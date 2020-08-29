@@ -1,13 +1,19 @@
 package com.BSLCommunity.CSN_student.Activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -18,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleActivity;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.User;
@@ -49,6 +56,7 @@ public class SubjectListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAnimation();
         setContentView(R.layout.activity_subject_list);
 
         TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);
@@ -98,20 +106,32 @@ public class SubjectListActivity extends AppCompatActivity {
             subjectBt.setCompoundDrawables(null, img, null, null);
         }
 
-
         // Устанавливаем функционал кнопке
         final int subjectId = IdGenerator.getId();
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+        View.OnTouchListener onTouchListener = new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Animation click = AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_click);
-                view.startAnimation(click);
-                Intent intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
-                intent.putExtra("button_id", subjectId);
-                startActivity(intent);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+                Intent intent = null;
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    transitionDrawable.startTransition(150);
+                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
+                    intent.putExtra("button_id", subjectId);
+
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
+                    startActivity(intent, options.toBundle());
+
+                    transitionDrawable.reverseTransition(150);
+                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
+
+                }
+                return true;
             }
         };
-        subjectBt.setOnClickListener(onClickListener); // Добавляем функционал кнопке
+
+        subjectBt.setOnTouchListener(onTouchListener); // Добавляем функционал кнопке
         rowSubject.addView(subjectLayout); // Добавляем дисциплину
     }
 
@@ -231,5 +251,14 @@ public class SubjectListActivity extends AppCompatActivity {
                     return;
             }
         }
+    }
+
+    public void setAnimation() {
+        Slide slide = new Slide();
+        slide.setSlideEdge(Gravity.LEFT);
+        slide.setDuration(400);
+        slide.setInterpolator(new AccelerateDecelerateInterpolator());
+        getWindow().setExitTransition(slide);
+        getWindow().setEnterTransition(slide);
     }
 }

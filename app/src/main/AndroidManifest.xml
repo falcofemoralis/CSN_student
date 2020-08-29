@@ -35,13 +35,14 @@
             android:theme="@style/ScheduleActivityActionBar" />
         <activity
             android:name=".Activities.SubjectInfoActivity"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/SubjectInfoActivityActionBar" />
         <activity
             android:name=".Activities.RatingActivity"
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".Activities.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"
+            android:theme="@style/TransparentActionBar" />
         <activity
             android:name=".Activities.SubjectListActivity"
             android:theme="@style/SubjectListsActivityActionBar" />

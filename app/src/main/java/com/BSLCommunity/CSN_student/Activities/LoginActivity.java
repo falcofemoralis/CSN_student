@@ -19,7 +19,7 @@ import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
 // Форма логина для пользователя
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +40,12 @@ public class Login extends AppCompatActivity {
         v.setClickable(false);
         EditText NickName = (EditText) findViewById(R.id.activity_login_et_nickname) ;
         EditText Password = (EditText) findViewById(R.id.activity_login_et_password) ;
-        User.login(getApplicationContext(), Login.this, NickName.getText().toString().toLowerCase(),Password.getText().toString());
+        User.login(getApplicationContext(), LoginActivity.this, NickName.getText().toString().toLowerCase(),Password.getText().toString());
     }
 
     //обработчик перехода на форму регистрации
     public void OnClickRegistration() {
-        startActivity(new Intent(this, Registration.class));
+        startActivity(new Intent(this, RegistrationActivity.class));
         overridePendingTransition(0, 0);
     }
 

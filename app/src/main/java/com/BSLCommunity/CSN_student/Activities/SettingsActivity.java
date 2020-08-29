@@ -32,7 +32,7 @@ import java.util.Map;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
-public class Settings extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
+public class SettingsActivity extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
     TextView nickname_setText, password_setText, group_setText;
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_GROUP = "group";
@@ -43,7 +43,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
     SharedPreferences.Editor prefEditor;
     String oldNickname, oldPassword, oldGroup;
     String nickname, password, group;
-    String URL = Main.MAIN_URL + "updateUser.php";
+    String URL = MainActivity.MAIN_URL + "updateUser.php";
     RequestQueue requestQueue;
 
     @Override
@@ -68,7 +68,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
         oldGroup = group;
 
         Switch timerSwitch = (Switch) findViewById(R.id.activity_settings_sw_timer);
-        if (encryptedSharedPreferences.getBoolean(Settings.KEY_TIMER_SETTING, true))
+        if (encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true))
             timerSwitch.setChecked(true);
         else timerSwitch.setChecked(false);
 
@@ -94,7 +94,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
         switch (applyKey) {
             case R.id.activity_settings_ll_nickname:
                 if (text.equals("")) {
-                    Toast.makeText(Settings.this, R.string.nodata, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 nickname_setText.setText(text);
@@ -103,7 +103,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
                 break;
             case R.id.activity_settings_ll_password:
                 if (text.equals("")) {
-                    Toast.makeText(Settings.this, R.string.nodata, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 password_setText.setText(text);
@@ -131,12 +131,12 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
                     prefEditor.putString(KEY_NICKNAME, oldNickname);
                     prefEditor.apply();
                     nickname_setText.setText(oldNickname);
-                    Toast.makeText(Settings.this, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
                 } else {
-                    oldNickname = encryptedSharedPreferences.getString(Settings.KEY_NICKNAME, "");
-                    oldPassword = encryptedSharedPreferences.getString(Settings.KEY_PASSWORD, "");
-                    oldGroup = encryptedSharedPreferences.getString(Settings.KEY_GROUP, "");
-                    Toast.makeText(Settings.this, R.string.datachanged, Toast.LENGTH_SHORT).show();
+                    oldNickname = encryptedSharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
+                    oldPassword = encryptedSharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
+                    oldGroup = encryptedSharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
+                    Toast.makeText(SettingsActivity.this, R.string.datachanged, Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -149,7 +149,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
                 nickname_setText.setText(oldNickname);
                 password_setText.setText(oldPassword);
                 group_setText.setText(oldGroup);
-                Toast.makeText(Settings.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -166,7 +166,7 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
     }
 
     protected void showDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Settings.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingsActivity.this);
 
         alertDialog.setMessage(R.string.exitconfirm);
 
@@ -180,8 +180,8 @@ public class Settings extends AppCompatActivity implements SettingsDialogEditTex
                 Groups.delete(getApplicationContext());
                 Subjects.delete(getApplicationContext());
 
-                startActivity(new Intent(getApplicationContext(), Login.class));
-                Toast.makeText(Settings.this, R.string.exit, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                Toast.makeText(SettingsActivity.this, R.string.exit, Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

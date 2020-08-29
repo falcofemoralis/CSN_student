@@ -25,7 +25,7 @@ import java.util.Locale;
 
 
 //форма расписание предметов группы
-public class Schedule extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ScheduleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     final int MAX_PAIR = 5; //кол-во пар в активити
     final int MAX_DAYS = 5; //кол-во дней в активити
 

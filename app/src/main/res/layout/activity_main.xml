@@ -15,6 +15,7 @@
         android:layout_weight="100">
 
         <LinearLayout
+            android:id="@+id/activity_main_ll_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"

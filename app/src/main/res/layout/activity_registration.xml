@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/activity_main_background"
     android:orientation="vertical"
-    tools:context=".Activities.Registration">
+    tools:context=".Activities.RegistrationActivity">
 
     <Space
         android:layout_width="match_parent"

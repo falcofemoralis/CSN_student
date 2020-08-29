@@ -26,6 +26,13 @@
         <item name="android:navigationBarColor">@color/black</item>
     </style>
 
+    <style name="SubjectListsActivityActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimary">#198A9C</item>
+        <item name="colorPrimaryDark">#198A9C</item>
+        <item name="android:navigationBarColor">#CC363C</item>
+    </style>
+
     <style name="TransparentActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>

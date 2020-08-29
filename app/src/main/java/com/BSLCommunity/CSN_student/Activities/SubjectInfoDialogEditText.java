@@ -8,17 +8,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import com.BSLCommunity.CSN_student.Objects.Groups;
+
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Objects.Settings;
-import java.util.ArrayList;
 
 
 public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
@@ -26,10 +22,10 @@ public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
     private DialogListener listener;
     private String title;
     Button name;
-    SubjectInfo.Types type;
+    SubjectInfoActivity.Types type;
     int number;
 
-    SubjectInfoDialogEditText(SubjectInfo.Types type, int number, Button name) {this.type = type; this.number = number; this.name = name;}
+    SubjectInfoDialogEditText(SubjectInfoActivity.Types type, int number, Button name) {this.type = type; this.number = number; this.name = name;}
 
     @NonNull
     @Override
@@ -72,6 +68,6 @@ public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
     }
 
     public interface DialogListener {
-        void applyText(String text, SubjectInfo.Types type, int number, Button name);
+        void applyText(String text, SubjectInfoActivity.Types type, int number, Button name);
     }
 }

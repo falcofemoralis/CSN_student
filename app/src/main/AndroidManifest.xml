@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".Activities.Main"
+            android:name=".Activities.MainActivity"
             android:theme="@style/MainActivityActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,26 +25,26 @@
         </activity>
 
         <activity
-            android:name=".Activities.Registration"
-            android:theme="@style/TransparentActionBar"></activity>
+            android:name=".Activities.RegistrationActivity"
+            android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Activities.Login"
-            android:theme="@style/TransparentActionBar"></activity>
+            android:name=".Activities.LoginActivity"
+            android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Activities.Schedule.Schedule"
-            android:theme="@style/ScheduleActivityActionBar"></activity>
+            android:name=".Activities.Schedule.ScheduleActivity"
+            android:theme="@style/ScheduleActivityActionBar" />
         <activity
-            android:name=".Activities.SubjectInfo"
-            android:theme="@style/NoActionBar"></activity>
+            android:name=".Activities.SubjectInfoActivity"
+            android:theme="@style/NoActionBar" />
         <activity
-            android:name=".Activities.Rating"
-            android:theme="@style/NoActionBar"></activity>
+            android:name=".Activities.RatingActivity"
+            android:theme="@style/NoActionBar" />
         <activity
-            android:name=".Activities.Settings"
+            android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".Activities.SubjectList"
-            android:theme="@style/NoActionBar"></activity>
+            android:name=".Activities.SubjectListActivity"
+            android:theme="@style/SubjectListsActivityActionBar" />
     </application>
 
 </manifest>

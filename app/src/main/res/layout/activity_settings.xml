@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".Activities.Settings">
+    tools:context=".Activities.SettingsActivity">
 
 
     <LinearLayout

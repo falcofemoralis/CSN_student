@@ -5,32 +5,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.transition.Scene;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.transition.TransitionManager;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MotionEventCompat;
 
-import com.BSLCommunity.CSN_student.Activities.Schedule.Schedule;
+import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
@@ -39,11 +30,9 @@ import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.thekhaeng.pushdownanim.PushDownAnim;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -55,7 +44,7 @@ import java.util.concurrent.Callable;
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
-public class Main extends AppCompatActivity implements View.OnTouchListener {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     public static String MAIN_URL = "http://a0459938.xsph.ru/";
     public static String FILE_NAME = "data_disc";
     public static String GROUP_FILE_NAME = "groups";
@@ -70,37 +59,21 @@ public class Main extends AppCompatActivity implements View.OnTouchListener {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        /*
-        нужно будет сократить
-        <--------------->
-         */
-        Button subjects_schedule = (Button) findViewById(R.id.activity_main_bt_lessonsShedule);
-        subjects_schedule.setOnTouchListener(this);
-
-        Button teacher_schedule = (Button) findViewById(R.id.activity_main_bt_teachersSchedule);
-        teacher_schedule.setOnTouchListener(this);
-
-        Button subjects = (Button) findViewById(R.id.activity_main_bt_subjects);
-        subjects.setOnTouchListener(this);
-
-        Button rating = (Button) findViewById(R.id.activity_main_bt_rating);
-        rating.setOnTouchListener(this);
-
-        Button settings = (Button) findViewById(R.id.activity_main_bt_settings);
-        settings.setOnTouchListener(this);
-        /*
-        <--------------->
-         */
-
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_main_ll_main);
+        for (int i=5;i<linearLayout.getChildCount();i+=2){
+            TableRow tableRow = (TableRow) linearLayout.getChildAt(i);
+            tableRow.getChildAt(0).setOnTouchListener(this);
+            tableRow.getChildAt(2).setOnTouchListener(this);
+        }
 
         Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
         TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
 
         setSettingsFile(this);
 
-        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings.KEY_IS_REGISTERED, false);
+        Boolean is_registered = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED, false);
         if (!is_registered) {
-            startActivity(new Intent(this, Login.class));
+            startActivity(new Intent(this, LoginActivity.class));
             return;
         } else {
             TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
@@ -153,33 +126,33 @@ public class Main extends AppCompatActivity implements View.OnTouchListener {
 
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN ) {
             transitionDrawable.startTransition(150);
-            Animation click = AnimationUtils.loadAnimation(Main.this, R.anim.btn_pressed);
+            Animation click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed);
             view.startAnimation(click);
         }else if(motionEvent.getAction()==MotionEvent.ACTION_UP) {
-
-
             Intent intent = null;
             switch (view.getId()) {
                 case R.id.activity_main_bt_subjects:
-                    intent = new Intent(this, SubjectList.class);
+                    intent = new Intent(this, SubjectListActivity.class);
                     break;
                 case R.id.activity_main_bt_rating:
-                    intent = new Intent(this, Rating.class);
+                    intent = new Intent(this, RatingActivity.class);
                     break;
                 case R.id.activity_main_bt_lessonsShedule:
-                    intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Groups");
+                    intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Groups");
                     break;
                 case R.id.activity_main_bt_settings:
-                    intent = new Intent(this, Settings.class);
+                    intent = new Intent(this, SettingsActivity.class);
                     break;
                 case R.id.activity_main_bt_teachersSchedule:
-                    intent = new Intent(this, Schedule.class).putExtra("typeSchedule", "Teachers");
+                    intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
                     break;
             }
+
             startActivity(intent);
+            overridePendingTransition(R.anim.popup_context_in, R.anim.alpha);
 
             transitionDrawable.reverseTransition(150);
-            Animation click = AnimationUtils.loadAnimation(Main.this, R.anim.btn_unpressed);
+            Animation click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed);
             view.startAnimation(click);
         }
         return true;
@@ -225,7 +198,7 @@ public class Main extends AppCompatActivity implements View.OnTouchListener {
     }
 
     public void checkData() {
-        boolean offline_data = encryptedSharedPreferences.getBoolean(Settings.KEY_OFFLINE_DATA, false);
+        boolean offline_data = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_OFFLINE_DATA, false);
         if (checkConnection()) {
             if (offline_data)
                 showDialog();
@@ -236,9 +209,9 @@ public class Main extends AppCompatActivity implements View.OnTouchListener {
     }
 
     protected void showDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
 
-        String PATH = this.getFileStreamPath(Main.FILE_NAME).toString();
+        String PATH = this.getFileStreamPath(MainActivity.FILE_NAME).toString();
         File file = new File(PATH);
         if (file.exists()) {
             long last = file.lastModified();
@@ -247,10 +220,10 @@ public class Main extends AppCompatActivity implements View.OnTouchListener {
             alertDialog.setTitle(getResources().getString(R.string.localdata_is_found) + " " + format.format(date));
         } else {
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Rating>>() {
+            Type listType = new TypeToken<List<RatingActivity>>() {
             }.getType();
 
-            String test = JSONHelper.read(Main.this, "data_disc.json");
+            String test = JSONHelper.read(MainActivity.this, "data_disc.json");
             // discs = gson.fromJson(test, listType);
 
             // for (int i = 0; i < discs.size(); ++i)

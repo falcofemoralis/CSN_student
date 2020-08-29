@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
 import org.json.JSONException;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
-public class SubjectList extends AppCompatActivity {
+public class SubjectListActivity extends AppCompatActivity {
     Button refBtn;
     Boolean shouldExecuteOnResume = false;
     static class IdGenerator {
@@ -51,6 +52,8 @@ public class SubjectList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
 
+        TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);
+        courseTextView.setText(User.getInstance().course + " Course");
         tableSubjects = findViewById(R.id.activity_subject_list_ll_table_subjects);
         setProgress();
         setSubjectsList();
@@ -102,9 +105,9 @@ public class SubjectList extends AppCompatActivity {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Animation click = AnimationUtils.loadAnimation(SubjectList.this, R.anim.btn_click);
+                Animation click = AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_click);
                 view.startAnimation(click);
-                Intent intent = new Intent(SubjectList.this, SubjectInfo.class);
+                Intent intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
                 intent.putExtra("button_id", subjectId);
                 startActivity(intent);
             }

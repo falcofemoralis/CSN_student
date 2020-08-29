@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Rating extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RatingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     final int COLOR_WHITE = 0xFFFFFFFF;
     final int COLOR_BACK = 0xFF2D2D61;
@@ -42,7 +42,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
     LinearLayout mainLayout;
     TableLayout table;
-    String URL = Main.MAIN_URL + "getRating.php";
+    String URL = MainActivity.MAIN_URL + "getRating.php";
     Spinner sub_spin, gr_spin;
 
     class User implements Comparable<User> {
@@ -138,7 +138,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Rating.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RatingActivity.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         }) {
 
@@ -188,15 +188,15 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
         //получаем весь рейтинг
 
         for (int i = 0; i <= users.size(); i++) {
-            TableRow row = new TableRow(Rating.this);
+            TableRow row = new TableRow(RatingActivity.this);
             if (i == 0) {
                 //эти переменные нужны для определения количества лаб в заголовке, да да, небольшой костыль
                 User userL = users.get(0);
 
                 //заголовок таблицы
-                TextView name = new TextView(Rating.this);
-                TextView group = new TextView(Rating.this);
-                TextView idz = new TextView(Rating.this);
+                TextView name = new TextView(RatingActivity.this);
+                TextView group = new TextView(RatingActivity.this);
+                TextView idz = new TextView(RatingActivity.this);
 
                 name.setText("  " + getResources().getString(R.string.nickname) + "  ");
                 name.setTextColor(COLOR_WHITE);
@@ -214,7 +214,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
                 //количество лаб
                 for (int k = 0; k < userL.status.length; k++) {
-                    TextView lab = new TextView(Rating.this);
+                    TextView lab = new TextView(RatingActivity.this);
                     lab.setText(String.valueOf(k + 1));
                     lab.setTextColor(COLOR_WHITE);
                     lab.setTextSize(TextSizeHeader);
@@ -237,8 +237,8 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                 //row.setBackground(ContextCompat.getDrawable(this,R.drawable.borders));
                 User user = users.get(i - 1);
 
-                TextView name = new TextView(Rating.this);
-                TextView group = new TextView(Rating.this);
+                TextView name = new TextView(RatingActivity.this);
+                TextView group = new TextView(RatingActivity.this);
 
                 name.setText(user.nickName);
                 name.setTextColor(COLOR_BACK);
@@ -259,7 +259,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
 
                 //устанавливаем значения сдачи
                 for (int n = 0; n < st.length; n++) {
-                    TextView lab = new TextView(Rating.this);
+                    TextView lab = new TextView(RatingActivity.this);
 
                     if (st[n]) {
                         lab.setBackground(STYLE_GREEN);
@@ -273,7 +273,7 @@ public class Rating extends AppCompatActivity implements AdapterView.OnItemSelec
                     row.addView(lab);
                 }
 
-                TextView idz = new TextView(Rating.this);
+                TextView idz = new TextView(RatingActivity.this);
                 if (user.idz == 1) {
                     idz.setBackground(STYLE_GREEN);
                     idz.setText("     ✓     ");

@@ -23,8 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 // Форма регистрации пользователя
-public class Registration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     long id; //выбранный код группы со спиннера
     ProgressBar progressBar; //анимация загрузки в спиннере групп
 
@@ -60,7 +58,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
         EditText RepeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
 
         if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
-            User.registration(getApplicationContext(), Registration.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), Integer.toString((Groups.groupsLists.get((int) id).id)));
+            User.registration(getApplicationContext(), RegistrationActivity.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), Integer.toString((Groups.groupsLists.get((int) id).id)));
         } else {
             Toast.makeText(this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
         }
@@ -131,7 +129,7 @@ public class Registration extends AppCompatActivity implements AdapterView.OnIte
 
     //переход на форму логина
     public void OnClickLogin() {
-        startActivity(new Intent(this, Login.class));
+        startActivity(new Intent(this, LoginActivity.class));
         overridePendingTransition(0, 0);
     }
 

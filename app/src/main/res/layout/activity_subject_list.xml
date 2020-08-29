@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_weight="1"
-    android:background="@drawable/design_v2_background">
+    android:background="@drawable/activity_main_background"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/dark_background"
         android:layout_weight="1"
+        android:background="@drawable/dark_background"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/activity_subject_list_tv_course"
             android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_weight="0.8"
             android:gravity="center"
             android:text="n Course"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="25dp" />
+            android:textSize="26sp" />
 
         <Space
             android:layout_width="match_parent"
@@ -32,7 +34,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
     </LinearLayout>
 
     <Space
@@ -41,12 +43,11 @@
         android:layout_weight="1" />
 
     <TableLayout
-        android:id = "@+id/activity_subject_list_ll_table_subjects"
+        android:id="@+id/activity_subject_list_ll_table_subjects"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="20">
-
+        android:layout_weight="20"
+        android:orientation="vertical">
 
 
     </TableLayout>
@@ -69,22 +70,26 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:clickable="false"
-            android:text="@string/Overall"
             android:backgroundTint="#00FFFFFF"
+            android:clickable="false"
             android:stateListAnimator="@null"
-            android:textColor="@color/white" />
+            android:text="@string/Overall"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/activity_subject_list_bt_progress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:clickable="false"
             android:backgroundTint="#00FFFFFF"
+            android:clickable="false"
             android:stateListAnimator="@null"
+            android:text="0 %"
+            android:textAllCaps="true"
             android:textColor="@color/white"
-            android:text="0 %" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

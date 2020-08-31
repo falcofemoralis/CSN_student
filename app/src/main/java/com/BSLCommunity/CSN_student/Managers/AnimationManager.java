@@ -1,21 +1,22 @@
 package com.BSLCommunity.CSN_student.Managers;
 
+import android.content.Context;
 import android.transition.Fade;
-import android.transition.PathMotion;
-import android.transition.Slide;
-import android.transition.Visibility;
-import android.view.Gravity;
+import android.transition.Transition;
+import android.transition.TransitionValues;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
+
+import com.BSLCommunity.CSN_student.R;
 
 public class AnimationManager {
 
-    public static void setAnimation(Window window, int gravity) {
+    public static void setAnimation(Window window, Context context) {
         Fade fade = new Fade();
-        fade.setDuration(300);
+        fade.setDuration(context.getResources().getInteger(R.integer.activities_animation_duration));
         fade.setInterpolator(new AccelerateDecelerateInterpolator());
         window.setExitTransition(fade);
         window.setEnterTransition(fade);
     }
+
 }

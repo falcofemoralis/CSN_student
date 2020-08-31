@@ -1,13 +1,11 @@
 package com.BSLCommunity.CSN_student.Activities;
 
+import android.animation.Animator;
 import android.os.Bundle;
-import android.transition.Slide;
-import android.view.Gravity;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
@@ -50,11 +50,12 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
     SubjectsInfo.SubjectInfo subjectInfo = null;
     LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
     int subjectId; //id предмета. Ставится в классе SubjectList
+    LinearLayout rootContainer; //элемент в котором находятся все объекты
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_subject_info);
 
         //получем необходимые объекты
@@ -64,6 +65,8 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         labsLL = findViewById(R.id.activity_subject_info_ll_labs);
         ihwLL = findViewById(R.id.activity_subject_info_ll_ihw);
         otherLL = findViewById(R.id.activity_subject_info_ll_other);
+
+        rootContainer = findViewById(R.id.activity_subject_info_ll_main);
 
         setSubjectName(); //ставим имя предмета
         createValueSpinner(); //создаем спиннер ценностей предмета
@@ -256,72 +259,73 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
 
     // Открываем список какой либо работы
     public void openWork(View view) {
-        Animation falling_down = AnimationUtils.loadAnimation(this, R.anim.falling_down); //анимация выпадания
-        Animation falling_up = AnimationUtils.loadAnimation(this, R.anim.falling_up); //анимация западания
-
         Button addBt = null;
         TableLayout infoTL = null;
+
+        TransitionManager.beginDelayedTransition(rootContainer);
 
         switch (view.getId()) {
             case R.id.activity_subject_info_bt_labs:
                 addBt = findViewById(R.id.activity_subject_info_bt_add_lab);
                 infoTL = findViewById(R.id.activity_subject_info_tb_labs_data);
                 isOpenLab = !isOpenLab;
-                drawWork(addBt, infoTL, isOpenLab);
-                if(isOpenLab) {
-                    ihwLL.setAnimation(falling_down);
-                    otherLL.setAnimation(falling_down);
-                }
-                else {
-                    ihwLL.setAnimation(falling_up);
-                    otherLL.setAnimation(falling_up);
-                }
+                drawWork(addBt, infoTL, isOpenLab, labsLL);
                 break;
             case R.id.activity_subject_info_bt_ihw:
                 addBt = findViewById(R.id.activity_subject_info_bt_add_ihw);
                 infoTL = findViewById(R.id.activity_subject_info_tb_ihw_data);
                 isOpenIHW = !isOpenIHW;
-                drawWork(addBt, infoTL, isOpenIHW);
-                if(isOpenIHW) otherLL.setAnimation(falling_down);
-                else otherLL.setAnimation(falling_up);
+                drawWork(addBt, infoTL, isOpenIHW, ihwLL);
                 break;
             case R.id.activity_subject_info_bt_other:
                 addBt = findViewById(R.id.activity_subject_info_bt_add_other);
                 infoTL = findViewById(R.id.activity_subject_info_tb_other_data);
                 isOpenOther = !isOpenOther;
-                drawWork(addBt, infoTL, isOpenOther);
+                drawWork(addBt, infoTL, isOpenOther, otherLL);
                 break;
         }
     }
 
     // Открываем вкладку с выбраным типо работы
-    private void drawWork(final Button addBt, final TableLayout infoTL, boolean isOpen) {
-        Animation alpha_falling_down = AnimationUtils.loadAnimation(this, R.anim.alpha_falling_down); //анимация выпадания
-        Animation alpha_falling_up = AnimationUtils.loadAnimation(this, R.anim.alpha_falling_up); //анимация западания
+    private void drawWork(final Button addBt, final TableLayout infoTL, final boolean isOpen, final LinearLayout linearLayout) {
+       /* Transition slide = new Slide(Gravity.TOP).addTarget(addBt).addTarget(infoTL).setDuration(1000).setInterpolator(isOpen ?
+                new LinearOutSlowInInterpolator() :
+                new FastOutLinearInInterpolator());*/
 
-        if (isOpen) {
-            infoTL.setVisibility(View.VISIBLE);
-            infoTL.startAnimation(alpha_falling_down);
-            addBt.setVisibility(View.VISIBLE);
-            addBt.startAnimation(alpha_falling_down);
+        Animator.AnimatorListener listener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
 
-        }
-        else {
-            addBt.startAnimation(alpha_falling_up);
-            infoTL.startAnimation(alpha_falling_up);
-
-            alpha_falling_up.setAnimationListener(new Animation.AnimationListener(){
-                @Override
-                public void onAnimationStart(Animation arg0) { }
-                @Override
-                public void onAnimationRepeat(Animation arg0) { }
-                @Override
-                public void onAnimationEnd(Animation arg0) {
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                TransitionManager.beginDelayedTransition(rootContainer);
+                if(!isOpen){
                     addBt.setVisibility(View.GONE);
                     infoTL.setVisibility(View.GONE);
                 }
-            });
+            }
 
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        };
+
+        addBt.animate().alpha(isOpen ? 1.0f : 0.0f).setDuration(getResources().getInteger(R.integer.subject_info_animation_duration)).setInterpolator(isOpen ?
+                new LinearOutSlowInInterpolator() :
+                new FastOutLinearInInterpolator()).setListener(listener);
+
+        infoTL.animate().alpha(isOpen ? 1.0f : 0.0f).setDuration(getResources().getInteger(R.integer.subject_info_animation_duration)).setInterpolator(isOpen ?
+                new LinearOutSlowInInterpolator() :
+                new FastOutLinearInInterpolator()).setListener(listener);
+
+        if(isOpen){
+            addBt.setVisibility(View.VISIBLE);
+            infoTL.setVisibility(View.VISIBLE);
         }
     }
 
@@ -329,20 +333,19 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
     public void addElementWork(View view) {
         TableLayout infoTL = null; // Группа элементов
         SubjectsInfo.SubjectInfo.Work work = null; // Ссылка на необходимую группу работ
-        Animation falling_down = AnimationUtils.loadAnimation(this, R.anim.falling_down); //анимация выпадания
+
+
+        TransitionManager.beginDelayedTransition(rootContainer);
 
         // Определяем тип предмета
         switch (view.getId()) {
             case R.id.activity_subject_info_bt_add_lab:
                 infoTL = findViewById(R.id.activity_subject_info_tb_labs_data);
                 work = subjectInfo.labs;
-                ihwLL.startAnimation(falling_down);
-                otherLL.startAnimation(falling_down);
                 break;
             case R.id.activity_subject_info_bt_add_ihw:
                 infoTL = findViewById(R.id.activity_subject_info_tb_ihw_data);
                 work = subjectInfo.ihw;
-                otherLL.startAnimation(falling_down);
                 break;
             case R.id.activity_subject_info_bt_add_other:
                 infoTL = findViewById(R.id.activity_subject_info_tb_other_data);
@@ -350,7 +353,6 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
                 break;
         }
 
-        view.startAnimation(falling_down);
         work.addWork();// Добавление пустого элемента в группу выбранной работы
         drawElementWork(infoTL, work);// Прорисовка элемента
         setProgress();// Обновление прогресса
@@ -379,7 +381,6 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         textMark.setText(work.marks.get(num).toString());
 
         infoTL.addView(elementWork);
-        elementWork.startAnimation(AnimationUtils.loadAnimation(this, R.anim.alpha_falling_down));
     }
 
     // Удаление одной работы
@@ -387,25 +388,20 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         final TableRow workRow = (TableRow)(view.getParent()); // Строчка работы в списке
         final TableLayout infoTL = ((TableLayout)(workRow.getParent())); // Группа
         int num = infoTL.indexOfChild(workRow); // Номер работы
-        Animation falling_up = AnimationUtils.loadAnimation(this, R.anim.falling_up); //анимация захождения
+
+        TransitionManager.beginDelayedTransition(rootContainer);
 
         // Удваление работы в зависимости от выбранной группы
         switch (infoTL.getId()) {
             case R.id.activity_subject_info_tb_labs_data:
                 subjectInfo.labs.deleteWork(num);
-                ihwLL.startAnimation(falling_up);
-                otherLL.startAnimation(falling_up);
                 break;
             case R.id.activity_subject_info_tb_ihw_data:
-                subjectInfo.ihw.deleteWork(num);
-                otherLL.startAnimation(falling_up);
                 break;
             case R.id.activity_subject_info_tb_other_data:
                 subjectInfo.others.deleteWork(num);
-
                 break;
         }
-        view.startAnimation(falling_up);
 
         infoTL.removeView(workRow);
     }

@@ -44,7 +44,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_registration);
         progressBar = (ProgressBar) findViewById(R.id.activity_registration_pb_groups);
         progressBar.setIndeterminateDrawable(new ThreeBounce());

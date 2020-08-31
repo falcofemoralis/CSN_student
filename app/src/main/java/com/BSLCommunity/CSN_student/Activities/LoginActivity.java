@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_login);
         createClickableSpan();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

@@ -53,7 +53,7 @@ public class SubjectListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_subject_list);
 
         TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);

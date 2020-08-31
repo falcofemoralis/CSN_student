@@ -47,8 +47,8 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
         if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")) entity = "teachers";
         else entity = "groups";
 
-        if (entity.equals("teachers"))   AnimationManager.setAnimation(getWindow(), Gravity.RIGHT);
-        else AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
+        if (entity.equals("teachers"))   AnimationManager.setAnimation(getWindow(), this);
+        else AnimationManager.setAnimation(getWindow(), this);
 
         setContentView(R.layout.activity_lessons_schedule);
 

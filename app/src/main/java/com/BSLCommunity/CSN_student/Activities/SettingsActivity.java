@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_settings);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         prefEditor = encryptedSharedPreferences.edit();

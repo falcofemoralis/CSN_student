@@ -112,7 +112,6 @@
                     android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_subjects_schedule"
                     android:elevation="10dp"
-                    android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
@@ -137,7 +136,6 @@
                     android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_teacher_schedule"
                     android:elevation="10dp"
-                    android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
@@ -167,7 +165,6 @@
                     android:background="@drawable/activity_button"
                     android:drawableTop="@drawable/ic_subjects"
                     android:elevation="10dp"
-                    android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
@@ -184,19 +181,18 @@
                     android:layout_weight="1.7" />
 
                 <Button
-                    android:id="@+id/activity_main_bt_rating"
+                    android:id="@+id/activity_main_bt_settings"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/activity_button"
-                    android:drawableTop="@drawable/ic_rating"
+                    android:drawableTop="@drawable/ic_settings"
                     android:elevation="10dp"
-                    android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/Rating"
+                    android:text="Settings"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp">
@@ -216,22 +212,22 @@
                 android:layout_weight="0.1">
 
                 <Button
-                    android:id="@+id/activity_main_bt_settings"
+                    android:id="@+id/activity_main_bt_rating"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/activity_button"
-                    android:drawableTop="@drawable/ic_settings"
+                    android:drawableTop="@drawable/ic_rating"
                     android:elevation="10dp"
-                    android:onClick="OnClick"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="Settings"
+                    android:text="@string/Rating"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp">
+                    android:textSize="16sp"
+                    android:visibility="invisible">
 
                 </Button>
 
@@ -245,7 +241,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="#00FFFFFF"
+                    android:background="@drawable/activity_button"
                     android:elevation="10dp"
                     android:paddingTop="20dp"
                     android:paddingBottom="10dp"
@@ -253,7 +249,8 @@
                     android:text="@string/Rating"
                     android:textAllCaps="false"
                     android:textColor="#00FFFFFF"
-                    android:textSize="16sp">
+                    android:textSize="16sp"
+                    android:visibility="invisible">
 
                 </Button>
 

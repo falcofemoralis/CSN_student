@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
@@ -52,7 +54,7 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAnimation();
+        AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
         setContentView(R.layout.activity_subject_info);
 
         //получем необходимые объекты
@@ -415,14 +417,5 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
 
     private void mGetTeacherId(int id){
         if(id!=0) teacherIds.add(id);
-    }
-
-    public void setAnimation() {
-        Slide slide = new Slide();
-        slide.setSlideEdge(Gravity.RIGHT);
-        slide.setDuration(400);
-        slide.setInterpolator(new AccelerateDecelerateInterpolator());
-        getWindow().setExitTransition(slide);
-        getWindow().setEnterTransition(slide);
     }
 }

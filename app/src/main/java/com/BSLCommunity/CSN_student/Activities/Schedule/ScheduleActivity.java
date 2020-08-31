@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
@@ -45,8 +47,8 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
         if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")) entity = "teachers";
         else entity = "groups";
 
-        if (entity.equals("teachers")) setAnimation(Gravity.RIGHT);
-        else setAnimation(Gravity.LEFT);
+        if (entity.equals("teachers"))   AnimationManager.setAnimation(getWindow(), Gravity.RIGHT);
+        else AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
 
         setContentView(R.layout.activity_lessons_schedule);
 
@@ -202,15 +204,6 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
         for (int i = 0; i < MAX_DAYS; ++i)
             for (int j = 0; j < MAX_PAIR; ++j)
                 scheduleTextView[i][j].setText("");
-    }
-
-    public void setAnimation(int gravity) {
-        Slide slide = new Slide();
-        slide.setSlideEdge(gravity);
-        slide.setDuration(400);
-        slide.setInterpolator(new AccelerateDecelerateInterpolator());
-        getWindow().setExitTransition(slide);
-        getWindow().setEnterTransition(slide);
     }
 }
 

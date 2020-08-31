@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -21,6 +22,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.User;
@@ -50,7 +53,7 @@ public class SubjectListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAnimation();
+        AnimationManager.setAnimation(getWindow(), Gravity.LEFT);
         setContentView(R.layout.activity_subject_list);
 
         TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);
@@ -245,14 +248,5 @@ public class SubjectListActivity extends AppCompatActivity {
                     return;
             }
         }
-    }
-
-    public void setAnimation() {
-        Slide slide = new Slide();
-        slide.setSlideEdge(Gravity.LEFT);
-        slide.setDuration(400);
-        slide.setInterpolator(new AccelerateDecelerateInterpolator());
-        getWindow().setExitTransition(slide);
-        getWindow().setEnterTransition(slide);
     }
 }

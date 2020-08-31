@@ -131,9 +131,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="0.7"
-            android:background="@drawable/activity_main_text"
-            android:onClick="OnClick"
+            android:background="@drawable/activity_button2"
             android:elevation="10dp"
+            android:stateListAnimator="@null"
             android:text="@string/login"
             android:textColor="#FFFFFFFF"
             android:textSize="20sp" />

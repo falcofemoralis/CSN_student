@@ -1,16 +1,23 @@
 package com.BSLCommunity.CSN_student.Activities;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -18,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
@@ -31,34 +40,49 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
     long id; //выбранный код группы со спиннера
     ProgressBar progressBar; //анимация загрузки в спиннере групп
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_registration);
         progressBar = (ProgressBar) findViewById(R.id.activity_registration_pb_groups);
         progressBar.setIndeterminateDrawable(new ThreeBounce());
         createCourseSpinner();
         createClickableSpan();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        Button loginButton = (Button) findViewById(R.id.activity_registration_bt_register);
+        loginButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    transitionDrawable.startTransition(150);
+                    view.startAnimation(AnimationUtils.loadAnimation(RegistrationActivity.this, R.anim.btn_pressed));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    EditText NickName = (EditText) findViewById(R.id.activity_registration_et_nickname);
+                    EditText Password = (EditText) findViewById(R.id.activity_registration_et_password);
+                    EditText RepeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
+
+                    if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
+                        User.registration(getApplicationContext(), RegistrationActivity.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), Integer.toString((Groups.groupsLists.get((int) id).id)));
+                    } else {
+                        Toast.makeText(RegistrationActivity.this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
+                    }
+                    transitionDrawable.reverseTransition(150);
+                    view.startAnimation(AnimationUtils.loadAnimation(RegistrationActivity.this, R.anim.btn_unpressed));
+                }
+                return false;
+            }
+        });
     }
 
     //возращает активити в исходное состояние
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-    }
-
-    //обработчик регистрации юзера
-    public void OnClick(View view) {
-        EditText NickName = (EditText) findViewById(R.id.activity_registration_et_nickname);
-        EditText Password = (EditText) findViewById(R.id.activity_registration_et_password);
-        EditText RepeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
-
-        if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
-            User.registration(getApplicationContext(), RegistrationActivity.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), Integer.toString((Groups.groupsLists.get((int) id).id)));
-        } else {
-            Toast.makeText(this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
-        }
     }
 
     //создание спиннера групп
@@ -126,8 +150,8 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
 
     //переход на форму логина
     public void OnClickLogin() {
-        startActivity(new Intent(this, LoginActivity.class));
-        overridePendingTransition(0, 0);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(RegistrationActivity.this);
+        startActivity(new Intent(this, LoginActivity.class), options.toBundle());
     }
 
     //кнопка перехода в логин

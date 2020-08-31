@@ -15,6 +15,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
@@ -48,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAnimation();
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_settings);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         prefEditor = encryptedSharedPreferences.edit();
@@ -194,14 +196,5 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
 
         alertDialog.setCancelable(false);
         alertDialog.show();
-    }
-
-    public void setAnimation() {
-        Slide slide = new Slide();
-        slide.setSlideEdge(Gravity.LEFT);
-        slide.setDuration(400);
-        slide.setInterpolator(new AccelerateDecelerateInterpolator());
-        getWindow().setExitTransition(slide);
-        getWindow().setEnterTransition(slide);
     }
 }

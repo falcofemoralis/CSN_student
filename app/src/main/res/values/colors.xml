@@ -22,4 +22,5 @@
     <color name="waiting_acceptation">#1455c9</color>
     <color name="passed_without_report">#9ef0ae</color>
     <color name="passed_with_report">#95e35e</color>
+    <color name="login_button">#1896AA</color>
 </resources>

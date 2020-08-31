@@ -165,7 +165,7 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
         //i - пары, j - дни
         for (int i = 0; i < MAX_DAYS; ++i) {
             for (int j = 0; j < MAX_PAIR; ++j) {
-                scheduleTextView[i][j] = findViewById(getResources().getIdentifier("text" + (j + 1) + "_" + (i + 2), "id", getApplicationContext().getPackageName()));
+                scheduleTextView[i][j] = findViewById(getResources().getIdentifier("text_" + i + "_" + j, "id", getApplicationContext().getPackageName()));
             }
         }
     }
@@ -177,11 +177,12 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
 
         //получаем неделю в зависимости от выбранной недели
         int numType = type_week.getText().equals(getResources().getString(R.string.denominator)) ? 1 : 0;
+        final int BOTH_HALF = 2;
 
         for (int i = 0; i < scheduleList.size(); ++i) {
             ScheduleList list = scheduleList.get(i); // Чтобы не вызывать постоянно метод get (Код будет выглядеть короче)
 
-            if (list.half == numType)
+            if (list.half == numType || list.half == BOTH_HALF)
                 try {
                     //парсим предмет по установленому языку в приложении
                     JSONObject subjectJSONObject = new JSONObject(list.subject);

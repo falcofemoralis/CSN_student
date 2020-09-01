@@ -9,11 +9,12 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleActivity;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
@@ -22,6 +23,7 @@ import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
+
 import java.util.concurrent.Callable;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
@@ -57,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         if (!is_registered) {
             startActivity(new Intent(this, LoginActivity.class));
             return;
-        } else {
+        }
+        else {
             TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
             TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
 
@@ -65,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             groupTextView.setText(User.getInstance().nameGroup + " Group");
         }
 
+        initAllData();
+    }
+
+    // Инициализация всех данных
+    private void initAllData() {
         // Скачиваем все необходимые апдейт листы для проверки актуальности данных и проверяем данные
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
             @Override

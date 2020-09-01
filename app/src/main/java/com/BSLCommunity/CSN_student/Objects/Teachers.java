@@ -1,10 +1,14 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
+import android.os.CountDownTimer;
+import android.view.animation.Animation;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.R;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,7 +23,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
+import static android.os.Looper.getMainLooper;
 
 public class Teachers {
 
@@ -97,15 +107,25 @@ public class Teachers {
 
                 //парсим полученный список групп
                 try {
-                    JSONArray JSONArray = new JSONArray(response);
+                    final JSONArray JSONArray = new JSONArray(response);
                     for (int i = 0; i < JSONArray.length(); ++i) {
                         org.json.JSONObject JSONObject = JSONArray.getJSONObject(i);
-                        int id = JSONObject.getInt("id");
+                        final int id = JSONObject.getInt("id");
                         String FIO = JSONObject.getString("FIO");
                         // Добавляем учителя в список
                         teacherLists.add(new TeacherList(id, FIO, new Date()));
                         // Скачиваем расписание учителя, если все остальные учителя скачаны, то после скачивания последнего - сохраняем данные
-                        downloadScheduleFromServer(appContext, id, i == (JSONArray.length() - 1), callBacks);
+                        final int finalI = i;
+                        if(i<29){
+                            new CountDownTimer(100*i, 10) {
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                public void onFinish() {
+                                    downloadScheduleFromServer(appContext, id, finalI == (JSONArray.length() - 1), callBacks);
+                                }
+                            }.start();
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -115,13 +135,13 @@ public class Teachers {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);
     }
 
-    /* Функция загруки расписания из базы для группы
+    /* Функция загруки расписания из базы для преподователя
      * Параметры:
      * appContext - контекст приложения
      * id - id учителя
@@ -153,7 +173,7 @@ public class Teachers {
                         teacherList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, room);
                     }
 
-                    // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
+                    // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервера, если это необходимо
                     if (callBacks != null) {
                         for (int i = 0; i < callBacks.length; ++i) {
                             try {
@@ -174,7 +194,7 @@ public class Teachers {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);

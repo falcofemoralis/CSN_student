@@ -59,4 +59,5 @@
     <string name="lector">Лектор</string>
     <string name="enter_name">Введіть назву</string>
     <string name="incorrect_data">Невірні дані</string>
+    <string name="no_connection_server">Немає зв’язку з нашим сервером, спробуйте пізніше...</string>
 </resources>

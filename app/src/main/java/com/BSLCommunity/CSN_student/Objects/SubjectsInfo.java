@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -172,7 +173,7 @@ public class SubjectsInfo {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);

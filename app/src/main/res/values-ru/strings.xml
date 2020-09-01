@@ -58,4 +58,7 @@
     <string name="value">Ценность</string>
     <string name="lector">Лектор</string>
     <string name="enter_name">Введите название</string>
+    <string name="incorrect_data">Неверные данные</string>
+    <string name="no_connection_server">Нет связи с нашим сервером, попробуйте позже...</string>
+    <string name="mark">Оценка</string>
 </resources>

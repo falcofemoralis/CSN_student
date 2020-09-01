@@ -26,119 +26,200 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.2" />
 
-    <EditText
-        android:id="@+id/activity_registration_et_nickname"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.1"
-        android:background="@drawable/activity_text_style"
-        android:hint="@string/nickname"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        android:textSize="18sp" />
-
-    <Space
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/activity_registration_et_password"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.1"
-        android:background="@drawable/activity_text_style"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        android:textSize="18sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1" />
-
-    <EditText
-        android:id="@+id/activity_registration_et_passwordRe"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.1"
-        android:background="@drawable/activity_text_style"
-        android:hint="@string/password_conf"
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        android:textSize="18sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="23dp"
-        android:layout_weight="0.1">
-
-        <Spinner
-            android:id="@+id/activity_registration_sp_courses"
-            android:layout_width="227dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="104dp"
-            android:layout_marginEnd="101dp"
-            android:layout_weight="0.2"
-            android:background="@drawable/activity_text_style"
-            android:entries="@array/courses"
-            android:prompt="@string/group_prompt"
-            android:textAlignment="center" />
-    </RelativeLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="23dp"
-        android:layout_weight="0.1">
-
-        <ProgressBar
-            android:id="@+id/activity_registration_pb_groups"
-            style="@style/SpinKitView.Large.Circle"
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="181dp"
-            android:layout_marginEnd="183dp"
-            android:indeterminate="true" />
+            android:layout_weight="0.175" />
 
-        <Spinner
-            android:id="@+id/activity_registration_sp_groups"
-            android:layout_width="227dp"
+        <EditText
+            android:id="@+id/activity_registration_et_nickname"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
             android:layout_gravity="center"
-            android:layout_marginStart="103dp"
-            android:layout_marginEnd="102dp"
-            android:layout_weight="0.1"
+            android:layout_weight="0.65"
             android:background="@drawable/activity_text_style"
-            android:prompt="@string/group_prompt"
-            android:textAlignment="center" />
+            android:hint="@string/nickname"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="18sp" />
 
-    </RelativeLayout>
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+
+        <EditText
+            android:id="@+id/activity_registration_et_password"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.65"
+            android:background="@drawable/activity_text_style"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="18sp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+
+        <EditText
+            android:id="@+id/activity_registration_et_passwordRe"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.65"
+            android:background="@drawable/activity_text_style"
+            android:hint="@string/password_conf"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="18sp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.65">
+
+            <Spinner
+                android:id="@+id/activity_registration_sp_courses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:background="@drawable/activity_text_style"
+                android:entries="@array/courses"
+                android:prompt="@string/group_prompt"
+                android:textAlignment="center" />
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.65">
+
+            <ProgressBar
+                android:id="@+id/activity_registration_pb_groups"
+                style="@style/SpinKitView.Large.Circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="100dp"
+                android:layout_marginEnd="100dp"
+                android:indeterminate="true" />
+
+            <Spinner
+                android:id="@+id/activity_registration_sp_groups"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:background="@drawable/activity_text_style"
+                android:prompt="@string/group_prompt"
+                android:textAlignment="center" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.175" />
+    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"

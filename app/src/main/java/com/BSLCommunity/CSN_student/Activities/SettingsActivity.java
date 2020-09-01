@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.Groups;
+import com.BSLCommunity.CSN_student.Objects.Settings;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.User;
@@ -29,142 +30,112 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class SettingsActivity extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
-    TextView nickname_setText, password_setText, group_setText;
-    public static final String KEY_PASSWORD = "password";
-    public static final String KEY_GROUP = "group";
-    public static final String KEY_IS_REGISTERED = "is_registered";
-    public static final String KEY_NICKNAME = "nickname";
-    public static final String KEY_TIMER_SETTING = "timer_setting";
-    public static final String KEY_OFFLINE_DATA = "offline_data";
-    SharedPreferences.Editor prefEditor;
-    String oldNickname, oldPassword, oldGroup;
-    String nickname, password, group;
-    String URL = MainActivity.MAIN_URL + "updateUser.php";
-    RequestQueue requestQueue;
+    SharedPreferences.Editor prefEditor; //локальные данные
+    TextView nicknameText, passwordText, groupText; // поля в которых отображается информация юзера
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_settings);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //получаем необходимые объекты
         prefEditor = encryptedSharedPreferences.edit();
-        nickname_setText = (TextView) findViewById(R.id.activity_settings_tv_nickname);
-        password_setText = (TextView) findViewById(R.id.activity_settings_tv_password);
-        group_setText = (TextView) findViewById(R.id.activity_settings_tv_group);
+        nicknameText = (TextView) findViewById(R.id.activity_settings_tv_nickname);
+        passwordText = (TextView) findViewById(R.id.activity_settings_tv_password);
+        groupText = (TextView) findViewById(R.id.activity_settings_tv_group);
 
-        nickname_setText.setText(encryptedSharedPreferences.getString(KEY_NICKNAME, ""));
-        password_setText.setText(encryptedSharedPreferences.getString(KEY_PASSWORD, ""));
-        group_setText.setText(encryptedSharedPreferences.getString(KEY_GROUP, ""));
+        //устанавливаем данные
+        updateViewTexts();
+        setTimer();
+    }
 
-        nickname = encryptedSharedPreferences.getString(KEY_NICKNAME, "");
-        oldNickname = nickname;
-        password = encryptedSharedPreferences.getString(KEY_PASSWORD, "");
-        oldPassword = password;
-        group = encryptedSharedPreferences.getString(KEY_GROUP, "");
-        oldGroup = group;
-
+    //обработчик кнопки переключения видимости таймера
+    public void setTimer(){
+        //получаем переключатель таймера
         Switch timerSwitch = (Switch) findViewById(R.id.activity_settings_sw_timer);
-        if (encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true))
+
+        //устанавливаем изначальное значение
+        if (encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true))
             timerSwitch.setChecked(true);
         else timerSwitch.setChecked(false);
 
+        //добавляем листенер кнопке таймеру
         timerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) prefEditor.putBoolean(KEY_TIMER_SETTING, true).apply();
-                else prefEditor.putBoolean(KEY_TIMER_SETTING, false).apply();
+                if (isChecked) prefEditor.putBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true).apply();
+                else prefEditor.putBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), false).apply();
             }
         });
     }
 
-    public void OnClick(View v) {
-        SettingsDialogEditText SettingsDialogEditText = new SettingsDialogEditText(v.getId());
+    //обработчик нажатия на диалоговое поле
+    public void OnClick(View view) {
+        SettingsDialogEditText SettingsDialogEditText = new SettingsDialogEditText(view.getId());
         SettingsDialogEditText.show(getSupportFragmentManager(), "DialogText");
     }
 
-    public void Exit(View v) {
+    public void Exit(View view) {
         showDialog();
     }
 
     @Override
     public void applyText(String text, int applyKey) {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("NickName", encryptedSharedPreferences.getString(Settings.PrefKeys.NICKNAME.getKey(), ""));
+        parameters.put("Password", encryptedSharedPreferences.getString(Settings.PrefKeys.PASSWORD.getKey(),""));
+
         switch (applyKey) {
             case R.id.activity_settings_ll_nickname:
                 if (text.equals("")) {
                     Toast.makeText(SettingsActivity.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
+                }else {
+                    parameters.put("NickName", text);
                 }
-                nickname_setText.setText(text);
-                prefEditor.putString(KEY_NICKNAME, text).apply();
-                setData();
                 break;
             case R.id.activity_settings_ll_password:
                 if (text.equals("")) {
                     Toast.makeText(SettingsActivity.this, R.string.nodata, Toast.LENGTH_SHORT).show();
                     return;
+                }else{
+                    parameters.put("Password", text);
                 }
-                password_setText.setText(text);
-                prefEditor.putString(KEY_PASSWORD, text).apply();
-                setData();
                 break;
             case R.id.activity_settings_ll_group:
-                group_setText.setText(text);
-                prefEditor.putString(KEY_GROUP, text).apply();
-                setData();
                 break;
         }
+        try {
+            User.getInstance().update(getApplicationContext(), this, parameters, new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    updateViewTexts();
+                    return null;
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void setData() {
-        nickname = encryptedSharedPreferences.getString(KEY_NICKNAME, "");
-        password = encryptedSharedPreferences.getString(KEY_PASSWORD, "");
-        group = encryptedSharedPreferences.getString(KEY_GROUP, "");
-
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response.indexOf("Duplicate") != -1) {
-                    prefEditor.putString(KEY_NICKNAME, oldNickname);
-                    prefEditor.apply();
-                    nickname_setText.setText(oldNickname);
-                    Toast.makeText(SettingsActivity.this, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
-                } else {
-                    oldNickname = encryptedSharedPreferences.getString(SettingsActivity.KEY_NICKNAME, "");
-                    oldPassword = encryptedSharedPreferences.getString(SettingsActivity.KEY_PASSWORD, "");
-                    oldGroup = encryptedSharedPreferences.getString(SettingsActivity.KEY_GROUP, "");
-                    Toast.makeText(SettingsActivity.this, R.string.datachanged, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                prefEditor.putString(KEY_NICKNAME, oldNickname);
-                prefEditor.putString(KEY_PASSWORD, oldPassword);
-                prefEditor.putString(KEY_GROUP, oldGroup);
-                prefEditor.apply();
-                nickname_setText.setText(oldNickname);
-                password_setText.setText(oldPassword);
-                group_setText.setText(oldGroup);
-                Toast.makeText(SettingsActivity.this, R.string.no_connection, Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("NewNickName", nickname.toLowerCase());
-                parameters.put("Password", password);
-                parameters.put("NameGroup", group);
-                parameters.put("OldNickName", oldNickname.toLowerCase());
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
+    public void updateViewTexts() {
+        nicknameText.setText(encryptedSharedPreferences.getString(Settings.PrefKeys.NICKNAME.getKey(), ""));
+        passwordText.setText(encryptedSharedPreferences.getString(Settings.PrefKeys.PASSWORD.getKey(), ""));
+        groupText.setText(encryptedSharedPreferences.getString(Settings.PrefKeys.GROUP.getKey(), ""));
     }
 
     protected void showDialog() {
@@ -175,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                prefEditor.putBoolean(KEY_IS_REGISTERED, false).apply();
+                prefEditor.putBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false).apply();
                 // Удаление данных
                 User.deleteUser();
                 SubjectsInfo.deleteSubjects(getApplicationContext());

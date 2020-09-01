@@ -1,5 +1,6 @@
 package com.BSLCommunity.CSN_student.Objects;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,12 +12,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 // Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
 public class User {
@@ -145,9 +152,9 @@ public class User {
             public void onResponse(String response) {
                 // На данный момент сообщением об неуспешной регистрации является ERROR
                 if (response.equals("ERROR"))
-                    Toast.makeText(activityContext, "incorrect data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
                 else if (response.equals("Duplicate"))
-                    Toast.makeText(activityContext, "user with this nickName already exist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activityContext, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
                 else {
                     Toast.makeText(activityContext, R.string.successfully_registration, Toast.LENGTH_SHORT).show();
 
@@ -175,40 +182,71 @@ public class User {
         requestQueue.add(request);
     }
 
-    /* Функция регистрации нового пользователя
+    /* Функция обновления данных пользователя
      * Параметры:
      * appContext - application context
      * activityContext - activity context активити из которого был сделан вызов функции
-     * regData - параметры которые необходимо передать в PUT запросе при обновления данных пользователя
+     * updateData - параметры которые необходимо передать в PUT запросе при обновления данных пользователя
      * */
-    public void update(final Context appContext, final Context activityContext, final Map<String, String> updateData) {
+    public void update(final Context appContext, final Context activityContext, final Map<String, String> updateData,  final Callable<Void> callBack) throws JSONException {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = MainActivity.MAIN_URL + "/api/users/1";
+        // Передается старый пароль, для некого подтверждения пользователя, чтобы никто другой не кидал PUT запросы на сервер и не менял спокойно данные пользователей
+        updateData.put("OldPassword", instance.password);
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(updateData);
 
-        StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+        String url = MainActivity.MAIN_URL + String.format("api/users/%1$s", User.getInstance().id);
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        String stringArr[] = response.split(" ", 2);
+
+                        if (stringArr[0].equals("ERROR"))
+                            Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
+                        else if (stringArr[0].equals("Duplicate"))
+                            Toast.makeText(activityContext, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(activityContext, R.string.datachanged, Toast.LENGTH_SHORT).show();
+                            // Обновление успешно, потому заносим новые данные
+                            instance.nickName = updateData.get("NickName");
+                            instance.password = updateData.get("Password");
+                            saveData(); // сохраняем данные
+                            try {
+                                callBack.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(activityContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+
             @Override
-            public void onResponse(String response) {
-                // Обновление успешно, потому заносим новые данные
-                instance.nickName = updateData.get("NickName");
-                instance.password = updateData.get("Password");
-                saveData(); // сохраняем данные
+            public Map<String, String> getHeaders()
+            {
+                Map<String, String> headers = new HashMap<String, String>();
+               // headers.put("Content-Type", "application/json");
+                //or try with this:
+                headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                return headers;
             }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activityContext, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // Передается старый пароль, для некого подтверждения пользователя, чтобы никто другой не кидал PUT запросы на сервер и не менял спокойно данные пользователей
-                updateData.put("OldPassword", instance.password);
-                return  updateData;
+            protected Map<String, String> getParams() {
+                return updateData;
             }
         };
-        requestQueue.add(request);
+        requestQueue.add(putRequest);
     }
 
     // Сохранение всех данных пользователя

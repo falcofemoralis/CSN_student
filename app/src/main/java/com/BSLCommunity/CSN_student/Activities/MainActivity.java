@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleActivity;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
+import com.BSLCommunity.CSN_student.Objects.Settings;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
@@ -25,12 +27,14 @@ import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
 import java.util.concurrent.Callable;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
-    public static String MAIN_URL = "http://a0459938.xsph.ru/";
+    public static String MAIN_URL = "http://a0466974.xsph.ru/";
     public static String GROUP_FILE_NAME = "groups";
 
     Timer timer = new Timer(); //таймер
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         setSettingsFile(this);
 
-        Boolean is_registered = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED, false);
+        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false);
         if (!is_registered) {
             startActivity(new Intent(this, LoginActivity.class));
             return;

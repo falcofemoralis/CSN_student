@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -124,15 +125,13 @@ public class SubjectsInfo {
         String jsonString = gson.toJson(subjectInfo);
         JSONHelper.create(context, FILE_NAME, jsonString);
         try {
-            updateRating(context);
+            updateRating(context, jsonString);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static void updateRating(final Context context) throws JSONException {
-        final String JSONString = JSONHelper.read(context, FILE_NAME);
-
+    public static void updateRating(final Context context, final String JSONString) throws JSONException {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String url = MainActivity.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
         JsonArrayRequest request = new JsonArrayRequest (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {
@@ -174,7 +173,7 @@ public class SubjectsInfo {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);

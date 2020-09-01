@@ -69,7 +69,7 @@ public class Timer extends AppCompatActivity {
     }
 
     public void checkTimer(TextView TimeUntil, TextView Time, Resources res) {
-        boolean timer_settings = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true);
         if (!timer_settings) {
             Time.setVisibility(View.GONE);
             TimeUntil.setVisibility(View.GONE);
@@ -114,7 +114,7 @@ public class Timer extends AppCompatActivity {
     }
 
     public void resetTimer() {
-        boolean timer_settings = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_TIMER_SETTING, true);
+        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true);
         if (timer_settings) start.cancel();
     }
 }

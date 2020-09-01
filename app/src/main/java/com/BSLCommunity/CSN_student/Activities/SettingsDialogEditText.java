@@ -43,20 +43,19 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
 
         switch (applyKey) {
             case R.id.activity_settings_ll_nickname:
-                view = inflater.inflate(R.layout.dialog_settings_et, null);
+                view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
                 EditText = view.findViewById(R.id.activity_settings_et_dialog);
                 EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.PrefKeys.NICKNAME.getKey(), ""));
                 title = getResources().getString(R.string.nickname);
                 break;
             case R.id.activity_settings_ll_password:
-                view = inflater.inflate(R.layout.dialog_settings_et, null);
+                view = inflater.inflate(R.layout.dialog_settings_et_password, null);
                 EditText = view.findViewById(R.id.activity_settings_et_dialog);
                 EditText.setText(Settings.encryptedSharedPreferences.getString(Settings.PrefKeys.PASSWORD.getKey(), ""));
                 title = getResources().getString(R.string.password);
                 break;
             case R.id.activity_settings_ll_group:
-                view = inflater.inflate(R.layout.dialog_settings_sp, null);
-
+                view = inflater.inflate(R.layout.dialog_settings_sp_groups, null);
                 ProgressBar groupProgressBar = view.findViewById(R.id.activity_settings_pb_groups);
                 Sprite iIndeterminateDrawable = new ThreeBounce();
                 iIndeterminateDrawable.setColor(getContext().getColor(R.color.main_color_3));
@@ -84,7 +83,7 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 title = getResources().getString(R.string.group);
                 break;
             default:
-                view = inflater.inflate(R.layout.dialog_settings_et, null);
+                view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
                 title = "";
         }
 

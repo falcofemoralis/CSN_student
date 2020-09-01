@@ -5,6 +5,7 @@ import android.widget.Toast;
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.R;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -117,7 +118,7 @@ public class Groups {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);
@@ -178,7 +179,7 @@ public class Groups {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, "No connection with our server,try later...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);

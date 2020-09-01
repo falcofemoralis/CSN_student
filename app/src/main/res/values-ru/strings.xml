@@ -58,4 +58,5 @@
     <string name="value">Ценность</string>
     <string name="lector">Лектор</string>
     <string name="enter_name">Введите название</string>
+    <string name="incorrect_data">Неверные данные</string>
 </resources>

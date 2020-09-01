@@ -58,4 +58,5 @@
     <string name="value">Цінність</string>
     <string name="lector">Лектор</string>
     <string name="enter_name">Введіть назву</string>
+    <string name="incorrect_data">Невірні дані</string>
 </resources>

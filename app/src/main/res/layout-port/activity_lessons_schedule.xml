@@ -10,6 +10,7 @@
     android:paddingBottom="15dp">
 
     <LinearLayout
+        android:id="@+id/activity_lessons_schedule_ll_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"

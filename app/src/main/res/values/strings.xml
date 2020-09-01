@@ -60,5 +60,6 @@
     <string name="enter_name">Enter name</string>
     <string name="incorrect_data">Incorrect data</string>
     <string name="no_connection_server">No connection with our server, try later...</string>
+    <string name="mark">Mark</string>
 </resources>
 

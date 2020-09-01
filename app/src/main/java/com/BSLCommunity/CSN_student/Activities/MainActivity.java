@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
             TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
 
-            courseTextView.setText(String.valueOf(User.getInstance().course) + " Course");
-            groupTextView.setText(User.getInstance().nameGroup + " Group");
+            courseTextView.setText(String.valueOf(User.getInstance().course) + " " + courseTextView.getText());
+            groupTextView.setText(User.getInstance().nameGroup + " " + groupTextView.getText());
         }
 
         // Скачиваем все необходимые апдейт листы для проверки актуальности данных и проверяем данные

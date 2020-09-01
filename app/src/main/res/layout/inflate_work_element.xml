@@ -11,11 +11,11 @@
     <EditText
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/gray"
         android:layout_weight="0.35"
-        android:textSize="18sp"
-        android:hint="Enter name"
-        android:gravity="center"/>
+        android:background="@color/gray"
+        android:gravity="center"
+        android:hint="@string/enter_name"
+        android:textSize="18sp" />
 
     <Spinner
         android:layout_width="0dp"

@@ -60,7 +60,7 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
 
         progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
         Sprite iIndeterminateDrawable = new ThreeBounce();
-        iIndeterminateDrawable.setColor(getColor(R.color.schedule_color_1));
+        iIndeterminateDrawable.setColor(getColor(R.color.white));
         progressBar.setIndeterminateDrawable(iIndeterminateDrawable);
 
         spinner = findViewById(R.id.activity_lessons_schedule_sp_main);

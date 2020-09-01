@@ -11,7 +11,7 @@
     <ScrollView
         style="@android:style/Widget.DeviceDefault.Light.ScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="100">
 
         <LinearLayout
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="n Course"
+                    android:text="@string/course"
                     android:textColor="@color/white"
                     android:textSize="35dp"
                     android:textStyle="bold" />
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="n Group"
+                    android:text="@string/group"
                     android:textColor="#B6B6B6"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -168,7 +168,7 @@
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="Subjects"
+                    android:text="@string/subjects"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp">
@@ -192,7 +192,7 @@
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="Settings"
+                    android:text="@string/settings"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp">

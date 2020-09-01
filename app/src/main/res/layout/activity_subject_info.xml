@@ -42,7 +42,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
-                        android:text="Value"
+                        android:text="@string/value"
                         android:textColor="@color/white" />
 
                     <Space
@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
-                        android:text="Lector"
+                        android:text="@string/lector"
                         android:textColor="@color/white" />
 
                     <Space
@@ -176,7 +176,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_subject_info_work_button"
                     android:onClick="openWork"
-                    android:text="LABS"
+                    android:text="@string/labs"
                     android:textColor="@color/white" />
 
                 <TableLayout
@@ -215,7 +215,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_subject_info_work_button"
                     android:onClick="openWork"
-                    android:text="IHW"
+                    android:text="@string/ihw"
                     android:textColor="@color/white" />
 
                 <TableLayout
@@ -256,7 +256,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/activity_subject_info_work_button"
                     android:onClick="openWork"
-                    android:text="Other"
+                    android:text="@string/other"
                     android:textColor="@color/white" />
 
                 <TableLayout

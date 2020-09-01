@@ -23,7 +23,6 @@
     <string name="nickname_is_taken">Этот никнейм взял другой пользователь</string>
     <string name="successfully_registration">Успешная регистрация</string>
     <string name="group">Группа</string>
-    <string name="ihw">ИДЗ</string>
     <string name="home_screen">Главный экран</string>
     <string name="timer">Таймер</string>
     <string name="account_exit">Выйти из аккаунта</string>
@@ -47,4 +46,16 @@
     <string name="wed">\t\t\t\tСР\t\t\t\t</string>
     <string name="thu">\t\t\t\tЧТ\t\t\t\t</string>
     <string name="fri">\t\t\t\tПТ\t\t\t\t</string>
+    <string name="practice">Практика</string>
+    <string name="assistant">Ассистент</string>
+    <string name="teachers_prompt">Выберите учителя</string>
+    <string name="subjects">Предметы</string>
+    <string name="settings">Настройки</string>
+    <string name="course">Курс</string>
+    <string name="labs">Лабараторные</string>
+    <string name="ihw">ИДЗ</string>
+    <string name="other">Другое</string>
+    <string name="value">Ценность</string>
+    <string name="lector">Лектор</string>
+    <string name="enter_name">Введите название</string>
 </resources>

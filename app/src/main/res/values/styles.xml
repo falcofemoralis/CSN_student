@@ -20,12 +20,6 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="ScheduleActivityActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">@color/schedule_color_2</item>
-        <item name="colorPrimaryDark">@color/schedule_color_2</item>
-        <item name="android:navigationBarColor">@color/black</item>
-    </style>
-
     <style name="SubjectListsActivityActionBar" parent="@style/AppTheme">
         <item name="colorPrimary">#198A9C</item>
         <item name="colorPrimaryDark">#198A9C</item>

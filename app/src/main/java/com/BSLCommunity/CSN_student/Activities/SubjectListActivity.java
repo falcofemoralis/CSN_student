@@ -56,7 +56,7 @@ public class SubjectListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subject_list);
 
         TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);
-        courseTextView.setText(User.getInstance().course + " Course");
+        courseTextView.setText(User.getInstance().course + " " + courseTextView.getText());
         tableSubjects = findViewById(R.id.activity_subject_list_ll_table_subjects);
         setSubjectsList();
         setProgress();

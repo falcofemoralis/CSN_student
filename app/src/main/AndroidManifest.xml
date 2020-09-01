@@ -32,7 +32,7 @@
             android:theme="@style/TransparentActionBar" />
         <activity
             android:name=".Activities.Schedule.ScheduleActivity"
-            android:theme="@style/ScheduleActivityActionBar" />
+            android:theme="@style/TransparentActionBar" />
         <activity
             android:name=".Activities.SubjectInfoActivity"
             android:theme="@style/SubjectInfoActivityActionBar" />

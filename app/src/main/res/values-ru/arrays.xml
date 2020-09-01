@@ -1,0 +1,26 @@
+<resources>
+    <string-array name="courses">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="values">
+        <item>Экзамен</item>
+        <item>Зачет</item>
+        <item>Дифф.Зачет</item>
+    </string-array>
+
+    <string-array name="lab_types">
+        <item>Не сдано</item>
+        <item>В процессе</item>
+        <item>Выполнено без отчета</item>
+        <item>Выполнено с отчетом</item>
+        <item>Ожидает принятия</item>
+        <item>Сдано без отчета</item>
+        <item>Сдано с отчетом</item>
+    </string-array>
+</resources>
+

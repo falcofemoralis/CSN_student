@@ -1,12 +1,18 @@
 package com.BSLCommunity.CSN_student.Activities.Schedule;
 
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
 import android.transition.Slide;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,7 +60,7 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
 
         progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
         Sprite iIndeterminateDrawable = new ThreeBounce();
-        iIndeterminateDrawable.setColor(getColor(R.color.schedule_color_1));
+        iIndeterminateDrawable.setColor(getColor(R.color.white));
         progressBar.setIndeterminateDrawable(iIndeterminateDrawable);
 
         spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
@@ -73,13 +79,16 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
 
         if (entity.equals("teachers")) {
 
-            //создаем лист групп
+            //создаем лист преподов
             if (Teachers.teacherLists.size() != 0) {
                 progressBar.setVisibility(View.GONE);
 
-                //добавляем в массив из класса Groups группы
-                idElements = new int[Teachers.teacherLists.size()];
-                for (int j = 0; j < Teachers.teacherLists.size(); ++j) {
+               // int listSize = Teachers.teacherLists.size();
+                int listSize = 28; // кол-во преподов на кафедре
+
+                //добавляем в массив из класса Teachers преподы
+                idElements = new int[listSize];
+                for (int j = 0; j < listSize; ++j) {
                     try {
                         JSONObject FIOJson = new JSONObject(Teachers.teacherLists.get(j).FIO);
                         listAdapter.add(FIOJson.getString(Locale.getDefault().getLanguage()));
@@ -148,6 +157,8 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
 
     //меняем тип недели
     public void changeTypeWeek(View v) {
+        TransitionManager.beginDelayedTransition((LinearLayout) findViewById(R.id.activity_lessons_schedule_ll_main));
+
         if (type_week.getText().equals(getResources().getString(R.string.denominator)))
             type_week.setText(getResources().getString(R.string.numerator));
         else

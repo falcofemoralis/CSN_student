@@ -27,7 +27,7 @@ public class LocalData {
     public static HashMap<Integer, Date> updateListTeachers = new HashMap<Integer, Date>();
 
     // Загрзка Апдейта списка групп (список который хранит время изменения каждой группы на сервере)
-    public static void downloadUpdateList(final Context appContext, final HashMap<Integer, Date> updateList, final TypeData entity, final Callable<Void> ... callBacks) {
+    public static void downloadUpdateList(final Context appContext, final HashMap<Integer, Date> updateList, final TypeData entity, final Callable<Void> callBack) {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
@@ -52,20 +52,26 @@ public class LocalData {
                         } catch (Exception e) { }
                     }
 
-                    if (callBacks != null) {
-                        // Вызов всех callBacks
-                        for (int i = 0; i < callBacks.length; ++i)
-                            try {
-                                callBacks[i].call();
-                            } catch (Exception e) { }
-                    }
+                    try {
+                        callBack.call();
+                    } catch (Exception e) {}
+
                 } catch(JSONException e) {
                     e.printStackTrace();
+
+
                 }
+
+                try {
+                    callBack.call();
+                } catch (Exception ex) {}
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                try {
+                    callBack.call();
+                } catch (Exception ex) {}
             }
         });
         requestQueue.add(request);

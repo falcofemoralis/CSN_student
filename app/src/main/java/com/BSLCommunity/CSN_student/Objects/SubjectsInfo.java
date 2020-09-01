@@ -124,15 +124,13 @@ public class SubjectsInfo {
         String jsonString = gson.toJson(subjectInfo);
         JSONHelper.create(context, FILE_NAME, jsonString);
         try {
-            updateRating(context);
+            updateRating(context, jsonString);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static void updateRating(final Context context) throws JSONException {
-        final String JSONString = JSONHelper.read(context, FILE_NAME);
-
+    public static void updateRating(final Context context, final String JSONString) throws JSONException {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String url = MainActivity.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
         JsonArrayRequest request = new JsonArrayRequest (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {

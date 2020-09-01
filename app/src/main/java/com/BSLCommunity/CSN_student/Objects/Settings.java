@@ -18,7 +18,8 @@ public class Settings {
         GROUP_ID("group_id"),
         COURSE("course"),
         IS_REGISTERED("is_registered"),
-        OFFLINE_DATA("offline_data");
+        OFFLINE_DATA("offline_data"),
+        TIMER_SWITCH("timer_switch");
 
         private String value;
         private PrefKeys(String value) {

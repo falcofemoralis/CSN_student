@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleActivity;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.LocalData;
+import com.BSLCommunity.CSN_student.Objects.Settings;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         setSettingsFile(this);
 
-        Boolean is_registered = encryptedSharedPreferences.getBoolean(SettingsActivity.KEY_IS_REGISTERED, false);
+        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false);
         if (!is_registered) {
             startActivity(new Intent(this, LoginActivity.class));
             return;

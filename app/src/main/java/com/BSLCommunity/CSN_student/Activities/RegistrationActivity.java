@@ -52,8 +52,8 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
         createClickableSpan();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        Button loginButton = (Button) findViewById(R.id.activity_registration_bt_register);
-        loginButton.setOnTouchListener(new View.OnTouchListener() {
+        Button registrationButton = (Button) findViewById(R.id.activity_registration_bt_register);
+        registrationButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();

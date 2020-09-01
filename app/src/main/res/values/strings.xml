@@ -58,5 +58,6 @@
     <string name="value">Value</string>
     <string name="lector">Lector</string>
     <string name="enter_name">Enter name</string>
+    <string name="incorrect_data">Incorrect data</string>
 </resources>
 

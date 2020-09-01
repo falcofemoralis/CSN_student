@@ -97,7 +97,6 @@ function createUser($connect)
     mysqli_close($connect);
 }
 
-
 /* PUT запрос обновления данных юзера URI: .../users/id 
  * JSON данные:
  * NickName - Ник
@@ -106,14 +105,14 @@ function createUser($connect)
  */
 function updateUser($connect, $id)
 {
-    $json = file_get_contents('php://input');
-    $data = json_decode($json);
+    $string = file_get_contents('php://input');
+    parse_str($string, $data);
 
     // Получаем данные
-    $nickName = $data->{'NickName'};
-    $password = $data->{'Password'};
-    $oldPassword = $data->{'OldPassword'};
-   
+    $nickName = $data['NickName'];
+    $password = $data['Password'];  
+    $oldPassword = $data['OldPassword'];
+    
     // Проверка на то, все ли данные пришли
     if ($nickName == NULL || $password == NULL || $oldPassword == NULL)
     {
@@ -125,23 +124,19 @@ function updateUser($connect, $id)
                 SET `NickName`='$nickName',
                     `Password`='$password'
                     WHERE Code_User = '$id' AND Password = '$oldPassword'";
-    
-    
+     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     mysqli_close($connect);
 }
 
 /* PUT запрос обновления рейтинга URI: .../users/id/rating 
  * JSON данные:
- * Rating - JSON строка информации о рейтинге юзера
+ * $rating - JSON строка информации о рейтинге юзера
  */
 function updateUserRating($connect, $id) 
 {
-    $json = file_get_contents('php://input');
-    $data = json_decode($json);
-    
-    $rating = $data->{'Rating'};
-    
+    $rating = file_get_contents('php://input');
+
     // Проверка на то, все ли данные пришли
     if ($rating == NULL )
     {
@@ -155,7 +150,6 @@ function updateUserRating($connect, $id)
     
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     mysqli_close($connect);
-    
 }
 
 

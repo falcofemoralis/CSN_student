@@ -56,7 +56,6 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 break;
             case R.id.activity_settings_ll_group:
                 view = inflater.inflate(R.layout.dialog_settings_sp, null);
-
                 ProgressBar groupProgressBar = view.findViewById(R.id.activity_settings_pb_groups);
                 Sprite iIndeterminateDrawable = new ThreeBounce();
                 iIndeterminateDrawable.setColor(getContext().getColor(R.color.main_color_3));

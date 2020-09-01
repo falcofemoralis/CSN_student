@@ -72,10 +72,10 @@ public class RatingActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_rating);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        STYLE_CELL = getResources().getDrawable(R.drawable.text_but_schedule_style2);
-        STYLE_BACK = getResources().getDrawable(R.drawable.text_but_schedule_style3);
-        STYLE_GREEN = getResources().getDrawable(R.drawable.text_but_rating_style_green);
-        STYLE_RED = getResources().getDrawable(R.drawable.text_but_rating_style_red);
+        STYLE_CELL = getResources().getDrawable(R.drawable.activity_rating_but_style2);
+        STYLE_BACK = getResources().getDrawable(R.drawable.activity_rating_but_style3);
+        STYLE_GREEN = getResources().getDrawable(R.drawable.activity_rating_style_green);
+        STYLE_RED = getResources().getDrawable(R.drawable.activity_rating_style_red);
 
         //mainLayout = findViewById(R.id.activity_subject_list_ll_main);
         table = findViewById(R.id.table);

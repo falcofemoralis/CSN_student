@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,9 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.Settings;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,18 +56,22 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 break;
             case R.id.activity_settings_ll_group:
                 view = inflater.inflate(R.layout.dialog_settings_sp, null);
-                try {
-                    groupSpinner = view.findViewById(R.id.activity_registration_sp_groups);
 
+                ProgressBar groupProgressBar = view.findViewById(R.id.activity_settings_pb_groups);
+                Sprite iIndeterminateDrawable = new ThreeBounce();
+                iIndeterminateDrawable.setColor(getContext().getColor(R.color.main_color_3));
+                groupProgressBar.setIndeterminateDrawable(iIndeterminateDrawable);
+
+                try {
+                    groupSpinner = view.findViewById(R.id.activity_settings_sp_groups);
                     //создаем лист групп
                     List<String> groupsAdapter = new ArrayList<String>();
                     if (Groups.groupsLists.size() != 0) {
+                        groupProgressBar.setVisibility(View.GONE);
+
                         //добавляем в массив из класса Groups группы
                         for (int j = 0; j < Groups.groupsLists.size(); ++j)
                             groupsAdapter.add(Groups.groupsLists.get(j).GroupName);
-                    } else {
-                        //в том случае если групп по курсу нету
-                        groupsAdapter.add("No groups");
                     }
 
                     //устанавливаем спинер выбора групп

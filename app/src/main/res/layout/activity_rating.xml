@@ -16,7 +16,7 @@
             android:layout_height="61dp"
             android:layout_weight="0.495"
             android:layout_gravity="center"
-            android:background="@drawable/text_but_schedule_style"
+            android:background="@drawable/activity_rating_but_style"
             android:textAlignment="center" />
 
         <Space
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.495"
-            android:background="@drawable/text_but_schedule_style"
+            android:background="@drawable/activity_rating_but_style"
             android:prompt="@string/group_prompt"
             android:textSize="18sp" />
 

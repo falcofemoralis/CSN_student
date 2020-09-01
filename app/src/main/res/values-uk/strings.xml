@@ -23,7 +23,6 @@
     <string name="nickname_is_taken">Цей псевдонім взяв інший користувач</string>
     <string name="successfully_registration">Успішна реєстрація</string>
     <string name="group">Група</string>
-    <string name="ihw">ІДЗ</string>
     <string name="home_screen">Головний екран</string>
     <string name="timer">Таймер</string>
     <string name="account_exit">Вийти з акаунту</string>
@@ -47,4 +46,16 @@
     <string name="wed">\t\t\t\tСР\t\t\t\t</string>
     <string name="thu">\t\t\t\tЧТ\t\t\t\t</string>
     <string name="fri">\t\t\t\tПТ\t\t\t\t</string>
+    <string name="practice">Практика</string>
+    <string name="assistant">Асистент</string>
+    <string name="teachers_prompt">Виберіть вчителя</string>
+    <string name="subjects">Предмети</string>
+    <string name="settings">Налаштування</string>
+    <string name="course">Курс</string>
+    <string name="labs">Лабараторні</string>
+    <string name="ihw">ИДЗ</string>
+    <string name="other">Інше</string>
+    <string name="value">Цінність</string>
+    <string name="lector">Лектор</string>
+    <string name="enter_name">Введіть назву</string>
 </resources>

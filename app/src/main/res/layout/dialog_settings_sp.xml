@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <Spinner
-        android:id="@+id/activity_registration_sp_groups"
+        android:id="@+id/activity_settings_sp_groups"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_gravity="center"
@@ -14,4 +14,10 @@
         android:prompt="@string/group_prompt"
         android:textAlignment="center"
         android:textColor="@color/black" />
+
+    <ProgressBar
+        android:id="@+id/activity_settings_pb_groups"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

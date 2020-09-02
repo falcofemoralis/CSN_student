@@ -203,11 +203,9 @@ public class User {
                 {
                     @Override
                     public void onResponse(String response) {
-                        String stringArr[] = response.split(" ", 2);
-
-                        if (stringArr[0].equals("ERROR"))
+                        if (response.indexOf("ERROR")!=-1)
                             Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
-                        else if (stringArr[0].equals("Duplicate"))
+                        else if (response.indexOf("Duplicate")!=-1)
                             Toast.makeText(activityContext, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
                         else {
                             Toast.makeText(activityContext, R.string.datachanged, Toast.LENGTH_SHORT).show();

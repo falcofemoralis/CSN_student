@@ -2,7 +2,7 @@
     <string name="app_name">CSN student</string>
     <string name="Overall">Загалом</string>
     <string name="Lessons_schedule">Розклад занять</string>
-    <string name="Teachers_schedule">Розклад вчителів</string>
+    <string name="Teachers_schedule">Розклад викладачів</string>
     <string name="title_activity_settings">Налаштування</string>
     <string name="Base_settings">Налаштування юзера</string>
     <string name="group_prompt"> Виберіть групу</string>

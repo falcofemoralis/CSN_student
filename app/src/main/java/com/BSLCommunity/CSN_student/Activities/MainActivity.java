@@ -39,11 +39,20 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера
+    Boolean is_registered; //проверка регистрации юзера
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setSettingsFile(this);
+        is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false);
+        if (!is_registered) {
+            startActivity(new Intent(this, LoginActivity.class));
+            return;
+        }
+
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -57,20 +66,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
         TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
 
-        setSettingsFile(this);
+        TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
+        TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
 
-        Boolean is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false);
-        if (!is_registered) {
-            startActivity(new Intent(this, LoginActivity.class));
-            return;
-        }
-        else {
-            TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
-            TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
+        courseTextView.setText(String.valueOf(User.getInstance().course) + " " + courseTextView.getText());
+        groupTextView.setText(User.getInstance().nameGroup + " " + groupTextView.getText());
 
-            courseTextView.setText(String.valueOf(User.getInstance().course) + " " + courseTextView.getText());
-            groupTextView.setText(User.getInstance().nameGroup + " " + groupTextView.getText());
-        }
 
         initAllData();
     }
@@ -153,12 +154,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onResume() {
         super.onResume();
-        timer.checkTimer(TimeUntil, Time, getResources());
+        if (is_registered) timer.checkTimer(TimeUntil, Time, getResources());
     }
 
     @Override
     protected void onPause() {
-        timer.resetTimer();
+        if (is_registered) timer.resetTimer();
         super.onPause();
     }
 

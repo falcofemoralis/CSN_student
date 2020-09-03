@@ -2,7 +2,7 @@
     <string name="app_name">CSN student</string>
     <string name="Overall">В общем</string>
     <string name="Lessons_schedule">Расписание занятий</string>
-    <string name="Teachers_schedule">Расписание учителей</string>
+    <string name="Teachers_schedule">Расписание преподавателей</string>
     <string name="title_activity_settings">Настройки</string>
     <string name="Base_settings">Настройка юзера</string>
     <string name="group_prompt">Выберите группу</string>

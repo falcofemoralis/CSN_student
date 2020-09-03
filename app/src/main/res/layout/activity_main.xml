@@ -134,7 +134,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/activity_button"
-                    android:drawableTop="@drawable/ic_teacher_schedule"
+                    android:drawableTop="@drawable/ic_rating"
                     android:elevation="10dp"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"

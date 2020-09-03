@@ -149,6 +149,16 @@
             android:layout_height="match_parent"
             android:layout_weight="0.65">
 
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingEnd="30dp"
+                android:text="@string/course"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
             <Spinner
                 android:id="@+id/activity_registration_sp_courses"
                 android:layout_width="match_parent"
@@ -159,6 +169,7 @@
                 android:layout_weight="0.1"
                 android:background="@drawable/activity_text_style"
                 android:entries="@array/courses"
+                android:paddingStart="45dp"
                 android:prompt="@string/group_prompt"
                 android:textAlignment="center" />
         </RelativeLayout>

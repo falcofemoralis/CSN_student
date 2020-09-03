@@ -101,10 +101,6 @@ public class Teachers {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
-                //сохраняем группы в файл
-                JSONHelper.create(appContext, MainActivity.GROUP_FILE_NAME, response);
-
                 //парсим полученный список групп
                 try {
                     final JSONArray JSONArray = new JSONArray(response);

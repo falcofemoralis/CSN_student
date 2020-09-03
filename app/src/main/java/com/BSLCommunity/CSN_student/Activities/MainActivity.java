@@ -35,11 +35,11 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     public static String MAIN_URL = "http://a0466974.xsph.ru/";
-    public static String GROUP_FILE_NAME = "groups";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера
     Boolean is_registered; //проверка регистрации юзера
+    Boolean can_click; //нажата кнопка
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -119,34 +119,36 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onTouch(View view, MotionEvent motionEvent) {
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && can_click) {
             transitionDrawable.startTransition(150);
             view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Intent intent = null;
-            switch (view.getId()) {
-                case R.id.activity_main_bt_subjects:
-                    intent = new Intent(this, SubjectListActivity.class);
-                    break;
-                case R.id.activity_main_bt_rating:
-                    intent = new Intent(this, RatingActivity.class);
-                    break;
-                case R.id.activity_main_bt_lessonsShedule:
-                    intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Groups");
-                    break;
-                case R.id.activity_main_bt_settings:
-                    intent = new Intent(this, SettingsActivity.class);
-                    break;
-                case R.id.activity_main_bt_teachersSchedule:
-                    intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
-                    break;
-            }
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP && can_click) {
+                Intent intent = null;
+                switch (view.getId()) {
+                    case R.id.activity_main_bt_subjects:
+                        intent = new Intent(this, SubjectListActivity.class);
+                        break;
+                    case R.id.activity_main_bt_rating:
+                        intent = new Intent(this, RatingActivity.class);
+                        break;
+                    case R.id.activity_main_bt_lessonsShedule:
+                        intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Groups");
+                        break;
+                    case R.id.activity_main_bt_settings:
+                        intent = new Intent(this, SettingsActivity.class);
+                        break;
+                    case R.id.activity_main_bt_teachersSchedule:
+                        intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
+                        break;
+                }
 
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
-            startActivity(intent, options.toBundle());
+                can_click = false;
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                startActivity(intent, options.toBundle());
 
-            transitionDrawable.reverseTransition(150);
-            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed));
+                transitionDrawable.reverseTransition(150);
+                view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed));
+
         }
         return true;
     }
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onResume() {
         super.onResume();
         if (is_registered) timer.checkTimer(TimeUntil, Time, getResources());
+        can_click = true;
     }
 
     @Override

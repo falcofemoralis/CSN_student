@@ -81,19 +81,6 @@ public class Subjects {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
-
-                try {
-                    String response = JSONHelper.read(context, MainActivity.GROUP_FILE_NAME);
-                    Gson gson = new Gson();
-                    subjectsList = gson.fromJson(response, SubjectsList[].class);
-                    try {
-                        callback.call();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-
-                }
             }
         });
         requestQueue.add(request);

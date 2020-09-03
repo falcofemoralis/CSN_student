@@ -48,7 +48,7 @@ public class SubjectListActivity extends AppCompatActivity {
 
     TableLayout tableSubjects; // Лаяут всех дисциплин
     int[] progresses; // Прогресс для каждого предмета
-
+    Boolean can_click; //нажата кнопка
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,7 @@ public class SubjectListActivity extends AppCompatActivity {
         if (shouldExecuteOnResume) setProgress();
         else shouldExecuteOnResume = true;
         super.onResume();
+        can_click = true;
     }
 
     @Override
@@ -111,19 +112,19 @@ public class SubjectListActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
                 Intent intent = null;
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && can_click) {
                     transitionDrawable.startTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP && can_click) {
                     intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
                     intent.putExtra("button_id", subjectId);
 
+                    can_click = false;
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
                     startActivity(intent, options.toBundle());
 
                     transitionDrawable.reverseTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
-
                 }
                 return true;
             }

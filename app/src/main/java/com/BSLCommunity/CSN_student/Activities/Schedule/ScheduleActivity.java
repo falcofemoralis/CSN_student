@@ -54,9 +54,9 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
         if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")) entity = "teachers";
         else entity = "groups";
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_lessons_schedule);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
         Sprite iIndeterminateDrawable = new ThreeBounce();

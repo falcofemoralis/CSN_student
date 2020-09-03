@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 import android.widget.Toast;
+
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
@@ -14,9 +15,11 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,6 +121,7 @@ public class SubjectsInfo {
 
             return instance;
         } catch (Exception e) {
+            System.out.println(e.toString());
             // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
             return null;
         }
@@ -130,13 +134,16 @@ public class SubjectsInfo {
 
     //сохраням данный в JSON файл
     public void save(Context context) {
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(subjectInfo);
-        JSONHelper.create(context, FILE_NAME, jsonString);
-        try {
-            updateRating(context, jsonString);
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        if (subjectInfo != null) {
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(subjectInfo);
+            JSONHelper.create(context, FILE_NAME, jsonString);
+            try {
+                updateRating(context, jsonString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -173,7 +180,6 @@ public class SubjectsInfo {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         String rating = jsonObject.getString("JSON_RATING");
-                        JSONHelper.create(context,FILE_NAME, rating);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

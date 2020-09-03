@@ -1,14 +1,13 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
-import android.os.CountDownTimer;
-import android.view.animation.Animation;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,19 +16,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import static android.os.Looper.getMainLooper;
 
 public class Teachers {
 
@@ -57,7 +52,7 @@ public class Teachers {
 
     public static ArrayList<Teachers.TeacherList> teacherLists = new ArrayList<>();
 
-    public static void init(Context context, final Callable<Void>... callBacks) {
+    public static void init(Context context, final Callable<Void> callBack) {
 
         if (!teacherLists.isEmpty())
             return;
@@ -67,7 +62,7 @@ public class Teachers {
             String response = JSONHelper.read(context, DATA_FILE_NAME);
 
             if (response.equals("NOT FOUND")) {
-                downloadFromServer(context, callBacks);
+                downloadFromServer(context);
                 return;
             }
 
@@ -77,12 +72,11 @@ public class Teachers {
             teacherLists = gson.fromJson(response, listType);
 
             // После скачивания всех данных вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
-            for (int i = 0; i < callBacks.length; ++i) {
-                try {
-                    callBacks[i].call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            try {
+                callBack.call();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (Exception ex) {
             // В случае неудачи, если данные к примеру повреждены или их просто нету - возвращает null
@@ -90,11 +84,22 @@ public class Teachers {
         }
     }
 
+    // Алгоритм фильтрующий количество запросов подаваем на сервер за раз
+    public static void leakyBucket(int index, Context context) {
+
+        final int MAX_PACK = 5;
+
+        // Скачивание данные пачками по MAX_PACK
+        int nextTarget = Math.min(teacherLists.size(), index + MAX_PACK);
+        for (int i = index; i < nextTarget; ++i)
+            downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget);
+    }
+
     /* Функция получение учителей в университете
      * Параметры:
      * appContext - application context
      * */
-    public static void downloadFromServer(final Context appContext, final Callable<Void>... callBacks) {
+    public static void downloadFromServer(final Context appContext) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = MainActivity.MAIN_URL + "api/teachers/all";
 
@@ -110,19 +115,11 @@ public class Teachers {
                         String FIO = JSONObject.getString("FIO");
                         // Добавляем учителя в список
                         teacherLists.add(new TeacherList(id, FIO, new Date()));
-                        // Скачиваем расписание учителя, если все остальные учителя скачаны, то после скачивания последнего - сохраняем данные
-                        final int finalI = i;
-                        if(i<29){
-                            new CountDownTimer(100*i, 10) {
-                                public void onTick(long millisUntilFinished) {
-                                }
-
-                                public void onFinish() {
-                                    downloadScheduleFromServer(appContext, id, finalI == (JSONArray.length() - 1), callBacks);
-                                }
-                            }.start();
-                        }
                     }
+
+                    // Скачиваем расписание учителя, если все остальные учителя скачаны, то после скачивания последнего - сохраняем данные
+                    leakyBucket(0, appContext);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -141,12 +138,13 @@ public class Teachers {
      * Параметры:
      * appContext - контекст приложения
      * id - id учителя
-     * saveData - сохранять данные или нет ? true - сохранить, false - не сохранять
+     * allData - указывает все ли данные пришли
      * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null
      * */
-    public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean saveData, final Callable<Void>... callBacks) {
+    public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean allData, final boolean nextPack, final int index) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = MainActivity.MAIN_URL + String.format("api/teachers/%d/schedule", id);
+
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -169,30 +167,32 @@ public class Teachers {
                         teacherList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, room);
                     }
 
-                    // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервера, если это необходимо
-                    if (callBacks != null) {
-                        for (int i = 0; i < callBacks.length; ++i) {
-                            try {
-                                callBacks[i].call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    // Сохранение данных если это необходимо
-                    if (saveData)
+                    // Все данные скачаны и их необходимо сохранить
+                    if (allData) {
                         save(appContext);
+                        return;
+                    }
 
-                } catch (JSONException e) {
+                    // Скачивание следующей группы данных
+                    if (nextPack)
+                        leakyBucket(index, appContext);
+
+                }
+                catch (JSONException e) {
+                    Toast.makeText(appContext, e.toString(), Toast.LENGTH_SHORT);
                     e.printStackTrace();
                 }
+
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        request.setRetryPolicy(new DefaultRetryPolicy(200,3,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
     }
 
@@ -209,5 +209,10 @@ public class Teachers {
             if (teacherLists.get(i).id == id)
                 return teacherLists.get(i);
         return null;
+    }
+
+    public static void delete(Context context) {
+        JSONHelper.delete(context, DATA_FILE_NAME);
+        teacherLists.clear();
     }
 }

@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
@@ -21,21 +19,14 @@ import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.Settings;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
+import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
@@ -152,6 +143,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
                 SubjectsInfo.deleteSubjects(getApplicationContext());
                 Groups.delete(getApplicationContext());
                 Subjects.delete(getApplicationContext());
+                Teachers.delete(getApplicationContext());
 
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 Toast.makeText(SettingsActivity.this, R.string.exit, Toast.LENGTH_SHORT).show();

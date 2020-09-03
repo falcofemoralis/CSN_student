@@ -62,13 +62,11 @@ public class LocalData {
 
                 }
 
-                try {
-                    callBack.call();
-                } catch (Exception ex) {}
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 try {
                     callBack.call();
                 } catch (Exception ex) {}
@@ -102,7 +100,7 @@ public class LocalData {
                 for (int i = 0; i < Teachers.teacherLists.size(); ++i) {
                     Teachers.TeacherList localTeacher = Teachers.teacherLists.get(i);
                     if (localTeacher.lastUpdate.before(updateListTeachers.get(localTeacher.id)))
-                        Teachers.downloadScheduleFromServer(appContext, localTeacher.id, true);
+                        Teachers.leakyBucket(0, appContext);
                 }
                 break;
         }

@@ -110,7 +110,7 @@ public class SubjectListActivity extends AppCompatActivity {
             Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
             int sizeIm = (int) (size.x * 0.5 / 4.2); // Временное решение (не нашел способа растягивать нормально изображение)
-            img.setBounds(0, sizeIm / 6, sizeIm, sizeIm + sizeIm / 6);
+            img.setBounds(0, sizeIm / 12, sizeIm, sizeIm + sizeIm / 12);
             button.setCompoundDrawables(null, img, null, null);
         }
     }
@@ -188,10 +188,11 @@ public class SubjectListActivity extends AppCompatActivity {
             // В одном ряду может быть лишь 3 кнопки, если уже три созданы, создается следующая колонка
             if (i % 3 == 0) {
 
-                ViewGroup.LayoutParams params = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 2f);
+                ViewGroup.LayoutParams params = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
                 rowSubject = new TableRow(this);
                 rowSubject.setLayoutParams(params);
                 rowSubject.setOrientation(TableRow.HORIZONTAL);
+                rowSubject.setWeightSum(3f);
                 tableSubjects.addView(rowSubject);
             }
 

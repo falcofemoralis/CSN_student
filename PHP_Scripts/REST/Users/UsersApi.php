@@ -43,10 +43,15 @@ class UsersApi extends Api
         {
             if ($this->requestUri[0] == "login")
                 readUser($this->connect);
-            else
-            {
+			else{
                 $id = array_shift($this->requestUri);
-                userViewById($this->connect, $id);
+                 
+                if (empty($this->requestUri))
+                    userViewById($this->connect, $id);
+                else if (array_shift($this->requestUri) == "rating")         
+                    getUserRating($this->connect, $id); 
+                else
+                    echo "invalid method";
             }
         }
         else            

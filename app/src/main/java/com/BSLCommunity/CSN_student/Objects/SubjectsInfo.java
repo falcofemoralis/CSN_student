@@ -28,6 +28,15 @@ public class SubjectsInfo {
     public static SubjectsInfo instance = null;
     public static final String FILE_NAME = "subjectsInfo";
 
+    public static int[] colors = { //цвета кнопок выбора
+            R.color.not_passed,
+            R.color.in_process,
+            R.color.done_without_report,
+            R.color.done_with_report,
+            R.color.waiting_acceptation,
+            R.color.passed_without_report,
+            R.color.passed_with_report};
+
     public static class SubjectInfo {
         public int subjectValue;
 
@@ -171,6 +180,10 @@ public class SubjectsInfo {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         String rating = jsonObject.getString("JSON_RATING");
+                        Gson gson = new Gson();
+                        instance = new SubjectsInfo();
+                        instance.subjectInfo = gson.fromJson(rating, SubjectInfo[].class);
+                        JSONHelper.create(context, FILE_NAME, rating);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

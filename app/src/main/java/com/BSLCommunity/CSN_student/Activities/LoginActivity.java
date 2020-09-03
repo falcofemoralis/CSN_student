@@ -18,6 +18,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,9 +49,13 @@ public class LoginActivity extends AppCompatActivity{
                     transitionDrawable.startTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(LoginActivity.this, R.anim.btn_pressed));
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    EditText NickName = (EditText) findViewById(R.id.activity_login_et_nickname) ;
-                    EditText Password = (EditText) findViewById(R.id.activity_login_et_password) ;
-                    User.login(getApplicationContext(), LoginActivity.this, NickName.getText().toString().toLowerCase(),Password.getText().toString());
+                    EditText NickName = (EditText) findViewById(R.id.activity_login_et_nickname);
+                    EditText Password = (EditText) findViewById(R.id.activity_login_et_password);
+                    if (!NickName.getText().toString().equals("") && !Password.getText().toString().equals(""))
+                        User.login(getApplicationContext(), LoginActivity.this, NickName.getText().toString().toLowerCase(), Password.getText().toString());
+                    else
+                        Toast.makeText(LoginActivity.this,R.string.nodata,Toast.LENGTH_SHORT).show();
+
 
                     transitionDrawable.reverseTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(LoginActivity.this, R.anim.btn_unpressed));

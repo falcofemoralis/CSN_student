@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.animation.Animator;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionManager;
@@ -29,23 +30,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class SubjectInfoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SubjectInfoDialogEditText.DialogListener {
-    //тип работы
-    public enum Types {
-        lab,
-        ihw,
-        other
-
-    }
-
-    int[] colors = { //цвета кнопок выбора
-            R.color.not_passed,
-            R.color.in_process,
-            R.color.done_without_report,
-            R.color.done_with_report,
-            R.color.waiting_acceptation,
-            R.color.passed_without_report,
-            R.color.passed_with_report};
-
     ArrayList<Integer> teacherIds;  //список учителей для установки
     SubjectsInfo.SubjectInfo subjectInfo = null;
     LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
@@ -57,6 +41,7 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_subject_info);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //получем необходимые объекты
         subjectId = (getIntent().getIntExtra("button_id", 0));
@@ -170,7 +155,7 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
                 break;
         }
 
-        parent.setBackgroundResource(colors[(int)id]); // Устанавка цвета относительно выбранного варианта
+        parent.setBackgroundResource(SubjectsInfo.colors[(int)id]); // Устанавка цвета относительно выбранного варианта
         setProgress(); // Обновление прогресса
     }
 
@@ -334,7 +319,6 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         TableLayout infoTL = null; // Группа элементов
         SubjectsInfo.SubjectInfo.Work work = null; // Ссылка на необходимую группу работ
 
-
         TransitionManager.beginDelayedTransition(rootContainer);
 
         // Определяем тип предмета
@@ -407,7 +391,7 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
     }
 
     @Override
-    public void applyText(String text, Types type, int number, Button name) {
+    public void applyText(String text, int number, Button name) {
         name.setText(text);
     }
 

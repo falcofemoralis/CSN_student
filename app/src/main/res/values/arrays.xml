@@ -14,7 +14,7 @@
         <item>Diff.Test</item>
     </string-array>
 
-    <string-array name="lab_types">
+    <string-array name="work_types">
         <item>Not passed</item>
         <item>In process</item>
         <item>Done without report</item>

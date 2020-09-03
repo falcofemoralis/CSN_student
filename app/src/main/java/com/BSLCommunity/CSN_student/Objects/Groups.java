@@ -96,9 +96,6 @@ public class Groups {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //сохраняем группы в файл
-                JSONHelper.create(appContext, MainActivity.GROUP_FILE_NAME, response);
-
                 //парсим полученный список групп
                 try {
                     JSONArray JSONArray = new JSONArray(response);
@@ -174,7 +171,6 @@ public class Groups {
                     e.printStackTrace();
                 }
 
-                JSONHelper.create(appContext, MainActivity.GROUP_FILE_NAME, response);
             }
         }, new Response.ErrorListener() {
             @Override

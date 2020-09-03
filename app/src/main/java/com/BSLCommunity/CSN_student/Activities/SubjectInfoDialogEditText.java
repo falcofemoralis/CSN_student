@@ -12,17 +12,17 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
 
 public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
     private android.widget.EditText EditText;
     private DialogListener listener;
-    private String title;
     Button name;
-    SubjectInfoActivity.Types type;
     int number;
 
-    SubjectInfoDialogEditText(SubjectInfoActivity.Types type, int number, Button name) {this.type = type; this.number = number; this.name = name;}
+    SubjectInfoDialogEditText(int number, Button name){ this.number = number; this.name = name;}
 
     @NonNull
     @Override
@@ -33,10 +33,9 @@ public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
         EditText = view.findViewById(R.id.activity_settings_et_dialog);
        // EditText.setText(com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences.getString(com.BSLCommunity.CSN_student.Objects.Settings.PrefKeys.NICKNAME.getKey(), ""));
-        title = type.toString();
 
         builder.setView(view)
-                .setTitle(title)
+             //   .setTitle(title)
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -47,7 +46,7 @@ public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String text = EditText.getText().toString();
-                        listener.applyText(text, type, number, name);
+                        listener.applyText(text, number, name);
                     }
                 });
 
@@ -65,6 +64,6 @@ public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
     }
 
     public interface DialogListener {
-        void applyText(String text, SubjectInfoActivity.Types type, int number, Button name);
+        void applyText(String text, int number, Button name);
     }
 }

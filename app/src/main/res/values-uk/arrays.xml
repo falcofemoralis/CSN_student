@@ -14,7 +14,7 @@
         <item>Діфф.Залік</item>
     </string-array>
 
-    <string-array name="lab_types">
+    <string-array name="work_types">
         <item>Не здано</item>
         <item>В процесі</item>
         <item>Виконано без звітуt</item>

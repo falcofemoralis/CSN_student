@@ -23,7 +23,7 @@
         android:background="@color/gray"
         android:layout_weight="0.4"
         android:textAlignment="center"
-        android:entries="@array/lab_types" />
+        android:entries="@array/work_types" />
 
 
     <EditText

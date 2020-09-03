@@ -83,14 +83,15 @@ public class SubjectListActivity extends AppCompatActivity {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
                     Intent intent = null;
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || can_click) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && can_click) {
                         transitionDrawable.startTransition(150);
                         view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
                     }
-                    else if (motionEvent.getAction() == MotionEvent.ACTION_UP || can_click) {
+                    else if (motionEvent.getAction() == MotionEvent.ACTION_UP && can_click) {
                         intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
                         intent.putExtra("button_id", subjectId);
 
+                        can_click = false;
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
                         startActivity(intent, options.toBundle());
 
@@ -134,10 +135,10 @@ public class SubjectListActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        can_click = true;
         if (shouldExecuteOnResume) setProgress();
         else shouldExecuteOnResume = true;
         super.onResume();
-        can_click = true;
     }
 
     @Override
@@ -150,6 +151,9 @@ public class SubjectListActivity extends AppCompatActivity {
     protected void createFullStatistics(TableRow rowSubject) {
         // Создание лаяута статистики по шаблону дисциплины
         LinearLayout subjectLayout = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.inflate_subject_bt, rowSubject, false);
+
+       ProgressBar pb =  (ProgressBar) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(1);
+       pb.setVisibility(View.GONE);
 
         // Ссылка на кнопку в шаблоне
         Button subjectBt = (Button) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(0);
@@ -173,7 +177,7 @@ public class SubjectListActivity extends AppCompatActivity {
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
-                    startActivity( new Intent(SubjectListActivity.this, SubjectInfoFullActivity.class), options.toBundle());
+                    startActivity( new Intent(SubjectListActivity.this, SubjectInfoFullStatisticActivity.class), options.toBundle());
 
                     transitionDrawable.reverseTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));

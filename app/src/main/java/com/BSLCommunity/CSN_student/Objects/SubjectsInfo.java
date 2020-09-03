@@ -180,6 +180,10 @@ public class SubjectsInfo {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         String rating = jsonObject.getString("JSON_RATING");
+                        Gson gson = new Gson();
+                        instance = new SubjectsInfo();
+                        instance.subjectInfo = gson.fromJson(rating, SubjectInfo[].class);
+                        JSONHelper.create(context, FILE_NAME, rating);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -44,4 +44,10 @@
     <style name="TransparentNavigationBar" parent="@style/AppTheme" tools:keep="@style/TransparentNavigationBar">
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
+
+    <style name="FullStatisticActivityActionBar" parent="@style/AppTheme">
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryDark">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+    </style>
 </resources>

@@ -36,7 +36,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.1">
 
-
                 <Spinner
                     android:id="@+id/activity_lessons_schedule_sp_main"
                     style="@style/Widget.AppCompat.Spinner.Underlined"

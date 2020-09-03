@@ -7,22 +7,46 @@
     android:padding="10dp"
     android:orientation="vertical">
 
-    <Button
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.2"
-        android:background="@drawable/activity_button"
-        android:maxEms="1"
-        android:paddingTop="15dp"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp" />
+        android:layout_weight="0.15">
+
+        <Button
+            style ="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/activity_button"
+            android:maxEms="1"
+            android:paddingTop="15dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:gravity="center"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="86dp"
+            android:layout_height="84dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="70dp"
+            android:elevation="10dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white"/>
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_weight="0.9"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.85"
         android:background="@drawable/activity_subject_info_subject_progress"
         android:gravity="center"
         android:textAllCaps="true"

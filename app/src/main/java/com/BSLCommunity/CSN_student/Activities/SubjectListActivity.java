@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -48,6 +51,70 @@ public class SubjectListActivity extends AppCompatActivity {
     TableLayout tableSubjects; // Лаяут всех дисциплин
     int[] progresses; // Прогресс для каждого предмета
 
+    class SubjectDrawable {
+        Button button;
+        TextView textProgress;
+        ProgressBar progressBar;
+
+        // Создаем кнопку одной дисциплины
+        protected void createSubject(TableRow rowSubject, int numberSubject) {
+
+            Subjects.SubjectsList subject = Subjects.subjectsList[numberSubject];
+
+            // Инициализация всех деталей группы view элементов дисциплины
+            LinearLayout subjectLayout = (LinearLayout)LayoutInflater.from(getApplicationContext()).inflate(R.layout.inflate_subject_bt, rowSubject, false);
+            button = (Button) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(0);
+            progressBar = (ProgressBar) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(1);
+            textProgress = (TextView) subjectLayout.getChildAt(1);
+
+            // Установка названия дисцилпины
+            try {
+                //получаем имя предмета по локализации
+                JSONObject subjectJSONObject = new JSONObject(subject.NameDiscipline);
+                button.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage()));
+            } catch (JSONException e) {}
+
+            // Устанавливаем функционал кнопке
+            final int subjectId = IdGenerator.getId();
+            View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+                    Intent intent = null;
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        transitionDrawable.startTransition(150);
+                        view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
+                    }
+                    else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
+                        intent.putExtra("button_id", subjectId);
+
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
+                        startActivity(intent, options.toBundle());
+
+                        transitionDrawable.reverseTransition(150);
+                        view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
+
+                    }
+                    return true;
+                }
+            };
+
+            button.setOnTouchListener(onTouchListener); // Добавляем функционал кнопке
+            rowSubject.addView(subjectLayout); // Добавляем дисциплину
+        }
+
+        // Установка изображения на кнопку
+        protected void setImg(BitmapDrawable img) {
+            // Устанавка изображения дисциплины
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+            int sizeIm = (int) (size.x * 0.5 / 4.2); // Временное решение (не нашел способа растягивать нормально изображение)
+            img.setBounds(0, sizeIm / 6, sizeIm, sizeIm + sizeIm / 6);
+            button.setCompoundDrawables(null, img, null, null);
+        }
+    }
+    SubjectDrawable[] subjectDrawables; // Дисциплины
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,69 +142,13 @@ public class SubjectListActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    // Создаем кнопку одной дисциплины
-    protected void createSubject(TableRow rowSubject, int numberSubject) {
-        Subjects.SubjectsList subject = Subjects.subjectsList[numberSubject];
-
-        // Создание лаяута предмета по шаблону
-        LinearLayout subjectLayout = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.inflate_subject_bt, rowSubject, false);
-
-        // Ссылка на кнопку в шаблоне
-        Button subjectBt = (Button) subjectLayout.getChildAt(0);
-
-        // Установка названия дисцилпины
-        try {
-            //получаем имя предмета по локализации
-            JSONObject subjectJSONObject = new JSONObject(subject.NameDiscipline);
-            subjectBt.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage()));
-        } catch (JSONException e) { }
-
-        // Устанавка изображения дисциплины, если оно есть
-        BitmapDrawable img = Subjects.getSubjectImage(getApplicationContext(), subject);
-        if (img != null) {
-            Point size = new Point();
-            getWindowManager().getDefaultDisplay().getSize(size);
-            int sizeIm = (int) (size.x * 0.5 / 4.2); // Временное решение (не нашел способа растягивать нормально изображение)
-            img.setBounds(0, sizeIm / 6, sizeIm, sizeIm + sizeIm / 6);
-            subjectBt.setCompoundDrawables(null, img, null, null);
-        }
-
-        // Устанавливаем функционал кнопке
-        final int subjectId = IdGenerator.getId();
-        View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
-                Intent intent = null;
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    transitionDrawable.startTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
-                    intent.putExtra("button_id", subjectId);
-
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
-                    startActivity(intent, options.toBundle());
-
-                    transitionDrawable.reverseTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
-
-                }
-                return true;
-            }
-        };
-
-        subjectBt.setOnTouchListener(onTouchListener); // Добавляем функционал кнопке
-        rowSubject.addView(subjectLayout); // Добавляем дисциплину
-    }
-
     // Создаем кнопку полной статистики
     protected void createFullStatistics(TableRow rowSubject) {
         // Создание лаяута статистики по шаблону дисциплины
         LinearLayout subjectLayout = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.inflate_subject_bt, rowSubject, false);
 
         // Ссылка на кнопку в шаблоне
-        Button subjectBt = (Button) subjectLayout.getChildAt(0);
+        Button subjectBt = (Button) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(0);
         subjectBt.setText("Full ic_statistics");
 
         // Устанавка изображения дисциплины, если оно есть
@@ -171,6 +182,8 @@ public class SubjectListActivity extends AppCompatActivity {
         TableRow rowSubject = null;
 
         int i;
+        subjectDrawables = new SubjectDrawable[Subjects.subjectsList.length];
+
         for (i = 0; i <= Subjects.subjectsList.length; ++i) {
             // В одном ряду может быть лишь 3 кнопки, если уже три созданы, создается следующая колонка
             if (i % 3 == 0) {
@@ -184,9 +197,12 @@ public class SubjectListActivity extends AppCompatActivity {
 
             if (i == Subjects.subjectsList.length)
                 createFullStatistics(rowSubject);
-            else
-                createSubject(rowSubject, i);
+            else {
+                subjectDrawables[i] = new SubjectDrawable();
+                subjectDrawables[i].createSubject(rowSubject, i);
+            }
         }
+
 
         // Заполняем пустое пространство
         for (; i < 9; ++i) {
@@ -205,6 +221,8 @@ public class SubjectListActivity extends AppCompatActivity {
             subjectLayout.getChildAt(1).setVisibility(View.INVISIBLE);
             rowSubject.addView(subjectLayout);
         }
+
+        new LoadSubject().execute();
     }
 
     // Устанавливаем прогресс внизу экрана
@@ -236,17 +254,34 @@ public class SubjectListActivity extends AppCompatActivity {
 
     // Обновление прогрессов дисциплин
     public void updateProgresses() {
-        for (int i = 0; i < tableSubjects.getChildCount(); ++i) {
-            TableRow row = (TableRow) tableSubjects.getChildAt(i);
+        for (int i = 0; i < subjectDrawables.length; ++i)
+            subjectDrawables[i].textProgress.setText(progresses[i] + " %");
+    }
 
-            for (int j = 0; j < row.getChildCount(); ++j) {
-                TextView textProgressSubject = (TextView) ((LinearLayout) row.getChildAt(j)).getChildAt(1);
-                int index = i * 3 + j;
-                if (index != progresses.length)
-                    textProgressSubject.setText(progresses[index] + " %");
-                else
-                    return;
+    class LoadSubject extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            BitmapDrawable img = new BitmapDrawable(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.empty));
+            for (int i = 0; i < subjectDrawables.length; ++i)
+                subjectDrawables[i].setImg(img);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for (int i = 0; i < subjectDrawables.length; ++i) {
+                while (Subjects.getSubjectImage(getApplicationContext(), Subjects.subjectsList[i]) == null){};
+                publishProgress(i);
             }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... index) {
+            BitmapDrawable img = Subjects.getSubjectImage(getApplicationContext(), Subjects.subjectsList[index[0]]);
+            subjectDrawables[index[0]].setImg(img);
+            subjectDrawables[index[0]].progressBar.setVisibility(View.GONE);
+            return;
         }
     }
 }

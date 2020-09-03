@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.Activities;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -54,6 +55,7 @@ public class SubjectListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_subject_list);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);
         courseTextView.setText(User.getInstance().course + " " + courseTextView.getText());
@@ -138,7 +140,7 @@ public class SubjectListActivity extends AppCompatActivity {
 
         // Ссылка на кнопку в шаблоне
         Button subjectBt = (Button) subjectLayout.getChildAt(0);
-        subjectBt.setText("Full ic_statistics");
+        subjectBt.setText(R.string.full_statistic);
 
         // Устанавка изображения дисциплины, если оно есть
         BitmapDrawable img = new BitmapDrawable(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_statistics));;
@@ -149,18 +151,30 @@ public class SubjectListActivity extends AppCompatActivity {
         subjectBt.setCompoundDrawables(null, img, null, null);
 
         // Устанавливаем функционал кнопке
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+        View.OnTouchListener onTouchListener = new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                // Здесь должен быть переход на активити полного рейтинга
-                return;
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    transitionDrawable.startTransition(150);
+                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
+                    startActivity( new Intent(SubjectListActivity.this, SubjectInfoFullActivity.class), options.toBundle());
+
+                    transitionDrawable.reverseTransition(150);
+                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
+
+                }
+                return true;
             }
         };
-        subjectBt.setOnClickListener(onClickListener); // Добавляем функционал кнопке
+
+        subjectBt.setOnTouchListener(onTouchListener); // Добавляем функционал кнопке
 
         // Скрытие строки прогресса (здесь в ней нет необходимости)
         (subjectLayout.getChildAt(1)).setVisibility(View.INVISIBLE);
-        subjectLayout.setVisibility(View.INVISIBLE);
+      //  subjectLayout.setVisibility(View.INVISIBLE);
 
         rowSubject.addView(subjectLayout); // Добавляем дисциплину
     }

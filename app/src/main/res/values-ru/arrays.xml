@@ -14,7 +14,7 @@
         <item>Дифф.Зачет</item>
     </string-array>
 
-    <string-array name="lab_types">
+    <string-array name="work_types">
         <item>Не сдано</item>
         <item>В процессе</item>
         <item>Выполнено без отчета</item>

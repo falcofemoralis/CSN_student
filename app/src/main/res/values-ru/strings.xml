@@ -61,4 +61,6 @@
     <string name="incorrect_data">Неверные данные</string>
     <string name="no_connection_server">Нет связи с нашим сервером, попробуйте позже...</string>
     <string name="mark">Оценка</string>
+    <string name="full_statistic">Полная статистика</string>
+    <string name="subject">Предмет</string>
 </resources>

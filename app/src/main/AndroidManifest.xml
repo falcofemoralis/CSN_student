@@ -46,6 +46,9 @@
         <activity
             android:name=".Activities.SubjectListActivity"
             android:theme="@style/SubjectListsActivityActionBar" />
+        <activity
+            android:name=".Activities.SubjectInfoFullActivity"
+            android:theme="@style/TransparentActionBar" />
     </application>
 
 </manifest>

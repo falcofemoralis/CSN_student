@@ -37,6 +37,8 @@ public class LocaleHelper {
 
     private static String getPersistedData(Context context, String defaultLanguage) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if(!defaultLanguage.equals("en") && !defaultLanguage.equals("ru") && !defaultLanguage.equals("uk"))
+            defaultLanguage = "en";
         return preferences.getString(Settings.PrefKeys.LANGUAGE.getKey(), defaultLanguage);
     }
 

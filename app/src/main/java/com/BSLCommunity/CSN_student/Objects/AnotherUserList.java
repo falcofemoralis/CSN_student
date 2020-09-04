@@ -20,10 +20,12 @@ import java.util.ArrayList;
 public class AnotherUserList {
 
     public static class AnotherUser {
-        public String nickName;
+        public String nickName, realName, groupName;
 
-        public AnotherUser(String nickName) {
+        public AnotherUser(String nickName, String realName, String groupName) {
             this.nickName = nickName;
+            this.realName = realName;
+            this.groupName = groupName;
         }
     }
     public static ArrayList<AnotherUser> users = new ArrayList<>();
@@ -40,7 +42,10 @@ public class AnotherUserList {
 
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject anotherUser = jsonArray.getJSONObject(i);
-                        users.add(new AnotherUser(anotherUser.getString("NickName")));
+                        String nickName = anotherUser.getString("NickName");
+                        String realName = anotherUser.getString("RealName");
+                        String groupName = anotherUser.getString("GroupName");
+                        users.add(new AnotherUser(nickName, realName, groupName));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

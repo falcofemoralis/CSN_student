@@ -61,7 +61,7 @@ function userViewById($connect, $id)
 //GET запрос на получение публичных данных юзеров по курсу URI: .../users/course/id
 function usersViewByCourse($connect, $id)
 {
-    $query = "  SELECT users.NickName FROM `users`
+    $query = "  SELECT users.NickName, users.RealName, groups.GroupName FROM `users`
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE groups.Course = '$id'";
     

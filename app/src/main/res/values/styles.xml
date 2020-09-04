@@ -46,8 +46,8 @@
     </style>
 
     <style name="FullStatisticActivityActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">@color/background</item>
-        <item name="colorPrimaryDark">@color/background</item>
+        <item name="colorPrimary">#CC363C</item>
+        <item name="colorPrimaryDark">#CC363C</item>
         <item name="android:navigationBarColor">@color/background</item>
     </style>
 </resources>

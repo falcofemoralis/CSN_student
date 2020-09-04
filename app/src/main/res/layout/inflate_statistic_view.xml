@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/inflate_drawable_statistic_view"
     android:gravity="center"
-    android:padding="25dp"
+    android:padding="15dp"
     android:text=""
     android:textColor="@color/white"
     android:textSize="@dimen/full_statistic_text_size" />

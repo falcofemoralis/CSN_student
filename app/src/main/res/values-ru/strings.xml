@@ -63,4 +63,5 @@
     <string name="mark">Оценка</string>
     <string name="full_statistic">Полная статистика</string>
     <string name="subject">Предмет</string>
+    <string name="lab">Лабораторная</string>
 </resources>

@@ -145,7 +145,6 @@ public class Teachers {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = MainActivity.MAIN_URL + String.format("api/teachers/%d/schedule", id);
 
-
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

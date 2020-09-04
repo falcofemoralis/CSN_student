@@ -23,5 +23,11 @@
         <item>Passed without report</item>
         <item>Passed with report</item>
     </string-array>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Russian</item>
+        <item>Ukrainian</item>
+    </string-array>
 </resources>
 

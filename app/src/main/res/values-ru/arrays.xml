@@ -23,5 +23,11 @@
         <item>Сдано без отчета</item>
         <item>Сдано с отчетом</item>
     </string-array>
+
+    <string-array name="languages">
+        <item>Английский</item>
+        <item>Русский</item>
+        <item>Украинский</item>
+    </string-array>
 </resources>
 

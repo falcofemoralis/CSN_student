@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
@@ -91,7 +92,7 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
                 for (int j = 0; j < listSize; ++j) {
                     try {
                         JSONObject FIOJson = new JSONObject(Teachers.teacherLists.get(j).FIO);
-                        listAdapter.add(FIOJson.getString(Locale.getDefault().getLanguage()));
+                        listAdapter.add(FIOJson.getString(LocaleHelper.getLanguage(this)));
                     }
                     catch (Exception e) {}
                     idElements[j] = Teachers.teacherLists.get(j).id;
@@ -199,10 +200,10 @@ public class ScheduleActivity extends AppCompatActivity implements AdapterView.O
                 try {
                     //парсим предмет по установленому языку в приложении
                     JSONObject subjectJSONObject = new JSONObject(list.subject);
-                    String subject = subjectJSONObject.getString(Locale.getDefault().getLanguage());
+                    String subject = subjectJSONObject.getString(LocaleHelper.getLanguage(this));
 
                     JSONObject typeJSONObject = new JSONObject(list.type);
-                    String type = typeJSONObject.getString(Locale.getDefault().getLanguage());
+                    String type = typeJSONObject.getString(LocaleHelper.getLanguage(this));
 
                     scheduleTextView[list.day][list.pair].setText(subject + " " + type + " (" + list.room + ")");
                 } catch (Exception e) {

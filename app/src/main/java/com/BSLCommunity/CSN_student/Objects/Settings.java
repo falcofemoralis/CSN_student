@@ -2,10 +2,13 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Pair;
+
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 
 public class Settings {
 
@@ -19,7 +22,8 @@ public class Settings {
         COURSE("course"),
         IS_REGISTERED("is_registered"),
         OFFLINE_DATA("offline_data"),
-        TIMER_SWITCH("timer_switch");
+        TIMER_SWITCH("timer_switch"),
+        LANGUAGE("language");
 
         private String value;
         private PrefKeys(String value) {
@@ -30,6 +34,8 @@ public class Settings {
             return value;
         }
     }
+
+    public static ArrayList<Pair<String, String> > languages = new ArrayList<>(); //название языков, где пара <название языка, его код);
 
     public static SharedPreferences encryptedSharedPreferences;
 

@@ -130,7 +130,7 @@ public class User {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activityContext, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activityContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);
@@ -167,7 +167,7 @@ public class User {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activityContext, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activityContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

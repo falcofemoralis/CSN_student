@@ -2,8 +2,11 @@ package com.BSLCommunity.CSN_student.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -26,13 +29,14 @@ import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
-    public static String MAIN_URL = "http://192.168.1.3/";
+public class MainActivity extends BaseActivity implements View.OnTouchListener {
+    public static String MAIN_URL = "http://a0466974.xsph.ru/";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера
@@ -43,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setSettingsFile(this);
         is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false);
         if (!is_registered) {

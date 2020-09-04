@@ -29,7 +29,7 @@ import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
 // Форма логина для пользователя
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends BaseActivity{
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class SubjectInfoFullStatisticActivity extends AppCompatActivity {
+public class SubjectInfoFullStatisticActivity extends BaseActivity {
     TableLayout worksTL;
     TableRow worksNumberTR;
     ArrayList<Integer> maxWorks = new ArrayList<>();
@@ -38,22 +39,27 @@ public class SubjectInfoFullStatisticActivity extends AppCompatActivity {
         worksTL = findViewById(R.id.activity_subject_info_full_tl_works);
         worksNumberTR = findViewById(R.id.activity_subject_info_full_tr_works_numbers);
 
-        for (int i=0;i<TYPES_WORKS_COUNT;++i) maxWorks.add(0); //инициализируем
-        for(int i=0;i< Subjects.subjectsList.length;++i) addSubject(i); //добавлем полосу предмета
+        for (int i = 0; i < TYPES_WORKS_COUNT; ++i) maxWorks.add(0); //инициализируем
+        for (int i = 0; i < Subjects.subjectsList.length; ++i) getMaxWorks(i); //узнаем максимальное кол-во работ (по типам)
+        for (int i = 0; i < Subjects.subjectsList.length; ++i) addSubjectRow(i); //добавлем полосу предмета
         addWorksHeaders(); //добавляем заголовки
     }
 
-    public void addSubject(int id) {
-        //получаем данные предмета
+    //узнаем максимальное кол-во работ
+    public  void getMaxWorks(int id){
         SubjectsInfo.SubjectInfo subject = SubjectsInfo.getInstance(this).subjectInfo[id];
 
-        //узнаем кол-во работ
-        ArrayList<Integer> worksCount = new ArrayList<>(); //кол-во работ у текущего предмета
-        for (int i=0;i<TYPES_WORKS_COUNT;++i){
-            int workCount = mGetCount(i,subject);
-            worksCount.add(workCount);
-            if(workCount>maxWorks.get(i)) maxWorks.add(i,workCount);       //запоминаем макс кол-вол работ
+        for (int j = 0; j < TYPES_WORKS_COUNT; ++j) {
+            int workCount = mGetCount(j, subject);
+            if (workCount > maxWorks.get(j))
+                maxWorks.add(j, workCount); //запоминаем макс кол-вол работ
         }
+    }
+
+    //добавлем полосу предмета
+    public void addSubjectRow(int id) {
+        //получаем данные предмета
+        SubjectsInfo.SubjectInfo subject = SubjectsInfo.getInstance(this).subjectInfo[id];
 
         //добавляем строку данных предмета
         TableRow tableRow = new TableRow(this);
@@ -73,7 +79,7 @@ public class SubjectInfoFullStatisticActivity extends AppCompatActivity {
         TextView subjectName = mGetView(R.layout.inflate_statistic_view);
         try {
             JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[id].NameDiscipline);
-            subjectName.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage()));
+            subjectName.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(this)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -90,15 +96,23 @@ public class SubjectInfoFullStatisticActivity extends AppCompatActivity {
 
         //добавляем работы
         for (int j=0;j<TYPES_WORKS_COUNT;++j) {
-            for (int i = 0; i < worksCount.get(j); ++i) {
+            for (int i = 0; i < maxWorks.get(j); ++i) {
+                //создаем поле работы
                 TextView work = mGetView(R.layout.inflate_statistic_view);
+
+                //получаем id ценности работы
                 int valueId = mGetValue(j,subject, i);
-                work.setText(types.getItem(valueId).toString());
-                work.setTextColor(getColor(R.color.white));
-                Drawable drawable = getDrawable(R.drawable.inflate_drawable_statistic_view);
-                drawable.mutate();
-                drawable.setTint(getColor(SubjectsInfo.colors[valueId]));
-                work.setBackgroundDrawable(drawable);
+
+                //если ценность у данной работы равно -1, значит ее не существует
+                if(valueId != -1){
+                    work.setText(types.getItem(valueId).toString());
+                    work.setTextColor(getColor(R.color.white));
+                    Drawable drawable = getDrawable(R.drawable.inflate_drawable_statistic_view);
+                    drawable.mutate();
+                    drawable.setTint(getColor(SubjectsInfo.colors[valueId]));
+                    work.setBackgroundDrawable(drawable);
+                }
+
                 tableRow.addView(work);
             }
         }
@@ -107,50 +121,54 @@ public class SubjectInfoFullStatisticActivity extends AppCompatActivity {
     }
 
     public void addWorksHeaders() {
+        //заголовок ценности работ
         TextView valueHeader =  mGetView(R.layout.inflate_statistic_view_header);
         valueHeader.setText(R.string.value);
         worksNumberTR.addView(valueHeader);
 
+        //заголовок предметов
         TextView subjectHeader = mGetView(R.layout.inflate_statistic_view_header);
         subjectHeader.setText(R.string.subject);
         worksNumberTR.addView(subjectHeader);
 
-        for (int i = 0; i < maxWorks.get(0); ++i) {
-            TextView textView =mGetView(R.layout.inflate_statistic_view_header);
-            textView.setText("lab " + (i + 1));
-            textView.setTextColor(getColor(R.color.white));
-            worksNumberTR.addView(textView);
-        }
-        for (int i = 0; i < maxWorks.get(1); ++i) {
-            TextView textView = mGetView(R.layout.inflate_statistic_view_header);
-            textView.setText("ihw " + (i + 1));
-            textView.setTextColor(getColor(R.color.white));
-            worksNumberTR.addView(textView);
-        }
-        for (int i = 0; i < maxWorks.get(2); ++i) {
-            TextView textView = mGetView(R.layout.inflate_statistic_view_header);
-            textView.setText("other " + (i + 1));
-            textView.setTextColor(getColor(R.color.white));
-            worksNumberTR.addView(textView);
+        //заголовки работ
+        int [] workHeader = {R.string.lab, R.string.ihw, R.string.other};
+        for (int i=0;i<TYPES_WORKS_COUNT;++i) {
+            for (int j = 0; j < maxWorks.get(i); ++j) {
+                TextView textView =mGetView(R.layout.inflate_statistic_view_header);
+                textView.setText(getString(workHeader[i]) + " " + (j + 1));
+                textView.setTextColor(getColor(R.color.white));
+                worksNumberTR.addView(textView);
+            }
         }
     }
 
     private int mGetCount(int type, SubjectsInfo.SubjectInfo work){
-        switch (type){
-            case 0: return work.labs.count;
-            case 1: return work.ihw.count;
-            case 2: return work.others.count;
-            default: return 0;
+        try {
+            switch (type){
+                case 0: return work.labs.count;
+                case 1: return work.ihw.count;
+                case 2: return work.others.count;
+                default: return 0;
+            }
+        }catch (Exception e){
+            return -1;
         }
+
     }
 
     private int mGetValue(int type, SubjectsInfo.SubjectInfo work, int id){
-        switch (type){
-            case 0: return work.labs.values.get(id);
-            case 1: return work.ihw.values.get(id);
-            case 2: return work.others.values.get(id);
-            default: return 0;
+        try {
+            switch (type){
+                case 0: return work.labs.values.get(id);
+                case 1: return work.ihw.values.get(id);
+                case 2: return work.others.values.get(id);
+                default: return 0;
+            }
+        }catch (Exception e){
+            return -1;
         }
+
     }
 
     private TextView mGetView(int id){

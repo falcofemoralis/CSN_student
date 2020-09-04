@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,8 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Objects.Settings;
@@ -23,12 +26,14 @@ import com.github.ybq.android.spinkit.style.ThreeBounce;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.BSLCommunity.CSN_student.Objects.Settings.languages;
+
 public class SettingsDialogEditText extends AppCompatDialogFragment {
     private EditText EditText;
     private DialogListener listener;
     private String title;
     private int applyKey;
-    private Spinner groupSpinner;
+    private Spinner groupSpinner, languageSpinner;
 ;
     SettingsDialogEditText(int key) {
         applyKey = key;
@@ -82,6 +87,32 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 }
                 title = getResources().getString(R.string.group);
                 break;
+            case R.id.activity_settings_ll_language:
+                view = inflater.inflate(R.layout.dialog_settings_sp_languages, null);
+
+                try {
+                    languageSpinner = view.findViewById(R.id.activity_settings_sp_languages);
+
+                    //устанавливаем спинер выбора групп
+                    ArrayAdapter  languagesAdapter = ArrayAdapter.createFromResource(
+                            getContext(),
+                            R.array.languages,
+                            R.layout.spinner_dropdown_settings
+                    );
+                    languagesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
+                    languageSpinner.setAdapter(languagesAdapter);
+
+                    for (Pair<String,String> element : languages){
+                        if (element.second.contains(LocaleHelper.getLanguage(getContext()))){
+                            languageSpinner.setSelection(languages.indexOf(element));
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                title = getResources().getString(R.string.language);
+                break;
             default:
                 view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
                 title = "";
@@ -109,6 +140,7 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                             case R.id.activity_settings_ll_group:
                                 text = groupSpinner.getSelectedItem().toString();
                                 break;
+                            case R.id.activity_settings_ll_language: text = Integer.toString(languageSpinner.getSelectedItemPosition()); break;
                             default:
                                 text = "";
                         }

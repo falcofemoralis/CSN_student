@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RatingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RatingActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     final int COLOR_WHITE = 0xFFFFFFFF;
     final int COLOR_BACK = 0xFF2D2D61;

@@ -32,10 +32,8 @@ public class SubjectInfoDialogEditText extends AppCompatDialogFragment {
 
         View view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
         EditText = view.findViewById(R.id.activity_settings_et_dialog);
-       // EditText.setText(com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences.getString(com.BSLCommunity.CSN_student.Objects.Settings.PrefKeys.NICKNAME.getKey(), ""));
 
         builder.setView(view)
-             //   .setTitle(title)
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

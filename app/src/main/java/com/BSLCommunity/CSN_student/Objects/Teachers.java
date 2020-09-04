@@ -187,7 +187,7 @@ public class Teachers {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(appContext, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(appContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         });
 

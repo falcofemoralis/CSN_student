@@ -126,7 +126,8 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
             case R.id.activity_settings_ll_language:
                 LocaleHelper.setLocale(this, languages.get(Integer.parseInt(text)).second);
                 updateViewTexts();
-                for(int i=0;i<3;++i)
+                int size = languages.size();
+                for(int i=0;i<size;i++)
                    languages.remove(0);
                 this.startActivity(new Intent(this, MainActivity.class));
                 this.finishAffinity();

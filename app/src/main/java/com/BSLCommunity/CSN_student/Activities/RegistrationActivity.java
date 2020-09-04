@@ -178,4 +178,10 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Groups.delete(this);
+    }
 }

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 // Форма регистрации пользователя
-public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RegistrationActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     long id; //выбранный код группы со спиннера
     ProgressBar progressBar; //анимация загрузки в спиннере групп
 

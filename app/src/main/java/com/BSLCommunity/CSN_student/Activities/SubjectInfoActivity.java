@@ -20,6 +20,7 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.Teachers;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class SubjectInfoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SubjectInfoDialogEditText.DialogListener {
+public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, SubjectInfoDialogEditText.DialogListener {
     ArrayList<Integer> teacherIds;  //список учителей для установки
     SubjectsInfo.SubjectInfo subjectInfo = null;
     LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
@@ -102,7 +103,7 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         Button subjectNameBtn = (Button) findViewById(R.id.activity_subject_info_bt_subjectName);
         try {
             JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[subjectId].NameDiscipline);
-            subjectNameBtn.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage()));
+            subjectNameBtn.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(this)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -185,7 +186,7 @@ public class SubjectInfoActivity extends AppCompatActivity implements AdapterVie
         for (i = 0; i < teacherIds.size(); ++i) {
             try {
                 JSONObject teacherJSONObject = new JSONObject(Teachers.findById(teacherIds.get(i)).FIO);
-                btTeachers[i].setText(teacherJSONObject.getString(Locale.getDefault().getLanguage()));
+                btTeachers[i].setText(teacherJSONObject.getString(LocaleHelper.getLanguage(this)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

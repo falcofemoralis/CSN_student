@@ -1,20 +1,27 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.app.AlertDialog;
+import android.app.Application;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.IntentCompat;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.Settings;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
@@ -27,13 +34,15 @@ import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
+import static com.BSLCommunity.CSN_student.Objects.Settings.languages;
 
-public class SettingsActivity extends AppCompatActivity implements SettingsDialogEditText.DialogListener {
+public class SettingsActivity extends BaseActivity implements SettingsDialogEditText.DialogListener {
     SharedPreferences.Editor prefEditor; //локальные данные
-    TextView nicknameText, passwordText, groupText; // поля в которых отображается информация юзера
+    TextView nicknameText, passwordText, groupText, languageText; // поля в которых отображается информация юзера
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,13 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
         nicknameText = (TextView) findViewById(R.id.activity_settings_tv_nickname);
         passwordText = (TextView) findViewById(R.id.activity_settings_tv_password);
         groupText = (TextView) findViewById(R.id.activity_settings_tv_group);
+        languageText = (TextView) findViewById(R.id.activity_settings_tv_language);
+
+        //добавляем языки
+        String[] languagesArray = getResources().getStringArray(R.array.languages);
+        languages.add(new Pair<String, String>(languagesArray[0],"en"));
+        languages.add(new Pair<String, String>(languagesArray[1],"ru"));
+        languages.add(new Pair<String, String>(languagesArray[2],"uk"));
 
         //устанавливаем данные
         updateViewTexts();
@@ -106,8 +122,15 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
                     parameters.put("Password", text);
                 }
                 break;
-            case R.id.activity_settings_ll_group:
-                break;
+            case R.id.activity_settings_ll_group: break;
+            case R.id.activity_settings_ll_language:
+                LocaleHelper.setLocale(this, languages.get(Integer.parseInt(text)).second);
+                updateViewTexts();
+                for(int i=0;i<3;++i)
+                   languages.remove(0);
+                this.startActivity(new Intent(this, MainActivity.class));
+                this.finishAffinity();
+                return;
         }
         try {
             User.getInstance().update(getApplicationContext(), this, parameters, new Callable<Void>() {
@@ -127,6 +150,12 @@ public class SettingsActivity extends AppCompatActivity implements SettingsDialo
         nicknameText.setText(encryptedSharedPreferences.getString(Settings.PrefKeys.NICKNAME.getKey(), ""));
         passwordText.setText(encryptedSharedPreferences.getString(Settings.PrefKeys.PASSWORD.getKey(), ""));
         groupText.setText(encryptedSharedPreferences.getString(Settings.PrefKeys.GROUP.getKey(), ""));
+
+        for (Pair<String,String> element : languages){
+            if (element.second.contains(LocaleHelper.getLanguage(this))){
+                languageText.setText(element.first);
+            }
+        }
     }
 
     protected void showDialog() {

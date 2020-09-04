@@ -64,5 +64,7 @@
     <string name="full_statistic">Full statistic</string>
     <string name="subject">Subject</string>
     <string name="lab">Lab</string>
+    <string name="settings_interface">Interface</string>
+    <string name="language">Language</string>
 </resources>
 

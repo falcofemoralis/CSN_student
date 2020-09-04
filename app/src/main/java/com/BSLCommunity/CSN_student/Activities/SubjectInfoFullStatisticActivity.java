@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class SubjectInfoFullStatisticActivity extends AppCompatActivity {
+public class SubjectInfoFullStatisticActivity extends BaseActivity {
     TableLayout worksTL;
     TableRow worksNumberTR;
     ArrayList<Integer> maxWorks = new ArrayList<>();
@@ -78,7 +79,7 @@ public class SubjectInfoFullStatisticActivity extends AppCompatActivity {
         TextView subjectName = mGetView(R.layout.inflate_statistic_view);
         try {
             JSONObject subjectJSONObject = new JSONObject(Subjects.subjectsList[id].NameDiscipline);
-            subjectName.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage()));
+            subjectName.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(this)));
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -64,4 +64,6 @@
     <string name="full_statistic">Полная статистика</string>
     <string name="subject">Предмет</string>
     <string name="lab">Лабораторная</string>
+    <string name="settings_interface">Интерфейс</string>
+    <string name="language">Язык</string>
 </resources>

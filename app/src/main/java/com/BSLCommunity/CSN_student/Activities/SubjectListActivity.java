@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
 import com.BSLCommunity.CSN_student.Objects.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Objects.User;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
-public class SubjectListActivity extends AppCompatActivity {
+public class SubjectListActivity extends BaseActivity {
     Boolean shouldExecuteOnResume = false;
     static class IdGenerator {
         static int n = 0;
@@ -73,7 +74,7 @@ public class SubjectListActivity extends AppCompatActivity {
             try {
                 //получаем имя предмета по локализации
                 JSONObject subjectJSONObject = new JSONObject(subject.NameDiscipline);
-                button.setText(subjectJSONObject.getString(Locale.getDefault().getLanguage()));
+                button.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(SubjectListActivity.this)));
             } catch (JSONException e) {}
 
             // Устанавливаем функционал кнопке

@@ -51,24 +51,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="105dp"
-                        android:layout_margin="10dp"
-                        android:textSize="18sp"
-                        android:text="Dima Coste"
-                        android:drawableLeft="@drawable/ic_rating"
-                        android:textAlignment="gravity"
-                        android:gravity="center"/>
-
-            </LinearLayout>
-
-
 
         </LinearLayout>
 

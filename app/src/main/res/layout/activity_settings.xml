@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/activity_background"
@@ -330,8 +336,179 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/developers"
+            android:textColor="@color/main_color_3"
+            android:textSize="18sp" />
+
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="118dp"
+                android:layout_height="98dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/falcofemoralis_avatar"
+                tools:src="@drawable/falcofemoralis_avatar"
+                tools:srcCompat="@drawable/falcofemoralis_avatar" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="FalcoFemoralis"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/activity_settings_bt_dev1_github"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/settings_contact_button_size"
+                android:layout_weight="1"
+                android:background="@drawable/activity_button2"
+                android:drawableStart="@drawable/ic_github"
+                android:drawablePadding="-25dp"
+                android:paddingStart="35dp"
+                android:text="GITHUB"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/activity_settings_bt_dev1_telegram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/settings_contact_button_size"
+                android:layout_weight="1"
+                android:background="@drawable/activity_button2"
+                android:drawableStart="@drawable/ic_telegram"
+                android:drawablePadding="-25dp"
+                android:paddingStart="35dp"
+                android:text="Telegram"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="118dp"
+                android:layout_height="98dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/derlados_avatar"
+                tools:src="@drawable/derlados_avatar"
+                tools:srcCompat="@drawable/derlados_avatar" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Derlados"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/activity_settings_bt_dev2_github"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/settings_contact_button_size"
+                android:layout_weight="1"
+                android:background="@drawable/activity_button2"
+                android:drawableStart="@drawable/ic_github"
+                android:drawablePadding="-25dp"
+                android:paddingStart="35dp"
+                android:text="GITHUB"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/activity_settings_bt_dev2_telegram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/settings_contact_button_size"
+                android:layout_weight="1"
+                android:background="@drawable/activity_button2"
+                android:drawableStart="@drawable/ic_telegram"
+                android:drawablePadding="-25dp"
+                android:paddingStart="35dp"
+                android:text="Telegram"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
     <Space
         android:layout_width="match_parent"
         android:layout_height="25dp" />
 
 </LinearLayout>
+</ScrollView>

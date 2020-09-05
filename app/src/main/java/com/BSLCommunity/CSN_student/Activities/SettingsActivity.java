@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -58,6 +60,10 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
         passwordText = (TextView) findViewById(R.id.activity_settings_tv_password);
         groupText = (TextView) findViewById(R.id.activity_settings_tv_group);
         languageText = (TextView) findViewById(R.id.activity_settings_tv_language);
+
+        //добвляем профиля
+        attachListeners(R.id.activity_settings_bt_dev1_github,R.id.activity_settings_bt_dev1_telegram, "https://github.com/falcofemoralis", "https://t.me/falcofemoralis");
+        attachListeners(R.id.activity_settings_bt_dev2_github,R.id.activity_settings_bt_dev2_telegram, "https://github.com/Derlados", "https://t.me/Derlados");
 
         //добавляем языки
         String[] languagesArray = getResources().getStringArray(R.array.languages);
@@ -189,5 +195,25 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
 
         alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    private void attachListeners(int github, int telegram, final String githubURL, final String telegramURL){
+        Button githubBtn = findViewById(github);
+        Button telegramBtn = findViewById(telegram);
+
+        githubBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubURL));
+                startActivity(linkIntent);
+            }
+        });
+        telegramBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(telegramURL));
+                startActivity(linkIntent);
+            }
+        });
     }
 }

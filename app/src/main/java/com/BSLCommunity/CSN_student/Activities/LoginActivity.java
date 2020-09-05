@@ -28,8 +28,12 @@ import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
+import java.util.concurrent.Callable;
+
 // Форма логина для пользователя
 public class LoginActivity extends BaseActivity{
+    Boolean can_click; //нажата кнопка
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +49,21 @@ public class LoginActivity extends BaseActivity{
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN  && can_click) {
                     transitionDrawable.startTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(LoginActivity.this, R.anim.btn_pressed));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP  && can_click) {
                     EditText NickName = (EditText) findViewById(R.id.activity_login_et_nickname);
                     EditText Password = (EditText) findViewById(R.id.activity_login_et_password);
-                    if (!NickName.getText().toString().equals("") && !Password.getText().toString().equals(""))
-                        User.login(getApplicationContext(), LoginActivity.this, NickName.getText().toString().toLowerCase(), Password.getText().toString());
+                    if (!NickName.getText().toString().equals("") && !Password.getText().toString().equals("")){
+                        User.login(getApplicationContext(), LoginActivity.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), new Callable<Void>() {
+                            @Override
+                            public Void call() throws Exception {
+                                can_click = false;
+                                return null;
+                            }
+                        });
+                    }
                     else
                         Toast.makeText(LoginActivity.this,R.string.nodata,Toast.LENGTH_SHORT).show();
 
@@ -63,6 +74,12 @@ public class LoginActivity extends BaseActivity{
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        can_click = true;
     }
 
     //возращает активити в исходное состояние

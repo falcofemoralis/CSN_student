@@ -90,7 +90,7 @@ public class User {
      * activityContext - activity context активити из которого был сделан вызов функции
      * loginData - параметры необходимо передать в GET запросе при логине пользователя
      * */
-    public static void login(final Context appContext, final Context activityContext, final String nickName, final String password) {
+    public static void login(final Context appContext, final Context activityContext, final String nickName, final String password, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = MainActivity.MAIN_URL + String.format("api/users/login?NickName=%1$s&Password=%2$s", nickName,password);
 
@@ -108,6 +108,16 @@ public class User {
                     instance.nameGroup = user.getString("GroupName");
                     instance.groupId = user.getInt("group_id");
                     instance.saveData(); // Сохраняем данные
+
+                    if (callBacks != null) {
+                        for (int i = 0; i < callBacks.length; ++i) {
+                            try {
+                                callBacks[i].call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
 
                     //скачиваем группы
                     Groups.init(appContext, instance.course);
@@ -142,7 +152,7 @@ public class User {
      * activityContext - activity context активити из которого был сделан вызов функции
      * regData - параметры необходимо передать в GET запросе при регистрации пользователя
      * */
-    public static void registration(final Context appContext, final Context activityContext, final String nickName, final String password, final String codeGroup) {
+    public static void registration(final Context appContext, final Context activityContext, final String nickName, final String password, final String codeGroup, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
 
         String url = MainActivity.MAIN_URL + "api/users";
@@ -161,7 +171,7 @@ public class User {
                     /* Для загрузки данных используется логин, потому необходимо передать в функцию необходимые данные для успешного логина
                      * Вызывает логин по причине того что для полных данных о пользователе нужно так же знать его id, который создается в базе автоматически при регистрации
                      * */
-                    login(appContext, activityContext, nickName, password); // Логин загружает все необходимые данные после успешной регистрации пользователя
+                    login(appContext, activityContext, nickName, password, callBacks); // Логин загружает все необходимые данные после успешной регистрации пользователя
                 }
             }
         }, new Response.ErrorListener() {

@@ -7,6 +7,8 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -248,8 +250,6 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
         Button addBt = null;
         TableLayout infoTL = null;
 
-        TransitionManager.beginDelayedTransition(rootContainer);
-
         switch (view.getId()) {
             case R.id.activity_subject_info_bt_labs:
                 addBt = findViewById(R.id.activity_subject_info_bt_add_lab);
@@ -274,44 +274,16 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
 
     // Открываем вкладку с выбраным типо работы
     private void drawWork(final Button addBt, final TableLayout infoTL, final boolean isOpen, final LinearLayout linearLayout) {
-       /* Transition slide = new Slide(Gravity.TOP).addTarget(addBt).addTarget(infoTL).setDuration(1000).setInterpolator(isOpen ?
-                new LinearOutSlowInInterpolator() :
-                new FastOutLinearInInterpolator());*/
-
-        Animator.AnimatorListener listener = new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                TransitionManager.beginDelayedTransition(rootContainer);
-                if(!isOpen){
-                    addBt.setVisibility(View.GONE);
-                    infoTL.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        };
-
-        addBt.animate().alpha(isOpen ? 1.0f : 0.0f).setDuration(getResources().getInteger(R.integer.subject_info_animation_duration)).setInterpolator(isOpen ?
-                new LinearOutSlowInInterpolator() :
-                new FastOutLinearInInterpolator()).setListener(listener);
-
-        infoTL.animate().alpha(isOpen ? 1.0f : 0.0f).setDuration(getResources().getInteger(R.integer.subject_info_animation_duration)).setInterpolator(isOpen ?
-                new LinearOutSlowInInterpolator() :
-                new FastOutLinearInInterpolator()).setListener(listener);
-
         if(isOpen){
-            addBt.setVisibility(View.VISIBLE);
+            TransitionManager.beginDelayedTransition(rootContainer);
             infoTL.setVisibility(View.VISIBLE);
+            TransitionManager.beginDelayedTransition(rootContainer);
+            addBt.setVisibility(View.VISIBLE);
+        } else{
+            TransitionManager.beginDelayedTransition(rootContainer);
+            infoTL.setVisibility(View.GONE);
+            TransitionManager.beginDelayedTransition(rootContainer);
+            addBt.setVisibility(View.GONE);
         }
     }
 

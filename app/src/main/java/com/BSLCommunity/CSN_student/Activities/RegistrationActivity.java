@@ -40,6 +40,7 @@ import java.util.concurrent.Callable;
 public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     long id; //выбранный код группы со спиннера
     ProgressBar progressBar; //анимация загрузки в спиннере групп
+    Boolean can_click; //нажата кнопка
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -68,7 +69,16 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                     EditText RepeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
 
                     if (Password.getText().toString().equals(RepeatPassword.getText().toString())) {
-                        User.registration(getApplicationContext(), RegistrationActivity.this, NickName.getText().toString().toLowerCase(), Password.getText().toString(), Integer.toString((Groups.groupsLists.get((int) id).id)));
+                        User.registration(getApplicationContext(), RegistrationActivity.this,
+                                NickName.getText().toString().toLowerCase(),
+                                Password.getText().toString(),
+                                Integer.toString((Groups.groupsLists.get((int) id).id)), new Callable<Void>() {
+                                    @Override
+                                    public Void call() throws Exception {
+                                        can_click = false;
+                                        return null;
+                                    }
+                                });
                     } else {
                         Toast.makeText(RegistrationActivity.this, R.string.inccorect_password, Toast.LENGTH_SHORT).show();
                     }
@@ -78,6 +88,12 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        can_click = true;
     }
 
     //возращает активити в исходное состояние

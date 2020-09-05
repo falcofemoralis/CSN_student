@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.BSLCommunity.CSN_student.Activities.BaseActivity;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Groups;
@@ -34,7 +35,7 @@ import java.util.Locale;
 
 
 //форма расписание предметов группы
-public class ScheduleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ScheduleActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     final int MAX_PAIR = 5; //кол-во пар в активити
     final int MAX_DAYS = 5; //кол-во дней в активити
 

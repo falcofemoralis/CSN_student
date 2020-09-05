@@ -58,6 +58,30 @@ function userViewById($connect, $id)
     
 } 
 
+//GET запрос на получение публичных данных юзеров по курсу URI: .../users/course/id
+function usersViewByCourse($connect, $id)
+{
+    $query = "  SELECT users.NickName, users.RealName, groups.GroupName FROM `users`
+                JOIN groups ON groups.Code_Group = users.Code_Group
+                WHERE groups.Course = '$id'";
+    
+    $result = mysqli_query($connect, $query);
+    
+    if ($result != NULL)
+        $number_of_row = mysqli_num_rows($result);
+    else
+        $number_of_row = 0;
+            
+    $res_array = array();
+            
+    if ($number_of_row > 0)
+        while ($row = mysqli_fetch_assoc($result))
+            $res_array[] = $row;
+                    
+    echo json_encode($res_array);
+    mysqli_close($connect);
+}
+
 // POST запрос URI: .../users
 function createUser($connect)
 {
@@ -151,7 +175,5 @@ function updateUserRating($connect, $id)
     mysqli_query($connect, $query) or die (mysqli_error($connect));
     mysqli_close($connect);
 }
-
-
 
 ?>

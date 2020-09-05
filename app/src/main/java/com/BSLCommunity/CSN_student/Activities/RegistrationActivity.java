@@ -11,7 +11,6 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -23,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,12 +31,13 @@ import com.BSLCommunity.CSN_student.Objects.Groups;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 // Форма регистрации пользователя
-public class RegistrationActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
+public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     long id; //выбранный код группы со спиннера
     ProgressBar progressBar; //анимация загрузки в спиннере групп
 
@@ -90,12 +91,16 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
         Spinner groupSpinner = findViewById(R.id.activity_registration_sp_groups);
 
         List<String> listAdapter = new ArrayList<>();
-        if (Groups.groupsLists.size() != 0) {
+        if (!Groups.groupsLists.isEmpty()) {
             progressBar.setVisibility(View.GONE);
 
             //добавляем в массив из класса Groups группы
             for (int j = 0; j < Groups.groupsLists.size(); ++j)
                 listAdapter.add(Groups.groupsLists.get(j).GroupName);
+        }
+        else {
+            groupSpinner.setAdapter(null);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         //устанавливаем спинер выбора групп
@@ -177,11 +182,5 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
 
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Groups.delete(this);
     }
 }

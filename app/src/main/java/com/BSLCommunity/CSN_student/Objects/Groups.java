@@ -123,9 +123,6 @@ public class Groups {
                         // Скачиваем расписание группы, если все остальные группы скачаны, то после скачивания последней - сохраняем данные
                         getSchedule(appContext, id, i == (JSONArray.length() - 1), callBacks);
                     }
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

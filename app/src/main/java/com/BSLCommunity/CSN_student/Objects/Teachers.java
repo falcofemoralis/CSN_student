@@ -87,7 +87,7 @@ public class Teachers {
     // Алгоритм фильтрующий количество запросов подаваем на сервер за раз
     public static void leakyBucket(int index, Context context) {
 
-        final int MAX_PACK = 5;
+        final int MAX_PACK = 3;
 
         // Скачивание данные пачками по MAX_PACK
         int nextTarget = Math.min(teacherLists.size(), index + MAX_PACK);

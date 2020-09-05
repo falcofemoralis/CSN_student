@@ -382,6 +382,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
                 subjectInfo.labs.deleteWork(num);
                 break;
             case R.id.activity_subject_info_tb_ihw_data:
+                subjectInfo.ihw.deleteWork(num);
                 break;
             case R.id.activity_subject_info_tb_other_data:
                 subjectInfo.others.deleteWork(num);

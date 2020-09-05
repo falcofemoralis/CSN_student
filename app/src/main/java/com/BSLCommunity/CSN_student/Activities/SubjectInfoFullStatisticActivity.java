@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
@@ -26,8 +27,8 @@ import java.util.Locale;
 public class SubjectInfoFullStatisticActivity extends BaseActivity {
     TableLayout worksTL;
     TableRow worksNumberTR;
-    ArrayList<Integer> maxWorks = new ArrayList<>();
     final int TYPES_WORKS_COUNT = 3;
+    int[] maxWorks = new int[TYPES_WORKS_COUNT];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class SubjectInfoFullStatisticActivity extends BaseActivity {
         worksTL = findViewById(R.id.activity_subject_info_full_tl_works);
         worksNumberTR = findViewById(R.id.activity_subject_info_full_tr_works_numbers);
 
-        for (int i = 0; i < TYPES_WORKS_COUNT; ++i) maxWorks.add(0); //инициализируем
         for (int i = 0; i < Subjects.subjectsList.length; ++i) getMaxWorks(i); //узнаем максимальное кол-во работ (по типам)
         for (int i = 0; i < Subjects.subjectsList.length; ++i) addSubjectRow(i); //добавлем полосу предмета
         addWorksHeaders(); //добавляем заголовки
@@ -51,8 +51,8 @@ public class SubjectInfoFullStatisticActivity extends BaseActivity {
 
         for (int j = 0; j < TYPES_WORKS_COUNT; ++j) {
             int workCount = mGetCount(j, subject);
-            if (workCount > maxWorks.get(j))
-                maxWorks.add(j, workCount); //запоминаем макс кол-вол работ
+            if (workCount > maxWorks[j])
+                maxWorks[j] = workCount; //запоминаем макс кол-вол работ
         }
     }
 
@@ -96,7 +96,7 @@ public class SubjectInfoFullStatisticActivity extends BaseActivity {
 
         //добавляем работы
         for (int j=0;j<TYPES_WORKS_COUNT;++j) {
-            for (int i = 0; i < maxWorks.get(j); ++i) {
+            for (int i = 0; i < maxWorks[j]; ++i) {
                 //создаем поле работы
                 TextView work = mGetView(R.layout.inflate_statistic_view);
 
@@ -134,7 +134,7 @@ public class SubjectInfoFullStatisticActivity extends BaseActivity {
         //заголовки работ
         int [] workHeader = {R.string.lab, R.string.ihw, R.string.other};
         for (int i=0;i<TYPES_WORKS_COUNT;++i) {
-            for (int j = 0; j < maxWorks.get(i); ++j) {
+            for (int j = 0; j < maxWorks[i]; ++j) {
                 TextView textView =mGetView(R.layout.inflate_statistic_view_header);
                 textView.setText(getString(workHeader[i]) + " " + (j + 1));
                 textView.setTextColor(getColor(R.color.white));

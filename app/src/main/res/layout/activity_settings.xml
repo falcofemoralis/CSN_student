@@ -410,12 +410,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/activity_button2"
                 android:drawableStart="@drawable/ic_github"
-                android:drawablePadding="-25dp"
-                android:paddingStart="35dp"
+                android:paddingStart="23dp"
+                android:paddingEnd="23dp"
                 android:text="GITHUB"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/settings_contact_button_text_size" />
 
             <Button
                 android:id="@+id/activity_settings_bt_dev1_telegram"
@@ -425,12 +425,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/activity_button2"
                 android:drawableStart="@drawable/ic_telegram"
-                android:drawablePadding="-25dp"
-                android:paddingStart="35dp"
+                android:paddingStart="23dp"
+                android:paddingEnd="23dp"
                 android:text="Telegram"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/settings_contact_button_text_size" />
         </LinearLayout>
     </LinearLayout>
 
@@ -483,12 +483,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/activity_button2"
                 android:drawableStart="@drawable/ic_github"
-                android:drawablePadding="-25dp"
-                android:paddingStart="35dp"
+                android:paddingStart="23dp"
+                android:paddingEnd="23dp"
                 android:text="GITHUB"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/settings_contact_button_text_size" />
 
             <Button
                 android:id="@+id/activity_settings_bt_dev2_telegram"
@@ -498,12 +498,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/activity_button2"
                 android:drawableStart="@drawable/ic_telegram"
-                android:drawablePadding="-25dp"
-                android:paddingStart="35dp"
+                android:paddingStart="23dp"
+                android:paddingEnd="23dp"
                 android:text="Telegram"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/settings_contact_button_text_size" />
         </LinearLayout>
     </LinearLayout>
     <Space

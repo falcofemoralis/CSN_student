@@ -4,4 +4,5 @@
     <dimen name="full_statistic_bounds">2dp</dimen>
     <dimen name="full_statistic_text_size">16sp</dimen>
     <dimen name="settings_contact_button_size">8dp</dimen>
+    <dimen name="settings_contact_button_text_size">16sp</dimen>
 </resources>

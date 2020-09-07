@@ -2,22 +2,14 @@ package com.BSLCommunity.CSN_student.Activities.Schedule;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.transition.ChangeBounds;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.transition.TransitionManager;
-import android.transition.TransitionSet;
-import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.Activities.BaseActivity;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
@@ -28,10 +20,11 @@ import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
+
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 //форма расписание предметов группы
@@ -93,7 +86,10 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                 for (int j = 0; j < listSize; ++j) {
                     try {
                         JSONObject FIOJson = new JSONObject(Teachers.teacherLists.get(j).FIO);
-                        listAdapter.add(FIOJson.getString(LocaleHelper.getLanguage(this)));
+
+                        // Разбиение ФИО на составные и установка с инициалами
+                        String[] fioStrs = FIOJson.getString(LocaleHelper.getLanguage(this)).split(" ");
+                        listAdapter.add(fioStrs[2] + " " + fioStrs[0].charAt(0) + ". " + fioStrs[1].charAt(0));
                     }
                     catch (Exception e) {}
                     idElements[j] = Teachers.teacherLists.get(j).id;

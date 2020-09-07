@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 // Форма регистрации пользователя
-public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RegistrationActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     long id; //выбранный код группы со спиннера
     ProgressBar progressBar; //анимация загрузки в спиннере групп
     Boolean can_click; //нажата кнопка
@@ -121,7 +121,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
 
         //устанавливаем спинер выбора групп
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_registration_layout, listAdapter);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_registration);
         groupSpinner.setAdapter(dataAdapter);
 
         //устанавливаем спинер
@@ -137,7 +137,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                 R.layout.spinner_registration_layout
         );
 
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_registration);
         courseSpinner.setAdapter(adapter);
         courseSpinner.setOnItemSelectedListener(this);
     }

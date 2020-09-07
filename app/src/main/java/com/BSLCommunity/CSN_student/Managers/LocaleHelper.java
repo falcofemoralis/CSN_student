@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.util.Log;
+
 import androidx.preference.PreferenceManager;
 import com.BSLCommunity.CSN_student.Objects.Settings;
 import java.util.Locale;

@@ -67,4 +67,6 @@
     <string name="settings_interface">Интерфейс</string>
     <string name="language">Язык</string>
     <string name="developers">Разработчики</string>
+    <string name="GITHUB">GITHUB</string>
+    <string name="Telegram">Telegram</string>
 </resources>

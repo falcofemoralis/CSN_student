@@ -33,7 +33,7 @@
             <RelativeLayout
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
+                android:layout_weight="0.55"
                 android:background="@color/main_color_2">
 
                 <Spinner
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:indeterminate="true"
-                    android:indeterminateTint="@color/white"/>
+                    android:indeterminateTint="@color/white" />
 
             </RelativeLayout>
 
@@ -69,7 +69,7 @@
                 android:id="@+id/activity_lessons_schedule_bt_weekType"
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.45"
+                android:layout_weight="0.35"
                 android:background="@color/main_color_2"
                 android:onClick="changeTypeWeek"
                 android:text="@string/numerator"

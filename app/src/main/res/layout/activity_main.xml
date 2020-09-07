@@ -209,7 +209,8 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="148dp"
-                android:layout_weight="0.1">
+                android:layout_weight="0.1"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/activity_main_bt_rating"
@@ -250,7 +251,7 @@
                     android:textAllCaps="false"
                     android:textColor="#00FFFFFF"
                     android:textSize="16sp"
-                    android:visibility="invisible">
+                    android:visibility="gone">
 
                 </Button>
 

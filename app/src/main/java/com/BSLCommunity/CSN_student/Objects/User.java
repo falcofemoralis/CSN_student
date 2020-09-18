@@ -1,10 +1,10 @@
 package com.BSLCommunity.CSN_student.Objects;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
+
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
@@ -12,15 +12,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -204,8 +201,6 @@ public class User {
 
         // Передается старый пароль, для некого подтверждения пользователя, чтобы никто другой не кидал PUT запросы на сервер и не менял спокойно данные пользователей
         updateData.put("OldPassword", instance.password);
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(updateData);
 
         String url = MainActivity.MAIN_URL + String.format("api/users/%1$s", User.getInstance().id);
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url,

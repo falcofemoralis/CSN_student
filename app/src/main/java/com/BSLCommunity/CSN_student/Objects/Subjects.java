@@ -4,19 +4,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.widget.Toast;
+
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -63,11 +63,12 @@ public class Subjects {
      * callback - дальнейшие действия которые необходимо будет выполнить после запроса
      * */
     public static void downloadFromServer(final Context context, final Callable<Void> callback) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = MainActivity.MAIN_URL + String.format("api/subjects/?Code_Group=%1$s",   User.getInstance().groupId);
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+        String apiUrl = String.format("api/subjects/?Code_Group=%1$s",   User.getInstance().groupId);
+        DBHelper.getRequest(context, apiUrl, new DBHelper.CallBack() {
+
             @Override
-            public void onResponse(String response) {
+            public void call(String response) {
                 Gson gson = new Gson();
                 subjectsList = gson.fromJson(response, SubjectsList[].class);
                 save(context);
@@ -86,13 +87,12 @@ public class Subjects {
                     e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void fail(String message) {
                 Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
-        requestQueue.add(request);
     }
 
     /* Загрузка изображения с сервера (формат Bitmap)

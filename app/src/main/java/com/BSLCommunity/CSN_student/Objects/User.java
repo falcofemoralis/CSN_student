@@ -6,14 +6,8 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,13 +81,12 @@ public class User {
      * activityContext - activity context активити из которого был сделан вызов функции
      * loginData - параметры необходимо передать в GET запросе при логине пользователя
      * */
-    public static void login(final Context appContext, final Context activityContext, final String nickName, final String password, final Callable<Void>... callBacks) {
-        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = MainActivity.MAIN_URL + String.format("api/users/login?NickName=%1$s&Password=%2$s", nickName,password);
+    public static void login(final Context appContext, final Context activityContext, final String nickName, final String password, final Callable<Void> callBacks) {
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        String apiUrl = String.format("api/users/login?NickName=%1$s&Password=%2$s", nickName,password);
+        DBHelper.getRequest(appContext, apiUrl, new DBHelper.CallBack() {
             @Override
-            public void onResponse(String response) {
+            public void call(String response) {
                 try {
                     // Получаем все необходимые данные пользователя
                     JSONObject user = new JSONObject(response);
@@ -106,19 +99,6 @@ public class User {
                     instance.groupId = user.getInt("group_id");
                     instance.saveData(); // Сохраняем данные
 
-                    if (callBacks != null) {
-                        for (int i = 0; i < callBacks.length; ++i) {
-                            try {
-                                callBacks[i].call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    //скачиваем группы
-                  //  Groups.init(appContext, instance.course);
-
                     //запоминаем что пользователь зарегистрировался
                     SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();
                     prefEditor.putBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), true).apply();
@@ -128,19 +108,25 @@ public class User {
 
                     //запускаем главное окно
                     activityContext.startActivity(new Intent(appContext, MainActivity.class));
-                } catch (JSONException e) {
+
+                    try {
+                        callBacks.call();
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(appContext, R.string.no_user, Toast.LENGTH_SHORT).show();
                 }
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void fail(String message) {
                 Toast.makeText(activityContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         });
-        requestQueue.add(request);
     }
 
     /* Функция регистрации нового пользователя
@@ -149,14 +135,17 @@ public class User {
      * activityContext - activity context активити из которого был сделан вызов функции
      * regData - параметры необходимо передать в GET запросе при регистрации пользователя
      * */
-    public static void registration(final Context appContext, final Context activityContext, final String nickName, final String password, final String codeGroup, final Callable<Void>... callBacks) {
-        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
+    public static void registration(final Context appContext, final Context activityContext, final String nickName, final String password, final String codeGroup, final Callable<Void> callBacks) {
 
-        String url = MainActivity.MAIN_URL + "api/users";
+        String apiUrl = "api/users";
+        Map<String, String> param = new HashMap<>();
+        param.put("NickName", nickName);
+        param.put("Password", password);
+        param.put("CodeGroup", codeGroup);
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        DBHelper.postRequest(appContext, apiUrl, param,  new DBHelper.CallBack() {
             @Override
-            public void onResponse(String response) {
+            public void call(String response) {
                 // На данный момент сообщением об неуспешной регистрации является ERROR
                 if (response.equals("ERROR"))
                     Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
@@ -171,22 +160,12 @@ public class User {
                     login(appContext, activityContext, nickName, password, callBacks); // Логин загружает все необходимые данные после успешной регистрации пользователя
                 }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void fail(String message) {
                 Toast.makeText(activityContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("NickName", nickName);
-                param.put("Password", password);
-                param.put("CodeGroup", codeGroup);
-                return param;
-            }
-        };
-        requestQueue.add(request);
+        });
     }
 
     /* Функция обновления данных пользователя
@@ -196,65 +175,40 @@ public class User {
      * updateData - параметры которые необходимо передать в PUT запросе при обновления данных пользователя
      * */
     public void update(final Context appContext, final Context activityContext, final Map<String, String> updateData,  final Callable<Void> callBack) throws JSONException {
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(appContext);
-
         // Передается старый пароль, для некого подтверждения пользователя, чтобы никто другой не кидал PUT запросы на сервер и не менял спокойно данные пользователей
         updateData.put("OldPassword", instance.password);
+        String apiUrl = String.format("api/users/%1$s", User.getInstance().id);
 
-        String url = MainActivity.MAIN_URL + String.format("api/users/%1$s", User.getInstance().id);
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.indexOf("ERROR")!=-1)
-                            Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
-                        else if (response.indexOf("Duplicate")!=-1)
-                            Toast.makeText(activityContext, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
-                        else {
-                            Toast.makeText(activityContext, R.string.datachanged, Toast.LENGTH_SHORT).show();
-                            // Обновление успешно, потому заносим новые данные
-                            instance.nickName = updateData.get("NickName");
-                            instance.password = updateData.get("Password");
-                            saveData(); // сохраняем данные
-                            try {
-                                callBack.call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(activityContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
+        DBHelper.putRequest(appContext, apiUrl, updateData, new DBHelper.CallBack() {
+            @Override
+            public void call(String response) {
+                if (response.indexOf("ERROR")!=-1)
+                    Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
+                else if (response.indexOf("Duplicate")!=-1)
+                    Toast.makeText(activityContext, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(activityContext, R.string.datachanged, Toast.LENGTH_SHORT).show();
+                    // Обновление успешно, потому заносим новые данные
+                    instance.nickName = updateData.get("NickName");
+                    instance.password = updateData.get("Password");
+                    saveData(); // сохраняем данные
+                    try {
+                        callBack.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-        ) {
+            }
 
             @Override
-            public Map<String, String> getHeaders()
-            {
-                Map<String, String> headers = new HashMap<String, String>();
-               // headers.put("Content-Type", "application/json");
-                //or try with this:
-                headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                return headers;
+            public void fail(String message) {
+
             }
-            @Override
-            protected Map<String, String> getParams() {
-                return updateData;
-            }
-        };
-        requestQueue.add(putRequest);
+        });
     }
 
     // Сохранение всех данных пользователя
-    public void saveData()
-    {
+    public void saveData() {
         SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();
         prefEditor.putInt(Settings.PrefKeys.USER_ID.getKey(), instance.id);
         prefEditor.putString(Settings.PrefKeys.NICKNAME.getKey(), instance.nickName);

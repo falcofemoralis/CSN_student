@@ -11,7 +11,6 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -21,9 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleActivity;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
@@ -60,12 +57,13 @@ public class LoginActivity extends BaseActivity{
                             @Override
                             public Void call() throws Exception {
                                 can_click = false;
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class)) ;//запускаем главное окно
                                 return null;
                             }
                         });
                     }
                     else
-                        Toast.makeText(LoginActivity.this,R.string.nodata,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, R.string.nodata,Toast.LENGTH_SHORT).show();
 
 
                     transitionDrawable.reverseTransition(150);

@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme"
         android:name=".Objects.App">
 
+        <service android:name=".Services.DownloadService"/>
         <activity
             android:name=".Activities.MainActivity"
             android:theme="@style/MainActivityActionBar">

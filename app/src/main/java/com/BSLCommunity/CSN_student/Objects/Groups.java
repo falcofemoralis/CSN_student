@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
@@ -58,15 +59,23 @@ public class Groups {
      */
     public static void init(Context context, int course, final Callable<Void>... callBacks) {
 
-        if (!groupsLists.isEmpty())
+        if (!groupsLists.isEmpty()){
+            try {
+                callBacks[0].call();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
             return;
+        }
 
         try {
             //загружаем расписание из отдельного json файла
             String response = JSONHelper.read(context, DATA_FILE_NAME);
 
             if (response.equals("NOT FOUND")) {
-                downloadFromServer(context, course, callBacks);
+                Log.d("DownloadService", "Download groups where " + callBacks[0]);
+                if (callBacks != null) downloadFromServer(context, course, callBacks[0]);
+                else downloadFromServer(context, course);
                 return;
             }
 
@@ -103,6 +112,7 @@ public class Groups {
                 try {
                     JSONArray JSONArray = new JSONArray(response);
 
+                    Log.d("DownloadService", "Download groups 2 where " + callBacks[0]);
                     if (JSONArray.length() == 0) {
                         for (int i = 0; i < callBacks.length; ++i) {
                             try {
@@ -168,19 +178,22 @@ public class Groups {
                         groupsList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, room);
                     }
 
-                    // После скачивания всез данныз вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
-                    if (callBacks != null) {
-                        for (int i = 0; i < callBacks.length; ++i) {
-                            try {
-                                callBacks[i].call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    // Сохранение данных если это необходимо
+                    if (saveData){
+                        save(appContext);
+
+                        // После скачивания всех данных вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
+                        if (callBacks != null) {
+                            for (int i = 0; i < callBacks.length; ++i) {
+                                try {
+                                    callBacks[i].call();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                    // Сохранение данных если это необходимо
-                    if (saveData)
-                        save(appContext);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();

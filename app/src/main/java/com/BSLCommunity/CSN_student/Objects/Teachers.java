@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
@@ -62,7 +63,7 @@ public class Teachers {
             String response = JSONHelper.read(context, DATA_FILE_NAME);
 
             if (response.equals("NOT FOUND")) {
-                downloadFromServer(context);
+                downloadFromServer(context, callBack);
                 return;
             }
 
@@ -85,21 +86,24 @@ public class Teachers {
     }
 
     // Алгоритм фильтрующий количество запросов подаваем на сервер за раз
-    public static void leakyBucket(int index, Context context) {
-
+    public static void leakyBucket(int index, Context context, final Callable<Void>... callBacks) {
         final int MAX_PACK = 3;
 
         // Скачивание данные пачками по MAX_PACK
         int nextTarget = Math.min(teacherLists.size(), index + MAX_PACK);
-        for (int i = index; i < nextTarget; ++i)
-            downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget);
+        for (int i = index; i < nextTarget; ++i){
+            if (callBacks != null)  downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget, callBacks[0]);
+            else  downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget);
+
+        }
+
     }
 
     /* Функция получение учителей в университете
      * Параметры:
      * appContext - application context
      * */
-    public static void downloadFromServer(final Context appContext) {
+    public static void downloadFromServer(final Context appContext,  final Callable<Void> callBack) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = MainActivity.MAIN_URL + "api/teachers/all";
 
@@ -118,7 +122,7 @@ public class Teachers {
                     }
 
                     // Скачиваем расписание учителя, если все остальные учителя скачаны, то после скачивания последнего - сохраняем данные
-                    leakyBucket(0, appContext);
+                    leakyBucket(0, appContext, callBack);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -141,7 +145,7 @@ public class Teachers {
      * allData - указывает все ли данные пришли
      * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null
      * */
-    public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean allData, final boolean nextPack, final int index) {
+    public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean allData, final boolean nextPack, final int index, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
         String url = MainActivity.MAIN_URL + String.format("api/teachers/%d/schedule", id);
 
@@ -166,15 +170,27 @@ public class Teachers {
                         teacherList.addSchedule(Integer.parseInt(half), Integer.parseInt(day) - 1, Integer.parseInt(pair) - 1, discipline, type, room);
                     }
 
+                    Log.d("DownloadService", "Teacher downloaded" + id);
+
                     // Все данные скачаны и их необходимо сохранить
                     if (allData) {
                         save(appContext);
+                        if (callBacks != null) {
+                            for (int i = 0; i < callBacks.length; ++i) {
+                                try {
+                                    callBacks[i].call();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
                         return;
                     }
 
                     // Скачивание следующей группы данных
                     if (nextPack)
-                        leakyBucket(index, appContext);
+                        if (callBacks != null) leakyBucket(index, appContext, callBacks[0]);
+                        else leakyBucket(index, appContext);
 
                 }
                 catch (JSONException e) {

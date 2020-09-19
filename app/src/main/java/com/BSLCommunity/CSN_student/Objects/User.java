@@ -120,7 +120,7 @@ public class User {
                     }
 
                     //скачиваем группы
-                    Groups.init(appContext, instance.course);
+                  //  Groups.init(appContext, instance.course);
 
                     //запоминаем что пользователь зарегистрировался
                     SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();

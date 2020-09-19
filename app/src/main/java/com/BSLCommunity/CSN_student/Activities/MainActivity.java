@@ -1,14 +1,15 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -16,21 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleActivity;
-import com.BSLCommunity.CSN_student.Objects.AnotherUserList;
-import com.BSLCommunity.CSN_student.Objects.Groups;
-import com.BSLCommunity.CSN_student.Objects.LocalData;
 import com.BSLCommunity.CSN_student.Objects.Settings;
-import com.BSLCommunity.CSN_student.Objects.Subjects;
-import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.Timer;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
-
-import java.util.Locale;
-import java.util.concurrent.Callable;
+import com.BSLCommunity.CSN_student.Services.DownloadService;
 
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
@@ -73,49 +65,10 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
         courseTextView.setText(String.valueOf(User.getInstance().course) + " " + courseTextView.getText());
         groupTextView.setText(User.getInstance().nameGroup + " " + groupTextView.getText());
 
-
-        initAllData();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startForegroundService(new Intent(this, DownloadService.class));
+        else startService(new Intent(this, DownloadService.class));
     }
 
-    // Инициализация всех данных
-    private void initAllData() {
-        // Скачиваем все необходимые апдейт листы для проверки актуальности данных и проверяем данные
-        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
-                        return null;
-                    }
-                });
-                return null;
-            }
-        });
-
-        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                Teachers.init(getApplicationContext(), new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
-                        return null;
-                    }
-                });
-                return null;
-            }
-        });
-
-        Subjects.init(getApplicationContext(), new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                return null;
-            }
-        });
-        AnotherUserList.getUsersFromServer(this);
-    }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {

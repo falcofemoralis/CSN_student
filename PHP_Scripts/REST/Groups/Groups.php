@@ -4,7 +4,7 @@
 function getScheduleById($connect, $id)
 {
     
-   $query = "   SELECT schedule_list.Day, schedule_list.Pair, schedule_list.Half, disciplines.NameDiscipline, schedule_list.Room,
+    $query = "   SELECT schedule_list.Day, schedule_list.Pair, schedule_list.Half, disciplines.NameDiscipline, schedule_list.Room,
                 subjecttypes.SubjectType
                 FROM schedule_list
                 JOIN subjecttypes ON subjecttypes.Code_SubjectType = schedule_list.Code_SubjectType
@@ -13,22 +13,8 @@ function getScheduleById($connect, $id)
                 FROM schedule
                 WHERE schedule.Code_Group = '$id')";
    
-   $result = mysqli_query($connect, $query);
-   
-   if ($result != NULL)
-       $number_of_row = mysqli_num_rows($result);
-    else
-        $number_of_row = 0;
-           
-    $res_array = array();
-           
-    if ($number_of_row > 0)
-        while ($row = mysqli_fetch_assoc($result))
-            $res_array[] = $row;
-                   
-    echo json_encode($res_array);
-                  
-    mysqli_close($connect);
+    $data = DataBase::execQuery($query, true);
+    echo $data;
 }
 
 //GET запрос на получение всех групп по курсу id URI: .../groups
@@ -40,21 +26,7 @@ function getGroupsOnCourse($connect)
                 FROM groups
                 WHERE groups.Course = $course";
     
-    $result = mysqli_query($connect, $query);
-    
-    if ($result != NULL)
-        $number_of_row = mysqli_num_rows($result);
-    else
-        $number_of_row = 0;
-            
-    $res_array = array();
-            
-    if ($number_of_row > 0)
-        while ($row = mysqli_fetch_assoc($result))
-            $res_array[] = $row;
-            
-    echo json_encode($res_array);
-    
-    mysqli_close($connect);
+    $data = DataBase::execQuery($query, true);
+    echo $data;
 }
 

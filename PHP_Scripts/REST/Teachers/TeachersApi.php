@@ -25,14 +25,14 @@ class TeachersApi extends Api
         if (!empty($this->requestUri))
         {
             if ($this->requestUri[0] == 'all')
-                getAllTeacher($this->connect);
+                getAllTeacher();
             else if ($this->requestUri[0] == 'updateList')
                 getUpdateList('teachers'); 
             else
             {
                 $id = array_shift($this->requestUri);
                 if (!empty($this->requestUri) && array_shift($this->requestUri) == 'schedule')
-                    viewTeacherSchedules($this->connect, $id);
+                    viewTeacherSchedules($id);
                 else 
                     echo "invalid method";
             }

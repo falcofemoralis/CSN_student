@@ -4,30 +4,22 @@ require_once 'DataBase.php';
     //abstract class Api
     abstract class Api
     {
-        protected $method = ''; // Метод запроса (GET/POST/PUT/DELETE)
-        
-        protected $requestUri = [];
-        
+        protected $method = ''; // Метод запроса (GET/POST/PUT/DELETE)     
+        protected $requestUri = [];   
         protected $action = ''; // Название метода для действия
-        protected $connect;
-        
+  
         //Конструктор "вынимает" из запроса все необходимые данные (тип запроса, параметры переданные в URI, параметры переданные в теле запроса)
         public function __construct($requestUri)
         {
-            $db = new DataBase();
-            $this->connect = $db->getConnection();
             $this->method = $_SERVER['REQUEST_METHOD'];
             $this->requestUri = $requestUri;     
         }
         
         // Обрабатывает запрос
         public function run()
-        {
-            // Определяем действие
-            $this->action = $this->getAction();
-            
-            // Проверяем переопределено ли это действие в наследнике
-            return $this->{$this->action}();
+        {       
+            $this->action = $this->getAction(); // Определяем действие  
+            return $this->{$this->action}(); // Вызываем метод в соответствии с методом
         }
         
         // Метод API который будет выполнятся в зависимости от типа запроса

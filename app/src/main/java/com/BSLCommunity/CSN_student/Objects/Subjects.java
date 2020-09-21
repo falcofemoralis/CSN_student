@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.widget.Toast;
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
@@ -46,6 +47,14 @@ public class Subjects {
 
         Gson gson = new Gson();
         subjectsList = gson.fromJson(response, SubjectsList[].class);
+
+        // После скачивания всех данных вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
+        try {
+            callBacks.call();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /* Загрузка данных о дисциплине с сервера
@@ -93,7 +102,6 @@ public class Subjects {
     * callback - дальнейшие действия которые необходимо будет выполнить после запроса
     * */
     public static void downloadImageFromServer(final Context context, final int numSubject) {
-
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         String url = MainActivity.MAIN_URL + String.format("api/subjects?image=%s", subjectsList[numSubject].Image);

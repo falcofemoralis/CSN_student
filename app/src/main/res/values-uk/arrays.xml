@@ -13,9 +13,9 @@
 
     <string-array name="work_types">
         <item>Не здано</item>
-        <item>В процесі</item>
-        <item>Виконано без звітуt</item>
-        <item>Виконано зі звітомt</item>
+        <item>У процесі</item>
+        <item>Виконано без звіту</item>
+        <item>Виконано зі звітом</item>
         <item>Чекає прийняття</item>
         <item>Здано без звіту</item>
         <item>Здано зі звітом</item>

@@ -10,7 +10,7 @@ class UserApi extends Api
     protected function createAction()
     {
         if (empty($this->requestUri))
-            createUser($this->connect);
+            createUser();
         else
             echo "invalid method";
     }
@@ -26,9 +26,9 @@ class UserApi extends Api
         {
             $id = array_shift($this->requestUri);
             if (empty($this->requestUri))
-                updateUser($this->connect, $id); // Обновление данных юзера по id
+                updateUser($id); // Обновление данных юзера по id
             else if (array_shift($this->requestUri) == "rating")         
-                updateUserRating($this->connect, $id); // Обновление рейтинга юзера по id
+                updateUserRating($id); // Обновление рейтинга юзера по id
             else
                 echo "invalid method";
         }
@@ -42,11 +42,11 @@ class UserApi extends Api
         if (!empty($this->requestUri))
         {
             if ($this->requestUri[0] == "login")
-                readUser($this->connect);
+                readUser();
             else
             {
                 $id = array_shift($this->requestUri);
-                userViewById($this->connect, $id);
+                userViewById($id);
             }
         }
         else            
@@ -54,11 +54,7 @@ class UserApi extends Api
     }
 
     // Удаление данных
-    protected function deleteAction()
-    {
-                
-    }
-
+    protected function deleteAction() {}
 }
 
 ?>

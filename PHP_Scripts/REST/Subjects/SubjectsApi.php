@@ -22,9 +22,9 @@ class SubjectsApi extends Api
     protected function viewAction()
     {
 	   if (!empty($this->requestUri)) 
-	       getSubjectsByGroup($this->connect);
+	        getSubjectsByGroup();
         else 
-            echo getImageSubject(); 
+            getImageSubject(); 
     }
     
     // Удаление данных

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
@@ -12,7 +13,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
@@ -147,6 +147,7 @@ public class SubjectsInfo {
         }
     }
 
+    //TODO
     public static void updateRating(final Context context, final String JSONString) throws JSONException {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String url = MainActivity.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
@@ -170,12 +171,11 @@ public class SubjectsInfo {
     }
 
     public static void downloadRating(final Context context) throws JSONException {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String apiUrl = String.format("api/users/%1$s/rating", User.getInstance().id);
+        DBHelper.getRequest(context, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>(){
 
-        String url = MainActivity.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
+            public void call(String response) {
                 if (response != null && !response.equals("")) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
@@ -191,12 +191,11 @@ public class SubjectsInfo {
                     }
                 }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void fail(String message) {
                 Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
-        requestQueue.add(request);
     }
 }

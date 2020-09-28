@@ -5,6 +5,10 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
+import android.util.Log;
+
+import com.BSLCommunity.CSN_student.Activities.MainActivity;
+import com.BSLCommunity.CSN_student.Objects.User;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -39,7 +43,6 @@ public class DBHelper {
         void fail(String message);
     }
 
-
     /* Запросы типа GET
     * Параметры:
     * appContext - контекст приложения
@@ -53,6 +56,7 @@ public class DBHelper {
         if (requestQueue == null)
             requestQueue = Volley.newRequestQueue(appContext);
         String url = MAIN_URL + apiUrl;
+
 
         switch (typeRequest) {
             case STRING:
@@ -91,7 +95,6 @@ public class DBHelper {
         //TODO
         //request.setRetryPolicy(new DefaultRetryPolicy(200,3,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
 
     /* Запросы типа POST
      * Параметры:

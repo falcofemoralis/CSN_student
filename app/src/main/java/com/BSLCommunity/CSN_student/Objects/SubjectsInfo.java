@@ -172,7 +172,7 @@ public class SubjectsInfo {
 
     public static void downloadRating(final Context context) throws JSONException {
         String apiUrl = String.format("api/users/%1$s/rating", User.getInstance().id);
-        DBHelper.getRequest(context, apiUrl, new DBHelper.CallBack(){
+        DBHelper.getRequest(context, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>(){
 
             @Override
             public void call(String response) {

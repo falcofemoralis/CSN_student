@@ -101,7 +101,7 @@ public class Teachers {
      * */
     public static void downloadFromServer(final Context appContext,  final Callable<Void> callBack) {
         String apiUrl = "api/teachers/all";
-        DBHelper.getRequest(appContext, apiUrl, new DBHelper.CallBack() {
+        DBHelper.getRequest(appContext, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
 
             @Override
             public void call(String response) {
@@ -140,7 +140,7 @@ public class Teachers {
     public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean allData, final boolean nextPack, final int index, final Callable<Void>... callBacks) {
 
         String apiUrl = String.format("api/teachers/%d/schedule", id);
-        DBHelper.getRequest(appContext, apiUrl, new DBHelper.CallBack() {
+        DBHelper.getRequest(appContext, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
             @Override
             public void call(String response) {
                 //парсим полученный список групп

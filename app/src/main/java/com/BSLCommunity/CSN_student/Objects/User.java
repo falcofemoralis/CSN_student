@@ -84,7 +84,7 @@ public class User {
     public static void login(final Context appContext, final Context activityContext, final String nickName, final String password, final Callable<Void> callBacks) {
 
         String apiUrl = String.format("api/users/login?NickName=%1$s&Password=%2$s", nickName,password);
-        DBHelper.getRequest(appContext, apiUrl, new DBHelper.CallBack() {
+        DBHelper.getRequest(appContext, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
             @Override
             public void call(String response) {
                 try {
@@ -143,7 +143,7 @@ public class User {
         param.put("Password", password);
         param.put("CodeGroup", codeGroup);
 
-        DBHelper.postRequest(appContext, apiUrl, param,  new DBHelper.CallBack() {
+        DBHelper.postRequest(appContext, apiUrl, param, new DBHelper.CallBack<String>() {
             @Override
             public void call(String response) {
                 // На данный момент сообщением об неуспешной регистрации является ERROR
@@ -179,12 +179,12 @@ public class User {
         updateData.put("OldPassword", instance.password);
         String apiUrl = String.format("api/users/%1$s", User.getInstance().id);
 
-        DBHelper.putRequest(appContext, apiUrl, updateData, new DBHelper.CallBack() {
+        DBHelper.putRequest(appContext, apiUrl, updateData, new DBHelper.CallBack<String>() {
             @Override
             public void call(String response) {
-                if (response.indexOf("ERROR")!=-1)
+                if (response.contains("ERROR"))
                     Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
-                else if (response.indexOf("Duplicate")!=-1)
+                else if (response.contains("Duplicate"))
                     Toast.makeText(activityContext, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
                 else {
                     Toast.makeText(activityContext, R.string.datachanged, Toast.LENGTH_SHORT).show();

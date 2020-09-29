@@ -5,42 +5,42 @@
 
 	<tr>
 		<td rowspan="2" class="small">1</td>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr> 
 	<tr>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr>    
 
 	<tr>
 		<td rowspan="2" class="small">2</td>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr> 
 	<tr>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr>  
 
 	<tr>
 		<td rowspan="2" class="small">3</td>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr> 
 	<tr>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr>    
 
 	<tr>
 		<td rowspan="2" class="small">4</td>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr> 
 	<tr>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr>  
 
 	<tr>
 		<td rowspan="2" class="small">5</td>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr> 
 	<tr>
-		<?php include ('table_draw/table_row.php') ?>
+		<?php include ('table_row.php') ?>
 	</tr>  
 
 </table>

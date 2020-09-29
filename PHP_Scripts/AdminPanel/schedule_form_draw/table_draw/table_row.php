@@ -7,12 +7,7 @@
     </select>
 </td>
 <td class="small">
-    <select class="small"> 
-        <option></option>
-        <option>АК</option>
-        <option>СПЗ</option>
-        <option>СП</option>
-    </select>
+    <?php include('disc.html')?>
 </td>
 <td class="small">
     <input class="small" type="text">

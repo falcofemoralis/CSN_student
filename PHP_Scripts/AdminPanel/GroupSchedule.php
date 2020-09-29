@@ -6,6 +6,8 @@
     </head>
     <body>
         <form method='GET'>
+            <?php include('schedule_form_draw/setSelectDiscp.php')?>
+
             <h1 align="center">Рассписание групп</h1>
             
             <p style="font-size: 20pt;">Группа

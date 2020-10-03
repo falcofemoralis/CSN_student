@@ -1,0 +1,27 @@
+td.small {
+    width: 100px;
+    border: solid 2px black;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+select.small {
+    width: 100px;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    color: red;
+    size: 1;
+}
+
+
+input.small {
+    width: 100px;
+    border: none;
+    color: red;
+    text-align: center;   
+}
+
+*:focus {
+    outline: none;
+}

@@ -4,17 +4,10 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -85,6 +78,9 @@ public class Teachers {
         }
     }
 
+    //TODO
+    // Как нибудь переделать leakyBucket, попробовать его вынести в DBHelper и подключать опционально
+
     // Алгоритм фильтрующий количество запросов подаваем на сервер за раз
     public static void leakyBucket(int index, Context context, final Callable<Void>... callBacks) {
         final int MAX_PACK = 3;
@@ -92,11 +88,11 @@ public class Teachers {
         // Скачивание данные пачками по MAX_PACK
         int nextTarget = Math.min(teacherLists.size(), index + MAX_PACK);
         for (int i = index; i < nextTarget; ++i){
-            if (callBacks != null)  downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget, callBacks[0]);
-            else  downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget);
-
+            if (callBacks != null)
+                downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget, callBacks[0]);
+            else
+                downloadScheduleFromServer(context, teacherLists.get(i).id, nextTarget == teacherLists.size(), i == (nextTarget - 1), nextTarget);
         }
-
     }
 
     /* Функция получение учителей в университете
@@ -104,13 +100,11 @@ public class Teachers {
      * appContext - application context
      * */
     public static void downloadFromServer(final Context appContext,  final Callable<Void> callBack) {
-        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = MainActivity.MAIN_URL + "api/teachers/all";
+        String apiUrl = "api/teachers/all";
+        DBHelper.getRequest(appContext, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
-                //парсим полученный список групп
+            public void call(String response) {
                 try {
                     final JSONArray JSONArray = new JSONArray(response);
                     for (int i = 0; i < JSONArray.length(); ++i) {
@@ -123,19 +117,17 @@ public class Teachers {
 
                     // Скачиваем расписание учителя, если все остальные учителя скачаны, то после скачивания последнего - сохраняем данные
                     leakyBucket(0, appContext, callBack);
-
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void fail(String message) {
                 Toast.makeText(appContext, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
-        requestQueue.add(request);
     }
 
     /* Функция загруки расписания из базы для преподователя
@@ -146,12 +138,11 @@ public class Teachers {
      * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null
      * */
     public static void downloadScheduleFromServer(final Context appContext, final int id, final boolean allData, final boolean nextPack, final int index, final Callable<Void>... callBacks) {
-        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = MainActivity.MAIN_URL + String.format("api/teachers/%d/schedule", id);
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        String apiUrl = String.format("api/teachers/%d/schedule", id);
+        DBHelper.getRequest(appContext, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
             @Override
-            public void onResponse(String response) {
+            public void call(String response) {
                 //парсим полученный список групп
                 try {
                     JSONArray JSONArray = new JSONArray(response);
@@ -197,18 +188,13 @@ public class Teachers {
                     Toast.makeText(appContext, e.toString(), Toast.LENGTH_SHORT);
                     e.printStackTrace();
                 }
-
-
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void fail(String message) {
                 Toast.makeText(appContext, R.string.no_connection, Toast.LENGTH_SHORT).show();
             }
         });
-
-        request.setRetryPolicy(new DefaultRetryPolicy(200,3,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(request);
     }
 
     // Сохраняет данные об учителях в Json файл

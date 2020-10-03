@@ -4,13 +4,13 @@
         private static $host = "localhost";
         private static $username = "root";
         private static $password = "root";
-        private static $db_name = "csn";
+        private static $db_name = "a0466974_csn";
         private static $connect = null;
         
         private static function getConnection()
         {          
-            $connect = mysqli_connect(self::$host, self::$username, self::$password, self::$db_name);
-            mysqli_set_charset($connect, "utf8");
+            self::$connect = mysqli_connect(self::$host, self::$username, self::$password, self::$db_name);
+            mysqli_set_charset(self::$connect, "utf8");
         }
 
         /* Выполнение запроса
@@ -20,9 +20,11 @@
         */
         public static function execQuery($query, bool $getResponse)
         {
-            if (self::$connect == null)
+            //TODO
+            
+            //if (self::$connect == null)
                 self::getConnection(); // Подключение к базе данных
-
+                
             // Выполнение запроса и получение данных
             $result = mysqli_query(self::$connect, $query);   
             

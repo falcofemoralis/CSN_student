@@ -2,7 +2,7 @@
     
     $choosen = $_GET['group']; // Текущая группа
 
-    $htmlSelect = "<select class = \"small\">";
+    $htmlSelect = "<select name=\"disc[]\" class = \"small\">";
     $fd = fopen("disc.html", 'w+');
 
 
@@ -16,13 +16,13 @@
     }
 
     // Получение списка дисциплин с базы
-    $response = file_get_contents("http://192.168.1.3/api/subjects/group?Code_Group=" . $choosen);
+    $response = file_get_contents("http://192.168.1.3/api/subjects/shortAll");
     $dataArray = json_decode($response);
 
     $htmlSelect .= "<option value = \"-1\"></option>";
     foreach ($dataArray as $item)
     {
-        $nameDiscp =  (json_decode($item->{'NameDiscipline'}))->{'ru'};
+        $nameDiscp =  (json_decode($item->{'NameDiscipline'}))->{'uk'};
         $arrWord = explode(' ', $nameDiscp);
         $abb = "";
 

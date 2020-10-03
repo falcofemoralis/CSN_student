@@ -1,15 +1,12 @@
 package com.BSLCommunity.CSN_student.Activities;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -28,7 +25,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class MainActivity extends BaseActivity implements View.OnTouchListener {
-    public static String MAIN_URL = "http://a0466974.xsph.ru/";
+    public static String MAIN_URL = "http://192,168,1,3/";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера

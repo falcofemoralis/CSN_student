@@ -1,6 +1,10 @@
 <table>
 	<tr>
-		<td class="small">Пара</td> <td class="small">Тип недели</td> <td class="small">Предмет</td> <td class="small">Аудитория</td> 
+		<td class="small">Пара</td> 
+		<td class="small">Тип недели</td> 
+		<td class="small">Предмет</td> 
+		<td class="small">Тип предмета</td> 
+		<td class="small">Аудитория</td> 
 	</tr>
 
 	<tr>

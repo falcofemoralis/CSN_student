@@ -21,8 +21,13 @@ class SubjectsApi extends Api
     // Просмотр данных
     protected function viewAction()
     {
-	   if (!empty($this->requestUri)) 
-	        getSubjectsByGroup();
+        if (!empty($this->requestUri)) 
+        {
+            if (array_shift($this->requestUri) == 'shortAll')
+                getShortAllSubjects();
+            else if (array_shift($this->requestUri) == 'group')
+	            getSubjectsByGroup();
+        }
         else 
             getImageSubject(); 
     }

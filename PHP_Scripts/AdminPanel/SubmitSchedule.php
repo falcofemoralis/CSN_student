@@ -35,7 +35,7 @@
     
     // Формирование самого POST запроса
     $idGroup = $_POST['group'];
-    $url = 'http://<ВСТАВЬ IP АДРЕС>/api/groups/' . $idGroup . '/schedule';
+    $url = 'http://192.168.1.3/api/groups/' . $idGroup . '/schedule';
 
     $result = file_get_contents($url, false, stream_context_create(array(
             'http' => array(

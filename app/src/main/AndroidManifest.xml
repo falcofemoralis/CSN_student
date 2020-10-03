@@ -54,6 +54,9 @@
         <activity
             android:name=".Activities.SubjectInfoFullStatisticActivity"
             android:theme="@style/FullStatisticActivityActionBar" />
+        <activity
+            android:name=".Activities.AuditoriumActivity"
+            android:theme="@style/ActionBar" />
     </application>
 
 </manifest>

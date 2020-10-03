@@ -10,7 +10,18 @@ class GroupsApi extends Api
     // Добавление в базу новых данных
     protected function createAction()
     {
-        echo "invalid method";
+        if (!empty($this->requestUri))
+        {
+            $id = array_shift($this->requestUri);
+            if (array_shift($this->requestUri) == 'schedule')
+                setSchedule($id);
+            else
+                echo "invalid method";
+
+        } 
+        else  
+            echo "invalid method";
+  
     }
     
     // Обновление данных
@@ -26,11 +37,13 @@ class GroupsApi extends Api
             getGroupsOnCourse($this->connect);
         else if ($this->requestUri[0] == 'updateList')    
             getUpdateList('groups'); 
+        else if ($this->requestUri[0] == 'all')
+            getAllGroups();
         else 
         {
             $id = array_shift($this->requestUri);
             if (array_shift($this->requestUri) == 'schedule')
-                getScheduleById($this->connect, $id);
+                getScheduleById($id);
             else 
                 echo "invalid method";
         }

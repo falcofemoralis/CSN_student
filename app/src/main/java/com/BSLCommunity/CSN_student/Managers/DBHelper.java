@@ -5,10 +5,6 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
-import android.util.Log;
-
-import com.BSLCommunity.CSN_student.Activities.MainActivity;
-import com.BSLCommunity.CSN_student.Objects.User;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,7 +18,7 @@ import java.util.Map;
 
 public class DBHelper {
 
-    private static String MAIN_URL = "http://a0466974.xsph.ru/"; // Базовый URL сервера
+    private static String MAIN_URL = "http://192.168.1.3/"; // Базовый URL сервера
     private static String TAG_LOG_ERROR = "Response error"; // Тег для логов с ошибками с работой сервера
     private static RequestQueue requestQueue = null; // Очередь запросов
 
@@ -56,7 +52,6 @@ public class DBHelper {
         if (requestQueue == null)
             requestQueue = Volley.newRequestQueue(appContext);
         String url = MAIN_URL + apiUrl;
-
 
         switch (typeRequest) {
             case STRING:

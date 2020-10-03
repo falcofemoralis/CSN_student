@@ -16,7 +16,7 @@ function viewTeacherSchedules($id)
                 WHERE (disciplines.Code_Lector = $id AND schedule_list.Code_SubjectType = 1) 
                       OR ((disciplines.Code_Practice = $id OR disciplines.Code_Assistant = $id) AND schedule_list.Code_SubjectType = 2)";
 
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
@@ -24,7 +24,7 @@ function viewTeacherSchedules($id)
 function getAllTeacher()
 {
     $query = "  SELECT teachers.Code_Teacher as id, teachers.FIO FROM teachers";
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 

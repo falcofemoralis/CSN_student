@@ -13,7 +13,7 @@ function readUser()
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE users.NickName = '$nickName' AND users.Password = '$password'";
     
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_OBJECT);
     if ($data == null)
     {
         echo "ERROR";
@@ -29,7 +29,7 @@ function getUserRating($id)
     $query = "  SELECT rating.JSON_RATING FROM rating
                 WHERE rating.Code_User = '$id'";
 
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
@@ -41,7 +41,7 @@ function userViewById($id)
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE users.Code_User = '$id'";
     
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_OBJECT);
     echo $data;  
 } 
 
@@ -52,7 +52,7 @@ function usersViewByCourse($id)
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE groups.Course = '$id'";
     
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
@@ -70,24 +70,24 @@ function createUser()
         return;
     }
     
-    // Проверка есть ли в базе пользователь с таким же никнеймом
-    $query = "  SELECT * FROM users WHERE users.NickName = '$nickName'";
-    $data = DataBase::execQuery($query, true);
-    if ($data != null)
-    {
-        echo "Duplicate";
-        return;
-    }
-    
     // Создает нового юзера
     $query = "  INSERT INTO `users`(`NickName`, `Password`, `Code_Group`)
                 VALUES ('$nickName','$password', '$codeGroup')";
-    $data = DataBase::execQuery($query, false);
-    
+
+    // Проверка на дубликат
+    try {
+        DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+    }
+    catch (Exception $e) {
+        if ($e->getMessage() == '1062')
+            echo 'Duplicate';
+        return;
+    }
+
     // Добавляет пустой рейтинг юзера
     $query = "  INSERT INTO rating(Code_User, JSON_RATING)
                     VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), '0')";    
-    $data = DataBase::execQuery($query, false);
+    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }
 
 /* PUT запрос обновления данных юзера URI: .../users/id 
@@ -118,7 +118,7 @@ function updateUser($id)
                     `Password`='$password'
                     WHERE Code_User = '$id' AND Password = '$oldPassword'";
      
-    $data = DataBase::execQuery($query, false);
+    $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }
 
 /* PUT запрос обновления рейтинга URI: .../users/id/rating 
@@ -140,7 +140,7 @@ function updateUserRating($id)
                 SET rating.JSON_RATING = '$rating'
                 WHERE Code_user = '$id'";
 
-    $data = DataBase::execQuery($query, false);
+    $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }
 
 ?>

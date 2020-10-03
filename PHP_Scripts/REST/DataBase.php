@@ -1,16 +1,22 @@
 <?php
+    class ReturnValue {
+        const GET_NOTHING = 0;
+        const GET_OBJECT = 1;
+        const GET_ARRAY = 2;
+    }
+
     class DataBase
     {
         private static $host = "localhost";
         private static $username = "root";
         private static $password = "root";
-        private static $db_name = "csn";
+        private static $db_name = "a0466974_csn";
         private static $connect = null;
         
         private static function getConnection()
         {          
-            $connect = mysqli_connect(self::$host, self::$username, self::$password, self::$db_name);
-            mysqli_set_charset($connect, "utf8");
+            self::$connect = mysqli_connect(self::$host, self::$username, self::$password, self::$db_name);
+            mysqli_set_charset(self::$connect, "utf8");
         }
 
         /* Выполнение запроса
@@ -18,11 +24,13 @@
         * query - запрос
         * response - true/false ожидание ответа
         */
-        public static function execQuery($query, bool $getResponse)
+        public static function execQuery($query, int $returnValue)
         {
-            if (self::$connect == null)
+            //TODO
+            
+            //if (self::$connect == null)
                 self::getConnection(); // Подключение к базе данных
-
+                
             // Выполнение запроса и получение данных
             $result = mysqli_query(self::$connect, $query);   
             
@@ -33,7 +41,9 @@
             mysqli_close(self::$connect);
 
             // Если ожидается ответ (SELECT запрос), формируется массив данных
-            if ($getResponse)
+            if ($returnValue == ReturnValue::GET_OBJECT)
+                return json_encode(mysqli_fetch_assoc($result));
+            else if ($returnValue == ReturnValue::GET_ARRAY)
             {
                 if ($result != NULL)
                     $number_of_row = mysqli_num_rows($result);

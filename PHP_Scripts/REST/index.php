@@ -7,7 +7,6 @@ array_shift($requestUri); // Делается сдвиг потому первы
 
 $typesData = array('teachers', 'groups');
 
-
 if (array_shift($requestUri) == 'api')
 {
     $apiName = array_shift($requestUri);

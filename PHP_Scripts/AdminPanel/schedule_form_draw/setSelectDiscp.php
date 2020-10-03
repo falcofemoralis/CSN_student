@@ -4,7 +4,7 @@
     $fd = fopen("disc.html", 'w+');
 
     // Получение списка дисциплин с базы
-    $response = file_get_contents("http://<ВСТАВЬ URL>/api/subjects/shortAll");
+    $response = file_get_contents("http://192.168.1.3/api/subjects/shortAll");
     $dataArray = json_decode($response);
 
     $htmlSelect .= "<option value = \"-1\"></option>";
@@ -17,7 +17,7 @@
         foreach ($arrWord as $word)
             $abb .= mb_substr($word, 0, 1);
 
-        $htmlSelect .= "<option value = " . $item->{'id'} . ">" . mb_strtoupper($abb) . "</option>";
+        $htmlSelect .= "<option value = " . $item->{'id'} . ">" . $nameDiscp . "(" . $item->{'Semestr'} . ")" . "</option>";
     }
 
     fwrite($fd, $htmlSelect . "</select>");

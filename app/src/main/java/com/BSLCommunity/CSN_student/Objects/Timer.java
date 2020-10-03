@@ -4,15 +4,20 @@ import android.content.res.Resources;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.BSLCommunity.CSN_student.Activities.SettingsActivity;
 import com.BSLCommunity.CSN_student.R;
+
 import java.util.Calendar;
+
 import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPreferences;
 
 public class Timer extends AppCompatActivity {
     long seconds, hour, minutes;
     public CountDownTimer start;
+    public String[][] lessonsTimeSchedule = {{"8:30", "9:50"}, {"10:05", "11:25"}, {"11:55", "13:15"}, {"13:25", "14:45"}, {"14:55", "16:15"}};
 
     public void startTimer(int millis, final TextView TimeUntil, final TextView Time, final Resources res) {
         int milli = millis / 1000;
@@ -87,7 +92,25 @@ public class Timer extends AppCompatActivity {
         int currentTime = currentTimeH * 60 * 60 + currentTimeM * 60 + currentTimeS, endTime = 0;
 
         //начало и конец пары (в секундах)
-        int[][] lessons = {{510 * 60, 590 * 60}, {605 * 60, 685 * 60}, {715 * 60, 795 * 60}, {805 * 60, 885 * 60}, {895 * 60, 975 * 60}};
+        int[][] lessons = new int[lessonsTimeSchedule.length][2];
+
+
+        for (int i = 0; i < lessonsTimeSchedule.length; i++) {
+            for (int j = 0; j < 2; j++) {
+                String tmp = "";
+                for (int k = 0; k < lessonsTimeSchedule[i][j].length(); k++) {
+                    if (lessonsTimeSchedule[i][j].charAt(k) != ':') {
+                        tmp += lessonsTimeSchedule[i][j].charAt(k);
+                    } else {
+                        lessons[i][j] = Integer.parseInt(tmp) * 60 * 60;
+                        tmp = "";
+                    }
+                    if (k == lessonsTimeSchedule[i][j].length() - 1)
+                        lessons[i][j] += Integer.parseInt(tmp) * 60;
+                }
+            }
+        }
+
         String[] romeNum = {"I", "II", "III", "IV", "V"};
 
         //нахожу какая сейчас пара

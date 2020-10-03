@@ -214,10 +214,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="148dp"
                 android:layout_weight="0.1"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <Button
-                    android:id="@+id/activity_main_bt_rating"
+                    android:id="@+id/activity_main_bt_auditorium"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -228,12 +228,11 @@
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/Rating"
+                    android:text="Auditoriums search"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
-                    android:visibility="gone">
-
+                    android:visibility="visible">
                 </Button>
 
                 <Space
@@ -255,7 +254,7 @@
                     android:textAllCaps="false"
                     android:textColor="#00FFFFFF"
                     android:textSize="16sp"
-                    android:visibility="gone">
+                    android:visibility="invisible">
 
                 </Button>
 

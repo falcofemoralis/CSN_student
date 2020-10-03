@@ -50,4 +50,12 @@
         <item name="colorPrimaryDark">@color/background</item>
         <item name="android:navigationBarColor">@color/background</item>
     </style>
+    <style name="ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimary">@color/schedule_color_1</item>
+        <item name="colorPrimaryDark">@color/background</item>
+        <item name="colorAccent">@color/main_color_3</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowBackground">#00000000</item>
+    </style>
 </resources>

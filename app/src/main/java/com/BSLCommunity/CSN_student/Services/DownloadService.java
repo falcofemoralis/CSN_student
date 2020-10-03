@@ -45,8 +45,8 @@ public class DownloadService extends Service {
     @RequiresApi(Build.VERSION_CODES.O)
     private void startMyOwnForeground()
     {
-        String NOTIFICATION_CHANNEL_ID = "example.permanence";
-        String channelName = "Background Service";
+        String NOTIFICATION_CHANNEL_ID = "com.BSLCommunity.Download";
+        String channelName = "Download Service";
 
         //создаем канал для уведомлений
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);

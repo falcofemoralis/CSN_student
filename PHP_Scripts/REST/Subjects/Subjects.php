@@ -12,7 +12,7 @@ function getSubjectsByGroup()
         (SELECT schedule.Code_Schedule from schedule WHERE schedule.Code_Group = $group)
         ORDER BY schedule_list.Code_Discp) AS subjects ON disciplines.Code_Discipline = subjects.Code_Discp";
    
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
@@ -45,6 +45,6 @@ function getShortAllSubjects()
     $query = "  SELECT Code_Discipline as id, disciplines.NameDiscipline
                 FROM disciplines";
    
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }

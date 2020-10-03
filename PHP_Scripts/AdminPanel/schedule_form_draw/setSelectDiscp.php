@@ -1,22 +1,10 @@
 <?php
     
-    $choosen = $_GET['group']; // Текущая группа
-
     $htmlSelect = "<select name=\"disc[]\" class = \"small\">";
     $fd = fopen("disc.html", 'w+');
 
-
-    // Проверка на то выбрана ли группа
-    if ($choosen == null)
-    {
-        fwrite($fd, $htmlSelect . "<option></option> </select>");
-        fclose($fd);
-        echo "here";
-        return;
-    }
-
     // Получение списка дисциплин с базы
-    $response = file_get_contents("http://192.168.1.3/api/subjects/shortAll");
+    $response = file_get_contents("http://<ВСТАВЬ URL>/api/subjects/shortAll");
     $dataArray = json_decode($response);
 
     $htmlSelect .= "<option value = \"-1\"></option>";

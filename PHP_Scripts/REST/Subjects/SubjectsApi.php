@@ -23,9 +23,10 @@ class SubjectsApi extends Api
     {
         if (!empty($this->requestUri)) 
         {
-            if (array_shift($this->requestUri) == 'shortAll')
+
+            if ($this->requestUri[0] == 'shortAll')
                 getShortAllSubjects();
-            else if (array_shift($this->requestUri) == 'group')
+            else if ($this->requestUri[0] == 'group')
 	            getSubjectsByGroup();
         }
         else 

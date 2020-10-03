@@ -6,7 +6,7 @@
     $choosen = $_GET['group']; // Текущая группа
 
     // Формирование списка групп
-    $htmlSelect = "<select style=\"font-size: 15pt;\" name=\"group\" onchange=\"this.form.submit();\">";
+    $htmlSelect = "<select style=\"font-size: 15pt;\" name=\"group\">";
 
     if ($choosen == null)
         $htmlSelect .= "<option>Не выбрана</option>";

@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class DBHelper {
 
-    private static String MAIN_URL = "http://192,168,1,3/"; // Базовый URL сервера
+    private static String MAIN_URL = "http://192.168.1.3/"; // Базовый URL сервера
     private static String TAG_LOG_ERROR = "Response error"; // Тег для логов с ошибками с работой сервера
     private static RequestQueue requestQueue = null; // Очередь запросов
 
@@ -52,7 +52,6 @@ public class DBHelper {
         if (requestQueue == null)
             requestQueue = Volley.newRequestQueue(appContext);
         String url = MAIN_URL + apiUrl;
-
 
         switch (typeRequest) {
             case STRING:

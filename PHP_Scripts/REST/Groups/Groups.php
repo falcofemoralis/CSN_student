@@ -13,7 +13,7 @@ function getScheduleById($id)
                 FROM schedule
                 WHERE schedule.Code_Group = '$id')";
    
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
@@ -26,7 +26,7 @@ function getGroupsOnCourse()
                 FROM groups
                 WHERE groups.Course = $course";
     
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
@@ -36,7 +36,7 @@ function getAllGroups()
     $query = "  SELECT groups.Code_Group as id, groups.GroupName 
                 FROM groups";
     
-    $data = DataBase::execQuery($query, true);
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
@@ -46,12 +46,12 @@ function setSchedule($id)
     $query = "  SELECT schedule.Code_Schedule
                 FROM schedule
                 WHERE schedule.Code_Group = '$id'";
-    $data = DataBase::execQuery($query, true);
-    $idSchedule = json_decode($data)[0]->{'Code_Schedule'};
+    $data = DataBase::execQuery($query, ReturnValue::GET_OBJECT);
+    $idSchedule = json_decode($data)->{'Code_Schedule'};
 
     $query = "  DELETE FROM schedule_list
                 WHERE Code_Schedule = '$idSchedule'";
-    DataBase::execQuery($query, false);
+    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 
     $schedule = $_POST['schedule'];
     $query = "  INSERT INTO `schedule_list`(`Code_Schedule`, `Day`, `Pair`, `Half`, `Code_Discp`, `Room`, `Code_SubjectType`)
@@ -79,5 +79,5 @@ function setSchedule($id)
         $query .= "('$idSchedule', '$day', '$pair', '$half', '$codeDiscp', '$room', '$subjectType')";
     }   
 
-    DataBase::execQuery($query, false);
+    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }

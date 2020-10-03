@@ -9,6 +9,7 @@
     $days = $length / 10;
     $params = array();
 
+    // Формирование массива параметров в POST запрос (строки в таблице расписаний)
     for ($i = 0; $i < $days; ++$i)
     {
         for ($j = 0; $j < 10; ++$j)
@@ -30,10 +31,12 @@
             )));
         }
     }
-
     $schedule = array('schedule' => $params);
     
-    $url = 'http://localhost/api/groups/6/schedule';
+    // Формирование самого POST запроса
+    $idGroup = $_POST['group'];
+    $url = 'http://<ВСТАВЬ IP АДРЕС>/api/groups/' . $idGroup . '/schedule';
+
     $result = file_get_contents($url, false, stream_context_create(array(
             'http' => array(
             'method'  => 'POST',

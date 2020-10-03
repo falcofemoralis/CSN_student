@@ -5,7 +5,7 @@
         <link rel="stylesheet" type="text/css" href="table.css"/>
     </head>
     <body>
-        <form method='GET'>
+        <form action="SubmitSchedule.php" method="POST">
             <?php include('schedule_form_draw/setSelectDiscp.php')?>
 
             <h1 align="center">Рассписание групп</h1>
@@ -13,8 +13,6 @@
             <p style="font-size: 20pt;">Группа
             <?php include ('schedule_form_draw/setSelectGroups.php') ?>
 
-        </form>
-        <form action="SubmitSchedule.php" method="POST">
             <h2>Понедельник</h2>
             <?php include ('schedule_form_draw/table_draw/table.php') ?>
 

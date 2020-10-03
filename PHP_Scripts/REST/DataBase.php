@@ -1,4 +1,10 @@
 <?php
+    class ReturnValue {
+        const GET_NOTHING = 0;
+        const GET_OBJECT = 1;
+        const GET_ARRAY = 2;
+    }
+
     class DataBase
     {
         private static $host = "localhost";
@@ -18,7 +24,7 @@
         * query - запрос
         * response - true/false ожидание ответа
         */
-        public static function execQuery($query, bool $getResponse)
+        public static function execQuery($query, int $returnValue)
         {
             //TODO
             
@@ -35,7 +41,9 @@
             mysqli_close(self::$connect);
 
             // Если ожидается ответ (SELECT запрос), формируется массив данных
-            if ($getResponse)
+            if ($returnValue == ReturnValue::GET_OBJECT)
+                return json_encode(mysqli_fetch_assoc($result));
+            else if ($returnValue == ReturnValue::GET_ARRAY)
             {
                 if ($result != NULL)
                     $number_of_row = mysqli_num_rows($result);

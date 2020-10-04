@@ -42,8 +42,9 @@ function getImageSubject() {
 //GET запрос на все предметы  URI:.../subjects/shortAll
 function getShortAllSubjects()
 {
-    $query = "  SELECT Code_Discipline as id, disciplines.NameDiscipline
-                FROM disciplines";
+    $query = "  SELECT Code_Discipline as id, disciplines.NameDiscipline, disciplines.Semestr 
+                FROM disciplines
+                ORDER BY disciplines.Semestr";
    
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;

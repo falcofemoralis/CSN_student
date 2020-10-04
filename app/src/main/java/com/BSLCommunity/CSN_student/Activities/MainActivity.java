@@ -68,7 +68,6 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
 
     }
 
-
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();

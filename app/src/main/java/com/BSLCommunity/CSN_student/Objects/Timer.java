@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.BSLCommunity.CSN_student.Activities.SettingsActivity;
+import com.BSLCommunity.CSN_student.Activities.ScheduleBell;
 import com.BSLCommunity.CSN_student.R;
 
 import java.util.Calendar;
@@ -17,7 +17,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 public class Timer extends AppCompatActivity {
     long seconds, hour, minutes;
     public CountDownTimer start;
-    public String[][] lessonsTimeSchedule = {{"8:30", "9:50"}, {"10:05", "11:25"}, {"11:55", "13:15"}, {"13:25", "14:45"}, {"14:55", "16:15"}};
+    public String[][] lessonsTimeSchedule = ScheduleBell.times;
 
     public void startTimer(int millis, final TextView TimeUntil, final TextView Time, final Resources res) {
         int milli = millis / 1000;

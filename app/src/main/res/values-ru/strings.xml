@@ -69,4 +69,8 @@
     <string name="developers">Разработчики</string>
     <string name="GITHUB">GITHUB</string>
     <string name="Telegram">Telegram</string>
+    <string name="schedule_bell">Расписание звонков</string>
+    <string name="start_lesson">Начало</string>
+    <string name="end_lesson">Конец</string>
+    <string name="auditoriums_search">Поиск аудиторий</string>
 </resources>

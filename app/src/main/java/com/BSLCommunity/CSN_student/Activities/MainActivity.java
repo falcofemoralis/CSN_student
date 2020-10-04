@@ -47,13 +47,13 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_main_ll_main);
-/*
+
         for (int i = 5; i < linearLayout.getChildCount(); i += 2) {
             TableRow tableRow = (TableRow) linearLayout.getChildAt(i);
             tableRow.getChildAt(0).setOnTouchListener(this);
             tableRow.getChildAt(2).setOnTouchListener(this);
         }
-*/
+
 
         Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
         TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startForegroundService(new Intent(this, DownloadService.class));
         else startService(new Intent(this, DownloadService.class));
+
     }
 
 
@@ -93,6 +94,9 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
                         break;
                     case R.id.activity_main_bt_teachersSchedule:
                         intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
+                        break;
+                    case R.id.activity_main_bt_schedule_bell:
+                        intent = new Intent(this, ScheduleBell.class);
                         break;
                 }
 

@@ -69,5 +69,15 @@
     <string name="developers">Developers</string>
     <string name="GITHUB">GITHUB</string>
     <string name="Telegram">Telegram</string>
+    <string name="schedule_bell">Schedule bell</string>
+    <string name="start_lesson">Start</string>
+    <string name="end_lesson">End</string>
+    <string name="auditoriums_search">Auditoriums search</string>
+    <string name="building_1">Building 1</string>
+    <string name="building_3">Building 3</string>
+    <string name="building_4">Building 4</string>
+    <string name="building_5">Building 5</string>
+    <string name="aud_search_hint">Enter 51 or акт.зал</string>
+    <string name="floor">Floor</string>
 </resources>
 

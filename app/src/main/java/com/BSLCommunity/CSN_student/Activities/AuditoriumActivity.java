@@ -70,6 +70,7 @@ public class AuditoriumActivity extends AppCompatActivity {
         selectedBuildingImage.setMaxZoom(5);
         selectedBuildingImage.setMinZoom(1);
         selectedBuildingImage.setImageDrawable(getDrawable(R.drawable.building1_1));
+        setFloorTabs();
 
         auditoriumsList = new AuditoriumsList(this);
 
@@ -125,7 +126,7 @@ public class AuditoriumActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setQueryHint("Введите 51 или акт.зал"); //hint
+        searchView.setQueryHint(getString(R.string.aud_search_hint)); //hint
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(false);
         searchView.setMaxWidth(Integer.MAX_VALUE);
@@ -215,7 +216,7 @@ public class AuditoriumActivity extends AppCompatActivity {
             TabItem tabItem = new TabItem(AuditoriumActivity.this);
             tabItem.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             floor_tl.addView(tabItem);
-            floor_tl.getTabAt(i).setText("Этаж " + (i + 1));
+            floor_tl.getTabAt(i).setText(getString(R.string.floor) + (i + 1));
         }
     }
 }

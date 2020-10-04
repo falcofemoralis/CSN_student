@@ -69,4 +69,14 @@
     <string name="developers">Розробники</string>
     <string name="GITHUB">GITHUB</string>
     <string name="Telegram">Telegram</string>
+    <string name="schedule_bell">Розклад дзвінків</string>
+    <string name="start_lesson">Початок</string>
+    <string name="end_lesson">Кінець</string>
+    <string name="auditoriums_search">Пошук аудиторій</string>
+    <string name="building_1">Корпус 1</string>
+    <string name="building_3">Корпус 3</string>
+    <string name="building_4">Корпус 4</string>
+    <string name="building_5">Корпус 5</string>
+    <string name="aud_search_hint">Введіть 51 або акт.зал</string>
+    <string name="floor">Поверх</string>
 </resources>

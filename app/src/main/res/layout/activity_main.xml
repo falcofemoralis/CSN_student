@@ -223,12 +223,12 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/activity_button"
-                    android:drawableTop="@drawable/ic_rating"
+                    android:drawableTop="@drawable/ic_apartment"
                     android:elevation="10dp"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="Auditoriums search"
+                    android:text="@string/auditoriums_search"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
@@ -241,21 +241,22 @@
                     android:layout_weight="1.7" />
 
                 <Button
+                    android:id="@+id/activity_main_bt_schedule_bell"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/activity_button"
+                    android:drawableTop="@drawable/ic_time"
                     android:elevation="10dp"
-                    android:paddingTop="20dp"
+                    android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/Rating"
+                    android:text="@string/schedule_bell"
                     android:textAllCaps="false"
-                    android:textColor="#00FFFFFF"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp"
-                    android:visibility="invisible">
-
+                    android:visibility="visible">
                 </Button>
 
             </TableRow>

@@ -366,7 +366,7 @@
     "width": 50,
     "height": 48,
     "x": 88,
-    "y": 90
+    "y": 292
   },
   {
     "auditorium": "44",
@@ -429,13 +429,13 @@
     "width": 81,
     "height": 48,
     "x": 3,
-    "y": 218
+    "y": 217
   },
   {
     "auditorium": "51",
     "building": 3,
     "floor": 5,
-    "width": 81,
+    "width": 82,
     "height": 48,
     "x": 3,
     "y": 292

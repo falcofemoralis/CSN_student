@@ -25,7 +25,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class MainActivity extends BaseActivity implements View.OnTouchListener {
-    public static String MAIN_URL = "http://192.168.1.3/";
+    public static String MAIN_URL = "http://a0475494.xsph.ru/";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера
@@ -47,13 +47,11 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_main_ll_main);
-/*
         for (int i = 5; i < linearLayout.getChildCount(); i += 2) {
             TableRow tableRow = (TableRow) linearLayout.getChildAt(i);
             tableRow.getChildAt(0).setOnTouchListener(this);
             tableRow.getChildAt(2).setOnTouchListener(this);
         }
-*/
 
         Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
         TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);

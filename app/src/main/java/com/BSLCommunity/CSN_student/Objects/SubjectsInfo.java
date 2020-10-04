@@ -150,7 +150,7 @@ public class SubjectsInfo {
     //TODO
     public static void updateRating(final Context context, final String JSONString) throws JSONException {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = MainActivity.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
+        String url = DBHelper.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
         JsonArrayRequest request = new JsonArrayRequest (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {

@@ -99,9 +99,9 @@ public class DownloadService extends Service {
                     public Void call() throws Exception {
                         Log.d("DownloadService", "Groups downloaded");
 
-                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
+                       // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
                         isDownloadedGroups = true;
-                        stopService();
+                        stopService("groups");
                         return null;
                     }
                 });
@@ -115,10 +115,10 @@ public class DownloadService extends Service {
                 Teachers.init(getApplicationContext(), new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
+                       // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
 
                         isDownloadedTeachers = true;
-                        stopService();
+                        stopService("teachers");
                         return null;
                     }
                 });
@@ -130,7 +130,7 @@ public class DownloadService extends Service {
             @Override
             public Void call() throws Exception {
                 isDownloadedSubjects = true;
-                stopService();
+                stopService("subjects");
                 return null;
             }
         });
@@ -138,8 +138,8 @@ public class DownloadService extends Service {
     }
 
     //останавлиавем сервис, когда все данные скачаются
-    public void stopService(){
-        Log.d("DownloadService", "serviceTryToStop");
+    public void stopService(String id){
+        Log.d("DownloadService", id + " tryToStop");
         Log.d("DownloadService", "isDownloadedSubjects = " + isDownloadedSubjects +
                 " ,isDownloadedTeachers = " + isDownloadedTeachers +
                 " ,isDownloadedGroups = " + isDownloadedGroups);

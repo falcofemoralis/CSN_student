@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.Objects;
 
 import android.content.Context;
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -31,7 +32,7 @@ public class LocalData {
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = MainActivity.MAIN_URL + String.format("api/%s/updateList", entity.toString());
+        String url = DBHelper.MAIN_URL + String.format("api/%s/updateList", entity.toString());
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.R;
 
-public class ScheduleBell extends AppCompatActivity {
+public class ScheduleBell extends BaseActivity {
 
     public static String[][] times = {{"8:30", "9:50"}, {"10:05", "11:25"}, {"11:55", "13:15"}, {"13:25", "14:45"}, {"14:55", "16:15"}, {"16:45", "18:05"}, {"18:15", "19:35"}, {"19:45", "21:05"}};
     @Override

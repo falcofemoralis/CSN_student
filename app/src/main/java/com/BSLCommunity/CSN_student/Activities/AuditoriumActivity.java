@@ -1,6 +1,5 @@
 package com.BSLCommunity.CSN_student.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.SearchManager;
@@ -23,7 +22,7 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.otaliastudios.zoom.ZoomImageView;
 
-public class AuditoriumActivity extends AppCompatActivity {
+public class AuditoriumActivity extends BaseActivity {
     ZoomImageView selectedBuildingImage; //view выбранного корпуса(этажа)
     int[][] buildingsMaps; //карты корпусов(этажей), где [1][0] - 3 корпус 1 этаж (нету плана 2-ого корпуса)
     int selectedBuilding, selectedFloor; //индекс выбранного корпуса
@@ -55,6 +54,7 @@ public class AuditoriumActivity extends AppCompatActivity {
         AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_auditorium);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setTitle(getString(R.string.auditoriums_search));
 
         //получаем необходимые объекты
         selectedBuildingImage = findViewById(R.id.selectedBuilding);

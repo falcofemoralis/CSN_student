@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DBHelper {
-
-    private static String MAIN_URL = "http://a0475494.xsph.ru/"; // Базовый URL сервера
+    public static String MAIN_URL = "http://a0475494.xsph.ru/"; // Базовый URL сервера
     private static String TAG_LOG_ERROR = "Response error"; // Тег для логов с ошибками с работой сервера
     private static RequestQueue requestQueue = null; // Очередь запросов
 
@@ -101,7 +100,7 @@ public class DBHelper {
     public static void postRequest(Context appContext, String apiUrl, final Map<String, String> params, final CallBack<String> callBack) {
         if (requestQueue == null)
             requestQueue = Volley.newRequestQueue(appContext);
-        String url = MainActivity.MAIN_URL + apiUrl;
+        String url = DBHelper.MAIN_URL + apiUrl;
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -135,7 +134,7 @@ public class DBHelper {
         if (requestQueue == null)
             requestQueue = Volley.newRequestQueue(appContext);
 
-        String url = MainActivity.MAIN_URL + apiUrl;
+        String url = DBHelper.MAIN_URL + apiUrl;
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
                 new Response.Listener<String>()
                 {

@@ -13,6 +13,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -38,7 +40,7 @@ public class RatingActivity extends BaseActivity implements AdapterView.OnItemSe
 
     LinearLayout mainLayout;
     TableLayout table;
-    String URL = MainActivity.MAIN_URL + "getRating.php";
+    String URL = DBHelper.MAIN_URL + "getRating.php";
     Spinner sub_spin, gr_spin;
 
     class User implements Comparable<User> {

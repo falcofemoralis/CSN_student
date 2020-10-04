@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,7 +33,7 @@ public class AnotherUserList {
 
     public static void getUsersFromServer(final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = MainActivity.MAIN_URL + "api/users/course/" + User.getInstance().course;
+        String url = DBHelper.MAIN_URL + "api/users/course/" + User.getInstance().course;
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

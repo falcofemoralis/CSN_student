@@ -25,7 +25,7 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class MainActivity extends BaseActivity implements View.OnTouchListener {
-    public static String MAIN_URL = "http://a0475494.xsph.ru/";
+ //   public static String MAIN_URL = "http://a0475494.xsph.ru/";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера

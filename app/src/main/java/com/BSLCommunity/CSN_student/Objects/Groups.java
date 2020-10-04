@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
+import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
 import com.BSLCommunity.CSN_student.R;
 import com.android.volley.Request;
@@ -103,7 +104,7 @@ public class Groups {
      * */
     public static void downloadFromServer(final Context appContext, int course, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = MainActivity.MAIN_URL + "api/groups?Course=" + course;
+        String url = DBHelper.MAIN_URL + "api/groups?Course=" + course;
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -155,7 +156,7 @@ public class Groups {
      * */
     public static void getSchedule(final Context appContext, final int id, final boolean saveData, final Callable<Void>... callBacks) {
         RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = MainActivity.MAIN_URL + String.format("api/groups/%d/schedule", id);
+        String url = DBHelper.MAIN_URL + String.format("api/groups/%d/schedule", id);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

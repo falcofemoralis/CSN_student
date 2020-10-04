@@ -185,22 +185,22 @@
                     android:layout_weight="1.7" />
 
                 <Button
-                    android:id="@+id/activity_main_bt_settings"
+                    android:id="@+id/activity_main_bt_schedule_bell"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/activity_button"
-                    android:drawableTop="@drawable/ic_settings"
+                    android:drawableTop="@drawable/ic_time"
                     android:elevation="10dp"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/settings"
+                    android:text="@string/schedule_bell"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp">
-
+                    android:textSize="16sp"
+                    android:visibility="visible">
                 </Button>
 
             </TableRow>
@@ -241,23 +241,23 @@
                     android:layout_weight="1.7" />
 
                 <Button
-                    android:id="@+id/activity_main_bt_schedule_bell"
+                    android:id="@+id/activity_main_bt_settings"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/activity_button"
-                    android:drawableTop="@drawable/ic_time"
+                    android:drawableTop="@drawable/ic_settings"
                     android:elevation="10dp"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/schedule_bell"
+                    android:text="@string/settings"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:visibility="visible">
+                    android:textSize="16sp">
                 </Button>
+
 
             </TableRow>
 

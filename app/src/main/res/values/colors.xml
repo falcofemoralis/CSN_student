@@ -22,4 +22,6 @@
     <color name="passed_without_report">#9ef0ae</color>
     <color name="passed_with_report">#95e35e</color>
     <color name="login_button">#1896AA</color>
+    <color name="auditoriumWallsColor">#86F30000</color>
+    <color name="auditoriumStairsColor">#D8D8D8</color>
 </resources>

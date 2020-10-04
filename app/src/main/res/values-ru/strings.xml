@@ -73,4 +73,10 @@
     <string name="start_lesson">Начало</string>
     <string name="end_lesson">Конец</string>
     <string name="auditoriums_search">Поиск аудиторий</string>
+    <string name="building_1">Корпус 1</string>
+    <string name="building_3">Корпус 3</string>
+    <string name="building_4">Корпус 4</string>
+    <string name="building_5">Корпус 5</string>
+    <string name="aud_search_hint">Введите 51 или акт.зал</string>
+    <string name="floor">Этаж</string>
 </resources>

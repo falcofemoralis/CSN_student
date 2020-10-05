@@ -143,7 +143,8 @@ public class DownloadService extends Service {
         Log.d("DownloadService", "isDownloadedSubjects = " + isDownloadedSubjects +
                 " ,isDownloadedTeachers = " + isDownloadedTeachers +
                 " ,isDownloadedGroups = " + isDownloadedGroups);
-        if(isDownloadedSubjects && isDownloadedTeachers && isDownloadedGroups) {
+
+        if(Groups.groupsLists != null && Teachers.teacherLists != null && Subjects.subjectsList != null) {
             Log.d("DownloadService", "serviceStopped");
             stopSelf();
         }

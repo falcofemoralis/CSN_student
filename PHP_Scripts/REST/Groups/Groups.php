@@ -30,6 +30,18 @@ function getGroupsOnCourse()
     echo $data;
 }
 
+//GET запрос на получение имен всех групп по курсу id URI: .../groups/names
+function getGroupsNamesOnCourse()
+{ 
+    $course = $_GET['Course'];
+    
+    $query = "  SELECT groups.GroupName FROM groups 
+                WHERE groups.Course = '$course'";
+    
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
+    echo $data;
+}
+
 //GET запрос на получение всех групп на кафедре URI: .../groups/all
 function getAllGroups() 
 {

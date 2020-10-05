@@ -29,7 +29,7 @@ function getUserRating($id)
     $query = "  SELECT rating.JSON_RATING FROM rating
                 WHERE rating.Code_User = '$id'";
 
-    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
+    $data = DataBase::execQuery($query, ReturnValue::GET_OBJECT);
     echo $data;
 }
 

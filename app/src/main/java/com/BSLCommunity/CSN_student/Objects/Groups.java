@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class Groups {
-    static final String DATA_FILE_NAME = "Groups";
+    public static final String DATA_FILE_NAME = "Groups";
 
     // Функция получение групп по курсу и установка их в спиннер
     public static class GroupsList {

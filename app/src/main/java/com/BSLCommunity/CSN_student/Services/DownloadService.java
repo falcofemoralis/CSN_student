@@ -26,9 +26,11 @@ import com.BSLCommunity.CSN_student.R;
 import java.io.File;
 import java.util.concurrent.Callable;
 
-public class DownloadService extends Service {
-    Boolean isDownloadedSubjects = false, isDownloadedTeachers = false, isDownloadedGroups = false;
+import javax.security.auth.Subject;
 
+import static java.lang.Thread.sleep;
+
+public class DownloadService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -44,8 +46,7 @@ public class DownloadService extends Service {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private void startMyOwnForeground()
-    {
+    private void startMyOwnForeground() {
         String NOTIFICATION_CHANNEL_ID = "com.BSLCommunity.Download";
         String channelName = "Download Service";
 
@@ -73,13 +74,13 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        final Thread thread = new Thread(new Runnable() {
+        final Thread downloadThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 initAllData(); //скачиваем все данные
             }
         });
-        thread.start();
+        downloadThread.start();
         return START_STICKY;
     }
 
@@ -94,15 +95,11 @@ public class DownloadService extends Service {
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                Log.d("DownloadService", "Download groups");
                 Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        Log.d("DownloadService", "Groups downloaded");
-
-                       // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
-                        isDownloadedGroups = true;
-                        stopService("groups");
+                        // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
+                          stopService("groups");
                         return null;
                     }
                 });
@@ -116,10 +113,8 @@ public class DownloadService extends Service {
                 Teachers.init(getApplicationContext(), new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                       // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
-
-                        isDownloadedTeachers = true;
-                        stopService("teachers");
+                        // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
+                         stopService("teachers");
                         return null;
                     }
                 });
@@ -130,7 +125,6 @@ public class DownloadService extends Service {
         Subjects.init(getApplicationContext(), new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                isDownloadedSubjects = true;
                 stopService("subjects");
                 return null;
             }
@@ -139,12 +133,8 @@ public class DownloadService extends Service {
     }
 
     //останавлиавем сервис, когда все данные скачаются
-    public void stopService(String id){
+    public void stopService(String id) {
         Log.d("DownloadService", id + " tryToStop");
-        Log.d("DownloadService", "isDownloadedSubjects = " + isDownloadedSubjects +
-                " ,isDownloadedTeachers = " + isDownloadedTeachers +
-                " ,isDownloadedGroups = " + isDownloadedGroups);
-
         File fileGr = getApplicationContext().getFileStreamPath(Groups.DATA_FILE_NAME);
         File fileTeach = getApplicationContext().getFileStreamPath(Teachers.DATA_FILE_NAME);
         File fileSubj = getApplicationContext().getFileStreamPath(Subjects.DATA_FILE_NAME);

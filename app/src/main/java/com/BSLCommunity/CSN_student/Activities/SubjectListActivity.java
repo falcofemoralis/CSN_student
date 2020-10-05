@@ -34,6 +34,8 @@ import org.json.JSONObject;
 
 public class SubjectListActivity extends BaseActivity {
     Boolean shouldExecuteOnResume = false;
+    View clickedButton;
+
     static class IdGenerator {
         static int n = 0;
 
@@ -61,9 +63,9 @@ public class SubjectListActivity extends BaseActivity {
             Subjects.SubjectsList subject = Subjects.subjectsList[numberSubject];
 
             // Инициализация всех деталей группы view элементов дисциплины
-            LinearLayout subjectLayout = (LinearLayout)LayoutInflater.from(getApplicationContext()).inflate(R.layout.inflate_subject_bt, rowSubject, false);
-            button = (Button) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(0);
-            progressBar = (ProgressBar) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(1);
+            LinearLayout subjectLayout = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.inflate_subject_bt, rowSubject, false);
+            button = (Button) ((RelativeLayout) subjectLayout.getChildAt(0)).getChildAt(0);
+            progressBar = (ProgressBar) ((RelativeLayout) subjectLayout.getChildAt(0)).getChildAt(1);
             textProgress = (TextView) subjectLayout.getChildAt(1);
 
             // Установка названия дисцилпины
@@ -71,7 +73,8 @@ public class SubjectListActivity extends BaseActivity {
                 //получаем имя предмета по локализации
                 JSONObject subjectJSONObject = new JSONObject(subject.NameDiscipline);
                 button.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(SubjectListActivity.this)));
-            } catch (JSONException e) {}
+            } catch (JSONException e) {
+            }
 
             // Устанавливаем функционал кнопке
             final int subjectId = IdGenerator.getId();
@@ -80,21 +83,23 @@ public class SubjectListActivity extends BaseActivity {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
                     Intent intent = null;
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && can_click) {
-                        transitionDrawable.startTransition(150);
-                        view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
-                    }
-                    else if (motionEvent.getAction() == MotionEvent.ACTION_UP && can_click) {
-                        intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
-                        intent.putExtra("button_id", subjectId);
+                    if (clickedButton == null || clickedButton == view) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && can_click) {
+                            clickedButton = view;
+                            transitionDrawable.startTransition(150);
+                            view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
+                        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP && can_click) {
+                            intent = new Intent(SubjectListActivity.this, SubjectInfoActivity.class);
+                            intent.putExtra("button_id", subjectId);
 
-                        can_click = false;
-                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
-                        startActivity(intent, options.toBundle());
+                            can_click = false;
+                            clickedButton = null;
+                            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
+                            startActivity(intent, options.toBundle());
 
-                        transitionDrawable.reverseTransition(150);
-                        view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
-
+                            transitionDrawable.reverseTransition(150);
+                            view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
+                        }
                     }
                     return true;
                 }
@@ -114,6 +119,7 @@ public class SubjectListActivity extends BaseActivity {
             button.setCompoundDrawables(null, img, null, null);
         }
     }
+
     SubjectDrawable[] subjectDrawables; // Дисциплины
 
     @Override
@@ -148,17 +154,18 @@ public class SubjectListActivity extends BaseActivity {
     // Создаем кнопку полной статистики
     protected void createFullStatistics(TableRow rowSubject) {
         // Создание лаяута статистики по шаблону дисциплины
-        LinearLayout subjectLayout = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.inflate_subject_bt, rowSubject, false);
+        LinearLayout subjectLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.inflate_subject_bt, rowSubject, false);
 
-       ProgressBar pb =  (ProgressBar) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(1);
-       pb.setVisibility(View.GONE);
+        ProgressBar pb = (ProgressBar) ((RelativeLayout) subjectLayout.getChildAt(0)).getChildAt(1);
+        pb.setVisibility(View.GONE);
 
         // Ссылка на кнопку в шаблоне
-        Button subjectBt = (Button) ((RelativeLayout)subjectLayout.getChildAt(0)).getChildAt(0);
+        Button subjectBt = (Button) ((RelativeLayout) subjectLayout.getChildAt(0)).getChildAt(0);
         subjectBt.setText(R.string.full_statistic);
 
         // Устанавка изображения дисциплины, если оно есть
-        BitmapDrawable img = new BitmapDrawable(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_statistics));;
+        BitmapDrawable img = new BitmapDrawable(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_statistics));
+        ;
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         int sizeIm = (int) (size.x * 0.5 / 4.2);
@@ -175,7 +182,7 @@ public class SubjectListActivity extends BaseActivity {
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SubjectListActivity.this);
-                    startActivity( new Intent(SubjectListActivity.this, SubjectInfoFullStatisticActivity.class), options.toBundle());
+                    startActivity(new Intent(SubjectListActivity.this, SubjectInfoFullStatisticActivity.class), options.toBundle());
 
                     transitionDrawable.reverseTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
@@ -189,7 +196,7 @@ public class SubjectListActivity extends BaseActivity {
 
         // Скрытие строки прогресса (здесь в ней нет необходимости)
         (subjectLayout.getChildAt(1)).setVisibility(View.INVISIBLE);
-      //  subjectLayout.setVisibility(View.INVISIBLE);
+        //  subjectLayout.setVisibility(View.INVISIBLE);
 
         rowSubject.addView(subjectLayout); // Добавляем дисциплину
     }
@@ -235,7 +242,7 @@ public class SubjectListActivity extends BaseActivity {
             }
 
             // Создаем невидимый объект (чтобы занять место)
-            LinearLayout subjectLayout = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.inflate_subject_bt, rowSubject, false);
+            LinearLayout subjectLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.inflate_subject_bt, rowSubject, false);
             subjectLayout.getChildAt(0).setVisibility(View.INVISIBLE);
             subjectLayout.getChildAt(1).setVisibility(View.INVISIBLE);
             rowSubject.addView(subjectLayout);

@@ -48,7 +48,7 @@
     <string name="fri">\t\t\t\tПТ\t\t\t\t</string>
     <string name="practice">Практика</string>
     <string name="assistant">Ассистент</string>
-    <string name="teachers_prompt">Выберите учителя</string>
+    <string name="teachers_prompt">Выберите преподавателя</string>
     <string name="subjects">Предметы</string>
     <string name="settings">Настройки</string>
     <string name="course">Курс</string>

@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -25,12 +26,13 @@ import static com.BSLCommunity.CSN_student.Objects.Settings.encryptedSharedPrefe
 import static com.BSLCommunity.CSN_student.Objects.Settings.setSettingsFile;
 
 public class MainActivity extends BaseActivity implements View.OnTouchListener {
- //   public static String MAIN_URL = "http://a0475494.xsph.ru/";
+    //   public static String MAIN_URL = "http://a0475494.xsph.ru/";
 
     Timer timer = new Timer(); //таймер
     TextView Time, TimeUntil; //переменные таймера
     Boolean is_registered; //проверка регистрации юзера
-    Boolean can_click; //нажата кнопка
+    Boolean isClicked; //нажата кнопка
+    View clickedButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -63,7 +65,8 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
         courseTextView.setText(String.valueOf(User.getInstance().course) + " " + courseTextView.getText());
         groupTextView.setText(User.getInstance().nameGroup + " " + groupTextView.getText());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startForegroundService(new Intent(this, DownloadService.class));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startForegroundService(new Intent(this, DownloadService.class));
         else startService(new Intent(this, DownloadService.class));
 
     }
@@ -71,11 +74,12 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
-
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && can_click) {
-            transitionDrawable.startTransition(150);
-            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP && can_click) {
+        if(clickedButton == null || clickedButton == view) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isClicked) {
+                clickedButton = view;
+                transitionDrawable.startTransition(150);
+                view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP && isClicked) {
                 Intent intent = null;
                 switch (view.getId()) {
                     case R.id.activity_main_bt_subjects:
@@ -98,13 +102,16 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
                         break;
                 }
 
-                can_click = false;
+                isClicked = false;
+                clickedButton = null;
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
                 startActivity(intent, options.toBundle());
 
-                transitionDrawable.reverseTransition(150);
+                transitionDrawable.reverseTransition(100);
                 view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed));
 
+
+            }
         }
         return true;
     }
@@ -113,7 +120,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
     protected void onResume() {
         super.onResume();
         if (is_registered) timer.checkTimer(TimeUntil, Time, getResources());
-        can_click = true;
+        isClicked = true;
     }
 
     @Override

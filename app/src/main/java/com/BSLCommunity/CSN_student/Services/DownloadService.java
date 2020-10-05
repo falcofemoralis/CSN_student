@@ -25,6 +25,10 @@ import com.BSLCommunity.CSN_student.R;
 
 import java.util.concurrent.Callable;
 
+import javax.security.auth.Subject;
+
+import static java.lang.Thread.sleep;
+
 public class DownloadService extends Service {
     Boolean isDownloadedSubjects = false, isDownloadedTeachers = false, isDownloadedGroups = false;
 
@@ -43,8 +47,7 @@ public class DownloadService extends Service {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private void startMyOwnForeground()
-    {
+    private void startMyOwnForeground() {
         String NOTIFICATION_CHANNEL_ID = "com.BSLCommunity.Download";
         String channelName = "Download Service";
 
@@ -72,13 +75,35 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        final Thread thread = new Thread(new Runnable() {
+        final Thread downloadThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 initAllData(); //скачиваем все данные
             }
         });
-        thread.start();
+        downloadThread.start();
+        final Thread checkerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean isDownloaded = false;
+                int count = 0;
+                while (!isDownloaded && count <= 30) {
+                    if (Groups.groupsLists != null && Teachers.teacherLists != null && Subjects.subjectsList != null) {
+                        isDownloaded = true;
+                        Log.d("DownloadService", "Downloaded!");
+                        stopSelf();
+                    }
+                   Log.d("DownloadService", "Sleeping " + count + "seconds..");
+                    try {
+                        sleep(1000);
+                        count++;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        checkerThread.start();
         return START_STICKY;
     }
 
@@ -93,15 +118,15 @@ public class DownloadService extends Service {
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                Log.d("DownloadService", "Download groups");
+                //  Log.d("DownloadService", "Download groups");
                 Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        Log.d("DownloadService", "Groups downloaded");
+                        //     Log.d("DownloadService", "Groups downloaded");
 
-                       // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
-                        isDownloadedGroups = true;
-                        stopService("groups");
+                        // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
+                        // isDownloadedGroups = true;
+                        //  stopService("groups");
                         return null;
                     }
                 });
@@ -115,10 +140,10 @@ public class DownloadService extends Service {
                 Teachers.init(getApplicationContext(), new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                       // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
+                        // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
 
-                        isDownloadedTeachers = true;
-                        stopService("teachers");
+                        // isDownloadedTeachers = true;
+                        // stopService("teachers");
                         return null;
                     }
                 });
@@ -129,8 +154,8 @@ public class DownloadService extends Service {
         Subjects.init(getApplicationContext(), new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                isDownloadedSubjects = true;
-                stopService("subjects");
+                // isDownloadedSubjects = true;
+                // stopService("subjects");
                 return null;
             }
         });
@@ -138,12 +163,12 @@ public class DownloadService extends Service {
     }
 
     //останавлиавем сервис, когда все данные скачаются
-    public void stopService(String id){
+    public void stopService(String id) {
         Log.d("DownloadService", id + " tryToStop");
         Log.d("DownloadService", "isDownloadedSubjects = " + isDownloadedSubjects +
                 " ,isDownloadedTeachers = " + isDownloadedTeachers +
                 " ,isDownloadedGroups = " + isDownloadedGroups);
-        if(isDownloadedSubjects && isDownloadedTeachers && isDownloadedGroups) {
+        if (isDownloadedSubjects && isDownloadedTeachers && isDownloadedGroups) {
             Log.d("DownloadService", "serviceStopped");
             stopSelf();
         }

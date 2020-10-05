@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Activities.Schedule.ScheduleList;
 import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class Groups {
-    static final String DATA_FILE_NAME = "Groups";
+    public static final String DATA_FILE_NAME = "Groups";
 
     // Функция получение групп по курсу и установка их в спиннер
     public static class GroupsList {
@@ -75,8 +74,10 @@ public class Groups {
 
             if (response.equals("NOT FOUND")) {
                 Log.d("DownloadService", "Download groups where " + callBacks[0]);
-                if (callBacks != null) downloadFromServer(context, course, callBacks[0]);
-                else downloadFromServer(context, course);
+                if (callBacks != null)
+                    downloadFromServer(context, course, callBacks[0]);
+                else
+                    downloadFromServer(context, course);
                 return;
             }
 
@@ -103,12 +104,12 @@ public class Groups {
      * callBack - объект реализующий интерфейс callBack, если callBack не нужен, передается null
      * */
     public static void downloadFromServer(final Context appContext, int course, final Callable<Void>... callBacks) {
-        RequestQueue requestQueue = Volley.newRequestQueue(appContext);
-        String url = DBHelper.MAIN_URL + "api/groups?Course=" + course;
+        String apiUrl = "api/groups?Course=" + course;
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        DBHelper.getRequest(appContext, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
+
             @Override
-            public void onResponse(String response) {
+            public void call(String response) {
                 //парсим полученный список групп
                 try {
                     JSONArray JSONArray = new JSONArray(response);
@@ -138,13 +139,12 @@ public class Groups {
                     e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void fail(String message) {
                 Toast.makeText(appContext, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
             }
         });
-        requestQueue.add(request);
     }
 
     /* Функция загруки расписания из базы для группы

@@ -4,7 +4,7 @@ require_once 'DataBase.php';
 require_once 'Api.php';
 require_once 'Users/Users.php';
 
-class UsersApi extends Api
+class UserApi extends Api
 {
     // Добавление в базу новых данных
     protected function createAction()
@@ -43,17 +43,10 @@ class UsersApi extends Api
         {
             if ($this->requestUri[0] == "login")
                 readUser();
-            else if ($this->requestUri[0] == "course")
-                usersViewByCourse($this->requestUri[1]);
-			else{
+            else
+            {
                 $id = array_shift($this->requestUri);
-
-                if (empty($this->requestUri))
-                    userViewById($id);
-                else if (array_shift($this->requestUri) == "rating")         
-                    getUserRating($id); 
-                else
-                    echo "invalid method";
+                userViewById($id);
             }
         }
         else            
@@ -61,11 +54,7 @@ class UsersApi extends Api
     }
 
     // Удаление данных
-    protected function deleteAction()
-    {
-                
-    }
-
+    protected function deleteAction() {}
 }
 
 ?>

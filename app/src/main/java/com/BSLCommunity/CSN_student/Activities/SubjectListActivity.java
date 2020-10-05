@@ -22,8 +22,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Objects.Subjects;
@@ -33,8 +31,6 @@ import com.BSLCommunity.CSN_student.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Locale;
 
 public class SubjectListActivity extends BaseActivity {
     Boolean shouldExecuteOnResume = false;
@@ -51,7 +47,7 @@ public class SubjectListActivity extends BaseActivity {
             n = 0;
         }
     }
-
+    LoadSubject loadSubject = new LoadSubject();
     TableLayout tableSubjects; // Лаяут всех дисциплин
     int[] progresses; // Прогресс для каждого предмета
     Boolean can_click; //нажата кнопка
@@ -151,6 +147,7 @@ public class SubjectListActivity extends BaseActivity {
     @Override
     protected void onPause() {
         IdGenerator.reset();
+        loadSubject.cancel(false);
         super.onPause();
     }
 
@@ -251,7 +248,7 @@ public class SubjectListActivity extends BaseActivity {
             rowSubject.addView(subjectLayout);
         }
 
-        new LoadSubject().execute();
+        loadSubject.execute();
     }
 
     // Устанавливаем прогресс внизу экрана
@@ -299,10 +296,22 @@ public class SubjectListActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             for (int i = 0; i < subjectDrawables.length; ++i) {
-                while (Subjects.getSubjectImage(getApplicationContext(), Subjects.subjectsList[i]) == null) {
-                }
-                ;
-                publishProgress(i);
+                int count = 0;
+                while (!isCancelled() && Subjects.getSubjectImage(getApplicationContext(), Subjects.subjectsList[i]) == null && count < 300){
+                    try {
+                        Thread.sleep(10);
+                    }
+                    catch (InterruptedException e) {
+                        return null;
+                    }
+                    ++count;
+                };
+
+                if (isCancelled())
+                    return null;
+
+                if (count < 300)
+                    publishProgress(i);
             }
             return null;
         }
@@ -313,6 +322,11 @@ public class SubjectListActivity extends BaseActivity {
             subjectDrawables[index[0]].setImg(img);
             subjectDrawables[index[0]].progressBar.setVisibility(View.GONE);
             return;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
         }
     }
 }

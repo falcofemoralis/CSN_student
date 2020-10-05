@@ -68,7 +68,6 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundService(new Intent(this, DownloadService.class));
         else startService(new Intent(this, DownloadService.class));
-
     }
 
     @Override

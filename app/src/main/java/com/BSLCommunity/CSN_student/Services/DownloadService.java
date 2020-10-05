@@ -23,6 +23,7 @@ import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 
 import javax.security.auth.Subject;
@@ -30,8 +31,6 @@ import javax.security.auth.Subject;
 import static java.lang.Thread.sleep;
 
 public class DownloadService extends Service {
-    Boolean isDownloadedSubjects = false, isDownloadedTeachers = false, isDownloadedGroups = false;
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -82,28 +81,6 @@ public class DownloadService extends Service {
             }
         });
         downloadThread.start();
-        final Thread checkerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean isDownloaded = false;
-                int count = 0;
-                while (!isDownloaded && count <= 30) {
-                    if (Groups.groupsLists != null && Teachers.teacherLists != null && Subjects.subjectsList != null) {
-                        isDownloaded = true;
-                        Log.d("DownloadService", "Downloaded!");
-                        stopSelf();
-                    }
-                   Log.d("DownloadService", "Sleeping " + count + "seconds..");
-                    try {
-                        sleep(1000);
-                        count++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        checkerThread.start();
         return START_STICKY;
     }
 
@@ -118,15 +95,11 @@ public class DownloadService extends Service {
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                //  Log.d("DownloadService", "Download groups");
                 Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        //     Log.d("DownloadService", "Groups downloaded");
-
                         // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
-                        // isDownloadedGroups = true;
-                        //  stopService("groups");
+                          stopService("groups");
                         return null;
                     }
                 });
@@ -141,9 +114,7 @@ public class DownloadService extends Service {
                     @Override
                     public Void call() throws Exception {
                         // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
-
-                        // isDownloadedTeachers = true;
-                        // stopService("teachers");
+                         stopService("teachers");
                         return null;
                     }
                 });
@@ -154,8 +125,7 @@ public class DownloadService extends Service {
         Subjects.init(getApplicationContext(), new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                // isDownloadedSubjects = true;
-                // stopService("subjects");
+                stopService("subjects");
                 return null;
             }
         });
@@ -165,10 +135,11 @@ public class DownloadService extends Service {
     //останавлиавем сервис, когда все данные скачаются
     public void stopService(String id) {
         Log.d("DownloadService", id + " tryToStop");
-        Log.d("DownloadService", "isDownloadedSubjects = " + isDownloadedSubjects +
-                " ,isDownloadedTeachers = " + isDownloadedTeachers +
-                " ,isDownloadedGroups = " + isDownloadedGroups);
-        if (isDownloadedSubjects && isDownloadedTeachers && isDownloadedGroups) {
+        File fileGr = getApplicationContext().getFileStreamPath(Groups.DATA_FILE_NAME);
+        File fileTeach = getApplicationContext().getFileStreamPath(Teachers.DATA_FILE_NAME);
+        File fileSubj = getApplicationContext().getFileStreamPath(Subjects.DATA_FILE_NAME);
+
+        if (fileGr.exists() && fileTeach.exists() && fileSubj.exists()) {
             Log.d("DownloadService", "serviceStopped");
             stopSelf();
         }

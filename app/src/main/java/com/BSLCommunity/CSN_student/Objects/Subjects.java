@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
 
 public class Subjects {
 
-    static final String DATA_FILE_NAME = "Subjects";
+    public static final String DATA_FILE_NAME = "Subjects";
 
     public class SubjectsList {
         public int id, Code_Lector, Code_Practice, Code_Assistant;
@@ -57,7 +57,7 @@ public class Subjects {
      * callback - дальнейшие действия которые необходимо будет выполнить после запроса
      * */
     public static void downloadFromServer(final Context context, final Callable<Void> callback) {
-        String apiUrl = String.format("api/subjects/group?Code_Group=%1$s",   User.getInstance().groupId);
+        String apiUrl = String.format("api/subjects/group?Code_Group=%1$s", User.getInstance().groupId);
         DBHelper.getRequest(context, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
 
             @Override

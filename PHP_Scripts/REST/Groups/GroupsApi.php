@@ -35,6 +35,8 @@ class GroupsApi extends Api
     {
         if (empty($this->requestUri))
             getGroupsOnCourse($this->connect);
+        else if ($this->requestUri[0] == 'names')
+            getGroupsNamesOnCourse();
         else if ($this->requestUri[0] == 'updateList')    
             getUpdateList('groups'); 
         else if ($this->requestUri[0] == 'all')

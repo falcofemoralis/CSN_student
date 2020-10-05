@@ -8,13 +8,6 @@ import android.widget.Toast;
 import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.BSLCommunity.CSN_student.Managers.DBHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -105,6 +98,10 @@ public class User {
                     instance.nameGroup = user.getString("GroupName");
                     instance.groupId = user.getInt("group_id");
                     instance.saveData(); // Сохраняем данные
+
+                    //TODO
+                    // Исправить эту парашу, из-за того что при регистрации и логине могут сохранятся файлы групп
+                    Groups.delete(appContext);
 
                     //запоминаем что пользователь зарегистрировался
                     SharedPreferences.Editor prefEditor = Settings.encryptedSharedPreferences.edit();

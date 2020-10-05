@@ -23,6 +23,7 @@ import com.BSLCommunity.CSN_student.Objects.Teachers;
 import com.BSLCommunity.CSN_student.Objects.User;
 import com.BSLCommunity.CSN_student.R;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 
 public class DownloadService extends Service {
@@ -144,7 +145,11 @@ public class DownloadService extends Service {
                 " ,isDownloadedTeachers = " + isDownloadedTeachers +
                 " ,isDownloadedGroups = " + isDownloadedGroups);
 
-        if(Groups.groupsLists != null && Teachers.teacherLists != null && Subjects.subjectsList != null) {
+        File fileGr = getApplicationContext().getFileStreamPath(Groups.DATA_FILE_NAME);
+        File fileTeach = getApplicationContext().getFileStreamPath(Teachers.DATA_FILE_NAME);
+        File fileSubj = getApplicationContext().getFileStreamPath(Subjects.DATA_FILE_NAME);
+
+        if (fileGr.exists() && fileTeach.exists() && fileSubj.exists()) {
             Log.d("DownloadService", "serviceStopped");
             stopSelf();
         }

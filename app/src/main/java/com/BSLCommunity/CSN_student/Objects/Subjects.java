@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
 
 public class Subjects {
 
-    static final String DATA_FILE_NAME = "Subjects";
+    public static final String DATA_FILE_NAME = "Subjects";
 
     public class SubjectsList {
         public int id, Code_Lector, Code_Practice, Code_Assistant;

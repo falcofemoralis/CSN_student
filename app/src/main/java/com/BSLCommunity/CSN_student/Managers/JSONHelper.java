@@ -17,8 +17,7 @@ public class JSONHelper {
     }
 
     //Чтение содержимого json файла с assets
-    public static String loadJSONFromAsset(Context context, String jsonFileName)
-            throws IOException {
+    public static String loadJSONFromAsset(Context context, String jsonFileName) throws IOException {
         AssetManager manager = context.getAssets();
         InputStream is = manager.open(jsonFileName);
         int size = is.available();

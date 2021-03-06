@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".Objects.App"
+        android:name=".Models.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         <service android:name=".Services.DownloadService" />
 
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Views.MainActivity"
             android:theme="@style/MainActivityActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,39 +28,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.RegistrationActivity"
+            android:name=".Views.RegistrationActivity"
             android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name=".Views.LoginActivity"
             android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Activities.Schedule.ScheduleActivity"
+            android:name=".Views.Schedule.ScheduleActivity"
             android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Activities.SubjectInfoActivity"
+            android:name=".Views.SubjectInfoActivity"
             android:theme="@style/SubjectInfoActivityActionBar" />
         <activity
-            android:name=".Activities.RatingActivity"
+            android:name=".Views.RatingActivity"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".Activities.RatingUsersListActivity"
+            android:name=".Views.RatingUsersListActivity"
             android:theme="@style/SubjectInfoActivityActionBar" />
         <activity
-            android:name=".Activities.SettingsActivity"
+            android:name=".Views.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Activities.SubjectListActivity"
+            android:name=".Views.SubjectListActivity"
             android:theme="@style/SubjectListsActivityActionBar" />
         <activity
-            android:name=".Activities.SubjectInfoFullStatisticActivity"
+            android:name=".Views.SubjectInfoFullStatisticActivity"
             android:theme="@style/FullStatisticActivityActionBar" />
         <activity
-            android:name=".Activities.AuditoriumActivity"
+            android:name=".Views.AuditoriumActivity"
             android:label="@string/auditoriums_search"
             android:theme="@style/AuditoriumSearchActionBar" />
         <activity
-            android:name=".Activities.ScheduleBell"
+            android:name=".Views.ScheduleBell"
             android:theme="@style/ScheduleBellActivityActionBar" />
     </application>
 

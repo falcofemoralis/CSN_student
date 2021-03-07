@@ -20,7 +20,7 @@ public class Settings {
         GROUP("group"),
         GROUP_ID("group_id"),
         COURSE("course"),
-        IS_REGISTERED("is_registered"),
+        TOKEN("token"),
         OFFLINE_DATA("offline_data"),
         TIMER_SWITCH("timer_switch"),
         LANGUAGE("language");

@@ -14,7 +14,7 @@
     <string name="login">Вхід</string>
     <string name="enter_nickname">Введіть псевдонім</string>
     <string name="password">Пароль</string>
-    <string name="inccorect_password">Невірний пароль</string>
+    <string name="incorrect_password_or_nickname">Невірний пароль чи нікнейм</string>
     <string name="no_user">Користувача не знайдено </string>
     <string name="no_connection"> Немає з᾿єднання</string>
     <string name="nickname">Псевдонім</string>

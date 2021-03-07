@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
 import com.BSLCommunity.CSN_student.Models.GroupModel;
+import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.RegView;
 import com.BSLCommunity.CSN_student.lib.CallBack;
@@ -10,13 +11,15 @@ import java.util.Collections;
 
 public class RegPresenter {
 
-    private final String validRegEx = "([A-z]|[А-я]|і|[0-9])+"; // Регулярка для проверки валидации
+    private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9])+"; // Регулярка для проверки валидации
     private final RegView regView; // View регистрации
     private final GroupModel groupModel; // Модель групп, нужна для получения информации о группах для выбора при регистрации
+    private final UserModel userModel; // Модель пользователя, нужна для регистрации
 
     public RegPresenter(RegView regView) {
         this.regView = regView;
         this.groupModel = GroupModel.getGroupModel();
+        this.userModel= UserModel.getUserModel();
     }
 
     /**
@@ -25,15 +28,27 @@ public class RegPresenter {
      * @param password - пароль
      * @param confPassword - подтверджение пароля
      */
-    public void tryRegistration(String nickname, String password, String confPassword) {
-        if (!nickname.matches(validRegEx) || !nickname.matches(validRegEx) || !nickname.matches(validRegEx)) {
+    public void tryRegistration(String nickname, String password, String confPassword, String groupName) {
+        if (!nickname.matches(validRegEx) || !password.matches(validRegEx) || !confPassword.matches(validRegEx)) {
             this.regView.showToastError(R.string.invalid_data);
         }
         else if (!password.equals(confPassword))  {
             this.regView.showToastError(R.string.passwords_do_not_match);
         }
         else {
-            this.regView.showToastError(R.string.no_connection_server);
+            this.userModel.registration(nickname, password, groupName, new CallBack<Void>() {
+                @Override
+                public void call(Void data) {
+                    regView.openMain();
+                }
+
+                @Override
+                public void fail(int idResString) {
+                    try {
+                        regView.showToastError(idResString);
+                    } catch (Exception ignored){}
+                }
+            });
         }
     }
 
@@ -67,9 +82,9 @@ public class RegPresenter {
             }
 
             @Override
-            public void fail(String message) {
+            public void fail(int idResString) {
                 try {
-                    regView.showToastError(R.string.no_connection_server);
+                    regView.showToastError(idResString);
                 } catch (Exception ignored) {}
             }
         });

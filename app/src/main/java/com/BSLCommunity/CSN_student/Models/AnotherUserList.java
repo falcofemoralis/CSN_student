@@ -32,7 +32,7 @@ public class AnotherUserList {
 
     public static void getUsersFromServer(final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = DBHelper.MAIN_URL + "api/users/course/" + User.getInstance().course;
+        String url = DBHelper.MAIN_URL + "api/users/course/" + UserModel.getUserModel().course;
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

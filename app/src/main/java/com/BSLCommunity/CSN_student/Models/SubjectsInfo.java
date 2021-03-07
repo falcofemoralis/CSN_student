@@ -149,7 +149,7 @@ public class SubjectsInfo {
     //TODO
     public static void updateRating(final Context context, final String JSONString) throws JSONException {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String url = DBHelper.MAIN_URL + String.format("api/users/%1$s/rating", User.getInstance().id);
+        String url = DBHelper.MAIN_URL + String.format("api/users/%1$s/rating", 0);
         JsonArrayRequest request = new JsonArrayRequest (Request.Method.PUT, url, new JSONArray(JSONString), new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -170,7 +170,7 @@ public class SubjectsInfo {
     }
 
     public static void downloadRating(final Context context) throws JSONException {
-        String apiUrl = String.format("api/users/%1$s/rating", User.getInstance().id);
+        String apiUrl = String.format("api/users/%1$s/rating", 0);
         DBHelper.getRequest(context, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>(){
 
             @Override

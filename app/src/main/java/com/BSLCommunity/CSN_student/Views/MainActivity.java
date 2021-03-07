@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.BSLCommunity.CSN_student.Views.Schedule.ScheduleActivity;
 import com.BSLCommunity.CSN_student.Models.Settings;
 import com.BSLCommunity.CSN_student.Models.Timer;
-import com.BSLCommunity.CSN_student.Models.User;
+import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Services.DownloadService;
 
@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSettingsFile(this);
-        is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false);
+        is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TOKEN.getKey(), false);
         if (!is_registered) {
             startActivity(new Intent(this, LoginActivity.class));
             return;
@@ -60,8 +60,8 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener {
         TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
         TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
 
-        courseTextView.setText(String.valueOf(User.getInstance().course) + " " + courseTextView.getText());
-        groupTextView.setText(User.getInstance().nameGroup + " " + groupTextView.getText());
+        courseTextView.setText(String.valueOf(UserModel.getUserModel().course) + " " + courseTextView.getText());
+        groupTextView.setText(UserModel.getUserModel().groupName + " " + groupTextView.getText());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startForegroundService(new Intent(this, DownloadService.class));
         else startService(new Intent(this, DownloadService.class));

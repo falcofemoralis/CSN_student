@@ -7,6 +7,6 @@ package com.BSLCommunity.CSN_student.lib;
  * fail(String) - метод должен вызываться в случае если сервер не смог обработать запрос с сервера. В метод передается строка с сообщением об ошибке
  * */
 public interface CallBack<T> {
-    void call(T response);
-    void fail(String message);
+    void call(T data);
+    void fail(int idResString);
 }

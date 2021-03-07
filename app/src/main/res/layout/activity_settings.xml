@@ -12,7 +12,7 @@
     android:background="@drawable/activity_background"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".Activities.SettingsActivity">
+    tools:context=".Views.SettingsActivity">
 
     <Space
         android:layout_width="match_parent"

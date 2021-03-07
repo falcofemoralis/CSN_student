@@ -79,4 +79,7 @@
     <string name="building_5">Корпус 5</string>
     <string name="aud_search_hint">Введите 51 или акт.зал</string>
     <string name="floor">Этаж</string>
+    <string name="invalid_data">Данные введены не корректно (Для всех полей используйте только буквы и символ нижнего подчеркивания)</string>
+    <string name="passwords_do_not_match">Ваш пароль и пароль подтверджения не совпадают</string>
+    <string name="user_exist">Пользователь с таким никнеймом уже существует</string>
 </resources>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.BSLCommunity.CSN_student.Activities.MainActivity;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -13,13 +12,26 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DBHelper {
-    public static String MAIN_URL = "http://a0475494.xsph.ru/"; // Базовый URL сервера
+    public static String MAIN_URL = null; // Базовый URL сервера
     private static String TAG_LOG_ERROR = "Response error"; // Тег для логов с ошибками с работой сервера
     private static RequestQueue requestQueue = null; // Очередь запросов
+
+    public static void init(Context context) {
+        try {
+            JSONObject config = new JSONObject(JSONHelper.loadJSONFromAsset(context, "config.json"));
+            DBHelper.MAIN_URL = config.getString("IP");
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Типы запросов
     public enum TypeRequest {

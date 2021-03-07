@@ -15,12 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.BSLCommunity.CSN_student.Objects.AnotherUserList;
-import com.BSLCommunity.CSN_student.Objects.Groups;
-import com.BSLCommunity.CSN_student.Objects.LocalData;
-import com.BSLCommunity.CSN_student.Objects.Subjects;
-import com.BSLCommunity.CSN_student.Objects.Teachers;
-import com.BSLCommunity.CSN_student.Objects.User;
+import com.BSLCommunity.CSN_student.Models.AnotherUserList;
+import com.BSLCommunity.CSN_student.Models.GroupModel;
+import com.BSLCommunity.CSN_student.Models.LocalData;
+import com.BSLCommunity.CSN_student.Models.Subjects;
+import com.BSLCommunity.CSN_student.Models.Teachers;
 import com.BSLCommunity.CSN_student.R;
 
 import java.io.File;
@@ -92,20 +91,24 @@ public class DownloadService extends Service {
     // Инициализация всех данных
     public void initAllData() {
         // Скачиваем все необходимые апдейт листы для проверки актуальности данных и проверяем данные
-        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                Groups.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
-                          stopService("groups");
-                        return null;
-                    }
-                });
-                return null;
-            }
-        });
+//        LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListGroups, LocalData.TypeData.groups, new Callable<Void>() {
+//            @Override
+//            public Void call() throws Exception {
+//                Log.d("DownloadService", "Download groups");
+//                GroupModel.init(getApplicationContext(), User.getInstance().course, new Callable<Void>() {
+//                    @Override
+//                    public Void call() throws Exception {
+//                        Log.d("DownloadService", "Groups downloaded");
+//
+//                       // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.groups);
+//                        isDownloadedGroups = true;
+//                        stopService("groups");
+//                        return null;
+//                    }
+//                });
+//                return null;
+//            }
+//        });
 
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
             @Override
@@ -135,7 +138,8 @@ public class DownloadService extends Service {
     //останавлиавем сервис, когда все данные скачаются
     public void stopService(String id) {
         Log.d("DownloadService", id + " tryToStop");
-        File fileGr = getApplicationContext().getFileStreamPath(Groups.DATA_FILE_NAME);
+
+        File fileGr = getApplicationContext().getFileStreamPath(GroupModel.DATA_FILE_NAME);
         File fileTeach = getApplicationContext().getFileStreamPath(Teachers.DATA_FILE_NAME);
         File fileSubj = getApplicationContext().getFileStreamPath(Subjects.DATA_FILE_NAME);
 

@@ -26,7 +26,6 @@ public class GroupModel {
     public static final String DATA_FILE_NAME = "Groups";
 
     public static GroupModel instance = null;
-    // Функция получение групп по курсу и установка их в спиннер
     public static class Group {
         @SerializedName("Code_Group")
         public int id;
@@ -167,7 +166,11 @@ public class GroupModel {
         }
     }
 
-    // Поиск группы по id
+    /**
+     * Поиск группы по id
+     * @param id - id группы
+     * @return найденная группа или null если она не существет
+     */
     public Group findById(int id) {
         for (int i = 0; i < groups.size(); ++i)
             if (groups.get(i).id == id)
@@ -175,6 +178,11 @@ public class GroupModel {
         return null;
     }
 
+    /**
+     * Поиск группы по имени
+     * @param groupName - имя группы
+     * @return найденная группа или null если она не существет
+     */
     public Group findByName(String groupName) {
         for (int i = 0; i < groups.size(); ++i)
             if (groups.get(i).groupName.equals(groupName))

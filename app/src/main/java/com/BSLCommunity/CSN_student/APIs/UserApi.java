@@ -1,6 +1,6 @@
 package com.BSLCommunity.CSN_student.APIs;
 
-import com.BSLCommunity.CSN_student.Models.UserModel;
+import com.BSLCommunity.CSN_student.Models.UserData;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -14,8 +14,8 @@ public interface UserApi {
 
     @FormUrlEncoded
     @POST(".")
-    Call<UserModel> registration(@Field("nickname") String nickname, @Field("password") String password, @Field("group") String groupName);
+    Call<UserData> registration(@Field("nickname") String nickname, @Field("password") String password, @Field("group") String groupName);
 
     @GET("login")
-    Call<UserModel> login(@Query("nickname") String nickname, @Query("password") String password);
+    Call<UserData> login(@Query("nickname") String nickname, @Query("password") String password);
 }

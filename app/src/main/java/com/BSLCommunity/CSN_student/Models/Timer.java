@@ -74,15 +74,9 @@ public class Timer extends AppCompatActivity {
     }
 
     public void checkTimer(TextView TimeUntil, TextView Time, Resources res) {
-        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true);
-        if (!timer_settings) {
-            Time.setVisibility(View.GONE);
-            TimeUntil.setVisibility(View.GONE);
-        } else {
-            Time.setVisibility(View.VISIBLE);
-            TimeUntil.setVisibility(View.VISIBLE);
-            time(TimeUntil, Time, res);
-        }
+        Time.setVisibility(View.VISIBLE);
+        TimeUntil.setVisibility(View.VISIBLE);
+        time(TimeUntil, Time, res);
     }
 
     public void time(TextView TimeUntil, TextView Time, Resources res) {

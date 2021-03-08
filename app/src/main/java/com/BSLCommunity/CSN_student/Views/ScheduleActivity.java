@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student.Views.Schedule;
+package com.BSLCommunity.CSN_student.Views;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.BSLCommunity.CSN_student.Views.BaseActivity;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
@@ -119,7 +118,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                     listAdapter.add(GroupModel.groups.get(j).groupName);
                     idElements[j] = GroupModel.groups.get(j).id;
                     // Если id группы совпадает с id группы пользователя - эта группа и будет показана первой
-                    if (user.groupId == idElements[j])
+                    if (0== idElements[j])
                         selectFirst = j;
                 }
                 spinner.setPrompt(getString(R.string.group_prompt));

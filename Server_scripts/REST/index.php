@@ -7,12 +7,14 @@ array_shift($requestUri); // Делается сдвиг потому первы
 
 $typesData = array('teachers', 'groups');
 
-if (array_shift($requestUri) == 'api')
-{
+if ($requestUri[0] == 'admin') {
+    include 'templates/admin.php';
+}
+
+if (array_shift($requestUri) == 'api') {
     $apiName = array_shift($requestUri);
 
-    switch ($apiName)
-    {
+    switch ($apiName) {
         case "users":
             include 'Users/UsersApi.php';
             $userApi = new UsersApi($requestUri);
@@ -28,17 +30,19 @@ if (array_shift($requestUri) == 'api')
             $teachersApi = new TeachersApi($requestUri);
             $teachersApi->run();
             break;
-		case "subjects":
+        case "subjects":
             include 'Subjects/SubjectsApi.php';
             $subjectsApi = new SubjectsApi($requestUri);
             $subjectsApi->run();
             break;
-		case "cache":
-		    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['password'] == '4fb3a58c295349029ada9a93a3b4eeb28979d40b5078f7c2deecdb88992811f7')
-		        for ($i = 0; $i < 2; $i++)
-		            createJSON($typesData[$i]);
-		    break;
+        case "admin":
+            require_once 'Admin/admin.php';
+            convertData();
+            //inserInDatabase();
+        case "cache":
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['password'] == '4fb3a58c295349029ada9a93a3b4eeb28979d40b5078f7c2deecdb88992811f7')
+                for ($i = 0; $i < 2; $i++)
+                    createJSON($typesData[$i]);
+            break;
     }
 }
-
-?>

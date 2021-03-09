@@ -34,9 +34,9 @@ import com.github.ybq.android.spinkit.style.ThreeBounce;
 import java.util.ArrayList;
 
 // Форма регистрации пользователя
-public class RegistrationActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, RegView, View.OnTouchListener {
+public class RegistrationActivity extends BaseActivity implements  RegView, AdapterView.OnItemSelectedListener, View.OnTouchListener {
 
-    long id; //выбранный код группы со спиннера
+    String groupName; //выбранный код группы со спиннера
     ProgressBar progressBar; //анимация загрузки в спиннере групп
     private RegPresenter regPresenter;
 
@@ -79,7 +79,7 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
                 EditText password = (EditText) findViewById(R.id.activity_registration_et_password);
                 EditText repeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
 
-                this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString());
+                this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString(), this.groupName);
 
                 transitionDrawable.reverseTransition(150);
                 view.startAnimation(AnimationUtils.loadAnimation(RegistrationActivity.this, R.anim.btn_unpressed));
@@ -97,7 +97,7 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
             this.regPresenter.chosenCourse(course);
         }
         else if (parent.getId() == R.id.activity_registration_sp_groups) {
-            this.id = id;
+            groupName = parent.getItemAtPosition(position).toString();
         }
     }
 
@@ -112,7 +112,7 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
     /**
      * Переход в активити логина
      */
-    public void OnClickLogin() {
+    public void toLogin() {
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(RegistrationActivity.this);
         startActivity(new Intent(this, LoginActivity.class), options.toBundle());
     }
@@ -127,7 +127,7 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                OnClickLogin();
+                toLogin();
             }
 
             @Override

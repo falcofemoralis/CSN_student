@@ -7,6 +7,19 @@ require_once "./api/subjectsApi.php";
 require_once "./api/teachersApi.php";
 require_once "./api/usersApi.php";
 
+if (!function_exists('getallheaders')) {
+    function getallheaders()
+    {
+        $headers = [];
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+        return $headers;
+    }
+}
+
 $requestUri = explode('/', stristr($_SERVER['REQUEST_URI'] . '?', '?', true));
 array_shift($requestUri); //т.к 1 элемент пустой, поэтому сдигаем
 
@@ -25,18 +38,16 @@ $router['GET'] = [
     '/\/api\/subjects\/group\/(\d)/' => ['getSubjectsByGroup'],
     '/\/api\/subjects/' => ['getImageSubject'],
     '/\/api\/subjects\/shortAll/' => ['getShortAllSubjects'],
-    '/\/api\/users\/login/' => ['readUser'],
+    '/\/api\/users\/login/' => ['login'],
     '/\/api\/users\/(\d)\/rating/' => ['getUserRating'],
     '/\/api\/users\/(\d)/' => ['userViewById'],
-    '/\/api\/users\/course\/(\d)/' => ['usersViewByCourse']
-
+    '/\/api\/users\/course\/(\d)/' => ['usersViewByCourse'],
+    '/\/schedule\/new/' => ['processSchedule']
 ];
 $router['POST'] = [
     '/\/api\/groups\/(\d)\/schedule/' => ['setSchedule'],
     '/\/schedule\/new/' => ['processSchedule'],
     '/\/api\/users/' => ['createUser'],
-
-
 ];
 $router['PUT'] = [
     '/\/api\/users\/(\d)/' => ['updateUser'],
@@ -45,7 +56,6 @@ $router['PUT'] = [
 $router['DELETE'] = [
     '/\/schedule/' => ['clearSchedules'],
 ];
-
 
 getRouter("/" . implode('/', $requestUri));
 

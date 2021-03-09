@@ -4,8 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.Managers.FileManager;
-import com.BSLCommunity.CSN_student.Managers.Internet.RequestApi;
+import com.BSLCommunity.CSN_student.APIs.GroupApi;
 import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.CallBack;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -48,6 +49,8 @@ public class GroupModel {
     }
     public static ArrayList<Group> groups;
 
+    private Retrofit retrofit;
+
     private GroupModel() {}
 
     public static GroupModel getGroupModel() {
@@ -62,6 +65,10 @@ public class GroupModel {
      * Инициализация групп, если группы были скачаны когда либо - берутся из хранилища устрйства
      */
     public void init() {
+        this.retrofit = new Retrofit.Builder()
+                .baseUrl(GroupApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         try {
             String data = FileManager.readFile(DATA_FILE_NAME);
@@ -83,34 +90,30 @@ public class GroupModel {
             return;
         }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RequestApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RequestApi requestApi = retrofit.create(RequestApi.class);
-        Call<ArrayList<Group>> call = requestApi.allGroups();
+        GroupApi groupApi = retrofit.create(GroupApi.class);
+        Call<ArrayList<Group>> call = groupApi.allGroups();
 
         call.enqueue(new Callback<ArrayList<Group>>() {
             @Override
             public void onResponse(@NotNull Call<ArrayList<Group>> call, @NotNull retrofit2.Response<ArrayList<Group>> response) {
                 groups = response.body();
+                callBack.call(groups);
                 Log.d("DEBUG_API", (new Gson()).toJson(response.body()));
-                try {
-                    callBack.call(groups);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override
             public void onFailure(@NotNull Call<ArrayList<Group>> call, @NotNull Throwable t) {
+                callBack.fail(R.string.no_connection_server);
                 Log.d("ERROR_API", t.toString());
             }
         });
     }
 
+    /**
+     * Получение групп по курсу
+     * @param course - номер курса
+     * @return - список найденных групп по курсу
+     */
     public ArrayList<String> getGroupsOnCourse(int course) {
         ArrayList<String> grOnCourse = new ArrayList<>();
         for (int i = 0; i < groups.size(); ++i) {
@@ -130,13 +133,8 @@ public class GroupModel {
     public void loadSchedule(final int groupId, final CallBack<ArrayList<ScheduleList>> callBack) {
         final Group group = this.findById(groupId);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RequestApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RequestApi requestApi = retrofit.create(RequestApi.class);
-        Call<ArrayList<ScheduleList>> call = requestApi.scheduleByGroupId(groupId);
+        GroupApi groupApi = retrofit.create(GroupApi.class);
+        Call<ArrayList<ScheduleList>> call = groupApi.scheduleByGroupId(groupId);
         call.enqueue(new Callback<ArrayList<ScheduleList>>() {
             @Override
             public void onResponse(@NotNull Call<ArrayList<ScheduleList>> call, @NotNull retrofit2.Response<ArrayList<ScheduleList>> response) {
@@ -173,6 +171,13 @@ public class GroupModel {
     public Group findById(int id) {
         for (int i = 0; i < groups.size(); ++i)
             if (groups.get(i).id == id)
+                return groups.get(i);
+        return null;
+    }
+
+    public Group findByName(String groupName) {
+        for (int i = 0; i < groups.size(); ++i)
+            if (groups.get(i).groupName.equals(groupName))
                 return groups.get(i);
         return null;
     }

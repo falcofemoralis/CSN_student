@@ -21,7 +21,7 @@ import com.BSLCommunity.CSN_student.Models.Settings;
 import com.BSLCommunity.CSN_student.Models.Subjects;
 import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Models.Teachers;
-import com.BSLCommunity.CSN_student.Models.User;
+import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 
 import org.json.JSONException;
@@ -133,7 +133,7 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
                 return;
         }
         try {
-            User.getInstance().update(getApplicationContext(), this, parameters, new Callable<Void>() {
+            UserModel.getUserModel().update(getApplicationContext(), this, parameters, new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
                     updateViewTexts();
@@ -166,9 +166,9 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                prefEditor.putBoolean(Settings.PrefKeys.IS_REGISTERED.getKey(), false).apply();
+                prefEditor.putBoolean(Settings.PrefKeys.TOKEN.getKey(), false).apply();
                 // Удаление данных
-                User.deleteUser();
+                UserModel.deleteUser();
                 SubjectsInfo.deleteSubjects(getApplicationContext());
                 //GroupModel.delete(getApplicationContext());
                 Subjects.delete(getApplicationContext());

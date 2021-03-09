@@ -23,7 +23,7 @@ function getGroupsOnCourse($url)
 {
     $course = explode('/', $url)[4];
 
-    $query = "  SELECT groups.Code_Group as id, groups.GroupName 
+    $query = "  SELECT groups.Code_Group, groups.GroupName 
                 FROM groups
                 WHERE groups.Course = $course";
 
@@ -31,11 +31,10 @@ function getGroupsOnCourse($url)
     echo $data;
 }
 
-//GET запрос на получение всех групп на кафедре
+//GET запрос на получение всех групп на кафедре URI: .../groups/all
 function getAllGroups()
 {
-    $query = "  SELECT groups.Code_Group as id, groups.GroupName 
-                FROM groups";
+    $query = "  SELECT * FROM groups";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;

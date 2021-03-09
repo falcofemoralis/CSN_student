@@ -2,24 +2,32 @@
 
 require_once 'DataBase.php';
 
-// GET запрос на получение всех данных пользователя (при логине)
-function readUser()
+// GET запрос на получение всех данных пользователя (при логине) URI: .../users/login
+function login()
 {
-    $nickName = $_GET["NickName"];
-    $password = $_GET["Password"];
+    $nickName = $_GET["nickname"];
+    $password = $_GET["password"];
 
-    $query = "  SELECT users.Code_User as id, users.NickName, users.Password,  groups.Course, groups.GroupName, groups.Code_Group as group_id FROM users
+    readUser($nickName, $password);
+}
+
+function readUser($nickName, $password)
+{
+    $query = "  SELECT users.Code_User, users.NickName, users.Password,  groups.Course, groups.GroupName, groups.Code_Group as group_id FROM users
                 JOIN rating ON rating.Code_User = users.Code_User
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE users.NickName = '$nickName' AND users.Password = '$password'";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_OBJECT);
-    if ($data == null) {
-        echo "ERROR";
-        return;
+    if ($data == "null") {
+        http_response_code(404);
+        die();
     }
 
-    echo $data;
+    $data = (array)json_decode($data);
+    $data['token'] = createJWT($data['Code_User']);
+    unset($data['Code_User']);
+    echo json_encode($data);
 }
 
 //GET запрос на получение рейтинга юзера по id
@@ -64,33 +72,46 @@ function usersViewByCourse($url)
 // POST запрос
 function createUser()
 {
-    $nickName = $_POST["NickName"];
-    $password = $_POST["Password"];
-    $codeGroup = $_POST["CodeGroup"];
+    // $arr = getallheaders();
+    // $token = $arr['token'];
+
+    $nickName = $_POST["nickname"];
+    $password = $_POST["password"];
+    $group = $_POST["group"];
 
     // Проверка на целостность данных
-    if ($nickName == NULL || $password == NULL || $codeGroup == NULL) {
-        echo "ERROR";
-        return;
+    if ($nickName == NULL || $password == NULL || $group == NULL) {
+        http_response_code(400);
+        die();
     }
 
     // Создает нового юзера
-    $query = "  INSERT INTO `users`(`NickName`, `Password`, `Code_Group`)
-                VALUES ('$nickName','$password', '$codeGroup')";
+    $query = "  INSERT INTO `users`(`NickName`, `Password`, `Code_Group`) 
+                VALUES ('$nickName', '$password', (SELECT Code_Group FROM groups WHERE groups.GroupName = '$group'))";
 
     // Проверка на дубликат
     try {
         DataBase::execQuery($query, ReturnValue::GET_NOTHING);
     } catch (Exception $e) {
-        if ($e->getMessage() == '1062')
-            echo 'Duplicate';
-        return;
+        if ($e->getMessage() == '1062') {
+            http_response_code(409);
+        } else {
+            http_response_code(500);
+        }
+        die();
     }
 
     // Добавляет пустой рейтинг юзера
     $query = "  INSERT INTO rating(Code_User, JSON_RATING)
-                    VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), '0')";
-    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+                VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), '0')";
+
+    try {
+        DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+        readUser($nickName, $password);
+    } catch (Exception $e) {
+        http_response_code(500);
+        die();
+    }
 }
 
 /* PUT запрос обновления данных юзера 
@@ -146,4 +167,55 @@ function updateUserRating($url)
                 WHERE Code_user = '$id'";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+}
+
+/**
+ * Созданние JWT токена
+ * @return token - созданный токен в формате JWT
+ */
+function createJWT($id)
+{
+    $SECRET_KEY = "1B-2S-3L-5D-7F";
+
+    $header = json_encode(array(
+        'type' => 'JWT',
+        'alg' => 'HS256'
+    ));
+    $header = base64_encode($header);
+
+    $body = json_encode(array(
+        'iss' => 'BrandHall',
+        'sub' => 'authorization',
+        'id' => $id
+    ));
+    $body = base64_encode($body);
+
+    $signature = hash_hmac('SHA256', "$header.$body", $SECRET_KEY);
+
+    $token = "$header.$body.$signature";
+
+    return $token;
+}
+
+/**
+ * Проверка авторизации юзера. Берет токен из куки и проверяет его корректность
+ * Если авторизация не пройдена - происходит редирект на форму логина
+ */
+function checkAuth()
+{
+    // global $SECRET_KEY;
+
+    // $header = get_headers();
+
+    // $parts = explode('.', $token);
+    // if ($token !== null && count($parts) != 3) {
+    //     http_response_code(401);
+    //     die();
+    // }
+
+    // $testSignature = hash_hmac('SHA256', "$parts[0].$parts[1]", $SECRET_KEY);
+    // if ($testSignature !== $parts[2]) {
+    //     http_response_code(401);
+    //     die();
+    // }
 }

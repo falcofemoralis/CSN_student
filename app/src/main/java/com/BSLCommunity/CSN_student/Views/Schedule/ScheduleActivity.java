@@ -17,7 +17,7 @@ import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
 import com.BSLCommunity.CSN_student.Models.Teachers;
-import com.BSLCommunity.CSN_student.Models.User;
+import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
@@ -68,7 +68,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
 
     //создание спиннера групп
     protected void createSpinner() {
-        User user = User.getInstance(); // Данные пользователя
+        UserModel user = UserModel.getUserModel(); // Данные пользователя
         int selectFirst = 0; // Для выбора расписания которое будет показано при загрузке самого окна
         List<String> listAdapter = new ArrayList<>(); // Список строк в спиннере
         ArrayAdapter<String> dataAdapter = null;

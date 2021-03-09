@@ -14,7 +14,7 @@
     <string name="login">Login</string>
     <string name="enter_nickname">Enter nickname</string>
     <string name="password">Password</string>
-    <string name="inccorect_password">Incorrect password</string>
+    <string name="incorrect_password_or_nickname">Incorrect password or nickname</string>
     <string name="no_user">User not found</string>
     <string name="no_connection">No connection</string>
     <string name="nickname">Nickname</string>

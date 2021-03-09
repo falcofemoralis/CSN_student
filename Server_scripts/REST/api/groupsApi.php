@@ -1,9 +1,10 @@
 <?php
 
-//GET запрос на расписания группы по id URI: .../groups/id/schedule
-function getScheduleById($id)
+//GET запрос на расписания группы по id
+function getScheduleById($url)
 {
-    
+    $id = explode('/', $url)[3];
+
     $query = "   SELECT schedule_list.Day, schedule_list.Pair, schedule_list.Half, disciplines.NameDiscipline, schedule_list.Room,
                 subjecttypes.SubjectType
                 FROM schedule_list
@@ -12,49 +13,39 @@ function getScheduleById($id)
                 WHERE schedule_list.Code_Schedule = (SELECT schedule.Code_Schedule
                 FROM schedule
                 WHERE schedule.Code_Group = '$id')";
-   
+
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
-//GET запрос на получение всех групп по курсу id URI: .../groups
-function getGroupsOnCourse()
-{ 
-    $course = $_GET['Course'];
-    
+//GET запрос на получение всех групп по курсу
+function getGroupsOnCourse($url)
+{
+    $course = explode('/', $url)[4];
+
     $query = "  SELECT groups.Code_Group as id, groups.GroupName 
                 FROM groups
                 WHERE groups.Course = $course";
-    
+
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
-//GET запрос на получение имен всех групп по курсу id URI: .../groups/names
-function getGroupsNamesOnCourse()
-{ 
-    $course = $_GET['Course'];
-    
-    $query = "  SELECT groups.GroupName FROM groups 
-                WHERE groups.Course = '$course'";
-    
-    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
-    echo $data;
-}
-
-//GET запрос на получение всех групп на кафедре URI: .../groups/all
-function getAllGroups() 
+//GET запрос на получение всех групп на кафедре
+function getAllGroups()
 {
     $query = "  SELECT groups.Code_Group as id, groups.GroupName 
                 FROM groups";
-    
+
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
 
-//POST запрос на перезапись всего расписания группы URI: .../groups/id/schedule
-function setSchedule($id)
+//POST запрос на перезапись всего расписания группы
+function setSchedule($url)
 {
+    $id = explode('/', $url)[3];
+
     $query = "  SELECT schedule.Code_Schedule
                 FROM schedule
                 WHERE schedule.Code_Group = '$id'";
@@ -69,9 +60,8 @@ function setSchedule($id)
     $query = "  INSERT INTO `schedule_list`(`Code_Schedule`, `Day`, `Pair`, `Half`, `Code_Discp`, `Room`, `Code_SubjectType`)
                 VALUES ";
 
-    $flag = false;    
-    foreach ($schedule as $item)
-    {
+    $flag = false;
+    foreach ($schedule as $item) {
         $item = json_decode($item);
         $day = $item->{'day'};
         $pair = $item->{'pair'};
@@ -82,14 +72,14 @@ function setSchedule($id)
 
         if ($half == -1 || $codeDiscp == -1 || $subjectType == -1)
             continue;
-            
+
         if ($flag == true)
             $query .= ',';
         else
             $flag = true;
 
         $query .= "('$idSchedule', '$day', '$pair', '$half', '$codeDiscp', '$room', '$subjectType')";
-    }   
+    }
 
     DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }

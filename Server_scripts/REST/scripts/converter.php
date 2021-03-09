@@ -1,7 +1,5 @@
 <?php
 
-require_once 'DataBase.php';
-
 $encoding = "UTF-8";
 $days = ["пн", "вт", "ср", "чт", "пт"]; // Название дней в файле 
 $pairs = ["I", "II", "III", "IV", "V", "VI"]; // Название пар в файле
@@ -184,7 +182,6 @@ function showError($msg)
     $isError = true;
 }
 
-
 function normilizeName($name)
 {
     global $encoding;
@@ -195,7 +192,6 @@ function normilizeName($name)
     $name = str_replace("i", "і", $name);
     return $name;
 }
-
 
 /**
  * Конвертер текста в JSON формат

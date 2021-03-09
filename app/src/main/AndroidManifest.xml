@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".Models.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,7 +34,7 @@
             android:name=".Views.LoginActivity"
             android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Views.Schedule.ScheduleActivity"
+            android:name=".Views.ScheduleActivity"
             android:theme="@style/TransparentActionBar" />
         <activity
             android:name=".Views.SubjectInfoActivity"

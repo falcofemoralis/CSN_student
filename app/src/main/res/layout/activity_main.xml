@@ -47,7 +47,8 @@
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
 
                 <TextView
                     android:id="@+id/activity_main_tv_timerCounter"
@@ -146,7 +147,9 @@
                     android:text="@string/Teachers_schedule"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"></Button>
+                    android:textSize="16sp">
+
+                </Button>
 
             </TableRow>
 

@@ -57,7 +57,7 @@ public class Subjects {
      * callback - дальнейшие действия которые необходимо будет выполнить после запроса
      * */
     public static void downloadFromServer(final Context context, final Callable<Void> callback) {
-        String apiUrl = String.format("api/subjects/group?Code_Group=%1$s", UserModel.getUserModel().groupId);
+        String apiUrl = String.format("api/subjects/group?Code_Group=%1$s", 0);
         DBHelper.getRequest(context, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
 
             @Override

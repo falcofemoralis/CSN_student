@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
 import com.BSLCommunity.CSN_student.Models.GroupModel;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.RegView;
@@ -15,11 +16,13 @@ public class RegPresenter {
     private final RegView regView; // View регистрации
     private final GroupModel groupModel; // Модель групп, нужна для получения информации о группах для выбора при регистрации
     private final UserModel userModel; // Модель пользователя, нужна для регистрации
+    private final UserData userData;
 
     public RegPresenter(RegView regView) {
         this.regView = regView;
         this.groupModel = GroupModel.getGroupModel();
         this.userModel= UserModel.getUserModel();
+        this.userData = UserData.getUserData();
     }
 
     /**
@@ -36,10 +39,13 @@ public class RegPresenter {
             this.regView.showToastError(R.string.passwords_do_not_match);
         }
         else {
-            this.userModel.registration(nickname, password, groupName, new CallBack<Void>() {
+            this.userModel.registration(nickname, password, groupName, new CallBack<UserData>() {
                 @Override
-                public void call(Void data) {
-                    regView.openMain();
+                public void call(UserData data) {
+                    try {
+                        userData.updateUserData(data);
+                        regView.openMain();
+                    } catch (Exception ignored) {}
                 }
 
                 @Override

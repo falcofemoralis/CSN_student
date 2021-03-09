@@ -32,9 +32,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import static com.BSLCommunity.CSN_student.Models.Settings.encryptedSharedPreferences;
-import static com.BSLCommunity.CSN_student.Models.Settings.languages;
-
 public class SettingsActivity extends BaseActivity implements SettingsDialogEditText.DialogListener {
     SharedPreferences.Editor prefEditor; //локальные данные
     TextView nicknameText, passwordText, groupText, languageText; // поля в которых отображается информация юзера
@@ -42,23 +39,21 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_settings);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //получаем необходимые объекты
-        prefEditor = encryptedSharedPreferences.edit();
-        nicknameText = (TextView) findViewById(R.id.activity_settings_tv_nickname);
-        passwordText = (TextView) findViewById(R.id.activity_settings_tv_password);
-        groupText = (TextView) findViewById(R.id.activity_settings_tv_group);
-        languageText = (TextView) findViewById(R.id.activity_settings_tv_language);
+        // Получение необходимых полей из активити
+        nicknameText = findViewById(R.id.activity_settings_tv_nickname);
+        passwordText = findViewById(R.id.activity_settings_tv_password);
+        groupText = findViewById(R.id.activity_settings_tv_group);
+        languageText = findViewById(R.id.activity_settings_tv_language);
 
-        //добвляем профиля
+        // Добавление гитхаб и телеграм профилей
         attachListeners(R.id.activity_settings_bt_dev1_github,R.id.activity_settings_bt_dev1_telegram, "https://github.com/falcofemoralis", "https://t.me/falcofemoralis");
         attachListeners(R.id.activity_settings_bt_dev2_github,R.id.activity_settings_bt_dev2_telegram, "https://github.com/Derlados", "https://t.me/Derlados");
 
-        //добавляем языки
+        // Добавление языков
         String[] languagesArray = getResources().getStringArray(R.array.languages);
         languages.add(new Pair<String, String>(languagesArray[0],"en"));
         languages.add(new Pair<String, String>(languagesArray[1],"ru"));
@@ -66,26 +61,6 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
 
         //устанавливаем данные
         updateViewTexts();
-        setTimer();
-    }
-
-    //обработчик кнопки переключения видимости таймера
-    public void setTimer(){
-        //получаем переключатель таймера
-        Switch timerSwitch = (Switch) findViewById(R.id.activity_settings_sw_timer);
-
-        //устанавливаем изначальное значение
-        if (encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true))
-            timerSwitch.setChecked(true);
-        else timerSwitch.setChecked(false);
-
-        //добавляем листенер кнопке таймеру
-        timerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) prefEditor.putBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true).apply();
-                else prefEditor.putBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), false).apply();
-            }
-        });
     }
 
     //обработчик нажатия на диалоговое поле

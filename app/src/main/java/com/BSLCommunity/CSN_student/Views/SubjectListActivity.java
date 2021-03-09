@@ -26,7 +26,6 @@ import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.Subjects;
 import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
-import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 
 import org.json.JSONException;
@@ -130,7 +129,7 @@ public class SubjectListActivity extends BaseActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);
-        courseTextView.setText(UserModel.getUserModel().course + " " + courseTextView.getText());
+        //courseTextView.setText(UserModel.getUserModel().course + " " + courseTextView.getText());
         tableSubjects = findViewById(R.id.activity_subject_list_ll_table_subjects);
         setSubjectsList();
         setProgress();

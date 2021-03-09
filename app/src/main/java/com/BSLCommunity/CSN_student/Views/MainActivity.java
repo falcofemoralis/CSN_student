@@ -5,7 +5,6 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -15,117 +14,95 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.BSLCommunity.CSN_student.Views.Schedule.ScheduleActivity;
-import com.BSLCommunity.CSN_student.Models.Settings;
 import com.BSLCommunity.CSN_student.Models.Timer;
-import com.BSLCommunity.CSN_student.Models.UserModel;
+import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Services.DownloadService;
+import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
 
-import static com.BSLCommunity.CSN_student.Models.Settings.encryptedSharedPreferences;
-import static com.BSLCommunity.CSN_student.Models.Settings.setSettingsFile;
+import java.util.Locale;
 
-public class MainActivity extends BaseActivity implements View.OnTouchListener {
-    //   public static String MAIN_URL = "http://a0475494.xsph.ru/";
-
-    Timer timer = new Timer(); //таймер
-    TextView Time, TimeUntil; //переменные таймера
-    Boolean is_registered; //проверка регистрации юзера
-    Boolean isClicked; //нажата кнопка
-    View clickedButton;
+public class MainActivity extends BaseActivity implements View.OnTouchListener, MainView {
+    private MainPresenter mainPresenter;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSettingsFile(this);
-        is_registered = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TOKEN.getKey(), false);
-        if (!is_registered) {
-            startActivity(new Intent(this, LoginActivity.class));
-            return;
-        }
-
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_main_ll_main);
+        mainPresenter = new MainPresenter(this);
+        mainPresenter.checkAuth();
+    }
 
+    @Override
+    public void initActivity(String groupName, int course) {
+        // Установка таймера
+        //таймер
+        Timer timer = new Timer();
+        TextView time = findViewById(R.id.activity_main_tv_timerCounter);
+        //переменные таймера
+        TextView timeUntil = findViewById(R.id.activity_main_tv_timer_text);
+        timer.checkTimer(timeUntil, time, getResources());
+
+        // Устновка обработчиков нажатий для кнопок
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_main_ll_main);
         for (int i = 5; i < linearLayout.getChildCount(); i += 2) {
             TableRow tableRow = (TableRow) linearLayout.getChildAt(i);
             tableRow.getChildAt(0).setOnTouchListener(this);
             tableRow.getChildAt(2).setOnTouchListener(this);
         }
 
-        Time = (TextView) findViewById(R.id.activity_main_tv_timerCounter);
-        TimeUntil = (TextView) findViewById(R.id.activity_main_tv_timer_text);
+        // Установка текстовых полей (группы и курса)
+        TextView courseTextView = findViewById(R.id.activity_main_tv_course);
+        TextView groupTextView = findViewById(R.id.activity_main_tv_group);
+        courseTextView.setText(String.format(Locale.getDefault(), "%d %s", course, courseTextView.getText()));
+        groupTextView.setText(String.format(Locale.getDefault(), "%s %s", groupName, groupTextView.getText()));
+    }
 
-        TextView courseTextView = (TextView) findViewById(R.id.activity_main_tv_course);
-        TextView groupTextView = (TextView) findViewById(R.id.activity_main_tv_group);
-
-        courseTextView.setText(String.valueOf(UserModel.getUserModel().course) + " " + courseTextView.getText());
-        groupTextView.setText(UserModel.getUserModel().groupName + " " + groupTextView.getText());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForegroundService(new Intent(this, DownloadService.class));
-        else startService(new Intent(this, DownloadService.class));
+    @Override
+    public void openLogin() {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
-        if(clickedButton == null || clickedButton == view) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isClicked) {
-                clickedButton = view;
-                transitionDrawable.startTransition(150);
-                view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP && isClicked) {
-                Intent intent = null;
-                switch (view.getId()) {
-                    case R.id.activity_main_bt_subjects:
-                        intent = new Intent(this, SubjectListActivity.class);
-                        break;
-                    case R.id.activity_main_bt_auditorium:
-                        intent = new Intent(this, AuditoriumActivity.class);
-                        break;
-                    case R.id.activity_main_bt_lessonsShedule:
-                        intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Groups");
-                        break;
-                    case R.id.activity_main_bt_settings:
-                        intent = new Intent(this, SettingsActivity.class);
-                        break;
-                    case R.id.activity_main_bt_teachersSchedule:
-                        intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
-                        break;
-                    case R.id.activity_main_bt_schedule_bell:
-                        intent = new Intent(this, ScheduleBell.class);
-                        break;
-                }
 
-                isClicked = false;
-                clickedButton = null;
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
-                startActivity(intent, options.toBundle());
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            transitionDrawable.startTransition(150);
+            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
+        }
+        else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            Intent intent = null;
+            int id = view.getId();
 
-                transitionDrawable.reverseTransition(100);
-                view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed));
-
-
+            if (id == R.id.activity_main_bt_subjects) {
+                intent = new Intent(this, SubjectListActivity.class);
             }
+            else if (id == R.id.activity_main_bt_auditorium) {
+                intent = new Intent(this, AuditoriumActivity.class);
+            }
+            else if (id == R.id.activity_main_bt_lessonsShedule) {
+                intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Groups");
+            }
+            else if (id == R.id.activity_main_bt_settings) {
+                intent = new Intent(this, SettingsActivity.class);
+            }
+            else if (id == R.id.activity_main_bt_teachersSchedule) {
+                intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
+            }
+            else if (id == R.id.activity_main_bt_schedule_bell) {
+                intent = new Intent(this, ScheduleBell.class);
+            }
+
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+            startActivity(intent, options.toBundle());
+
+            transitionDrawable.reverseTransition(150);
+            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed));
         }
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (is_registered) timer.checkTimer(TimeUntil, Time, getResources());
-        isClicked = true;
-    }
-
-    @Override
-    protected void onPause() {
-        if (is_registered) timer.resetTimer();
-        super.onPause();
     }
 
     @Override

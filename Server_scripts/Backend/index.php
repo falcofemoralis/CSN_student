@@ -6,6 +6,7 @@ require_once "./api/groupsApi.php";
 require_once "./api/subjectsApi.php";
 require_once "./api/teachersApi.php";
 require_once "./api/usersApi.php";
+require_once "./scripts/token.php";
 
 if (!function_exists('getallheaders')) {
     function getallheaders()

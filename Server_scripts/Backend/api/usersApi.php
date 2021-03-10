@@ -61,7 +61,7 @@ function usersViewByCourse($url)
 {
     $id = explode('/', $url)[4];
 
-    $query = "  SELECT users.NickName, users.RealName, groups.GroupName FROM `users`
+    $query = "  SELECT users.NickName,groups.GroupName FROM `users`
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE groups.Course = '$id'";
 
@@ -143,7 +143,7 @@ function updateUser($url)
                     `Password`='$password'
                     WHERE Code_User = '$id' AND Password = '$oldPassword'";
 
-    $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }
 
 /* PUT запрос обновления рейтинга
@@ -166,5 +166,5 @@ function updateUserRating($url)
                 SET rating.JSON_RATING = '$rating'
                 WHERE Code_user = '$id'";
 
-    $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }

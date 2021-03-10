@@ -5,12 +5,13 @@ function getSubjectsByGroup($url)
 {
     $id = explode('/', $url)[4];
 
-    $query = "SELECT Code_Discipline as id, disciplines.NameDiscipline, disciplines.Code_Lector, disciplines.Code_Practice, disciplines.Code_Assistant, disciplines.Image
-        FROM disciplines INNER JOIN (SELECT DISTINCT schedule_list.Code_Discp
-        FROM schedule_list
-        WHERE schedule_list.Code_Schedule = 
-        (SELECT schedule.Code_Schedule from schedule WHERE schedule.Code_Group = $id)
-        ORDER BY schedule_list.Code_Discp) AS subjects ON disciplines.Code_Discipline = subjects.Code_Discp";
+    $query = "SELECT DISTINCT subjects.SubjectName, teachers.FIO, subjects.Image
+    FROM schedule_list 
+    INNER JOIN subjects on subjects.Code_Subject = schedule_list.Code_Subject 
+    INNER JOIN schedule on schedule.Code_Schedule = schedule_list.Code_Schedule
+    INNER JOIN teachers on teachers.Code_Teacher = schedule.Code_Teacher
+    WHERE schedule_list.Code_Group = $id 
+    ORDER BY subjects.SubjectName DESC";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
@@ -22,7 +23,7 @@ function getImageSubject()
     $image = $_GET["image"];
 
     // open the file in a binary mode
-    $name = 'Subjects/images/' . $image;
+    $name = 'images/subjects/' . $image;
     if (file_exists($name))
         $fp = fopen($name, 'rb');
     else {
@@ -41,9 +42,8 @@ function getImageSubject()
 //GET запрос на все предметы
 function getShortAllSubjects()
 {
-    $query = "  SELECT Code_Discipline as id, disciplines.NameDiscipline, disciplines.Semestr 
-                FROM disciplines
-                ORDER BY disciplines.Semestr";
+    $query = " SELECT subjects.Code_Subject as id, subjects.SubjectName
+    FROM subjects";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;

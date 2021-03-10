@@ -5,14 +5,14 @@ function getScheduleById($url)
 {
     $id = explode('/', $url)[3];
 
-    $query = "   SELECT schedule_list.Day, schedule_list.Pair, schedule_list.Half, disciplines.NameDiscipline, schedule_list.Room,
-                subjecttypes.SubjectType
-                FROM schedule_list
-                JOIN subjecttypes ON subjecttypes.Code_SubjectType = schedule_list.Code_SubjectType
-                JOIN disciplines ON disciplines.Code_Discipline = schedule_list.Code_Discp
-                WHERE schedule_list.Code_Schedule = (SELECT schedule.Code_Schedule
-                FROM schedule
-                WHERE schedule.Code_Group = '$id')";
+    $query = "SELECT DISTINCT schedule_list.Day, schedule_list.Pair, schedule_list.Half, subjects.SubjectName, subjecttypes.SubjectType, schedule_list.Room
+    FROM schedule_list 
+    INNER JOIN subjects on subjects.Code_Subject = schedule_list.Code_Subject 
+    INNER JOIN subjecttypes on subjecttypes.Code_SubjectType = schedule_list.Code_SubjectType 
+    INNER JOIN schedule on schedule.Code_Schedule = schedule_list.Code_Schedule
+    INNER JOIN teachers on teachers.Code_Teacher = schedule.Code_Teacher
+    WHERE schedule_list.Code_Group = $id 
+    ORDER BY schedule_list.Day, schedule_list.Pair ASC";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
@@ -23,9 +23,9 @@ function getGroupsOnCourse($url)
 {
     $course = explode('/', $url)[4];
 
-    $query = "  SELECT groups.Code_Group, groups.GroupName 
-                FROM groups
-                WHERE groups.Course = $course";
+    $query = "SELECT groups.Code_Group, groups.GroupName 
+    FROM groups
+    WHERE groups.Course = $course";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
@@ -34,51 +34,9 @@ function getGroupsOnCourse($url)
 //GET запрос на получение всех групп на кафедре URI: .../groups/all
 function getAllGroups()
 {
-    $query = "  SELECT * FROM groups";
+    $query = "SELECT * 
+    FROM groups";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
-}
-
-//POST запрос на перезапись всего расписания группы
-function setSchedule($url)
-{
-    $id = explode('/', $url)[3];
-
-    $query = "  SELECT schedule.Code_Schedule
-                FROM schedule
-                WHERE schedule.Code_Group = '$id'";
-    $data = DataBase::execQuery($query, ReturnValue::GET_OBJECT);
-    $idSchedule = json_decode($data)->{'Code_Schedule'};
-
-    $query = "  DELETE FROM schedule_list
-                WHERE Code_Schedule = '$idSchedule'";
-    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
-
-    $schedule = $_POST['schedule'];
-    $query = "  INSERT INTO `schedule_list`(`Code_Schedule`, `Day`, `Pair`, `Half`, `Code_Discp`, `Room`, `Code_SubjectType`)
-                VALUES ";
-
-    $flag = false;
-    foreach ($schedule as $item) {
-        $item = json_decode($item);
-        $day = $item->{'day'};
-        $pair = $item->{'pair'};
-        $half = $item->{'half'};
-        $codeDiscp = $item->{'codeDiscp'};
-        $room = $item->{'room'};
-        $subjectType = $item->{'subjectType'};
-
-        if ($half == -1 || $codeDiscp == -1 || $subjectType == -1)
-            continue;
-
-        if ($flag == true)
-            $query .= ',';
-        else
-            $flag = true;
-
-        $query .= "('$idSchedule', '$day', '$pair', '$half', '$codeDiscp', '$room', '$subjectType')";
-    }
-
-    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }

@@ -6,53 +6,36 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { uploadedFile: null };
-    this.showFileUpload = this.showFileUpload.bind(this);
-    this.handleFileUpload = this.handleFileUpload.bind(this);
+    this.state = { uploadedFile: null, logs: null };
     this.fileInput = React.createRef();
     this.convertFile = this.convertFile.bind(this);
-    this.updateSchedule = this.updateSchedule.bind(this);
-    this.resetSchedule = this.resetSchedule.bind(this);
   }
 
-  showFileUpload() {
-    this.fileInput.current.click();
-  }
-
-  handleFileUpload(event) {
-    this.setState({ uploadedFile: event.target.files[0] });
-  }
-
+  /**
+   * Отапрвка файла на преобразование в JSON
+   */
   convertFile() {
     let formData = new FormData();
     formData.append('file', this.state.uploadedFile);
-
-    fetch('http://192.168.0.104:81/schedule/upload', {
-      method: 'POST',
-      body: formData
-    }).then(response => {
-      if (response.ok) {
-        console.log("Converted");
-      }
-    });
+    this.HTTPRequest("/schedule/upload", 'POST', formData);
   }
 
-  updateSchedule() {
-    fetch('http://192.168.0.104:81/schedule/new', {
-      method: 'PUT'
+  /**
+   * Запрос к серверу 
+   * @param {*} url - путь
+   * @param {*} method - метод
+   * @param {*} data - данные
+   */
+  HTTPRequest(url, method, data = null) {
+    fetch('http://192.168.0.104:81' + url, {
+      method: method,
+      body: data
     }).then(response => {
       if (response.ok) {
-        console.log("Updated");
-      }
-    });
-  }
-
-  resetSchedule() {
-    fetch('http://192.168.0.104:81/schedule/reset', {
-      method: 'DELETE'
-    }).then(response => {
-      if (response.ok) {
-        console.log("Reseted");
+        response.text().then((text) => {
+          console.log(text);
+          this.setState({ logs: text });
+        });
       }
     });
   }
@@ -68,20 +51,20 @@ export default class App extends Component {
         <div>
           <input
             ref={this.fileInput}
-            onChange={this.handleFileUpload}
+            onChange={(event) => { this.setState({ uploadedFile: event.target.files[0] }); }}
             type="file"
             style={{ display: "none" }}
             accept=".txt"
           />
-          <button onClick={this.showFileUpload}>Upload File</button>
+          <button onClick={() => { this.fileInput.current.click(); }}>Upload File</button>
         </div>
         {
           uploadedFile &&
           <button onClick={this.convertFile}>Конвертировать файл</button>
         }
-        <button onClick={this.updateSchedule}>Обновить базу</button>
-        <button onClick={this.resetSchedule}>Очистить базу</button>
-        <ConsoleWindow name="test" />
+        <button onClick={() => { this.HTTPRequest("/schedule/new", 'PUT'); }}>Обновить базу</button>
+        <button onClick={() => { this.HTTPRequest("/schedule/reset", 'DELETE'); }}>Очистить базу</button>
+        <ConsoleWindow logs={this.state.logs} />
       </div>
     )
   }

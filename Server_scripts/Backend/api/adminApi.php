@@ -12,18 +12,24 @@ function convertFile()
         return;
     }
     convertData(file_get_contents($_FILES['file']['tmp_name']));
+    echo "Convertation completed successfully";
 }
 
 //Загрузка в базу
 function processSchedule()
 {
-    inserInDatabase();
+    if (inserInDatabase()) {
+        resetDatabase();
+    } else {
+        echo "Successfully inserted";
+    }
 }
 
 //Очищение базы
 function clearSchedule()
 {
     resetDatabase();
+    echo "Successfully reseted";
 }
 
 //Для доступа с реакта

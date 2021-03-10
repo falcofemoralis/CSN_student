@@ -121,9 +121,7 @@ function inserInDatabase()
         }
     }
 
-    if ($isError) {
-        resetDatabase();
-    }
+    return $isError;
 }
 
 function resetDatabase()
@@ -339,7 +337,6 @@ function convertData($data)
     }
 
     file_put_contents("res.json", json_encode($schedule, JSON_UNESCAPED_UNICODE));
-    // echo json_encode($schedule, JSON_UNESCAPED_UNICODE);
 }
 
 /**

@@ -7,12 +7,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.BSLCommunity.CSN_student.Views.ScheduleBell;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.Views.ScheduleBell;
 
 import java.util.Calendar;
-
-import static com.BSLCommunity.CSN_student.Models.Settings.encryptedSharedPreferences;
 
 public class Timer extends AppCompatActivity {
     long seconds, hour, minutes;
@@ -128,10 +126,5 @@ public class Timer extends AppCompatActivity {
             else endTime = lessons[0][0] - currentTime;
         }
         startTimer(endTime * 1000, TimeUntil, Time, res);
-    }
-
-    public void resetTimer() {
-        boolean timer_settings = encryptedSharedPreferences.getBoolean(Settings.PrefKeys.TIMER_SWITCH.getKey(), true);
-        if (timer_settings) start.cancel();
     }
 }

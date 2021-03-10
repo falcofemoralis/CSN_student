@@ -18,7 +18,7 @@ import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.Subjects;
 import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
-import com.BSLCommunity.CSN_student.Models.Teachers;
+import com.BSLCommunity.CSN_student.Models.TeachersModel;
 import com.BSLCommunity.CSN_student.R;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -179,7 +179,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
         int i;
         for (i = 0; i < teacherIds.size(); ++i) {
             try {
-                JSONObject teacherJSONObject = new JSONObject(Teachers.findById(teacherIds.get(i)).FIO);
+                JSONObject teacherJSONObject = new JSONObject(TeachersModel.findById(teacherIds.get(i)).FIO);
                 btTeachers[i].setText(teacherJSONObject.getString(LocaleHelper.getLanguage(this)));
             } catch (JSONException e) {
                 e.printStackTrace();

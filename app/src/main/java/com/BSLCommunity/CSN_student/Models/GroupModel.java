@@ -1,13 +1,11 @@
 package com.BSLCommunity.CSN_student.Models;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.APIs.GroupApi;
-import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.lib.CallBack;
+import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -81,11 +79,11 @@ public class GroupModel {
 
     /**
      * Получение всех академических групп. Если групп не существует - они выгружаются с сервера, иначе отдаются сразу же
-     * @param callBack - колбек
+     * @param exCallable - колбек
      */
-    public void getAllGroups(final CallBack<ArrayList<Group>> callBack) {
+    public void getAllGroups(final ExCallable<ArrayList<Group>> exCallable) {
         if (!groups.isEmpty()) {
-            callBack.call(groups);
+            exCallable.call(groups);
             return;
         }
 
@@ -96,13 +94,13 @@ public class GroupModel {
             @Override
             public void onResponse(@NotNull Call<ArrayList<Group>> call, @NotNull retrofit2.Response<ArrayList<Group>> response) {
                 groups = response.body();
-                callBack.call(groups);
+                exCallable.call(groups);
                 Log.d("DEBUG_API", (new Gson()).toJson(response.body()));
             }
 
             @Override
             public void onFailure(@NotNull Call<ArrayList<Group>> call, @NotNull Throwable t) {
-                callBack.fail(R.string.no_connection_server);
+                exCallable.fail(R.string.no_connection_server);
                 Log.d("ERROR_API", t.toString());
             }
         });
@@ -127,9 +125,9 @@ public class GroupModel {
     /**
      * Загрузка рассписания по id
      * @param groupId - id группы для которой необходимо рассписание
-     * @param callBack - колбек
+     * @param exCallable - колбек
      */
-    public void loadSchedule(final int groupId, final CallBack<ArrayList<ScheduleList>> callBack) {
+    public void loadSchedule(final int groupId, final ExCallable<ArrayList<ScheduleList>> exCallable) {
         final Group group = this.findById(groupId);
 
         GroupApi groupApi = retrofit.create(GroupApi.class);
@@ -140,7 +138,7 @@ public class GroupModel {
                 group.scheduleList = response.body();
                 Log.d("DEBUG_API", (new Gson()).toJson(response.body()));
                 try {
-                    callBack.call(group.scheduleList);
+                    exCallable.call(group.scheduleList);
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -188,10 +186,5 @@ public class GroupModel {
             if (groups.get(i).groupName.equals(groupName))
                 return groups.get(i);
         return null;
-    }
-
-    public void delete(final Context appContext) {
-        JSONHelper.delete(appContext, DATA_FILE_NAME);
-        groups.clear();
     }
 }

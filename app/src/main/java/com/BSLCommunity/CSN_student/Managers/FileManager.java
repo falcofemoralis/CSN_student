@@ -1,5 +1,7 @@
 package com.BSLCommunity.CSN_student.Managers;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,5 +32,28 @@ public class FileManager {
         BufferedWriter bw = new BufferedWriter(new FileWriter(file, append));
         bw.write(content);
         bw.close();
+    }
+
+    /**
+     * Удаление файлов пользователя
+     */
+    public static void deleteAllFiles() {
+        for (int i = 0; i < 2; ++i) {
+            String path = i == 0 ? ROOT_FILES : ROOT_IMAGES;
+
+            File dir = new File(path);
+            File[] files = dir.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    try {
+                        file.delete();
+                    } catch (Exception e) {
+                        Log.e("FILE_MANAGER", file.getName() + " cannot be deleted");
+                    }
+
+                }
+            }
+        }
     }
 }

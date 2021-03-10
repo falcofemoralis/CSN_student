@@ -1,16 +1,11 @@
 package com.BSLCommunity.CSN_student.Models;
 
-import android.content.Context;
-
 import com.BSLCommunity.CSN_student.APIs.UserApi;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.lib.CallBack;
+import com.BSLCommunity.CSN_student.lib.ExCallable;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-
-import java.util.Map;
-import java.util.concurrent.Callable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,11 +29,6 @@ public class UserModel {
         return instance;
     }
 
-    //удаление юзера
-    public static void deleteUser() {
-       instance = null;
-    }
-
     /**
      * Инициализация пользователя (извлекается из зашифрованного локального файла) и объекта ретрофита
      */
@@ -55,31 +45,31 @@ public class UserModel {
      * Логин пользователя
      * @param nickname - никнейм
      * @param password - пароль
-     * @param callBack - колбек, call - не возвращает ничего, fail - возврат ошибки
+     * @param exCallable - колбек, call - не возвращает ничего, fail - возврат ошибки
      */
-    public void login(final String nickname, final String password, final CallBack<UserData> callBack) {
+    public void login(final String nickname, final String password, final ExCallable<User> exCallable) {
         UserApi userApi = retrofit.create(UserApi.class);
-        Call<UserData> call = userApi.login(nickname, password);
+        Call<User> call = userApi.login(nickname, password);
 
-        call.enqueue(new Callback<UserData>() {
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(@NotNull Call<UserData> call, @NotNull Response<UserData> response) {
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                 switch (response.code()) {
                     case 200:
-                        callBack.call(response.body());
+                        exCallable.call(response.body());
                         break;
                     case 404:
-                        callBack.fail(R.string.incorrect_password_or_nickname);
+                        exCallable.fail(R.string.incorrect_password_or_nickname);
                         break;
                     case 500:
-                        callBack.fail(R.string.no_connection_server);
+                        exCallable.fail(R.string.no_connection_server);
                         break;
                 }
             }
 
             @Override
-            public void onFailure(@NotNull Call<UserData> call, @NotNull Throwable t) {
-                callBack.fail(R.string.no_connection_server);
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                exCallable.fail(R.string.no_connection_server);
             }
         });
 
@@ -90,73 +80,67 @@ public class UserModel {
      * @param nickname - никнейм
      * @param password - пароль
      * @param groupName - название группы
-     * @param callBack - колбек, call - не возвращает ничего, fail - возврат ошибки
+     * @param exCallable - колбек, call - не возвращает ничего, fail - возврат ошибки
      */
-    public void registration(final String nickname, final String password, final String groupName, final CallBack<UserData> callBack) {
+    public void registration(final String nickname, final String password, final String groupName, final ExCallable<User> exCallable) {
         UserApi userApi = retrofit.create(UserApi.class);
-        Call<UserData> call = userApi.registration(nickname, password, groupName);
+        Call<User> call = userApi.registration(nickname, password, groupName);
 
-        call.enqueue(new Callback<UserData>() {
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(@NotNull Call<UserData> call, @NotNull Response<UserData> response) {
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                 switch (response.code()) {
                     case 200:
-                        callBack.call(response.body());
+                        exCallable.call(response.body());
                         break;
                     case 409:
-                        callBack.fail(R.string.user_exist);
+                        exCallable.fail(R.string.user_exist);
                         break;
                     case 500:
-                        callBack.fail(R.string.no_connection_server);
+                        exCallable.fail(R.string.no_connection_server);
                         break;
                 }
             }
 
             @Override
-            public void onFailure(@NotNull Call<UserData> call, @NotNull Throwable t) {
-                callBack.fail(R.string.no_connection_server);
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                exCallable.fail(R.string.no_connection_server);
             }
         });
     }
 
-    /* Функция обновления данных пользователя
-     * Параметры:
-     * appContext - application context
-     * activityContext - activity context активити из которого был сделан вызов функции
-     * updateData - параметры которые необходимо передать в PUT запросе при обновления данных пользователя
-     * */
-    public void update(final Context appContext, final Context activityContext, final Map<String, String> updateData,  final Callable<Void> callBack) throws JSONException {
-//        // Передается старый пароль, для некого подтверждения пользователя, чтобы никто другой не кидал PUT запросы на сервер и не менял спокойно данные пользователей
-//        updateData.put("OldPassword", instance.password);
-//        String apiUrl = String.format("api/users/%1$s", 0);
-//
-//        DBHelper.putRequest(appContext, apiUrl, updateData, new DBHelper.CallBack<String>() {
-//            @Override
-//            public void call(String response) {
-//                if (response.contains("ERROR"))
-//                    Toast.makeText(activityContext, R.string.incorrect_data, Toast.LENGTH_SHORT).show();
-//                else if (response.contains("Duplicate"))
-//                    Toast.makeText(activityContext, R.string.nickname_is_taken, Toast.LENGTH_SHORT).show();
-//                else {
-//                    Toast.makeText(activityContext, R.string.datachanged, Toast.LENGTH_SHORT).show();
-//                    // Обновление успешно, потому заносим новые данные
-//                    instance.nickName = updateData.get("NickName");
-//                    instance.password = updateData.get("Password");
-//                    saveData(); // сохраняем данные
-//                    try {
-//                        callBack.call();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void fail(String message) {
-//
-//            }
-//        });
+    /**
+     * Обновление данных пользователя
+     * @param nickName - новый никнейм
+     * @param password - новый пароль
+     * @param exCallable - колбек
+     */
+    public void update(String nickName, String password, String token, final ExCallable<Void> exCallable) {
+        UserApi userApi = retrofit.create(UserApi.class);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("NickName", nickName);
+        jsonObject.addProperty("Password", password);
+
+        Call<Void> call = userApi.updateUserData(token, jsonObject);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                switch (response.code()) {
+                    case 200:
+                        exCallable.call(null);
+                        break;
+                    case 401:
+                        exCallable.fail(R.string.no_auth);
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                exCallable.fail(R.string.no_connection_server);
+            }
+        });
+
     }
-
-
 }

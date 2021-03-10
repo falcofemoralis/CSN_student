@@ -8,14 +8,15 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.BSLCommunity.CSN_student.App;
-import com.google.gson.annotations.SerializedName;
+import com.BSLCommunity.CSN_student.Managers.FileManager;
+import com.BSLCommunity.CSN_student.R;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
-public class UserData {
-    public static transient UserData instance = null;
+public class AppData {
+    public static transient AppData instance = null;
 
     /**
      * PrefKeys - Строковые константы - ключи, по которым хранятся все данные в файле настроек
@@ -46,36 +47,40 @@ public class UserData {
     public transient ArrayList<Pair<String, String>> languages = new ArrayList<>(); //
     public transient SharedPreferences encryptedSharedPreferences;
 
-    @SerializedName("NickName")
-    public String nickName;
-    @SerializedName("Password")
-    public String password;
-    @SerializedName("group_id")
-    public int groupId;
-    @SerializedName("GroupName")
-    public String groupName;
-    @SerializedName("Course")
-    public int course;
-    @SerializedName("token")
-    private String token;
+    public User userData;
 
-    private UserData() {}
-    public static UserData getUserData() {
+    private AppData() {}
+    public static AppData getAppData() {
         if (instance == null) {
-            instance = new UserData();
+            instance = new AppData();
             instance.init();
         }
         return instance;
     }
 
-    public void updateUserData(UserData newUserData) {
-        this.nickName = newUserData.nickName;
-        this.password = newUserData.password;
-        this.groupId = newUserData.groupId;
-        this.groupName = newUserData.groupName;
-        this.course = newUserData.course;
-        this.token = newUserData.token;
+    /**
+     * Обновление данных пользователя (полное обновление)
+     * @param newUserData - новые данные
+     */
+    public void updateUserData(User newUserData) {
+        this.userData.setNickName(newUserData.getNickName());
+        this.userData.setPassword(newUserData.getPassword());
+        this.userData.setGroupId(newUserData.getGroupId());
+        this.userData.setGroupName(newUserData.getGroupName());
+        this.userData.setCourse(newUserData.getCourse());
+        this.userData.setToken(newUserData.getToken());
 
+        this.saveData();
+    }
+
+    /**
+     * Обновление данных пользователя (никнейм и пароль)
+     * @param nickName - никнейм
+     * @param password - пароль
+     */
+    public void updateUserData(String nickName, String password) {
+        this.userData.setNickName(nickName);
+        this.userData.setNickName(password);
         this.saveData();
     }
 
@@ -85,22 +90,24 @@ public class UserData {
     private void init() {
         setSettingsFile(App.getApp().getApplicationContext());
 
+        // Добавление языков
+        String[] languagesArray = App.getApp().getApplicationContext().getResources().getStringArray(R.array.languages);
+        languages.add(new Pair<>(languagesArray[0],"en"));
+        languages.add(new Pair<>(languagesArray[1],"ru"));
+        languages.add(new Pair<>(languagesArray[2],"uk"));
+
         try {
             SharedPreferences pref = this.encryptedSharedPreferences;
-            this.nickName =  pref.getString(Settings.PrefKeys.NICKNAME.getKey(), null);
-            this.password = pref.getString(Settings.PrefKeys.PASSWORD.getKey(), null);
-            this.groupId = pref.getInt(Settings.PrefKeys.GROUP_ID.getKey(), -1);
-            this.groupName = pref.getString(Settings.PrefKeys.GROUP.getKey(), null);
-            this.course = pref.getInt(Settings.PrefKeys.COURSE.getKey(), -1);
-            this.token = pref.getString(Settings.PrefKeys.TOKEN.getKey(), null);
+            this.userData = new User();
+            this.userData.setNickName(pref.getString(PrefKeys.NICKNAME.getKey(), null));
+            this.userData.setPassword(pref.getString(PrefKeys.PASSWORD.getKey(), null));
+            this.userData.setGroupId(pref.getInt(PrefKeys.GROUP_ID.getKey(), -1));
+            this.userData.setGroupName(pref.getString(PrefKeys.GROUP.getKey(), null));
+            this.userData.setCourse(pref.getInt(PrefKeys.COURSE.getKey(), -1));
+            this.userData.setToken(pref.getString(PrefKeys.TOKEN.getKey(), null));
         }
         catch (Exception ignored) {
-            this.nickName = null;
-            this.password = null;
-            this.groupId = -1;
-            this.groupName = null;
-            this.course = -1;
-            this.token = null;
+            this.userData = new User();
         }
     }
 
@@ -129,24 +136,24 @@ public class UserData {
     }
 
     /**
-     * Получение токена пользователя (нужен для проверки авторизации и выполнения некоторых запросов)
-     * @return токен пользователя
-     */
-    public String getToken() {
-        return token;
-    }
-
-    /**
      * Сохранение данных пользователя в SharedPreferences
      */
     public void saveData() {
         SharedPreferences.Editor prefEditor = this.encryptedSharedPreferences.edit();
-        prefEditor.putString(PrefKeys.NICKNAME.getKey(), this.nickName);
-        prefEditor.putString(PrefKeys.PASSWORD.getKey(), this.password);
-        prefEditor.putString(PrefKeys.GROUP.getKey(), this.groupName);
-        prefEditor.putInt(PrefKeys.GROUP_ID.getKey(), this.groupId);
-        prefEditor.putInt(PrefKeys.COURSE.getKey(), this.course);
-        prefEditor.putString(PrefKeys.TOKEN.getKey(), this.token);
+        prefEditor.putString(PrefKeys.NICKNAME.getKey(), this.userData.getNickName());
+        prefEditor.putString(PrefKeys.PASSWORD.getKey(), this.userData.getPassword());
+        prefEditor.putString(PrefKeys.GROUP.getKey(), this.userData.getGroupName());
+        prefEditor.putInt(PrefKeys.GROUP_ID.getKey(), this.userData.getGroupId());
+        prefEditor.putInt(PrefKeys.COURSE.getKey(), this.userData.getCourse());
+        prefEditor.putString(PrefKeys.TOKEN.getKey(), this.userData.getToken());
         prefEditor.apply();
+    }
+
+    /**
+     * Удаление всех данных на устройстве
+     */
+    public void clearData() {
+        encryptedSharedPreferences.edit().clear().apply();
+        FileManager.deleteAllFiles();
     }
 }

@@ -82,5 +82,6 @@
     <string name="invalid_data">Invalid data (For all fields, use only letters and the underscore character)</string>
     <string name="passwords_do_not_match">Your password and confirmation password do not match</string>
     <string name="user_exist">User with this nickname already exists</string>
+    <string name="no_auth">You are not authorized</string>
 </resources>
 

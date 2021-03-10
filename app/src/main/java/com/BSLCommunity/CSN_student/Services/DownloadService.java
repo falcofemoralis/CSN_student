@@ -19,7 +19,7 @@ import com.BSLCommunity.CSN_student.Models.AnotherUserList;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.LocalData;
 import com.BSLCommunity.CSN_student.Models.Subjects;
-import com.BSLCommunity.CSN_student.Models.Teachers;
+import com.BSLCommunity.CSN_student.Models.TeachersModel;
 import com.BSLCommunity.CSN_student.R;
 
 import java.io.File;
@@ -112,7 +112,7 @@ public class DownloadService extends Service {
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                Teachers.init(getApplicationContext(), new Callable<Void>() {
+                TeachersModel.init(getApplicationContext(), new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
                        // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
@@ -145,7 +145,7 @@ public class DownloadService extends Service {
                 " ,isDownloadedGroups = " + isDownloadedGroups);
 
         File fileGr = getApplicationContext().getFileStreamPath(GroupModel.DATA_FILE_NAME);
-        File fileTeach = getApplicationContext().getFileStreamPath(Teachers.DATA_FILE_NAME);
+        File fileTeach = getApplicationContext().getFileStreamPath(TeachersModel.DATA_FILE_NAME);
         File fileSubj = getApplicationContext().getFileStreamPath(Subjects.DATA_FILE_NAME);
 
         if (fileGr.exists() && fileTeach.exists() && fileSubj.exists()) {

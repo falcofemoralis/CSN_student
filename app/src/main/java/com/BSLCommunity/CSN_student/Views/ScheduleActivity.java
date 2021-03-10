@@ -15,7 +15,7 @@ import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
-import com.BSLCommunity.CSN_student.Models.Teachers;
+import com.BSLCommunity.CSN_student.Models.TeachersModel;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -75,7 +75,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
         if (entity.equals("teachers")) {
 
             //создаем лист преподов
-            if (Teachers.teacherLists.size() != 0) {
+            if (TeachersModel.teacherLists.size() != 0) {
                 progressBar.setVisibility(View.GONE);
 
                // int listSize = Teachers.teacherLists.size();
@@ -85,14 +85,14 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                 idElements = new int[listSize];
                 for (int j = 0; j < listSize; ++j) {
                     try {
-                        JSONObject FIOJson = new JSONObject(Teachers.teacherLists.get(j).FIO);
+                        JSONObject FIOJson = new JSONObject(TeachersModel.teacherLists.get(j).FIO);
 
                         // Разбиение ФИО на составные и установка с инициалами
                         String[] fioStrs = FIOJson.getString(LocaleHelper.getLanguage(this)).split(" ");
                         listAdapter.add(fioStrs[2] + " " + fioStrs[0].charAt(0) + ". " + fioStrs[1].charAt(0));
                     }
                     catch (Exception e) {}
-                    idElements[j] = Teachers.teacherLists.get(j).id;
+                    idElements[j] = TeachersModel.teacherLists.get(j).id;
                 }
                 spinner.setPrompt(getString(R.string.teachers_prompt));
                 spinner.setEnabled(true);
@@ -183,7 +183,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
 
     //устанавливаем расписание
     protected void setSchedule(int id) {
-        ArrayList<ScheduleList> scheduleList = entity.equals("teachers") ? Teachers.findById(id).scheduleList : GroupModel.getGroupModel().findById(id).scheduleList;
+        ArrayList<ScheduleList> scheduleList = entity.equals("teachers") ? TeachersModel.findById(id).scheduleList : GroupModel.getGroupModel().findById(id).scheduleList;
         clearSchedule();
 
         //получаем неделю в зависимости от выбранной недели

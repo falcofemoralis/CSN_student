@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class Teachers {
+public class TeachersModel {
 
     public static final String DATA_FILE_NAME = "Teachers";
 
@@ -43,7 +43,7 @@ public class Teachers {
         }
     }
 
-    public static ArrayList<Teachers.TeacherList> teacherLists = new ArrayList<>();
+    public static ArrayList<TeachersModel.TeacherList> teacherLists = new ArrayList<>();
 
     public static void init(Context context, final Callable<Void> callBack) {
 
@@ -60,7 +60,7 @@ public class Teachers {
             }
 
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Teachers.TeacherList>>() {
+            Type listType = new TypeToken<List<TeachersModel.TeacherList>>() {
             }.getType();
             teacherLists = gson.fromJson(response, listType);
 
@@ -145,7 +145,7 @@ public class Teachers {
                 //парсим полученный список групп
                 try {
                     JSONArray JSONArray = new JSONArray(response);
-                    Teachers.TeacherList teacherList = Teachers.findById(id);
+                    TeachersModel.TeacherList teacherList = TeachersModel.findById(id);
                     //парсим расписание
                     for (int i = 0; i < JSONArray.length(); ++i) {
                         org.json.JSONObject dayJSONObject = JSONArray.getJSONObject(i);
@@ -204,15 +204,10 @@ public class Teachers {
     }
 
     // Поиск учителя по id
-    public static Teachers.TeacherList findById(int id) {
+    public static TeachersModel.TeacherList findById(int id) {
         for (int i = 0; i < teacherLists.size(); ++i)
             if (teacherLists.get(i).id == id)
                 return teacherLists.get(i);
         return null;
-    }
-
-    public static void delete(Context context) {
-        JSONHelper.delete(context, DATA_FILE_NAME);
-        teacherLists.clear();
     }
 }

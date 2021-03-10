@@ -158,19 +158,4 @@ public class Subjects {
 
     }
 
-    // Удаление данных
-    public static void delete(Context context) {
-        // Удаление файла с информацией о дисциплинах
-        JSONHelper.delete(context, DATA_FILE_NAME);
-
-        // Удаление всех изображений
-        for (int i = 0; i < subjectsList.length; ++i) {
-            File imageFile = new File(context.getDir("images", context.MODE_PRIVATE) + "/" + subjectsList[i].Image);
-
-             if (imageFile.exists())
-                imageFile.delete();
-        }
-
-        subjectsList = null;
-    }
 }

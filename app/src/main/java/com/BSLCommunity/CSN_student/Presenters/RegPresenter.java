@@ -1,11 +1,12 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
 import com.BSLCommunity.CSN_student.Models.GroupModel;
-import com.BSLCommunity.CSN_student.Models.UserData;
+import com.BSLCommunity.CSN_student.Models.User;
+import com.BSLCommunity.CSN_student.Models.AppData;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.RegView;
-import com.BSLCommunity.CSN_student.lib.CallBack;
+import com.BSLCommunity.CSN_student.lib.ExCallable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,13 +17,13 @@ public class RegPresenter {
     private final RegView regView; // View регистрации
     private final GroupModel groupModel; // Модель групп, нужна для получения информации о группах для выбора при регистрации
     private final UserModel userModel; // Модель пользователя, нужна для регистрации
-    private final UserData userData;
+    private final AppData appData;
 
     public RegPresenter(RegView regView) {
         this.regView = regView;
         this.groupModel = GroupModel.getGroupModel();
         this.userModel= UserModel.getUserModel();
-        this.userData = UserData.getUserData();
+        this.appData = AppData.getAppData();
     }
 
     /**
@@ -39,11 +40,11 @@ public class RegPresenter {
             this.regView.showToastError(R.string.passwords_do_not_match);
         }
         else {
-            this.userModel.registration(nickname, password, groupName, new CallBack<UserData>() {
+            this.userModel.registration(nickname, password, groupName, new ExCallable<User>() {
                 @Override
-                public void call(UserData data) {
+                public void call(User data) {
                     try {
-                        userData.updateUserData(data);
+                        appData.updateUserData(data);
                         regView.openMain();
                     } catch (Exception ignored) {}
                 }
@@ -64,7 +65,7 @@ public class RegPresenter {
     public void initSpinnerData() {
         this.regView.visibilityProgressBar(true);
 
-        this.groupModel.getAllGroups(new CallBack<ArrayList<GroupModel.Group>>() {
+        this.groupModel.getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
             @Override
             public void call(ArrayList<GroupModel.Group> response) {
                 final int defaultCourse = 1;

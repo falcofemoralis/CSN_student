@@ -82,4 +82,5 @@
     <string name="invalid_data">Дані введені некоректно(Для всіх полів використовуйте лише літери та символ підкреслення)</string>
     <string name="passwords_do_not_match">Ваш пароль та пароль підтвердження не співпадають</string>
     <string name="user_exist">Користувач з таким нікнеймом вже існує</string>
+    <string name="no_auth">Ви не авторизовані</string>
 </resources>

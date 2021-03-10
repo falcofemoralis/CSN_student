@@ -1,15 +1,10 @@
 <?php
 
-// Функция возвращающая преподов на курсе, не ясно до конца есть ли в ней необходимость 
-function viewTeachersOnCourse() 
+// GET запрос возвращающий расписание учителя
+function viewTeacherSchedules($url)
 {
-    // функционал не создан, реализовуется сложновато и не принято решение о его необходимости 
-}
+    $id = explode('/', $url)[3];
 
-
-// GET запрос возвращающий расписание учителя URI: .../teachers/id/schedule
-function viewTeacherSchedules($id) 
-{
     $query = "  SELECT schedule_list.Day, schedule_list.Half, schedule_list.Pair, disciplines.NameDiscipline, schedule_list.Room, subjecttypes.SubjectType FROM schedule_list
                 JOIN disciplines ON disciplines.Code_Discipline = schedule_list.Code_Discp
                 JOIN subjecttypes ON subjecttypes.Code_SubjectType = schedule_list.Code_SubjectType
@@ -20,12 +15,10 @@ function viewTeacherSchedules($id)
     echo $data;
 }
 
-// GET запрос возвращающий всех учителей URI: .../teachers/all
+// GET запрос возвращающий всех учителей
 function getAllTeacher()
 {
     $query = "  SELECT teachers.Code_Teacher as id, teachers.FIO FROM teachers";
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
-
-?>

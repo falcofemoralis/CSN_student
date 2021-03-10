@@ -12,13 +12,26 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DBHelper {
-    public static String MAIN_URL = "http://192.168.1.3/"; // Базовый URL сервера
+    public static String MAIN_URL = null; // Базовый URL сервера
     private static String TAG_LOG_ERROR = "Response error"; // Тег для логов с ошибками с работой сервера
     private static RequestQueue requestQueue = null; // Очередь запросов
+
+    public static void init(Context context) {
+        try {
+            JSONObject config = new JSONObject(JSONHelper.loadJSONFromAsset(context, "config.json"));
+            DBHelper.MAIN_URL = config.getString("IP");
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Типы запросов
     public enum TypeRequest {

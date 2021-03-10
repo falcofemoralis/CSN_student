@@ -5,10 +5,13 @@
     android:background="#FFFFFF"
     android:gravity="center"
     android:paddingStart="25dp"
-    android:paddingTop="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:text="debug"
     android:textAlignment="viewStart"
     android:textColor="@color/schedule_color_1"
-    android:textSize="16sp">
+    android:textSize="18sp"
+
+    >
 
 </TextView>

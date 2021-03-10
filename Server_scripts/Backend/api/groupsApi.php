@@ -1,8 +1,9 @@
 <?php
 
-//GET запрос на расписания группы по id URI: .../groups/id/schedule
-function getScheduleById($id)
+//GET запрос на расписания группы по id
+function getScheduleById($url)
 {
+    $id = explode('/', $url)[3];
 
     $query = "   SELECT schedule_list.Day, schedule_list.Pair, schedule_list.Half, disciplines.NameDiscipline, schedule_list.Room,
                 subjecttypes.SubjectType
@@ -17,10 +18,10 @@ function getScheduleById($id)
     echo $data;
 }
 
-//GET запрос на получение всех групп по курсу id URI: .../groups?courseId=...
-function getGroupsOnCourse()
+//GET запрос на получение всех групп по курсу
+function getGroupsOnCourse($url)
 {
-    $course = $_GET['courseId'];
+    $course = explode('/', $url)[4];
 
     $query = "  SELECT groups.Code_Group, groups.GroupName 
                 FROM groups
@@ -39,9 +40,11 @@ function getAllGroups()
     echo $data;
 }
 
-//POST запрос на перезапись всего расписания группы URI: .../groups/id/schedule
-function setSchedule($id)
+//POST запрос на перезапись всего расписания группы
+function setSchedule($url)
 {
+    $id = explode('/', $url)[3];
+
     $query = "  SELECT schedule.Code_Schedule
                 FROM schedule
                 WHERE schedule.Code_Group = '$id'";

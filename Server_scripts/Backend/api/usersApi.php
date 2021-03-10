@@ -30,9 +30,11 @@ function readUser($nickName, $password)
     echo json_encode($data);
 }
 
-//GET запрос на получение рейтинга юзера по id URI: .../users/id/rating
-function getUserRating($id)
+//GET запрос на получение рейтинга юзера по id
+function getUserRating($url)
 {
+    $id = explode('/', $url)[3];
+
     $query = "  SELECT rating.JSON_RATING FROM rating
                 WHERE rating.Code_User = '$id'";
 
@@ -40,9 +42,11 @@ function getUserRating($id)
     echo $data;
 }
 
-//GET запрос на получение публичных данных юзера по id URI: .../users/id
-function userViewById($id)
+//GET запрос на получение публичных данных юзера по id
+function userViewById($url)
 {
+    $id = explode('/', $url)[3];
+
     $query = "  SELECT users.NickName,  groups.Course, groups.GroupName FROM users
                 JOIN rating ON rating.Code_User = users.Code_User
                 JOIN groups ON groups.Code_Group = users.Code_Group
@@ -52,9 +56,11 @@ function userViewById($id)
     echo $data;
 }
 
-//GET запрос на получение публичных данных юзеров по курсу URI: .../users/course/id
-function usersViewByCourse($id)
+//GET запрос на получение публичных данных юзеров по курсу
+function usersViewByCourse($url)
 {
+    $id = explode('/', $url)[4];
+
     $query = "  SELECT users.NickName, users.RealName, groups.GroupName FROM `users`
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE groups.Course = '$id'";
@@ -63,8 +69,8 @@ function usersViewByCourse($id)
     echo $data;
 }
 
-// POST запрос URI: .../users
-function createUser()
+// POST запрос
+function createUser($url)
 {
     // $arr = getallheaders();
     // $token = $arr['token'];
@@ -108,24 +114,24 @@ function createUser()
     }
 }
 
-/* PUT запрос обновления данных юзера URI: .../users/id 
+/* PUT запрос обновления данных юзера 
  * JSON данные:
  * NickName - Ник
  * Password - Пароль
  * GroupName - Название группы
  */
-function updateUser($id)
+function updateUser($url)
 {
-    $string = file_get_contents('php://input');
-    parse_str($string, $data);
+    $arr = getallheaders();
+    $token = $arr['token'];
+    $id = checkAuth($token);
 
+    $data = json_decode(file_get_contents('php://input'));
     // Получаем данные
-    $nickName = $data['NickName'];
-    $password = $data['Password'];
-    $oldPassword = $data['OldPassword'];
-
+    $nickName = $data->NickName;
+    $password = $data->Password;
     // Проверка на то, все ли данные пришли
-    if ($nickName == NULL || $password == NULL || $oldPassword == NULL) {
+    if ($nickName == NULL || $password == NULL) {
         echo "ERROR";
         return;
     }
@@ -133,17 +139,19 @@ function updateUser($id)
     $query = "  UPDATE `users`
                 SET `NickName`='$nickName',
                     `Password`='$password'
-                    WHERE Code_User = '$id' AND Password = '$oldPassword'";
+                    WHERE Code_User = '$id'";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }
 
-/* PUT запрос обновления рейтинга URI: .../users/id/rating 
+/* PUT запрос обновления рейтинга
  * JSON данные:
  * $rating - JSON строка информации о рейтинге юзера
  */
-function updateUserRating($id)
+function updateUserRating($url)
 {
+    $id = explode('/', $url)[3];
+
     $rating = file_get_contents('php://input');
 
     // Проверка на то, все ли данные пришли
@@ -157,55 +165,4 @@ function updateUserRating($id)
                 WHERE Code_user = '$id'";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
-}
-
-/**
- * Созданние JWT токена
- * @return token - созданный токен в формате JWT
- */
-function createJWT($id)
-{
-    $SECRET_KEY = "1B-2S-3L-5D-7F";
-
-    $header = json_encode(array(
-        'type' => 'JWT',
-        'alg' => 'HS256'
-    ));
-    $header = base64_encode($header);
-
-    $body = json_encode(array(
-        'iss' => 'BrandHall',
-        'sub' => 'authorization',
-        'id' => $id
-    ));
-    $body = base64_encode($body);
-
-    $signature = hash_hmac('SHA256', "$header.$body", $SECRET_KEY);
-
-    $token = "$header.$body.$signature";
-
-    return $token;
-}
-
-/**
- * Проверка авторизации юзера. Берет токен из куки и проверяет его корректность
- * Если авторизация не пройдена - происходит редирект на форму логина
- */
-function checkAuth()
-{
-    // global $SECRET_KEY;
-
-    // $header = get_headers();
-
-    // $parts = explode('.', $token);
-    // if ($token !== null && count($parts) != 3) {
-    //     http_response_code(401);
-    //     die();
-    // }
-
-    // $testSignature = hash_hmac('SHA256', "$parts[0].$parts[1]", $SECRET_KEY);
-    // if ($testSignature !== $parts[2]) {
-    //     http_response_code(401);
-    //     die();
-    // }
 }

@@ -24,6 +24,7 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
     TextView nicknameText, passwordText, groupText, languageText; // поля в которых отображается информация юзера
     SettingsPresenter settingsPresenter;
     SettingsDialogEditText settingsDialogEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,17 +81,26 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
         settingsPresenter.updateData();
     }
 
+    /**
+     * @see SettingsView
+     */
     @Override
     public void showToast(int id) {
         Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * @see SettingsView
+     */
     @Override
     public void openLogin() {
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         Toast.makeText(SettingsActivity.this, R.string.exit, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * @see SettingsView
+     */
     @Override
     public void setDataToSettings(String nickName, String password, String group, ArrayList<Pair<String, String>> languages) {
         nicknameText.setText(nickName);
@@ -105,12 +115,20 @@ public class SettingsActivity extends BaseActivity implements SettingsDialogEdit
             }
         }
     }
+
+    /**
+     * @see SettingsView
+     */
     @Override
     public void updateData(String nickName, String password) {
         nicknameText.setText(nickName);
         passwordText.setText(password);
+        settingsDialogEditText.updateData(nickName, password);
     }
 
+    /**
+     * @see SettingsView
+     */
     @Override
     public void reloadActivity() {
         this.startActivity(new Intent(this, MainActivity.class));

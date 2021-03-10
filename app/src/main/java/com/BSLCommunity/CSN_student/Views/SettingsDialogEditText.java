@@ -38,6 +38,11 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
         this.password = password;
     }
 
+    public void updateData(String nickName, String password) {
+        this.nickName = nickName;
+        this.password = password;
+    }
+
     public void setApplyKey(int applyKey) {
         this.applyKey = applyKey;
     }

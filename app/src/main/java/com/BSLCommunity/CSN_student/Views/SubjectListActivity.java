@@ -24,14 +24,15 @@ import android.widget.TextView;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
-import com.BSLCommunity.CSN_student.Models.Subjects;
+import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SubjectListActivity extends BaseActivity {
+public class SubjectListActivity extends BaseActivity implements SubjectListView {
     Boolean shouldExecuteOnResume = false;
     View clickedButton;
 
@@ -47,7 +48,7 @@ public class SubjectListActivity extends BaseActivity {
         }
     }
     LoadSubject loadSubject = new LoadSubject();
-    TableLayout tableSubjects; // Лаяут всех дисциплин
+    LinearLayout tableSubjects; // Лаяут всех дисциплин
     int[] progresses; // Прогресс для каждого предмета
     Boolean can_click; //нажата кнопка
 
@@ -59,7 +60,7 @@ public class SubjectListActivity extends BaseActivity {
         // Создаем кнопку одной дисциплины
         protected void createSubject(TableRow rowSubject, int numberSubject) {
 
-            Subjects.SubjectsList subject = Subjects.subjectsList[numberSubject];
+            SubjectModel.SubjectsList subject = SubjectModel.subjectsList[numberSubject];
 
             // Инициализация всех деталей группы view элементов дисциплины
             LinearLayout subjectLayout = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.inflate_subject_bt, rowSubject, false);
@@ -206,9 +207,9 @@ public class SubjectListActivity extends BaseActivity {
         TableRow rowSubject = null;
 
         int i;
-        subjectDrawables = new SubjectDrawable[Subjects.subjectsList.length];
+        subjectDrawables = new SubjectDrawable[SubjectModel.subjectsList.length];
 
-        for (i = 0; i <= Subjects.subjectsList.length; ++i) {
+        for (i = 0; i <= SubjectModel.subjectsList.length; ++i) {
             // В одном ряду может быть лишь 3 кнопки, если уже три созданы, создается следующая колонка
             if (i % 3 == 0) {
 
@@ -220,7 +221,7 @@ public class SubjectListActivity extends BaseActivity {
                 tableSubjects.addView(rowSubject);
             }
 
-            if (i == Subjects.subjectsList.length)
+            if (i == SubjectModel.subjectsList.length)
                 createFullStatistics(rowSubject);
             else {
                 subjectDrawables[i] = new SubjectDrawable();
@@ -296,7 +297,7 @@ public class SubjectListActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
             for (int i = 0; i < subjectDrawables.length; ++i) {
                 int count = 0;
-                while (!isCancelled() && Subjects.getSubjectImage(getApplicationContext(), Subjects.subjectsList[i]) == null && count < 300){
+                while (!isCancelled() && SubjectModel.getSubjectImage(getApplicationContext(), SubjectModel.subjectsList[i]) == null && count < 300){
                     try {
                         Thread.sleep(10);
                     }
@@ -317,7 +318,7 @@ public class SubjectListActivity extends BaseActivity {
 
         @Override
         protected void onProgressUpdate(Integer... index) {
-            BitmapDrawable img = Subjects.getSubjectImage(getApplicationContext(), Subjects.subjectsList[index[0]]);
+            BitmapDrawable img = SubjectModel.getSubjectImage(getApplicationContext(), SubjectModel.subjectsList[index[0]]);
             subjectDrawables[index[0]].setImg(img);
             subjectDrawables[index[0]].progressBar.setVisibility(View.GONE);
             return;

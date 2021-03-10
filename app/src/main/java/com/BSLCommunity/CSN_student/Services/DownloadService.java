@@ -18,14 +18,12 @@ import androidx.core.app.NotificationCompat;
 import com.BSLCommunity.CSN_student.Models.AnotherUserList;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.LocalData;
-import com.BSLCommunity.CSN_student.Models.Subjects;
+import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.TeachersModel;
 import com.BSLCommunity.CSN_student.R;
 
 import java.io.File;
 import java.util.concurrent.Callable;
-
-import javax.security.auth.Subject;
 
 import static java.lang.Thread.sleep;
 
@@ -125,7 +123,7 @@ public class DownloadService extends Service {
             }
         });
 
-        Subjects.init(getApplicationContext(), new Callable<Void>() {
+        SubjectModel.init(getApplicationContext(), new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 stopService("subjects");
@@ -141,7 +139,7 @@ public class DownloadService extends Service {
 
         File fileGr = getApplicationContext().getFileStreamPath(GroupModel.DATA_FILE_NAME);
         File fileTeach = getApplicationContext().getFileStreamPath(TeachersModel.DATA_FILE_NAME);
-        File fileSubj = getApplicationContext().getFileStreamPath(Subjects.DATA_FILE_NAME);
+        File fileSubj = getApplicationContext().getFileStreamPath(SubjectModel.DATA_FILE_NAME);
 
         if (fileGr.exists() && fileTeach.exists() && fileSubj.exists()) {
             Log.d("DownloadService", "serviceStopped");

@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-public class Subjects {
+public class SubjectModel {
 
     public static final String DATA_FILE_NAME = "Subjects";
 

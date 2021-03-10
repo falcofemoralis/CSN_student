@@ -107,8 +107,8 @@ public class SubjectsInfo {
             // Извлечение локальных данных пользователя
             instance = new SubjectsInfo();
 
-            instance.subjectInfo = new SubjectInfo[Subjects.subjectsList.length];
-            for (int i = 0; i < Subjects.subjectsList.length; ++i)
+            instance.subjectInfo = new SubjectInfo[SubjectModel.subjectsList.length];
+            for (int i = 0; i < SubjectModel.subjectsList.length; ++i)
                 instance.subjectInfo[i] = new SubjectInfo();
 
             //загрузка данных

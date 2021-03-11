@@ -1,11 +1,25 @@
 <?php
 
+class Subject
+{
+    public $name;
+    public $img;
+    public $teachers;
+
+    function __construct($name, $img)
+    {
+        $this->name = $name;
+        $this->img = $img;
+        $this->teachers = array();
+    }
+}
+
 //GET запрос на предметы по group
 function getSubjectsByGroup($url)
 {
     $id = explode('/', $url)[4];
 
-    $query = "SELECT DISTINCT subjects.SubjectName, teachers.FIO, subjects.Image
+    $query = "SELECT DISTINCT subjects.SubjectName, teachers.Code_Teacher, subjects.Image
     FROM schedule_list 
     INNER JOIN subjects on subjects.Code_Subject = schedule_list.Code_Subject 
     INNER JOIN schedule on schedule.Code_Schedule = schedule_list.Code_Schedule
@@ -13,8 +27,23 @@ function getSubjectsByGroup($url)
     WHERE schedule_list.Code_Group = $id 
     ORDER BY subjects.SubjectName DESC";
 
-    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
-    echo $data;
+    $data = json_decode(DataBase::execQuery($query, ReturnValue::GET_ARRAY));
+
+    // Группировка учителей по дисциплинам
+    $subjects = array();
+
+    $subject = new Subject($data[0]->SubjectName, $data[0]->Image);
+    array_push($subject->teachers, $data[0]->Code_Teacher);
+    for ($i = 1; $i < count($data); ++$i) {
+        if ($data[$i]->SubjectName !== $subject->name) {
+            array_push($subjects, $subject);
+            $subject = new Subject($data[$i]->SubjectName, $data[$i]->Image);
+        }
+        array_push($subject->teachers, $data[$i]->Code_Teacher);
+    }
+    array_push($subjects, $subject);
+
+    echo json_encode($subjects);
 }
 
 //GET запрос на предметы по group URI: .../subjects?image=...

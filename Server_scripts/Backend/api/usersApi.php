@@ -164,10 +164,6 @@ function updateUserRating($url)
                 SET rating.JSON_RATING = '$rating'
                 WHERE Code_user = '$id'";
 
-<<<<<<< HEAD
-    $data = DataBase::execQuery($query, ReturnValue::GET_NOTHING);
-}
-=======
     DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }
 
@@ -183,4 +179,3 @@ function getAllUsers()
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
->>>>>>> origin/dev

@@ -52,14 +52,9 @@ $router['POST'] = [
     '/\/api\/users/' => ['createUser']
 ];
 $router['PUT'] = [
-<<<<<<< HEAD
-    '/\/api\/users\/(\d)\/rating/' => ['updateUserRating'],
-    '/\/api\/users/' => ['updateUser']
-=======
-    '/\/api\/users\/(\d)/' => ['updateUser'],
-    '/\/api\/users\/(\d)\/rating/' => ['updateUserRating'],
+    '/\/api\/users\/rating/' => ['updateUserRating'],
+    '/\/api\/users/' => ['updateUser'],
     '/\/schedule\/new/' => ['processSchedule']
->>>>>>> origin/dev
 ];
 $router['DELETE'] = [
     '/\/schedule\/reset/' => ['clearSchedule']

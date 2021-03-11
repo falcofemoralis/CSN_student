@@ -16,7 +16,9 @@ class DataBase
 
     public static function getConnection()
     {
-        self::$connect = mysqli_connect(self::$host, self::$username, self::$password, self::$db_name);
+        if (self::$connect == null) {
+            self::$connect = mysqli_connect(self::$host, self::$username, self::$password, self::$db_name);
+        }
         mysqli_set_charset(self::$connect, "utf8");
         return self::$connect;
     }
@@ -26,11 +28,8 @@ class DataBase
         * query - запрос
         * response - true/false ожидание ответа
         */
-    public function execQuery($query, int $returnValue)
+    public static function execQuery($query, int $returnValue)
     {
-        //TODO
-
-        // if (self::$connect == null)
         self::getConnection(); // Подключение к базе данных
 
         // Выполнение запроса и получение данных

@@ -10,43 +10,6 @@ $dataToReplace = ["П О Н Е Д I Л О К", "В I В Т О Р О К", "С Е 
 $week_types = ["chisl", "znam", "obe"]; // Тип недели
 $schedule = null; // JSON расписание
 $isError = false;
-$subjectLinks = [
-    "Арх.веб" => "1",
-    "МОКС" => "2",
-    "КМ" => "3",
-    "ОТІС" => "4",
-    "ТСЦС" => "5",
-    "КЛ" => "6",
-    "Арх." => "7",
-    "КС" => "8",
-    "ЗІ" => "9",
-    "СІОЗОТ" => "10",
-    "МСЕС" => "11",
-    "КГ" => "12",
-    "ПКМ" => "13",
-    "БТ" => "14",
-    "МС" => "15",
-    "СМП" => "16",
-    "АМО" => "17",
-    "Прог" => "18",
-    "СПЗ" => "19",
-    "ОБД" => "20",
-    "ВС" => "21",
-    "СМтаМІС" => "22",
-    "БЖД" => "23",
-    "ЦЗіОПГ" => "24",
-    "Фіз.вих." => "25",
-    "Фізика" => "26",
-    "Філософ." => "27",
-    "ВК" => "28",
-    "ВМ" => "29",
-    "ДМ" => "30",
-    "Ін.мова" => "31",
-    "СА" => "32",
-    "ХТ" => "33",
-    "Арх.сл." => "34",
-    "ЕВД" => "35"
-];
 
 $departmentLinks = [
     "каф.ОПіНС" => "30",
@@ -65,21 +28,13 @@ $departmentLinks = [
 function inserInDatabase()
 {
     global $pair_info;
-    global $subjectLinks;
     global $departmentLinks;
     global $encoding;
     global $isError;
     global $week_types;
     $connection = DataBase::getConnection();
 
-    // Получение id препода по фамилии
-    //  $result = mysqli_query($connect, "SELECT Code_Teacher FROM teachers WHERE teachers.FIO LIKE '%Ільяшенко%'");
-    //  echo mysqli_insert_id($connect);
-    /*     for ($i = 0; $i < mysqli_num_rows($result); ++$i) {
-        $res =  mysqli_fetch_assoc($result);
-        echo $res['Code_Teacher'];
-    } */
-
+    resetDatabase();
 
     $data = json_decode(file_get_contents("./res.json"));
     foreach ($data as $FIO => $obj) {
@@ -93,7 +48,8 @@ function inserInDatabase()
             $codeTeacher = $departmentLinks[str_replace(" ", "", $FIO)];
         } else {
             // Получение id препода по фамилии
-            $codeTeacher =  mysqli_fetch_assoc(mysqli_query($connection, "SELECT Code_Teacher FROM teachers WHERE teachers.FIO LIKE '%$name $otchstvo $surname%'"))['Code_Teacher'];
+            $tmp = "$name $otchstvo $surname";
+            $codeTeacher =  mysqli_fetch_assoc(mysqli_query($connection, "SELECT Code_Teacher FROM teachers WHERE teachers.FIO LIKE '%$tmp%'"))['Code_Teacher'];
         }
 
         if ($codeTeacher == null) {
@@ -117,7 +73,8 @@ function inserInDatabase()
                         switch ($key) {
                             case $pair_info[0]:
                                 // Получение id предмета
-                                $codeSubject = $subjectLinks[$value];
+                                $codeSubject =  mysqli_fetch_assoc(mysqli_query($connection, "SELECT subjects.Code_Subject FROM subjects WHERE subjects.abbreviation like '%$value%'"))['Code_Subject'];
+
                                 if ($codeSubject == null) {
                                     showError("Subject $value doesn't exist");
                                 }
@@ -162,15 +119,18 @@ function inserInDatabase()
                 }
             }
         }
-
-        /*  */
     }
 
-    if ($isError) {
-        mysqli_query($connection, "DELETE FROM schedule");
-        mysqli_query($connection, "DELETE FROM schedule_list");
-        mysqli_query($connection, "ALTER TABLE schedule AUTO_INCREMENT = 1");
-    }
+    return $isError;
+}
+
+function resetDatabase()
+{
+    $connection = DataBase::getConnection();
+
+    mysqli_query($connection, "DELETE FROM schedule");
+    mysqli_query($connection, "DELETE FROM schedule_list");
+    mysqli_query($connection, "ALTER TABLE schedule AUTO_INCREMENT = 1");
 }
 
 function showError($msg)
@@ -196,7 +156,7 @@ function normilizeName($name)
 /**
  * Конвертер текста в JSON формат
  */
-function convertData()
+function convertData($data)
 {
     global $days;
     global $pairs;
@@ -205,13 +165,6 @@ function convertData()
     global $dataToReplace;
     global $week_types;
     global $schedule;
-
-    /////////////////////////////////////////////////////////////////
-    /////////////////////// ONLY PHP 7.1 ////////////////////////////
-    /////////////////////////////////////////////////////////////////
-    //1) преобразовать пдф файл
-    //https://products.aspose.app/pdf/ru/parser
-    //2) перевести кодировку в UTF-8
 
     // Переменные дня
     $cur_day_ind = 0; // Текущий день
@@ -235,9 +188,6 @@ function convertData()
     // Прочине переменные
     $wordRegEx = ["/(?<![\w\d])", "(?![\w\d])/"];
     $space_count = 0;
-
-    // Получение данных из файла
-    $data = file_get_contents("./data.txt");
 
     // Замена лишних переменных
     for ($i = 0; $i < count($dataToReplace); ++$i) {
@@ -387,7 +337,6 @@ function convertData()
     }
 
     file_put_contents("res.json", json_encode($schedule, JSON_UNESCAPED_UNICODE));
-    // echo json_encode($schedule, JSON_UNESCAPED_UNICODE);
 }
 
 /**

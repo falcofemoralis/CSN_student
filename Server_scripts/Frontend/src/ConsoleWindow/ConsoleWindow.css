@@ -1,0 +1,18 @@
+.logs-list{
+    color: #fff;
+    background: #171B21;
+    margin: 15px 5px 0 5px;
+    padding: 25px;
+    height: 596px;
+    overflow-y: scroll;
+    width: 500px;
+}
+
+a{
+    color: #fff;
+    transition: color .5s;
+}
+
+a:hover{
+    color: #00a6ff;
+}

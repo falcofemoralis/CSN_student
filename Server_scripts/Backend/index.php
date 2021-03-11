@@ -8,6 +8,8 @@ require_once "./api/teachersApi.php";
 require_once "./api/usersApi.php";
 require_once "./scripts/token.php";
 
+cors();
+
 if (!function_exists('getallheaders')) {
     function getallheaders()
     {
@@ -31,31 +33,36 @@ array_shift($requestUri); //т.к 1 элемент пустой, поэтому 
  */
 $router = array();
 $router['GET'] = [
-    '/\/api\/groups\/(\d)\/schedule/' => ['getScheduleById'],
     '/\/api\/groups\/course\/(\d)/' => ['getGroupsOnCourse'],
     '/\/api\/groups\/all/' => ['getAllGroups'],
+    '/\/api\/groups\/(\d)\/schedule/' => ['getScheduleById'],
     '/\/api\/teachers\/(\d)\/schedule/' => ['viewTeacherSchedules'],
     '/\/api\/teachers\/all/' => ['getAllTeacher'],
     '/\/api\/subjects\/group\/(\d)/' => ['getSubjectsByGroup'],
     '/\/api\/subjects/' => ['getImageSubject'],
     '/\/api\/subjects\/shortAll/' => ['getShortAllSubjects'],
     '/\/api\/users\/login/' => ['login'],
-    '/\/api\/users\/(\d)\/rating/' => ['getUserRating'],
-    '/\/api\/users\/(\d)/' => ['userViewById'],
+    '/\/api\/users\/all/' => ['getAllUsers'],
     '/\/api\/users\/course\/(\d)/' => ['usersViewByCourse'],
-    '/\/schedule\/new/' => ['processSchedule']
+    '/\/api\/users\/(\d)\/rating/' => ['getUserRating'],
+    '/\/api\/users\/(\d)/' => ['userViewById']
 ];
 $router['POST'] = [
-    '/\/api\/groups\/(\d)\/schedule/' => ['setSchedule'],
-    '/\/schedule\/new/' => ['processSchedule'],
-    '/\/api\/users/' => ['createUser'],
+    '/\/schedule\/upload/' => ['convertFile'],
+    '/\/api\/users/' => ['createUser']
 ];
 $router['PUT'] = [
+<<<<<<< HEAD
     '/\/api\/users\/(\d)\/rating/' => ['updateUserRating'],
     '/\/api\/users/' => ['updateUser']
+=======
+    '/\/api\/users\/(\d)/' => ['updateUser'],
+    '/\/api\/users\/(\d)\/rating/' => ['updateUserRating'],
+    '/\/schedule\/new/' => ['processSchedule']
+>>>>>>> origin/dev
 ];
 $router['DELETE'] = [
-    '/\/schedule/' => ['clearSchedules'],
+    '/\/schedule\/reset/' => ['clearSchedule']
 ];
 
 getRouter("/" . implode('/', $requestUri));

@@ -49,7 +49,6 @@ public class GroupModel {
     private Retrofit retrofit;
 
     private GroupModel() {}
-
     public static GroupModel getGroupModel() {
         if (instance == null) {
             instance = new GroupModel();
@@ -95,6 +94,7 @@ public class GroupModel {
             public void onResponse(@NotNull Call<ArrayList<Group>> call, @NotNull retrofit2.Response<ArrayList<Group>> response) {
                 groups = response.body();
                 exCallable.call(groups);
+                save();
                 Log.d("DEBUG_API", (new Gson()).toJson(response.body()));
             }
 
@@ -136,13 +136,8 @@ public class GroupModel {
             @Override
             public void onResponse(@NotNull Call<ArrayList<ScheduleList>> call, @NotNull retrofit2.Response<ArrayList<ScheduleList>> response) {
                 group.scheduleList = response.body();
-                Log.d("DEBUG_API", (new Gson()).toJson(response.body()));
-                try {
-                    exCallable.call(group.scheduleList);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+                exCallable.call(group.scheduleList);
+                save();
             }
 
             @Override

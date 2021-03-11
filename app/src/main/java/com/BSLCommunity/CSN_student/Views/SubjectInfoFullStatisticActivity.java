@@ -11,13 +11,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
-import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
-import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
 import com.BSLCommunity.CSN_student.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class SubjectInfoFullStatisticActivity extends BaseActivity {
     TableLayout worksTL;
@@ -34,9 +29,9 @@ public class SubjectInfoFullStatisticActivity extends BaseActivity {
 
         worksTL = findViewById(R.id.activity_subject_info_full_tl_works);
         worksNumberTR = findViewById(R.id.activity_subject_info_full_tr_works_numbers);
-
-        for (int i = 0; i < SubjectModel.subjectsList.length; ++i) getMaxWorks(i); //узнаем максимальное кол-во работ (по типам)
-        for (int i = 0; i < SubjectModel.subjectsList.length; ++i) addSubjectRow(i); //добавлем полосу предмета
+//
+//        for (int i = 0; i < SubjectModel.subjects.length; ++i) getMaxWorks(i); //узнаем максимальное кол-во работ (по типам)
+//        for (int i = 0; i < SubjectModel.subjects.length; ++i) addSubjectRow(i); //добавлем полосу предмета
         addWorksHeaders(); //добавляем заголовки
     }
 
@@ -72,12 +67,12 @@ public class SubjectInfoFullStatisticActivity extends BaseActivity {
 
         //добавляем название предмета
         TextView subjectName = mGetView(R.layout.inflate_statistic_view);
-        try {
-            JSONObject subjectJSONObject = new JSONObject(SubjectModel.subjectsList[id].NameDiscipline);
-            subjectName.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(this)));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONObject subjectJSONObject = new JSONObject(SubjectModel.subjects[id].NameDiscipline);
+//            subjectName.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(this)));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         subjectName.setTextColor(getColor(R.color.white));
         subjectName.setGravity(Gravity.LEFT);
         tableRow.addView(subjectName);

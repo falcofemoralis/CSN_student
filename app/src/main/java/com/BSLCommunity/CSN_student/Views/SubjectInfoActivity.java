@@ -96,7 +96,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
     public void setSubjectName() {
         Button subjectNameBtn = (Button) findViewById(R.id.activity_subject_info_bt_subjectName);
         try {
-            JSONObject subjectJSONObject = new JSONObject(SubjectModel.subjectsList[subjectId].NameDiscipline);
+            JSONObject subjectJSONObject = new JSONObject(SubjectModel.getSubjectModel().subjects.get(subjectId).name);
             subjectNameBtn.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(this)));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -163,9 +163,9 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
     public void setTeachers() {
         //получаем id преподов
         teacherIds = new ArrayList<>(); //список преподов для установки
-        mGetTeacherId(SubjectModel.subjectsList[subjectId].Code_Lector);
-        mGetTeacherId(SubjectModel.subjectsList[subjectId].Code_Practice);
-        mGetTeacherId(SubjectModel.subjectsList[subjectId].Code_Assistant);
+//        mGetTeacherId(SubjectModel.subjects[subjectId].idLecturer);
+//        mGetTeacherId(SubjectModel.subjects[subjectId].idPractice);
+//        mGetTeacherId(SubjectModel.subjects[subjectId].idAssistant);
 
 
         // Поля где необходимо установить имена преподавателей

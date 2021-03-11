@@ -34,7 +34,8 @@ public class SubjectsInfo {
             R.color.done_with_report,
             R.color.waiting_acceptation,
             R.color.passed_without_report,
-            R.color.passed_with_report};
+            R.color.passed_with_report
+    };
 
     public static class SubjectInfo {
         public int subjectValue;
@@ -107,8 +108,8 @@ public class SubjectsInfo {
             // Извлечение локальных данных пользователя
             instance = new SubjectsInfo();
 
-            instance.subjectInfo = new SubjectInfo[SubjectModel.subjectsList.length];
-            for (int i = 0; i < SubjectModel.subjectsList.length; ++i)
+            instance.subjectInfo = new SubjectInfo[SubjectModel.getSubjectModel().subjects.size()];
+            for (int i = 0; i < SubjectModel.getSubjectModel().subjects.size(); ++i)
                 instance.subjectInfo[i] = new SubjectInfo();
 
             //загрузка данных

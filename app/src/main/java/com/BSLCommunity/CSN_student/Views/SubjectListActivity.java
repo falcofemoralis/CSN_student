@@ -24,8 +24,10 @@ import android.widget.TextView;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Models.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
+import com.BSLCommunity.CSN_student.Presenters.SubjectListPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
 
@@ -33,6 +35,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SubjectListActivity extends BaseActivity implements SubjectListView {
+    SubjectListPresenter subjectListPresenter;
+
     Boolean shouldExecuteOnResume = false;
     View clickedButton;
 
@@ -60,7 +64,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
         // Создаем кнопку одной дисциплины
         protected void createSubject(TableRow rowSubject, int numberSubject) {
 
-            SubjectModel.SubjectsList subject = SubjectModel.subjectsList[numberSubject];
+            Subject subject = SubjectModel.getSubjectModel().subjects.get(numberSubject);
 
             // Инициализация всех деталей группы view элементов дисциплины
             LinearLayout subjectLayout = (LinearLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.inflate_subject_bt, rowSubject, false);
@@ -71,9 +75,10 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
             // Установка названия дисцилпины
             try {
                 //получаем имя предмета по локализации
-                JSONObject subjectJSONObject = new JSONObject(subject.NameDiscipline);
+                JSONObject subjectJSONObject = new JSONObject(subject.name);
                 button.setText(subjectJSONObject.getString(LocaleHelper.getLanguage(SubjectListActivity.this)));
             } catch (JSONException e) {
+
             }
 
             // Устанавливаем функционал кнопке
@@ -132,8 +137,10 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
         TextView courseTextView = (TextView) findViewById(R.id.activity_subject_list_tv_course);
         //courseTextView.setText(UserModel.getUserModel().course + " " + courseTextView.getText());
         tableSubjects = findViewById(R.id.activity_subject_list_ll_table_subjects);
-        setSubjectsList();
-        setProgress();
+//        setSubjectsList();
+//        setProgress();
+
+        this.subjectListPresenter = new SubjectListPresenter(this);
     }
 
     @Override
@@ -207,9 +214,9 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
         TableRow rowSubject = null;
 
         int i;
-        subjectDrawables = new SubjectDrawable[SubjectModel.subjectsList.length];
+        subjectDrawables = new SubjectDrawable[SubjectModel.getSubjectModel().subjects.size()];
 
-        for (i = 0; i <= SubjectModel.subjectsList.length; ++i) {
+        for (i = 0; i <= SubjectModel.getSubjectModel().subjects.size(); ++i) {
             // В одном ряду может быть лишь 3 кнопки, если уже три созданы, создается следующая колонка
             if (i % 3 == 0) {
 
@@ -221,7 +228,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                 tableSubjects.addView(rowSubject);
             }
 
-            if (i == SubjectModel.subjectsList.length)
+            if (i == SubjectModel.getSubjectModel().subjects.size())
                 createFullStatistics(rowSubject);
             else {
                 subjectDrawables[i] = new SubjectDrawable();
@@ -297,15 +304,15 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
         protected Void doInBackground(Void... voids) {
             for (int i = 0; i < subjectDrawables.length; ++i) {
                 int count = 0;
-                while (!isCancelled() && SubjectModel.getSubjectImage(getApplicationContext(), SubjectModel.subjectsList[i]) == null && count < 300){
-                    try {
-                        Thread.sleep(10);
-                    }
-                    catch (InterruptedException e) {
-                        return null;
-                    }
-                    ++count;
-                };
+//                while (!isCancelled() && SubjectModel.getSubjectImage(getApplicationContext(), SubjectModel.subjects[i]) == null && count < 300){
+//                    try {
+//                        Thread.sleep(10);
+//                    }
+//                    catch (InterruptedException e) {
+//                        return null;
+//                    }
+//                    ++count;
+//                };
 
                 if (isCancelled())
                     return null;
@@ -318,8 +325,8 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
         @Override
         protected void onProgressUpdate(Integer... index) {
-            BitmapDrawable img = SubjectModel.getSubjectImage(getApplicationContext(), SubjectModel.subjectsList[index[0]]);
-            subjectDrawables[index[0]].setImg(img);
+            //BitmapDrawable img = SubjectModel.getSubjectImage(getApplicationContext(), SubjectModel.subjects[index[0]]);
+           // subjectDrawables[index[0]].setImg(img);
             subjectDrawables[index[0]].progressBar.setVisibility(View.GONE);
             return;
         }

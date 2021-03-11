@@ -6,48 +6,58 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.Toast;
 
-import com.BSLCommunity.CSN_student.Managers.DBHelper;
-import com.BSLCommunity.CSN_student.Managers.JSONHelper;
+import com.BSLCommunity.CSN_student.APIs.SubjectApi;
+import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.concurrent.Callable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SubjectModel {
+    public final String DATA_FILE_NAME = "Subjects";
 
-    public static final String DATA_FILE_NAME = "Subjects";
+    private static SubjectModel instance;
+    private Retrofit retrofit;
 
-    public class SubjectsList {
-        public int id, Code_Lector, Code_Practice, Code_Assistant;
-        public String NameDiscipline, Image;
+    public ArrayList<Subject> subjects;
+
+    private SubjectModel() {}
+    public static SubjectModel getSubjectModel() {
+        if (instance == null) {
+            instance = new SubjectModel();
+            instance.init();
+        }
+        return instance;
     }
-    public static SubjectsList[] subjectsList;
 
     // Инциализация
-    public static void init(Context context, final Callable<Void> callBacks) {
+    public void init() {
+        this.retrofit = new Retrofit.Builder()
+                .baseUrl(SubjectApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        if (subjectsList != null)
-            return;
-
-        String response = JSONHelper.read(context, DATA_FILE_NAME);
-
-        if (response.equals("NOT FOUND") || response.equals("null")) {
-            downloadFromServer(context, callBacks);
-            return;
-        }
-
-        Gson gson = new Gson();
-        subjectsList = gson.fromJson(response, SubjectsList[].class);
-
-        // После скачивания всех данных вызывается callBack, у объекта который инициировал скачиввание данных с сервер, если это необходимо
         try {
-            callBacks.call();
+            String data = FileManager.readFile(DATA_FILE_NAME);
+            Type type = new TypeToken<ArrayList<Subject>>() {}.getType();
+            subjects = (new Gson()).fromJson(data, type);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            subjects = new ArrayList<>();
         }
     }
 
@@ -56,59 +66,26 @@ public class SubjectModel {
      * context - контекст приложения или активитиы
      * callback - дальнейшие действия которые необходимо будет выполнить после запроса
      * */
-    public static void downloadFromServer(final Context context, final Callable<Void> callback) {
-        String apiUrl = String.format("api/subjects/group?Code_Group=%1$s", 0);
-        DBHelper.getRequest(context, apiUrl, DBHelper.TypeRequest.STRING, new DBHelper.CallBack<String>() {
+    public void getGroupSubjects(int idGroup, final ExCallable<ArrayList<Subject>> callback) {
+        if (!subjects.isEmpty()) {
+            callback.call(subjects);
+            return;
+        }
 
+        SubjectApi subjectApi = retrofit.create(SubjectApi.class);
+
+        Call<ArrayList<Subject>> call = subjectApi.groupSubjects(idGroup);
+        call.enqueue(new Callback<ArrayList<Subject>>() {
             @Override
-            public void call(String response) {
-                Gson gson = new Gson();
-                subjectsList = gson.fromJson(response, SubjectsList[].class);
-                save(context);
-                try {
-                    callback.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                // Начинаем скачивание изображений
-                downloadImageFromServer(context, 0);
-
-                try {
-                    callback.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(@NotNull Call<ArrayList<Subject>> call, @NotNull Response<ArrayList<Subject>> response) {
+                subjects = response.body();
+                callback.call(subjects);
+                save();
             }
 
             @Override
-            public void fail(String message) {
-                Toast.makeText(context, R.string.no_connection_server, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /* Загрузка изображения с сервера (формат Bitmap)
-    * Параметры:
-    * context - контекст приложения или активити
-    * subject - объект дисциплина, из него берется название изображени
-    * callback - дальнейшие действия которые необходимо будет выполнить после запроса
-    * */
-    public static void downloadImageFromServer(final Context context, final int numSubject) {
-        String apiUrl = String.format("api/subjects?image=%s", subjectsList[numSubject].Image);
-        DBHelper.getRequest(context, apiUrl, DBHelper.TypeRequest.IMAGE, new DBHelper.CallBack<Bitmap>() {
-            @Override
-            public void call(Bitmap response) {
-                saveImage(new BitmapDrawable(context.getResources(), response), subjectsList[numSubject].Image, context);
-                // Если изображение не последней дисциплины - скачивается следующее. Сделано в запросе для того чтобы ограничить скорость отправки самих запросов, иначе возникают проблемы
-                // Временный вариант, есть более умные способы ограничивать частоту запросов
-                if (subjectsList.length - 1 != numSubject)
-                    downloadImageFromServer(context, numSubject + 1);
-            }
-
-            @Override
-            public void fail(String message) {
-                Toast.makeText(context, "image not found", Toast.LENGTH_SHORT).show();
+            public void onFailure(@NotNull Call<ArrayList<Subject>> call, @NotNull Throwable t) {
+                callback.fail(R.string.no_connection_server);
             }
         });
     }
@@ -118,8 +95,8 @@ public class SubjectModel {
      * context - контекст приложения
      * subject - объект дисциплина, из него берется название изображени
      * */
-    public static BitmapDrawable getSubjectImage(final Context context, final SubjectsList subject) {
-        File imageFile = new File(context.getDir("images", context.MODE_PRIVATE) + "/" + subject.Image);
+    public BitmapDrawable getSubjectImage(final Context context, final Subject subject) {
+        File imageFile = new File(context.getDir("images", context.MODE_PRIVATE) + "/" + subject.imgPath);
 
         // Если изображение найдено - возвращаем, если не найдено - его не существует для данной дисциплины
         if (imageFile.exists()) {
@@ -131,10 +108,13 @@ public class SubjectModel {
     }
 
     // Сохраняет данные о предметах в Json файл
-    public static void save(Context appContext) {
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(subjectsList);
-        JSONHelper.create(appContext, DATA_FILE_NAME, jsonString);
+    public void save() {
+        String data = (new Gson()).toJson(subjects);
+        try {
+            FileManager.writeFile(DATA_FILE_NAME, data, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /* Сохраняем изображение дисциплин в дирректорию .../files/images
@@ -142,7 +122,7 @@ public class SubjectModel {
     * nameImage - название изображения
     *  context - контекст приложения
     * */
-    public static void saveImage(BitmapDrawable bmp, String nameImage, Context context) {
+    public void saveImage(BitmapDrawable bmp, String nameImage, Context context) {
 
         try {
             // Создаем файл изображение

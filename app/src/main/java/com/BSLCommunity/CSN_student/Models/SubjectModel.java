@@ -80,7 +80,7 @@ public class SubjectModel {
             public void onResponse(@NotNull Call<ArrayList<Subject>> call, @NotNull Response<ArrayList<Subject>> response) {
                 subjects = response.body();
                 callback.call(subjects);
-                save();
+                //save();
             }
 
             @Override

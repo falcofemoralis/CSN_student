@@ -1,0 +1,29 @@
+.users__list{
+    color: #fff;
+    background: #171B21;
+    margin: 0 50px 0 15px;
+    padding: 25px;
+    height: 700px;
+    overflow-y: scroll;
+}
+
+.users__list-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-text{
+    font-size: 14px;
+}
+
+.users__list-item-name{
+    min-width: 150px;
+}
+
+.users__list-item-opens{
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

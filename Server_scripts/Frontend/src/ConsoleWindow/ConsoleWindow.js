@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
+import './ConsoleWindow.css';
 
 export default class ConsoleWindow extends Component {
     constructor(props) {
         super(props);
 
         this.state = { logs: [] };
-        console.log("cunstructor");
     }
 
     componentDidUpdate(prevProps) {
@@ -20,11 +20,11 @@ export default class ConsoleWindow extends Component {
         const logsElements = [];
         const logs = this.state.logs;
         for (let i = logs.length - 1; i >= 0; i--) {
-            if (logs[i]) logsElements.push(<li key={i}>{logs[i]}</li>);
+            if (logs[i]) logsElements.push(<li key={i}>{(new Date).toTimeString()}: {logs[i]}</li>);
         }
         return (
             <div>
-                <ul>
+                <ul className="logs-list">
                     {logsElements}
                 </ul>
             </div>

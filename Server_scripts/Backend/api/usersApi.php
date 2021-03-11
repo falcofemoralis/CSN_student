@@ -168,3 +168,16 @@ function updateUserRating($url)
 
     DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }
+
+
+/** GET запрос на получение всех пользователей
+ */
+function getAllUsers()
+{
+    $query = "SELECT users.NickName, users.Visits 
+    FROM users 
+    ORDER BY Visits DESC";
+
+    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
+    echo $data;
+}

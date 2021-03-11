@@ -33,18 +33,19 @@ array_shift($requestUri); //т.к 1 элемент пустой, поэтому 
  */
 $router = array();
 $router['GET'] = [
-    '/\/api\/groups\/(\d)\/schedule/' => ['getScheduleById'],
     '/\/api\/groups\/course\/(\d)/' => ['getGroupsOnCourse'],
     '/\/api\/groups\/all/' => ['getAllGroups'],
+    '/\/api\/groups\/(\d)\/schedule/' => ['getScheduleById'],
     '/\/api\/teachers\/(\d)\/schedule/' => ['viewTeacherSchedules'],
     '/\/api\/teachers\/all/' => ['getAllTeacher'],
     '/\/api\/subjects\/group\/(\d)/' => ['getSubjectsByGroup'],
     '/\/api\/subjects/' => ['getImageSubject'],
     '/\/api\/subjects\/shortAll/' => ['getShortAllSubjects'],
     '/\/api\/users\/login/' => ['login'],
+    '/\/api\/users\/all/' => ['getAllUsers'],
+    '/\/api\/users\/course\/(\d)/' => ['usersViewByCourse'],
     '/\/api\/users\/(\d)\/rating/' => ['getUserRating'],
-    '/\/api\/users\/(\d)/' => ['userViewById'],
-    '/\/api\/users\/course\/(\d)/' => ['usersViewByCourse']
+    '/\/api\/users\/(\d)/' => ['userViewById']
 ];
 $router['POST'] = [
     '/\/schedule\/upload/' => ['convertFile'],

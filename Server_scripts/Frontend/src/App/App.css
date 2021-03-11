@@ -1,0 +1,61 @@
+.app{
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.main{
+    display: flex;
+    justify-content: center;
+}
+
+.headerText{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: #fff;
+    height: 150px;
+    font-size: 32px;
+}
+
+.hint{
+    margin: 5px;
+    color: #fff;
+}
+
+button{
+    outline: none;
+    border: none;   
+    background: #1882bb;
+    border-radius: 13px;
+    padding: 10px;
+    color: #fff;
+    margin: 5px;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: background .5s;
+}
+
+button:hover{
+    background: #00a6ff;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00a6ff;
+}
+
+.controls{
+    display: flex;
+}

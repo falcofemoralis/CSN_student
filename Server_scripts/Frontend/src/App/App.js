@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
+import Users from '../Users/Users';
 import './App.css';
 
 export default class App extends Component {
@@ -42,29 +43,39 @@ export default class App extends Component {
 
   render() {
     const uploadedFile = this.state.uploadedFile;
-
     return (
-      <div className="App">
-        <span>    //1) преобразовать пдф файл
-        //https://products.aspose.app/pdf/ru/parser/pdf
-     //2) перевести кодировку в UTF-8</span>
-        <div>
-          <input
-            ref={this.fileInput}
-            onChange={(event) => { this.setState({ uploadedFile: event.target.files[0] }); }}
-            type="file"
-            style={{ display: "none" }}
-            accept=".txt"
-          />
-          <button onClick={() => { this.fileInput.current.click(); }}>Upload File</button>
+      <div className="app">
+        <h3 className="headerText">Админ панель CSN Student</h3>
+        <div className="main">
+          <Users />
+          <div>
+            <div className="hint">
+              <p>1) Преобразовать пдф файл <a href="https://products.aspose.app/pdf/ru/parser/pdf">PDF converter</a></p>
+              <p>2) Перевести кодировку в UTF-8</p>
+            </div>
+            <div>
+              <div className="controls">
+                <div>
+                  <input
+                    ref={this.fileInput}
+                    onChange={(event) => { this.setState({ uploadedFile: event.target.files[0] }); }}
+                    type="file"
+                    style={{ display: "none" }}
+                    accept=".txt"
+                  />
+                  <button onClick={() => { this.fileInput.current.click(); }}>Upload File</button>
+                </div>
+                {
+                  uploadedFile &&
+                  <button onClick={this.convertFile}>Конвертировать файл</button>
+                }
+                <button onClick={() => { this.HTTPRequest("/schedule/new", 'PUT'); }}>Обновить базу</button>
+                <button onClick={() => { this.HTTPRequest("/schedule/reset", 'DELETE'); }}>Очистить базу</button>
+              </div>
+              <ConsoleWindow logs={this.state.logs} />
+            </div>
+          </div>
         </div>
-        {
-          uploadedFile &&
-          <button onClick={this.convertFile}>Конвертировать файл</button>
-        }
-        <button onClick={() => { this.HTTPRequest("/schedule/new", 'PUT'); }}>Обновить базу</button>
-        <button onClick={() => { this.HTTPRequest("/schedule/reset", 'DELETE'); }}>Очистить базу</button>
-        <ConsoleWindow logs={this.state.logs} />
       </div>
     )
   }

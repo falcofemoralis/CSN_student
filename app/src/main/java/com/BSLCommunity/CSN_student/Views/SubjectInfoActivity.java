@@ -18,7 +18,6 @@ import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
-import com.BSLCommunity.CSN_student.Models.TeachersModel;
 import com.BSLCommunity.CSN_student.R;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -176,7 +175,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
 
 
         // Устаанавлваем имена преподавателей
-        int i;
+/*        int i;
         for (i = 0; i < teacherIds.size(); ++i) {
             try {
                 JSONObject teacherJSONObject = new JSONObject(TeachersModel.findById(teacherIds.get(i)).FIO);
@@ -188,7 +187,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
 
         // Скрываем поля если нету преподавателя
         for (; i < 3; ++i)
-            ((View) btTeachers[i].getParent()).setVisibility(View.GONE);
+            ((View) btTeachers[i].getParent()).setVisibility(View.GONE);*/
     }
 
     // Установка прогресса в нижней части экрана

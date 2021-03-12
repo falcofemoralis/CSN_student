@@ -10,9 +10,9 @@ import com.google.gson.annotations.SerializedName;
  * subject - предмет (строка JSON)
  * type - тип предмета (строка JSON)
  * room - номер аудитории
+ * groups - группы которые находятся на предмете в расписании у преподавателя
  * */
 public class ScheduleList {
-
     @SerializedName("Half")
     public int half;
     @SerializedName("Day")
@@ -25,14 +25,6 @@ public class ScheduleList {
     public String room;
     @SerializedName("SubjectType")
     public String type;
-
-
-    public ScheduleList(int half, int day, int pair, String subject, String type, String room) {
-        this.half = half;
-        this.day = day;
-        this.pair = pair;
-        this.subject = subject;
-        this.room = room;
-        this.type = type;
-    }
+    @SerializedName("Groups")
+    public String[] groups;
 }

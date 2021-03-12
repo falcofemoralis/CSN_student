@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -15,12 +14,16 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.BSLCommunity.CSN_student.Managers.FileManager;
+import com.BSLCommunity.CSN_student.Models.GroupModel;
+import com.BSLCommunity.CSN_student.Models.TeacherModel;
 import com.BSLCommunity.CSN_student.Models.Timer;
 import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
 import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
+import com.BSLCommunity.CSN_student.lib.ExCallable;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements View.OnTouchListener, MainView {
@@ -32,7 +35,28 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //TODO перенести инициализацию в сервис
         FileManager.init(getApplicationContext());
+        TeacherModel.getTeacherModel().getAllTeachers(new ExCallable<ArrayList<TeacherModel.Teacher>>() {
+            @Override
+            public void call(ArrayList<TeacherModel.Teacher> data) {
+            }
+
+            @Override
+            public void fail(int idResString) {
+            }
+        });
+       GroupModel.getGroupModel().getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
+            @Override
+            public void call(ArrayList<GroupModel.Group> response) {
+            }
+
+            @Override
+            public void fail(int idResString) {
+            }
+        });
+
 
         mainPresenter = new MainPresenter(this);
         mainPresenter.checkAuth();
@@ -75,27 +99,21 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             transitionDrawable.startTransition(150);
             view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
-        }
-        else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             Intent intent = null;
             int id = view.getId();
 
             if (id == R.id.activity_main_bt_subjects) {
                 intent = new Intent(this, SubjectListActivity.class);
-            }
-            else if (id == R.id.activity_main_bt_auditorium) {
+            } else if (id == R.id.activity_main_bt_auditorium) {
                 intent = new Intent(this, AuditoriumActivity.class);
-            }
-            else if (id == R.id.activity_main_bt_lessonsShedule) {
+            } else if (id == R.id.activity_main_bt_lessonsShedule) {
                 intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes", SchedulePresenter.EntityTypes.GROUPS);
-            }
-            else if (id == R.id.activity_main_bt_settings) {
+            } else if (id == R.id.activity_main_bt_settings) {
                 intent = new Intent(this, SettingsActivity.class);
-            }
-            else if (id == R.id.activity_main_bt_teachersSchedule) {
-                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes",  SchedulePresenter.EntityTypes.TEACHERS);
-            }
-            else if (id == R.id.activity_main_bt_schedule_bell) {
+            } else if (id == R.id.activity_main_bt_teachersSchedule) {
+                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes", SchedulePresenter.EntityTypes.TEACHERS);
+            } else if (id == R.id.activity_main_bt_schedule_bell) {
                 intent = new Intent(this, ScheduleBell.class);
             }
 

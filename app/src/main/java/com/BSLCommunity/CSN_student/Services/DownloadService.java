@@ -18,7 +18,7 @@ import androidx.core.app.NotificationCompat;
 import com.BSLCommunity.CSN_student.Models.AnotherUserList;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.LocalData;
-import com.BSLCommunity.CSN_student.Models.TeachersModel;
+import com.BSLCommunity.CSN_student.Models.TeacherModel;
 import com.BSLCommunity.CSN_student.R;
 
 import java.io.File;
@@ -108,14 +108,6 @@ public class DownloadService extends Service {
         LocalData.downloadUpdateList(getApplicationContext(), LocalData.updateListTeachers, LocalData.TypeData.teachers, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                TeachersModel.init(getApplicationContext(), new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        // LocalData.checkUpdate(getApplicationContext(), LocalData.TypeData.teachers);
-                         stopService("teachers");
-                        return null;
-                    }
-                });
                 return null;
             }
         });
@@ -135,7 +127,7 @@ public class DownloadService extends Service {
         Log.d("DownloadService", id + " tryToStop");
 
         File fileGr = getApplicationContext().getFileStreamPath(GroupModel.DATA_FILE_NAME);
-        File fileTeach = getApplicationContext().getFileStreamPath(TeachersModel.DATA_FILE_NAME);
+        File fileTeach = getApplicationContext().getFileStreamPath(TeacherModel.DATA_FILE_NAME);
        // File fileSubj = getApplicationContext().getFileStreamPath(SubjectModel.DATA_FILE_NAME);
 
 //        if (fileGr.exists() && fileTeach.exists() && fileSubj.exists()) {

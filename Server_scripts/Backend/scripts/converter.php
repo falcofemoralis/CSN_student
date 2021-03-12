@@ -73,7 +73,7 @@ function inserInDatabase()
                         switch ($key) {
                             case $pair_info[0]:
                                 // Получение id предмета
-                                $codeSubject =  mysqli_fetch_assoc(mysqli_query($connection, "SELECT subjects.Code_Subject FROM subjects WHERE subjects.abbreviation like '%$value%'"))['Code_Subject'];
+                                $codeSubject =  mysqli_fetch_assoc(mysqli_query($connection, "SELECT subjects.Code_Subject FROM subjects WHERE subjects.abbreviation = '$value'"))['Code_Subject'];
 
                                 if ($codeSubject == null) {
                                     showError("Subject $value doesn't exist");

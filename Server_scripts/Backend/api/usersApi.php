@@ -70,7 +70,7 @@ function usersViewByCourse($url)
 }
 
 // POST запрос
-function createUser($url)
+function createUser()
 {
     // $arr = getallheaders();
     // $token = $arr['token'];
@@ -122,16 +122,18 @@ function createUser($url)
  */
 function updateUser($url)
 {
-    $arr = getallheaders();
-    $token = $arr['token'];
-    $id = checkAuth($token);
+    $id = explode('/', $url)[3];
 
-    $data = json_decode(file_get_contents('php://input'));
+    $string = file_get_contents('php://input');
+    parse_str($string, $data);
+
     // Получаем данные
-    $nickName = $data->NickName;
-    $password = $data->Password;
+    $nickName = $data['NickName'];
+    $password = $data['Password'];
+    $oldPassword = $data['OldPassword'];
+
     // Проверка на то, все ли данные пришли
-    if ($nickName == NULL || $password == NULL) {
+    if ($nickName == NULL || $password == NULL || $oldPassword == NULL) {
         echo "ERROR";
         return;
     }
@@ -139,7 +141,7 @@ function updateUser($url)
     $query = "  UPDATE `users`
                 SET `NickName`='$nickName',
                     `Password`='$password'
-                    WHERE Code_User = '$id'";
+                    WHERE Code_User = '$id' AND Password = '$oldPassword'";
 
     DataBase::execQuery($query, ReturnValue::GET_NOTHING);
 }

@@ -1,5 +1,6 @@
 package com.BSLCommunity.CSN_student.Managers;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -9,8 +10,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 public class FileManager {
-    private static final String ROOT_FILES = "files";
-    private static final String ROOT_IMAGES = "images";
+    private static String ROOT_FILES;
+    private static String ROOT_IMAGES;
+
+    public static void init(Context context) {
+        FileManager.ROOT_FILES = context.getFilesDir().toString();
+        FileManager.ROOT_IMAGES = context.getFilesDir().toString() + "/images";
+    }
 
     public static String readFile(String src) throws Exception {
         File file = new File(ROOT_FILES, src);

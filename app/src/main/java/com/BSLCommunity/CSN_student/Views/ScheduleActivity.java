@@ -3,69 +3,168 @@ package com.BSLCommunity.CSN_student.Views;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
-import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
-import com.BSLCommunity.CSN_student.Models.TeachersModel;
-import com.BSLCommunity.CSN_student.Models.UserModel;
+import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
 import com.BSLCommunity.CSN_student.R;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.ThreeBounce;
+import com.BSLCommunity.CSN_student.ViewInterfaces.ScheduleView;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 //форма расписание предметов группы
-public class ScheduleActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
-    final int MAX_PAIR = 5; //кол-во пар в активити
-    final int MAX_DAYS = 5; //кол-во дней в активити
+public class ScheduleActivity extends BaseActivity implements ScheduleView, AdapterView.OnItemSelectedListener {
+    private final int MAX_PAIR = 5; //кол-во пар в активити
+    private final int MAX_DAYS = 5; //кол-во дней в активити
+    private final int DEFAULT_HALF = 0; // Числитель
 
-    TextView[][] scheduleTextView = new TextView[MAX_DAYS][MAX_PAIR]; //массив из элементов TextView в активити
-    TextView type_week; //тип недели
-    Spinner spinner; //спинер выбора группы
+    /* //массив из элементов TextView в активити
     ScheduleList[][][] scheduleList;  //сохраненое расписание
-    String entity; //тип расписания
 
     int[] idElements; // id сущностей в спиннере (в порядке расположения их в спиннере)
     int selectedItemId; // ID выбранного элемента в спиннере
 
-    ProgressBar progressBar; //анимация загрузки в спиннере
+    ProgressBar progressBar; //анимация загрузки в спиннере*/
+
+
+    private SchedulePresenter schedulePresenter;
+    private Spinner spinner;
+    private TextView weekTypeView; //тип недели
+    private TextView[][] scheduleTextView = new TextView[MAX_DAYS][MAX_PAIR];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")) entity = "teachers";
-        else entity = "groups";
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_lessons_schedule);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
+        AnimationManager.setAnimation(getWindow(), this);
+
+        weekTypeView = findViewById(R.id.activity_lessons_schedule_bt_weekType);
+
+        //получеам id текстовых полей с activity_lessons_schedule и сохраняем их в массиве schedule[][]
+        for (int i = 0; i < MAX_DAYS; ++i)
+            for (int j = 0; j < MAX_PAIR; ++j)
+                scheduleTextView[i][j] = findViewById(getResources().getIdentifier("text_" + i + "_" + j, "id", getApplicationContext().getPackageName()));
+
+        schedulePresenter = new SchedulePresenter(this, (SchedulePresenter.EntityTypes) getIntent().getSerializableExtra("EntityTypes"));
+        schedulePresenter.initSpinnerData();
+        schedulePresenter.initSchedule(DEFAULT_HALF);
+
+        //TODO сделать определение чистил или знам
+
+
+
+ /*       progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
         Sprite iIndeterminateDrawable = new ThreeBounce();
         iIndeterminateDrawable.setColor(getColor(R.color.white));
         progressBar.setIndeterminateDrawable(iIndeterminateDrawable);
+ */
 
-        spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
-        spinner.setEnabled(false);
 
-        createSpinner();
-        getScheduleElements();
+        //createSpinner();
+        // getScheduleElements();
+
     }
 
-    //создание спиннера групп
+
+    //если в спинере была выбрана группа
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        schedulePresenter.changeGroup((String) spinner.getItemAtPosition(position));
+   /*     selectedItemId = (int)id;
+        try {
+            setSchedule(idElements[selectedItemId]);
+        }catch (Exception e){
+            e.getStackTrace();
+        }*/
+    }
+
+    public void changeWeekType(View v) {
+        TransitionManager.beginDelayedTransition((LinearLayout) findViewById(R.id.activity_lessons_schedule_ll_main));
+
+        if (weekTypeView.getText().equals(getResources().getString(R.string.denominator))){
+            weekTypeView.setText(getResources().getString(R.string.numerator));
+            schedulePresenter.changeHalf(0);
+        }
+        else{
+            weekTypeView.setText(getResources().getString(R.string.denominator));
+            schedulePresenter.changeHalf(1);
+        }
+    }
+
+    //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    @Override
+    public void setSpinnerData(ArrayList<String> entities, int defaultGroup) {
+        spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
+        spinner.setPrompt(getString(R.string.group_prompt));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_schedule_groups_layout, entities);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(this);
+        spinner.setSelection(defaultGroup);
+    }
+
+    @Override
+    public void setSchedule(ArrayList<ScheduleList> scheduleList, int half) {
+        clearSchedule();
+
+        for (int i = 0; i < scheduleList.size(); ++i) {
+            ScheduleList list = scheduleList.get(i);
+
+            if(list.half == 2 || list.half == half){
+                try {
+                    String subject = (new JSONObject(list.subject)).getString(LocaleHelper.getLanguage(getApplicationContext()));
+                    String type = (new JSONObject(list.type)).getString(LocaleHelper.getLanguage(getApplicationContext()));
+                    scheduleTextView[list.day-1][list.pair-1].setText(subject + " " + type + " (" + list.room + ")");
+                } catch (Exception e){
+                    Log.d("PARSE_ERROR", "No translation for " + list.subject);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void clearSchedule() {
+        for (int i = 0; i < MAX_DAYS; ++i)
+            for (int j = 0; j < MAX_PAIR; ++j)
+                scheduleTextView[i][j].setText("");
+    }
+
+
+/*    //меняем тип недели
+    public void changeTypeWeek(View v) {
+        TransitionManager.beginDelayedTransition((LinearLayout) findViewById(R.id.activity_lessons_schedule_ll_main));
+
+        if (type_week.getText().equals(getResources().getString(R.string.denominator)))
+            type_week.setText(getResources().getString(R.string.numerator));
+        else
+            type_week.setText(getResources().getString(R.string.denominator));
+
+        try {
+            setSchedule(idElements[selectedItemId]);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+    }*/
+
+
+/*    //создание спиннера групп
     protected void createSpinner() {
         UserModel user = UserModel.getUserModel(); // Данные пользователя
         int selectFirst = 0; // Для выбора расписания которое будет показано при загрузке самого окна
@@ -78,7 +177,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
             if (TeachersModel.teacherLists.size() != 0) {
                 progressBar.setVisibility(View.GONE);
 
-               // int listSize = Teachers.teacherLists.size();
+                // int listSize = Teachers.teacherLists.size();
                 int listSize = 28; // кол-во преподов на кафедре
 
                 //добавляем в массив из класса Teachers преподы
@@ -90,8 +189,8 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                         // Разбиение ФИО на составные и установка с инициалами
                         String[] fioStrs = FIOJson.getString(LocaleHelper.getLanguage(this)).split(" ");
                         listAdapter.add(fioStrs[2] + " " + fioStrs[0].charAt(0) + ". " + fioStrs[1].charAt(0));
+                    } catch (Exception e) {
                     }
-                    catch (Exception e) {}
                     idElements[j] = TeachersModel.teacherLists.get(j).id;
                 }
                 spinner.setPrompt(getString(R.string.teachers_prompt));
@@ -103,11 +202,10 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                 selectFirst = 0;
             } else {
                 //в том случае если групп по курсу нету
-              //  listAdapter.add("No teachers");
+                //  listAdapter.add("No teachers");
             }
 
-        }
-        else {
+        } else {
             //создаем лист групп
             if (GroupModel.groups.size() != 0) {
                 progressBar.setVisibility(View.GONE);
@@ -118,7 +216,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                     listAdapter.add(GroupModel.groups.get(j).groupName);
                     idElements[j] = GroupModel.groups.get(j).id;
                     // Если id группы совпадает с id группы пользователя - эта группа и будет показана первой
-                    if (0== idElements[j])
+                    if (0 == idElements[j])
                         selectFirst = j;
                 }
                 spinner.setPrompt(getString(R.string.group_prompt));
@@ -128,7 +226,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                 spinner.setAdapter(dataAdapter);
             } else {
                 //в том случае если групп по курсу нету
-               // listAdapter.add("No groups");
+                // listAdapter.add("No groups");
             }
         }
 
@@ -137,36 +235,6 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
         spinner.setOnItemSelectedListener(this);
     }
 
-    //если в спинере была выбрана группа
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        selectedItemId = (int)id;
-        try {
-            setSchedule(idElements[selectedItemId]);
-        }catch (Exception e){
-            e.getStackTrace();
-        }
-    }
-
-    //нужен для реализации интерфейса AdapterView.OnItemSelectedListener
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
-
-    //меняем тип недели
-    public void changeTypeWeek(View v) {
-        TransitionManager.beginDelayedTransition((LinearLayout) findViewById(R.id.activity_lessons_schedule_ll_main));
-
-        if (type_week.getText().equals(getResources().getString(R.string.denominator)))
-            type_week.setText(getResources().getString(R.string.numerator));
-        else
-            type_week.setText(getResources().getString(R.string.denominator));
-        try {
-            setSchedule(idElements[selectedItemId]);
-        }catch (Exception e){
-            e.getStackTrace();
-        }
-    }
 
     //получение необходимых полей с активити расписание
     protected void getScheduleElements() {
@@ -214,6 +282,6 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
         for (int i = 0; i < MAX_DAYS; ++i)
             for (int j = 0; j < MAX_PAIR; ++j)
                 scheduleTextView[i][j].setText("");
-    }
+    }*/
 }
 

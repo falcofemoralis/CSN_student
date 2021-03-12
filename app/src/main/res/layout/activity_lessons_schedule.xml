@@ -48,15 +48,6 @@
                     android:textSize="12sp"
                     android:visibility="visible" />
 
-                <ProgressBar
-                    android:id="@+id/activity_lessons_schedule_pb_main"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:indeterminate="true"
-                    android:indeterminateTint="@color/white" />
-
             </RelativeLayout>
 
             <Space
@@ -71,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.35"
                 android:background="@color/main_color_2"
-                android:onClick="changeTypeWeek"
+                android:onClick="changeWeekType"
                 android:text="@string/numerator"
                 android:textAllCaps="true"
                 android:textColor="@color/white"

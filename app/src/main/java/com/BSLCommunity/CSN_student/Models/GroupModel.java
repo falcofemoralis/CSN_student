@@ -38,12 +38,8 @@ public class GroupModel {
             this.id = id;
             this.groupName = GroupName;
         }
-
-        // Добавляет расписание в группу
-        public void addSchedule(int half, int day, int pair, String subject, String type, String room) {
-            scheduleList.add(new ScheduleList(half, day, pair, subject, type, room));
-        }
     }
+
     public static ArrayList<Group> groups;
 
     private Retrofit retrofit;
@@ -95,7 +91,10 @@ public class GroupModel {
                 groups = response.body();
                 exCallable.call(groups);
                 save();
-                Log.d("DEBUG_API", (new Gson()).toJson(response.body()));
+                Log.d("DEBUG_API", groups.toString());
+                for(Group group : groups){
+                    loadSchedule(group.id);
+                }
             }
 
             @Override
@@ -125,9 +124,8 @@ public class GroupModel {
     /**
      * Загрузка рассписания по id
      * @param groupId - id группы для которой необходимо рассписание
-     * @param exCallable - колбек
      */
-    public void loadSchedule(final int groupId, final ExCallable<ArrayList<ScheduleList>> exCallable) {
+    public void loadSchedule(final int groupId) {
         final Group group = this.findById(groupId);
 
         GroupApi groupApi = retrofit.create(GroupApi.class);
@@ -136,7 +134,6 @@ public class GroupModel {
             @Override
             public void onResponse(@NotNull Call<ArrayList<ScheduleList>> call, @NotNull retrofit2.Response<ArrayList<ScheduleList>> response) {
                 group.scheduleList = response.body();
-                exCallable.call(group.scheduleList);
                 save();
             }
 

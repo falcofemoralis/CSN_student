@@ -19,7 +19,7 @@ public class ScheduleList {
     public int day;
     @SerializedName("Pair")
     public int pair;
-    @SerializedName("NameDiscipline")
+    @SerializedName("SubjectName")
     public String subject;
     @SerializedName("Room")
     public String room;

@@ -14,8 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.Models.Timer;
 import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
+import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
 
@@ -30,6 +32,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        FileManager.init(getApplicationContext());
 
         mainPresenter = new MainPresenter(this);
         mainPresenter.checkAuth();
@@ -84,13 +87,13 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
                 intent = new Intent(this, AuditoriumActivity.class);
             }
             else if (id == R.id.activity_main_bt_lessonsShedule) {
-                intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Groups");
+                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes", SchedulePresenter.EntityTypes.GROUPS);
             }
             else if (id == R.id.activity_main_bt_settings) {
                 intent = new Intent(this, SettingsActivity.class);
             }
             else if (id == R.id.activity_main_bt_teachersSchedule) {
-                intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
+                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes",  SchedulePresenter.EntityTypes.TEACHERS);
             }
             else if (id == R.id.activity_main_bt_schedule_bell) {
                 intent = new Intent(this, ScheduleBell.class);

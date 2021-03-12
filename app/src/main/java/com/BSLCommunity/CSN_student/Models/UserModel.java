@@ -12,7 +12,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 // Singleton класс, паттерн необходимо потому что данные пользователя сериализуются
 public class UserModel {
@@ -30,12 +29,11 @@ public class UserModel {
     }
 
     /**
-     * Инициализация пользователя (извлекается из зашифрованного локального файла) и объекта ретрофита
+     * Инициализация ретрофита
      */
     private void init() {
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(UserApi.API_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

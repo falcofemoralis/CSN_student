@@ -9,4 +9,10 @@ public class Subject {
     public String name;
     @SerializedName("img")
     public String imgPath;
+
+    public Subject(int[] idTeachers, String name, String imgPath) {
+        this.idTeachers = idTeachers;
+        this.name = name;
+        this.imgPath = imgPath;
+    }
 }

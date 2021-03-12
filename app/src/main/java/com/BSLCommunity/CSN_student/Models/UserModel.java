@@ -1,11 +1,14 @@
 package com.BSLCommunity.CSN_student.Models;
 
+import android.content.Context;
+
 import com.BSLCommunity.CSN_student.APIs.UserApi;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -141,6 +144,16 @@ public class UserModel {
                 exCallable.fail(R.string.no_connection_server);
             }
         });
+
+    }
+
+    //TODO
+    public static void updateRating(final Context context, final String JSONString) throws JSONException {
+
+    }
+
+    //TODO
+    public static void downloadRating(final Context context) throws JSONException {
 
     }
 }

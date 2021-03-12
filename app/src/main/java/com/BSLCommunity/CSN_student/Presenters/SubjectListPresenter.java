@@ -29,7 +29,8 @@ public class SubjectListPresenter {
         this.subjectModel.getGroupSubjects(6, new ExCallable<ArrayList<Subject>>() {
             @Override
             public void call(ArrayList<Subject> data) {
-                subjectListView.setTableSubjects(data);
+                appData.createSubjectsInfo(data);
+                subjectListView.setTableSubjects(appData.editableSubjects);
             }
 
             @Override
@@ -38,5 +39,12 @@ public class SubjectListPresenter {
             }
         });
         this.subjectListView.setCourse(this.appData.userData.getCourse());
+    }
+
+    /**
+     * Пользователь возвращается на окно дисциплин (обновление прогресса на каждом из предметов)
+     */
+    public void resume() {
+        this.subjectListView.updateProgresses(appData.editableSubjects);
     }
 }

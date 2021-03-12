@@ -3,7 +3,6 @@ package com.BSLCommunity.CSN_student.Views;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.transition.TransitionManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,17 +15,19 @@ import android.widget.TableRow;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
-import com.BSLCommunity.CSN_student.Models.SubjectsInfo;
 import com.BSLCommunity.CSN_student.Models.TeachersModel;
 import com.BSLCommunity.CSN_student.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, SubjectInfoDialogEditText.DialogListener {
     ArrayList<Integer> teacherIds;  //список учителей для установки
-    SubjectsInfo.SubjectInfo subjectInfo = null;
+    EditableSubject subjectInfo = null;
     LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
     int subjectId; //id предмета. Ставится в классе SubjectList
     LinearLayout rootContainer; //элемент в котором находятся все объекты
@@ -40,7 +41,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
 
         //получем необходимые объекты
         subjectId = (getIntent().getIntExtra("button_id", 0));
-        subjectInfo = SubjectsInfo.getInstance(this).subjectInfo[subjectId];
+       // subjectInfo = getSubjectsInfo(this).subjectInfo[subjectId];
 
         labsLL = findViewById(R.id.activity_subject_info_ll_labs);
         ihwLL = findViewById(R.id.activity_subject_info_ll_ihw);
@@ -59,7 +60,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
     @Override
     protected void onPause() {
         saveWorkNames();
-        SubjectsInfo.getInstance(this).save(this); //сохраняем в JSON
+       // SubjectsInfo.getSubjectsInfo(this).save(this); //сохраняем в JSON
         super.onPause();
     }
 
@@ -115,7 +116,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
         valueSpinner.setAdapter(adapter);
 
         try {
-            valueSpinner.setSelection(subjectInfo.subjectValue);
+           // valueSpinner.setSelection(subjectInfo.subjectValue);
         } catch (Exception e) {
             valueSpinner.setSelection(0);
         }
@@ -129,7 +130,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
 
         // Вызов был инициирован спиннером выбора статуса предмета - устаналиваем статус (экз, зачет, диф зачет)
         if (parent.getId() == R.id.activity_subject_info_sp_values) {
-            subjectInfo.subjectValue = (int) id; //получаем id ценности работы 0...6
+          //  subjectInfo.subjectValue = (int) id; //получаем id ценности работы 0...6
             return;
         }
 
@@ -150,7 +151,7 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
                 break;
         }
 
-        parent.setBackgroundResource(SubjectsInfo.colors[(int)id]); // Устанавка цвета относительно выбранного варианта
+        //parent.setBackgroundResource(SubjectsInfo.colors[(int)id]); // Устанавка цвета относительно выбранного варианта
         setProgress(); // Обновление прогресса
     }
 
@@ -223,16 +224,16 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
     // Загрузка данных
     public void loadData() {
 
-        //добавляем полосы работ (лаб, идз и прочего)
-        for (int i = 0; i < subjectInfo.labs.count; ++i)
-            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_labs_data), subjectInfo.labs);
-        for (int i = 0; i < subjectInfo.ihw.count; ++i)
-            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_ihw_data), subjectInfo.ihw);
-        for (int i = 0; i < subjectInfo.others.count; ++i)
-            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_other_data), subjectInfo.others);
-
-        //ставим прогресс
-        setProgress();
+//        //добавляем полосы работ (лаб, идз и прочего)
+//        for (int i = 0; i < subjectInfo.labs.count; ++i)
+//            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_labs_data), subjectInfo.labs);
+//        for (int i = 0; i < subjectInfo.ihw.count; ++i)
+//            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_ihw_data), subjectInfo.ihw);
+//        for (int i = 0; i < subjectInfo.others.count; ++i)
+//            drawElementWork((TableLayout) findViewById(R.id.activity_subject_info_tb_other_data), subjectInfo.others);
+//
+//        //ставим прогресс
+//        setProgress();
     }
 
     boolean isOpenLab = false, isOpenIHW = false, isOpenOther = false; // Флаги показывающие открыта ли вкладка с работой или нет (лабораторные, ИДЗ, другие)
@@ -281,30 +282,30 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
 
     // Добавляет строчку с работой (Функция пренадлежит кнопке "+")
     public void addElementWork(View view) {
-        TableLayout infoTL = null; // Группа элементов
-        SubjectsInfo.SubjectInfo.Work work = null; // Ссылка на необходимую группу работ
-
-        TransitionManager.beginDelayedTransition(rootContainer);
-
-        // Определяем тип предмета
-        switch (view.getId()) {
-            case R.id.activity_subject_info_bt_add_lab:
-                infoTL = findViewById(R.id.activity_subject_info_tb_labs_data);
-                work = subjectInfo.labs;
-                break;
-            case R.id.activity_subject_info_bt_add_ihw:
-                infoTL = findViewById(R.id.activity_subject_info_tb_ihw_data);
-                work = subjectInfo.ihw;
-                break;
-            case R.id.activity_subject_info_bt_add_other:
-                infoTL = findViewById(R.id.activity_subject_info_tb_other_data);
-                work = subjectInfo.others;
-                break;
-        }
-
-        work.addWork();// Добавление пустого элемента в группу выбранной работы
-        drawElementWork(infoTL, work);// Прорисовка элемента
-        setProgress();// Обновление прогресса
+//        TableLayout infoTL = null; // Группа элементов
+//        SubjectsInfo.SubjectInfo.Work work = null; // Ссылка на необходимую группу работ
+//
+//        TransitionManager.beginDelayedTransition(rootContainer);
+//
+//        // Определяем тип предмета
+//        switch (view.getId()) {
+//            case R.id.activity_subject_info_bt_add_lab:
+//                infoTL = findViewById(R.id.activity_subject_info_tb_labs_data);
+//                work = subjectInfo.labs;
+//                break;
+//            case R.id.activity_subject_info_bt_add_ihw:
+//                infoTL = findViewById(R.id.activity_subject_info_tb_ihw_data);
+//                work = subjectInfo.ihw;
+//                break;
+//            case R.id.activity_subject_info_bt_add_other:
+//                infoTL = findViewById(R.id.activity_subject_info_tb_other_data);
+//                work = subjectInfo.others;
+//                break;
+//        }
+//
+//        work.addWork();// Добавление пустого элемента в группу выбранной работы
+//        drawElementWork(infoTL, work);// Прорисовка элемента
+//        setProgress();// Обновление прогресса
     }
 
     /* Отрисовка элемента
@@ -312,25 +313,25 @@ public class SubjectInfoActivity extends BaseActivity implements AdapterView.OnI
     * infoTL - группа элементов в которой необходимо отрисовать элемент
     * work - группа работ (лабораторные, ИДЗ, другие)
     * */
-    private void drawElementWork(TableLayout infoTL, SubjectsInfo.SubjectInfo.Work work) {
-        int num = infoTL.getChildCount(); // Номер работы
-        TableRow elementWork = (TableRow) LayoutInflater.from(this).inflate(R.layout.inflate_work_element, null); // Строка работы
-
-        // Устанавливаем текст работы
-        EditText textName = (EditText) elementWork.getChildAt(0);
-        textName.setText(work.names.get(num));
-
-        // Устанавливаем статус работы в спиннере
-        Spinner spinner = (Spinner) elementWork.getChildAt(1);
-        spinner.setSelection(work.values.get(num));
-        spinner.setOnItemSelectedListener(this);
-
-        // Установка количества баллов за работу
-        EditText textMark = (EditText) elementWork.getChildAt(2);
-        textMark.setText(work.marks.get(num).toString());
-
-        infoTL.addView(elementWork);
-    }
+//    private void drawElementWork(TableLayout infoTL, SubjectsInfo.SubjectInfo.Work work) {
+//        int num = infoTL.getChildCount(); // Номер работы
+//        TableRow elementWork = (TableRow) LayoutInflater.from(this).inflate(R.layout.inflate_work_element, null); // Строка работы
+//
+//        // Устанавливаем текст работы
+//        EditText textName = (EditText) elementWork.getChildAt(0);
+//        textName.setText(work.names.get(num));
+//
+//        // Устанавливаем статус работы в спиннере
+//        Spinner spinner = (Spinner) elementWork.getChildAt(1);
+//        spinner.setSelection(work.values.get(num));
+//        spinner.setOnItemSelectedListener(this);
+//
+//        // Установка количества баллов за работу
+//        EditText textMark = (EditText) elementWork.getChildAt(2);
+//        textMark.setText(work.marks.get(num).toString());
+//
+//        infoTL.addView(elementWork);
+//    }
 
     // Удаление одной работы
     public void deleteElementWork(View view) {

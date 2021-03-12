@@ -13,6 +13,7 @@
         android:layout_weight="0.15">
 
         <LinearLayout
+            android:id="@+id/inflate_subject_rl_card"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,8 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.7"
-                android:layout_margin="4dp"
-                android:src="@drawable/derlados_avatar"/>
+                android:layout_margin="4dp"/>
 
             <TextView
                 android:id="@+id/inflate_subject_tv_name"
@@ -39,7 +39,6 @@
                 android:layout_weight="0.3"
                 android:maxEms="1"
                 android:textAlignment="center"
-                android:text="ПМПС"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:layout_margin="2dp"/>
@@ -68,7 +67,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/inflate_subject_tv_percent"
+        android:id="@+id/inflate_subject_tv_percent_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"

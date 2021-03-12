@@ -10,13 +10,17 @@ import androidx.security.crypto.MasterKey;
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 public class AppData {
     public static transient AppData instance = null;
+    public final String FILE_NAME_SUBJECT_INFO = "subjectsInfo";
 
     /**
      * PrefKeys - Строковые константы - ключи, по которым хранятся все данные в файле настроек
@@ -48,6 +52,7 @@ public class AppData {
     public transient SharedPreferences encryptedSharedPreferences;
 
     public User userData;
+    public ArrayList<EditableSubject> editableSubjects;
 
     private AppData() {}
     public static AppData getAppData() {
@@ -56,32 +61,6 @@ public class AppData {
             instance.init();
         }
         return instance;
-    }
-
-    /**
-     * Обновление данных пользователя (полное обновление)
-     * @param newUserData - новые данные
-     */
-    public void updateUserData(User newUserData) {
-        this.userData.setNickName(newUserData.getNickName());
-        this.userData.setPassword(newUserData.getPassword());
-        this.userData.setGroupId(newUserData.getGroupId());
-        this.userData.setGroupName(newUserData.getGroupName());
-        this.userData.setCourse(newUserData.getCourse());
-        this.userData.setToken(newUserData.getToken());
-
-        this.saveData();
-    }
-
-    /**
-     * Обновление данных пользователя (никнейм и пароль)
-     * @param nickName - никнейм
-     * @param password - пароль
-     */
-    public void updateUserData(String nickName, String password) {
-        this.userData.setNickName(nickName);
-        this.userData.setNickName(password);
-        this.saveData();
     }
 
     /**
@@ -108,6 +87,51 @@ public class AppData {
         }
         catch (Exception ignored) {
             this.userData = new User();
+        }
+
+        try {
+            String jsonSubjectInfo = FileManager.readFile(FILE_NAME_SUBJECT_INFO);
+            Type type = new TypeToken<ArrayList<EditableSubject>>() {}.getType();
+            this.editableSubjects = (new Gson()).fromJson(jsonSubjectInfo, type);
+        }
+        catch (Exception ignored) {
+            this.editableSubjects = new ArrayList<>();
+        }
+    }
+
+    /**
+     * Обновление данных пользователя (полное обновление)
+     * @param newUserData - новые данные
+     */
+    public void setUserData(User newUserData) {
+        this.userData.setNickName(newUserData.getNickName());
+        this.userData.setPassword(newUserData.getPassword());
+        this.userData.setGroupId(newUserData.getGroupId());
+        this.userData.setGroupName(newUserData.getGroupName());
+        this.userData.setCourse(newUserData.getCourse());
+        this.userData.setToken(newUserData.getToken());
+
+        this.saveData();
+    }
+
+    /**
+     * Обновление данных пользователя (никнейм и пароль)
+     * @param nickName - никнейм
+     * @param password - пароль
+     */
+    public void updateUserData(String nickName, String password) {
+        this.userData.setNickName(nickName);
+        this.userData.setNickName(password);
+        this.saveData();
+    }
+
+    public void setEditableSubjects(ArrayList<EditableSubject> editableSubjects) {
+        this.editableSubjects = editableSubjects;
+    }
+
+    public void createSubjectsInfo(ArrayList<Subject> subjects) {
+        for (int i = 0; i < subjects.size(); ++i) {
+            this.editableSubjects.add(new EditableSubject(subjects.get(i)));
         }
     }
 
@@ -136,9 +160,10 @@ public class AppData {
     }
 
     /**
-     * Сохранение данных пользователя в SharedPreferences
+     * Сохранение данных всех пользователя
      */
     public void saveData() {
+        // Сохранение данных пользователя и настроек в SharedPreferences
         SharedPreferences.Editor prefEditor = this.encryptedSharedPreferences.edit();
         prefEditor.putString(PrefKeys.NICKNAME.getKey(), this.userData.getNickName());
         prefEditor.putString(PrefKeys.PASSWORD.getKey(), this.userData.getPassword());
@@ -147,6 +172,16 @@ public class AppData {
         prefEditor.putInt(PrefKeys.COURSE.getKey(), this.userData.getCourse());
         prefEditor.putString(PrefKeys.TOKEN.getKey(), this.userData.getToken());
         prefEditor.apply();
+
+        if (editableSubjects != null) {
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(editableSubjects);
+            try {
+                FileManager.writeFile(FILE_NAME_SUBJECT_INFO, jsonString, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

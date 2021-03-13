@@ -8,12 +8,10 @@ export default class Users extends Component {
     }
 
     componentDidMount() {
-        console.log("fetch!");
         fetch('http://192.168.0.104:81/api/users/all', {
             method: 'GET'
         }).then(response => {
             if (response.ok) {
-                console.log("ok");
                 response.json().then((users) => {
                     this.setState({ users: users });
                 });

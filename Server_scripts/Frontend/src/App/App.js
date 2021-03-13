@@ -71,6 +71,7 @@ export default class App extends Component {
                 }
                 <button onClick={() => { this.HTTPRequest("/schedule/new", 'PUT'); }}>Обновить базу</button>
                 <button onClick={() => { this.HTTPRequest("/schedule/reset", 'DELETE'); }}>Очистить базу</button>
+                <button onClick={() => { this.HTTPRequest("/cache", 'PUT'); }}>Обновить кеш</button>
               </div>
               <ConsoleWindow logs={this.state.logs} />
             </div>

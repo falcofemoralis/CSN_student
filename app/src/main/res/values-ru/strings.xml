@@ -83,4 +83,5 @@
     <string name="passwords_do_not_match">Ваш пароль и пароль подтверджения не совпадают</string>
     <string name="user_exist">Пользователь с таким никнеймом уже существует</string>
     <string name="no_auth">Вы не авторизованы</string>
+    <string name="no_auditorium">Такая аудитория не существует</string>
 </resources>

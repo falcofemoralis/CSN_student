@@ -32,10 +32,9 @@ public class ScheduleActivity extends BaseActivity implements ScheduleView, Adap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AnimationManager.setAnimation(getWindow(), this);
         setContentView(R.layout.activity_lessons_schedule);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        AnimationManager.setAnimation(getWindow(), this);
 
         weekTypeView = findViewById(R.id.activity_lessons_schedule_bt_weekType);
 

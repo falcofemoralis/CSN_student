@@ -34,7 +34,7 @@ public class LoginPresenter {
                 @Override
                 public void call(User data) {
                     try {
-                        appData.updateUserData(data);
+                        appData.setUserData(data);
                         loginView.openMain();
                     } catch (Exception ignored) {}
                 }

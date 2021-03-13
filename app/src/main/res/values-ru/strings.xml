@@ -84,4 +84,5 @@
     <string name="user_exist">Пользователь с таким никнеймом уже существует</string>
     <string name="no_auth">Вы не авторизованы</string>
     <string name="no_auditorium">Такая аудитория не существует</string>
+    <string name="default_text">Стандартный текст</string>
 </resources>

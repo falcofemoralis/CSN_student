@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.BSLCommunity.CSN_student.Constants.ScheduleType;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.TeacherModel;
@@ -108,11 +109,11 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
             } else if (id == R.id.activity_main_bt_auditorium) {
                 intent = new Intent(this, AuditoriumActivity.class);
             } else if (id == R.id.activity_main_bt_lessonsShedule) {
-                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes", SchedulePresenter.EntityTypes.GROUPS);
+                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes", ScheduleType.GROUPS);
             } else if (id == R.id.activity_main_bt_settings) {
                 intent = new Intent(this, SettingsActivity.class);
             } else if (id == R.id.activity_main_bt_teachersSchedule) {
-                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes", SchedulePresenter.EntityTypes.TEACHERS);
+                intent = new Intent(this, ScheduleActivity.class).putExtra("EntityTypes", ScheduleType.TEACHERS);
             } else if (id == R.id.activity_main_bt_schedule_bell) {
                 intent = new Intent(this, ScheduleBell.class);
             }

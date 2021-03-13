@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 
 import android.util.Log;
 
+import com.BSLCommunity.CSN_student.Constants.ScheduleType;
 import com.BSLCommunity.CSN_student.Models.AppData;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
@@ -14,12 +15,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SchedulePresenter {
-    public enum EntityTypes {
-        GROUPS,
-        TEACHERS
-    } // Типы расписаний (Групп\Преподователей)
-
-    private final EntityTypes type; // Выбранный тип расписания
+    private final ScheduleType type; // Выбранный тип расписания
     private final GroupModel groupModel; // Модель групп, нужна для получения групп по курсу и их расписания
     private final TeacherModel teacherModel; // Модель преподов, нужна для получения всех преподов и их расписания
     private final AppData appData; // Доступ к данным пользователя
@@ -35,7 +31,7 @@ public class SchedulePresenter {
      * @param type         - тип расписания
      * @param lang         - язык в приложении
      */
-    public SchedulePresenter(ScheduleView scheduleView, EntityTypes type, String lang) {
+    public SchedulePresenter(ScheduleView scheduleView, ScheduleType type, String lang) {
         this.scheduleView = scheduleView;
         this.type = type;
         this.groupModel = GroupModel.getGroupModel();
@@ -51,7 +47,7 @@ public class SchedulePresenter {
         int defaultItem = 0;
         ArrayList<String> entities;
 
-        if (type == EntityTypes.GROUPS) {
+        if (type == ScheduleType.GROUPS) {
             entities = groupModel.getGroupsOnCourse(appData.userData.getCourse());
             for (int i = 0; i < entities.size(); ++i) {
                 if (entities.get(i).equals(appData.userData.getGroupName())) {
@@ -82,7 +78,7 @@ public class SchedulePresenter {
      * Инициализация расписания при загрузке
      */
     public void initSchedule() {
-        if (type == EntityTypes.GROUPS)
+        if (type == ScheduleType.GROUPS)
             scheduleList = groupModel.findById(appData.userData.getGroupId()).scheduleList;
         else
             scheduleList = teacherModel.findById(1).scheduleList;
@@ -101,7 +97,7 @@ public class SchedulePresenter {
      * @param item - выбранный элемент в спинере
      */
     public void changeItem(String item) {
-        if (type == EntityTypes.GROUPS) {
+        if (type == ScheduleType.GROUPS) {
             scheduleList = groupModel.findByName(item).scheduleList;
         } else {
             try {

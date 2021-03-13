@@ -13,6 +13,7 @@
         android:layout_weight="0.15">
 
         <LinearLayout
+            android:id="@+id/inflate_subject_rl_card"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,18 +29,20 @@
                 android:id="@+id/inflate_subject_img"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.7"
-                android:layout_margin="4dp"
-                android:src="@drawable/derlados_avatar"/>
+                android:layout_weight="0.5"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="4dp"/>
 
             <TextView
                 android:id="@+id/inflate_subject_tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.5"
                 android:maxEms="1"
+                android:text="@string/default_text"
                 android:textAlignment="center"
-                android:text="ПМПС"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:layout_margin="2dp"/>
@@ -48,6 +51,7 @@
         </LinearLayout>
 
         <ProgressBar
+            android:id="@+id/inflate_subject_pb"
             style="?android:attr/progressBarStyle"
             android:layout_width="92dp"
             android:layout_height="60dp"
@@ -67,7 +71,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/inflate_subject_tv_percent"
+        android:id="@+id/inflate_subject_tv_percent_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"

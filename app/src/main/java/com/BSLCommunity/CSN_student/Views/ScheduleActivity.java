@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.BSLCommunity.CSN_student.Constants.ScheduleType;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
@@ -44,7 +45,7 @@ public class ScheduleActivity extends BaseActivity implements ScheduleView, Adap
 
         schedulePresenter = new SchedulePresenter(
                 this,
-                (SchedulePresenter.EntityTypes) getIntent().getSerializableExtra("EntityTypes"),
+                (ScheduleType) getIntent().getSerializableExtra("EntityTypes"),
                 LocaleHelper.getLanguage(getApplicationContext())
         );
         schedulePresenter.initSpinnerData();
@@ -84,11 +85,11 @@ public class ScheduleActivity extends BaseActivity implements ScheduleView, Adap
     }
 
     @Override
-    public void setSpinnerData(ArrayList<String> entities, int defaultItem, SchedulePresenter.EntityTypes type) {
+    public void setSpinnerData(ArrayList<String> entities, int defaultItem, ScheduleType type) {
         spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
         ArrayAdapter<String> dataAdapter;
 
-        if (type == SchedulePresenter.EntityTypes.GROUPS) {
+        if (type == ScheduleType.GROUPS) {
             spinner.setPrompt(getString(R.string.group_prompt));
             dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_schedule_groups_layout, entities);
         } else {
@@ -103,7 +104,7 @@ public class ScheduleActivity extends BaseActivity implements ScheduleView, Adap
     }
 
     @Override
-    public void setSchedule(ArrayList<ScheduleList> scheduleList, int half, SchedulePresenter.EntityTypes type) {
+    public void setSchedule(ArrayList<ScheduleList> scheduleList, int half, ScheduleType type) {
         clearSchedule();
 
         for (int i = 0; i < scheduleList.size(); ++i) {
@@ -113,7 +114,7 @@ public class ScheduleActivity extends BaseActivity implements ScheduleView, Adap
                 String content;
 
                 // В зависимости от типа, будет собрана строка для отображения в таблице
-                if (type == SchedulePresenter.EntityTypes.GROUPS) {
+                if (type == ScheduleType.GROUPS) {
                     content = list.subject + " " + list.type + " (" + list.room + ")";
                 } else {
                     StringBuilder groups = new StringBuilder();

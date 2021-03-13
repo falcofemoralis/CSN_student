@@ -6,27 +6,33 @@
     android:weightSum="1"
     android:paddingLeft="18dp"
     android:paddingRight="18dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:clickable="true">
 
     <EditText
+        android:id="@+id/inflate_work_element_et_name_work"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.35"
         android:background="@color/gray"
         android:gravity="center"
         android:hint="@string/enter_name"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <Spinner
+        android:id="@+id/inflate_work_element_spin_work_status"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/gray"
         android:layout_weight="0.4"
         android:textAlignment="center"
-        android:entries="@array/work_types" />
-
+        android:textSize="14sp"
+        android:entries="@array/work_statuses" />
 
     <EditText
+        android:id="@+id/inflate_work_element_et_mark"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.15"
@@ -36,6 +42,7 @@
         android:textSize="14sp" />
 
     <Button
+        android:id="@+id/inflate_work_element_bt_delete"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.1"

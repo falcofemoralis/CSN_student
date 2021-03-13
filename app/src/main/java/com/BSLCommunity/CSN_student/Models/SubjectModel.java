@@ -79,8 +79,8 @@ public class SubjectModel {
             @Override
             public void onResponse(@NotNull Call<ArrayList<Subject>> call, @NotNull Response<ArrayList<Subject>> response) {
                 subjects = response.body();
-                callback.call(subjects);
                 save();
+                callback.call(subjects);
             }
 
             @Override

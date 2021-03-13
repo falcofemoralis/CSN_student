@@ -1,5 +1,6 @@
 package com.BSLCommunity.CSN_student.ViewInterfaces;
 
+import com.BSLCommunity.CSN_student.Constants.ScheduleType;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
 import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
 
@@ -13,7 +14,7 @@ public interface ScheduleView {
      * @param defaultItem - элемент, который будет показан при заход на фрагмент (в группах изначально будет показана группа юзера)
      * @param type        - тип расписания
      */
-    void setSpinnerData(ArrayList<String> entities, int defaultItem, SchedulePresenter.EntityTypes type); // установка групп\учителей в спинере
+    void setSpinnerData(ArrayList<String> entities, int defaultItem, ScheduleType type); // установка групп\учителей в спинере
 
     /**
      * Установка расписания
@@ -22,7 +23,7 @@ public interface ScheduleView {
      * @param half         - тип неделя (числитель\знаменатель)
      * @param type         - тип расписания
      */
-    void setSchedule(ArrayList<ScheduleList> scheduleList, int half, SchedulePresenter.EntityTypes type);
+    void setSchedule(ArrayList<ScheduleList> scheduleList, int half, ScheduleType type);
 
     /**
      * Очистка данных в таблице расписания

@@ -44,7 +44,7 @@ public class RegPresenter {
                 @Override
                 public void call(User data) {
                     try {
-                        appData.updateUserData(data);
+                        appData.setUserData(data);
                         regView.openMain();
                     } catch (Exception ignored) {}
                 }

@@ -23,7 +23,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/activity_button_unpressed"
                 android:gravity="center"
-                android:text="Data Base"
+                android:text="@string/default_text"
                 android:textColor="@color/white" />
 
             <TableLayout
@@ -180,7 +180,7 @@
                     android:textColor="@color/white" />
 
                 <TableLayout
-                    android:id="@+id/activity_subject_info_tb_labs_data"
+                    android:id="@+id/activity_subject_info_tl_labs_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"></TableLayout>
@@ -219,7 +219,7 @@
                     android:textColor="@color/white" />
 
                 <TableLayout
-                    android:id="@+id/activity_subject_info_tb_ihw_data"
+                    android:id="@+id/activity_subject_info_tl_ihw_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone">
@@ -260,7 +260,7 @@
                     android:textColor="@color/white" />
 
                 <TableLayout
-                    android:id="@+id/activity_subject_info_tb_other_data"
+                    android:id="@+id/activity_subject_info_tl_other_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone">

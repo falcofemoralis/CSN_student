@@ -13,25 +13,31 @@ public class AuditoriumModel {
         public int building, floor, x, y, height, width;
     }
 
-    private Auditorium[] auditoriums;
+    private Auditorium[] auditoriums; // Список аудиторий
 
+    /**
+     * Конструктор модели. Тут идет загрузка файла JSON с аудиториями
+     *
+     * @param context - контекст приложения
+     */
     public AuditoriumModel(Context context) {
         try {
             String auditoriumJSON = JSONHelper.loadJSONFromAsset(context, "auditoriums.json");
-            Gson gson = new Gson();
-            auditoriums = gson.fromJson(auditoriumJSON, Auditorium[].class);
+            auditoriums = (new Gson()).fromJson(auditoriumJSON, Auditorium[].class);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Auditorium getInfo(String selectedAuditorium) {
-        return findAuditoriumInfoByName(selectedAuditorium);
-    }
-
-    private Auditorium findAuditoriumInfoByName(String selectedAuditorium) {
+    /**
+     * Поиск аудитории по строке
+     *
+     * @param s - текст
+     * @return обьект аудитории
+     */
+    public Auditorium findAuditoriumInfoByName(String s) {
         for (Auditorium auditorium : auditoriums)
-            if (selectedAuditorium.equals(auditorium.auditorium)) return auditorium;
+            if (s.equals(auditorium.auditorium)) return auditorium;
         return null;
     }
 }

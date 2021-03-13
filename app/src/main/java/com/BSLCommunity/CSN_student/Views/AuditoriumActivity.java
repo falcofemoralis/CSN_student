@@ -24,6 +24,7 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.otaliastudios.zoom.ZoomImageView;
 
+// Форма аудиторий в университете
 public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
     private ZoomImageView selectedBuildingImage; // View выбранного корпуса (этажа)
     private TabLayout buildingTabs, floorTabs; // Лаяуты выбора коруса, этажа
@@ -78,6 +79,11 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
         });
     }
 
+    /**
+     * Строка поиска аудитории
+     * @param menu - меню
+     * @return true если было создано меню
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Создаем меню поиска
@@ -94,6 +100,7 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setSubmitButtonEnabled(true);
 
+        // Обработчик поиска
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String s) {
@@ -116,12 +123,8 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
     }
 
     @Override
-    public void selectTabs(int audBuilding, int audFloor, int numberOfFloors) {
-        // Устанавливаем вкладку нужного корпуса
+    public void selectTabs(int audBuilding, int audFloor) {
         buildingTabs.getTabAt(audBuilding).select();
-
-        // Устанавливаем вкладки этажей нужного корпуса
-        setFloorTabs(numberOfFloors);
         floorTabs.getTabAt(audFloor).select();
     }
 

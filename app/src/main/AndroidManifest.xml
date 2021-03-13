@@ -37,7 +37,7 @@
             android:name=".Views.ScheduleActivity"
             android:theme="@style/TransparentActionBar" />
         <activity
-            android:name=".Views.SubjectInfoActivity"
+            android:name=".Views.SubjectEditorActivity"
             android:theme="@style/SubjectInfoActivityActionBar" />
         <activity
             android:name=".Views.RatingActivity"

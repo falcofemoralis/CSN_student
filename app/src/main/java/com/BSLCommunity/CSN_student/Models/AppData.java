@@ -125,11 +125,19 @@ public class AppData {
         this.saveData();
     }
 
+    /**
+     * Установка редактируемых дисциплин
+     * @param editableSubjects - редакутируемые дисциплины
+     */
     public void setEditableSubjects(ArrayList<EditableSubject> editableSubjects) {
         this.editableSubjects = editableSubjects;
     }
 
-    public void createSubjectsInfo(ArrayList<Subject> subjects) {
+    /**
+     * Создание новых редактируемых дисциплин исходя из текущих дисциплин пользователя на курсе
+     * @param subjects - текущие дисциплины пользователя, которые необходимо преобразовать
+     */
+    public void createEditableSubjects(ArrayList<Subject> subjects) {
         for (int i = 0; i < subjects.size(); ++i) {
             this.editableSubjects.add(new EditableSubject(subjects.get(i)));
         }
@@ -175,7 +183,9 @@ public class AppData {
 
         if (editableSubjects != null) {
             Gson gson = new Gson();
-            String jsonString = gson.toJson(editableSubjects);
+            Type type = new TypeToken<ArrayList<EditableSubject>>(){}.getType();
+            String jsonString = gson.toJson(editableSubjects, type);
+
             try {
                 FileManager.writeFile(FILE_NAME_SUBJECT_INFO, jsonString, false);
             } catch (Exception e) {

@@ -15,4 +15,5 @@ public class Subject {
         this.name = name;
         this.imgPath = imgPath;
     }
+
 }

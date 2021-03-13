@@ -29,7 +29,7 @@ public class SubjectListPresenter {
         this.subjectModel.getGroupSubjects(6, new ExCallable<ArrayList<Subject>>() {
             @Override
             public void call(ArrayList<Subject> data) {
-                appData.createSubjectsInfo(data);
+                appData.createEditableSubjects(data);
                 subjectListView.setTableSubjects(appData.editableSubjects);
             }
 

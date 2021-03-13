@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Presenters.SubjectListPresenter;
 import com.BSLCommunity.CSN_student.R;
@@ -22,6 +23,9 @@ import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -79,16 +83,24 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
     /**
      * Создание кнопки дисциплины
-     * @param subject - дисциплина
+     * @param editableSubject - дисциплина
      * @param container - строка которая будет содержать кнопку
      */
     @SuppressLint("ClickableViewAccessibility")
-    private void createSubject(final EditableSubject subject, LinearLayout container) {
+    private void createSubject(final EditableSubject editableSubject, LinearLayout container) {
         final LinearLayout subjectView =  (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
-        ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(subject.name);
-        ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(subject.calculateProgress() + "%");
+
+        // Установка имени дисциплины
+        try {
+            String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(this));
+            ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(subjectName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(editableSubject.calculateProgress() + "%");
         ImageView subjectImgView = (ImageView) subjectView.findViewById(R.id.inflate_subject_img);
-        Picasso.get().load(subject.imgPath).into(subjectImgView, new Callback() {
+        Picasso.get().load(editableSubject.imgPath).into(subjectImgView, new Callback() {
             @Override
             public void onSuccess() {
                 subjectView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
@@ -109,8 +121,8 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Intent intent = new Intent(getBaseContext(), SubjectInfoActivity.class);
-                    intent.putExtra("Subject", (new Gson()).toJson(subject));
+                    Intent intent = new Intent(getBaseContext(), SubjectEditorActivity.class);
+                    intent.putExtra("Subject", (new Gson()).toJson(editableSubject));
                     startActivity(intent);
 
                     transitionDrawable.reverseTransition(150);

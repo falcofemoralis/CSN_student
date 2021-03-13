@@ -1,61 +1,66 @@
 package com.BSLCommunity.CSN_student.Models;
 
+import com.BSLCommunity.CSN_student.Constants.SubjectValue;
+import com.BSLCommunity.CSN_student.Constants.WorkStatus;
+import com.BSLCommunity.CSN_student.Constants.WorkType;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditableSubject extends Subject {
     public static class Work {
-        public int count; // Количество работ
-        public ArrayList<Integer> values; // Статус выполнения каждой работы
-        public ArrayList<String> names; // Название каждой работы
-        public ArrayList<Integer> marks; // Оценка за каждую работу
+        public String name; // Название каждой работы
+        public String mark; // Оценка за каждую работу
+        public WorkStatus workStatus;
 
         public Work() {
-            values = new ArrayList<Integer>();
-            names = new ArrayList<String>();
-            marks = new ArrayList<Integer>();
-        }
-
-        // Добавление пустого объекта
-        public void addWork() {
-            ++count;
-            values.add(0);
-            names.add("");
-            marks.add(0);
-        }
-
-        // Удаление элемента по индексу
-        public void deleteWork(int index) {
-            --count;
-            values.remove(index);
-            names.remove(index);
-            marks.remove(index);
+            this.name = "";
+            this.mark = "";
+            this.workStatus = WorkStatus.NOT_PASSED;
         }
     }
-    public EditableSubject.Work labs, ihw, others;
+
+    public HashMap<WorkType, ArrayList<Work>> allWorks;
+    public SubjectValue subjectValue;
 
     public EditableSubject(Subject subject) {
         super(subject.idTeachers, subject.name, subject.imgPath);
-        labs = new EditableSubject.Work();
-        ihw = new EditableSubject.Work();
-        others = new EditableSubject.Work();
+
+        allWorks = new HashMap<>();
+        allWorks.put(WorkType.LABS, new ArrayList<Work>());
+        allWorks.put(WorkType.IHW, new ArrayList<Work>());
+        allWorks.put(WorkType.OTHERS, new ArrayList<Work>());
+
+        this.subjectValue = SubjectValue.EXAM;
     }
 
+    public void setSubjectValue(SubjectValue subjectValue) {
+        this.subjectValue = subjectValue;
+    }
+
+    public void setAllWorks(HashMap<WorkType, ArrayList<Work>> allWorks) {
+        this.allWorks = allWorks;
+    }
+
+    /**
+     * Подсчет прогресса по все дисциплине
+     * @return - прогресс в процентах
+     */
     public int calculateProgress() {
-        final int COMPLETE = 6;
-
         int subjectComplete = 0;
+        int sumCount = 0;
 
-        // Считаем сколько он выполнил лабораторных, ИДЗ, других дел
-        for (int i = 0; i < labs.count; ++i)
-            if (labs.values.get(i) == COMPLETE) subjectComplete++;
+        for (Map.Entry<WorkType, ArrayList<Work>> work : allWorks.entrySet()) {
+            ArrayList<Work> typeWorks = work.getValue();
 
-        for (int i = 0; i < ihw.count; ++i)
-            if (ihw.values.get(i) == COMPLETE) subjectComplete++;
+            for (int i = 0; i < typeWorks.size(); ++i)
+                if (typeWorks.get(i).workStatus == WorkStatus.PASSED_WITH_REPORT) {
+                    subjectComplete++;
+                    sumCount = work.getValue().size();
+                }
+        }
 
-        for (int i = 0; i < others.count; ++i)
-            if (others.values.get(i) == COMPLETE) subjectComplete++;
-
-        int sumCount = (labs.count + ihw.count + others.count);
         return sumCount > 0 ? 100 * subjectComplete / sumCount : 0;
     }
 }

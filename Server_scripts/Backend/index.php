@@ -45,16 +45,20 @@ $router['GET'] = [
     '/\/api\/users\/all/' => ['getAllUsers'],
     '/\/api\/users\/course\/(\d+)/' => ['usersViewByCourse'],
     '/\/api\/users\/(\d+)\/rating/' => ['getUserRating'],
-    '/\/api\/users\/(\d+)/' => ['userViewById']
+    '/\/api\/users\/(\d+)/' => ['userViewById'],
+    '/\/api\/admin\/cache\/check/' => ['checkCacheFile'],
+    '/\/api\/admin\/cache/' => ['getCacheFile']
 ];
 $router['POST'] = [
     '/\/schedule\/upload/' => ['convertFile'],
-    '/\/api\/users/' => ['createUser']
+    '/\/api\/users/' => ['createUser'],
+    '/\/api\/admin\/cache/' => ['createCacheFile']
 ];
 $router['PUT'] = [
     '/\/api\/users\/(\d+)/' => ['updateUser'],
     '/\/api\/users\/(\d+)\/rating/' => ['updateUserRating'],
-    '/\/schedule\/new/' => ['processSchedule']
+    '/\/schedule\/new/' => ['processSchedule'],
+    '/\/api\/admin\/cache/' => ['updateCacheFile']
 ];
 $router['DELETE'] = [
     '/\/schedule\/reset/' => ['clearSchedule']

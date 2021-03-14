@@ -3,9 +3,9 @@
     background: #171B21;
     margin: 15px 5px 0 5px;
     padding: 25px;
-    height: 596px;
+    height: 575px;
     overflow-y: scroll;
-    width: 500px;
+    max-width: 800px;
 }
 
 a{

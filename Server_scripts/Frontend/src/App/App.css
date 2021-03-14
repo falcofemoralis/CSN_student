@@ -18,6 +18,16 @@
     font-size: 32px;
 }
 
+.sub-headerText{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
 .hint{
     margin: 5px;
     color: #fff;
@@ -32,7 +42,7 @@ button{
     color: #fff;
     margin: 5px;
     cursor: pointer;
-    transition: background .5s;
+    transition: background .3s;
 }
 
 button:hover{
@@ -57,4 +67,36 @@ button:hover{
 
 .controls{
     display: flex;
+}
+
+.menus{
+    display: flex;
+}
+
+.modal {
+    position: absolute;
+    top: 36%;
+    left: 36%;
+    right: 36%;
+    bottom: 36%;
+    background-color: #293141;
+    outline: none;
+    border-radius: 25px;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.623);
+}
+
+.convert-bt{
+    background: rgb(175, 38, 38) !important;
 }

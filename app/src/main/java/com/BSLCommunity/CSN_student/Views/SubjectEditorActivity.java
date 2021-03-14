@@ -72,7 +72,7 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
         workStatuses = getResources().getStringArray(R.array.work_statuses);
 
         Spinner valueSpinner = findViewById(R.id.activity_subject_info_sp_values);
-        createSpinnerAdapter(valueSpinner, R.array.values, SubjectValue.EXAM.ordinal());
+        createSpinnerAdapter(valueSpinner, R.array.subject_values, SubjectValue.EXAM.ordinal());
 
         String intentDataSubject = getIntent().getStringExtra("Subject");
         this.subjectEditorPresenter = new SubjectEditorPresenter(this, intentDataSubject);

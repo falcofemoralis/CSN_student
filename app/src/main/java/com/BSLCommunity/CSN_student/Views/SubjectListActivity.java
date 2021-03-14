@@ -38,6 +38,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
     LinearLayout tableSubjects; // Лаяут всех дисциплин
     ArrayList<LinearLayout> subjectViews;
+    LinearLayout fullStatView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
     @Override
     protected void onResume() {
-        this.subjectListPresenter.resume();
+        this.subjectListPresenter.recalculateProgresses();
         super.onResume();
     }
 
@@ -98,7 +99,6 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
             e.printStackTrace();
         }
 
-        ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(editableSubject.calculateProgress() + "%");
         ImageView subjectImgView = (ImageView) subjectView.findViewById(R.id.inflate_subject_img);
         Picasso.get().load(editableSubject.imgPath).into(subjectImgView, new Callback() {
             @Override
@@ -111,7 +111,6 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
             }
         });
-
         subjectView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -143,13 +142,13 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
      */
     @SuppressLint("ClickableViewAccessibility")
     private void createFullStatistics(LinearLayout container) {
-        final LinearLayout subjectView =  (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
-        ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(R.string.full_statistic);
-        ImageView subjectImgView = (ImageView) subjectView.findViewById(R.id.inflate_subject_img);
+        final LinearLayout fullStatView =  (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
+        ((TextView)fullStatView.findViewById(R.id.inflate_subject_tv_name)).setText(R.string.full_statistic);
+        ImageView subjectImgView = (ImageView) fullStatView.findViewById(R.id.inflate_subject_img);
         subjectImgView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_statistics, null));
-        subjectView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
+        fullStatView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
 
-        subjectView.setOnTouchListener(new View.OnTouchListener() {
+        fullStatView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
@@ -158,7 +157,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Intent intent = new Intent(getBaseContext(), SubjectInfoFullStatisticActivity.class);
+                    Intent intent = new Intent(getBaseContext(), FullStatActivity.class);
                     startActivity(intent);
 
                     transitionDrawable.reverseTransition(150);
@@ -168,7 +167,9 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                 return true;
             }
         });
-        container.addView(subjectView);
+
+        this.fullStatView = fullStatView;
+        container.addView(fullStatView);
     }
 
     /**
@@ -184,9 +185,11 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
      * @see SubjectListView
      */
     @Override
-    public void updateProgresses(ArrayList<EditableSubject> editableSubjects) {
-        for (int i = 0; i < subjectViews.size(); ++i)
-            ((TextView)subjectViews.get(i).findViewById(R.id.inflate_subject_tv_percent_progress))
-                    .setText(editableSubjects.get(i).calculateProgress() + "%");
+    public void updateProgresses(int[] subjectProgresses, int sumProgress) {
+        for (int i = 0; i < subjectViews.size(); ++i) {
+            ((TextView)subjectViews.get(i).findViewById(R.id.inflate_subject_tv_percent_progress)).setText(subjectProgresses[i] + "%");
+        }
+        if (fullStatView != null)
+            ((TextView)fullStatView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(sumProgress + "%");
     }
 }

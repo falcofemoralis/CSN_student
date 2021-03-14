@@ -7,7 +7,7 @@
         <item>5</item>
     </string-array>
 
-    <string-array name="values">
+    <string-array name="subject_values">
         <item>Іспит</item>
         <item>Залік</item>
         <item>Дифф.Залік</item>

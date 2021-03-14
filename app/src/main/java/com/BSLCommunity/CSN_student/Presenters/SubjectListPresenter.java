@@ -31,6 +31,7 @@ public class SubjectListPresenter {
             public void call(ArrayList<Subject> data) {
                 appData.createEditableSubjects(data);
                 subjectListView.setTableSubjects(appData.editableSubjects);
+                recalculateProgresses();
             }
 
             @Override
@@ -44,7 +45,15 @@ public class SubjectListPresenter {
     /**
      * Пользователь возвращается на окно дисциплин (обновление прогресса на каждом из предметов)
      */
-    public void resume() {
-        this.subjectListView.updateProgresses(appData.editableSubjects);
+    public void recalculateProgresses() {
+        int[] progresses = new int[this.appData.editableSubjects.size()];
+        int sumProgress = 0;
+        for (int i = 0; i < progresses.length; ++i) {
+            progresses[i] = this.appData.editableSubjects.get(i).calculateProgress();
+            sumProgress += progresses[i];
+        }
+
+        sumProgress = progresses.length != 0 ? sumProgress / progresses.length : 0;
+        this.subjectListView.updateProgresses(progresses, sumProgress);
     }
 }

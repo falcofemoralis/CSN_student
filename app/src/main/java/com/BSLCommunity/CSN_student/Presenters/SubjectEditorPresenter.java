@@ -29,10 +29,12 @@ public class SubjectEditorPresenter {
 
     public void addWork(WorkType workType) {
         this.copyEdSubject.allWorks.get(workType).add(new EditableSubject.Work());
+        this.subjectEditorView.setWorkProgress(this.copyEdSubject.calculateProgress());
     }
 
     public void deleteWork(WorkType workType, int index) {
         this.copyEdSubject.allWorks.get(workType).remove(index);
+        this.subjectEditorView.setWorkProgress(this.copyEdSubject.calculateProgress());
     }
 
     public void changeWork(WorkType workType, int index, String name, WorkStatus workStatus, String mark) {

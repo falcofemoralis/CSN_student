@@ -1,10 +1,6 @@
 package com.BSLCommunity.CSN_student.Constants;
 
-public enum  CacheStatusType {
-    NO_INTERNET,
+public enum CacheStatusType {
     NO_CACHE,
-    CACHE_NEED_UPDATE,
-    FAILED_TO_DOWNLOAD,
-    FAILED_TO_SAVE,
-    OK
+    CACHE_NEED_UPDATE
 }

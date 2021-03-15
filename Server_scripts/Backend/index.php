@@ -11,6 +11,8 @@ require_once "./scripts/token.php";
 
 cors();
 
+DataBase::getConnection();
+
 if (!function_exists('getallheaders')) {
     function getallheaders()
     {
@@ -36,8 +38,7 @@ $router = array();
 $router['GET'] = [
     '/\/api\/groups\/course\/(\d+)/' => ['getGroupsOnCourse'],
     '/\/api\/groups\/all/' => ['getAllGroups'],
-    '/\/api\/groups\/(\d+)\/schedule/' => ['getScheduleById'],
-    '/\/api\/teachers\/(\d+)\/schedule/' => ['viewTeacherSchedules'],
+    '/\/api\/groups\/names/' => ['getGroupNames'],
     '/\/api\/teachers\/all/' => ['getAllTeacher'],
     '/\/api\/subjects\/group\/(\d+)/' => ['getSubjectsByGroup'],
     '/\/api\/subjects/' => ['getImageSubject'],

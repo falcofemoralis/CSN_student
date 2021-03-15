@@ -3,13 +3,13 @@
 class Subject
 {
     public $name;
-    public $img;
+    public $imgPath;
     public $teachers;
 
     function __construct($name, $img)
     {
         $this->name = $name;
-        $this->img = $img;
+        $this->imgPath = $img;
         $this->teachers = array();
     }
 }
@@ -18,7 +18,6 @@ class Subject
 function getSubjectsByGroup($url)
 {
     $id = explode('/', $url)[4];
-    $imgPath = "http://192.168.0.104:81/images/subjects/";
 
     $query = "SELECT DISTINCT subjects.SubjectName, teachers.Code_Teacher, subjects.Image
     FROM schedule_list 
@@ -46,8 +45,8 @@ function getSubjectsByGroup($url)
 
 
     for ($i = 0; $i < count($subjects); ++$i) {
-        if ($subjects[$i]->img)
-            $subjects[$i]->imgPath = $imgPath . $subjects[$i]->img;
+        if ($subjects[$i]->imgPath)
+            $subjects[$i]->imgPath = "images/subjects/" . $subjects[$i]->imgPath;
     }
     echo json_encode($subjects);
 }

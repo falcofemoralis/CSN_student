@@ -10,11 +10,14 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,13 +33,8 @@ public class GroupModel {
         public String groupName;
         @SerializedName("Course")
         public int course;
-
-        public ArrayList<ScheduleList> scheduleList = new ArrayList<>();
-
-        public Group(int id, String GroupName) {
-            this.id = id;
-            this.groupName = GroupName;
-        }
+        @SerializedName("ScheduleList")
+        public ArrayList<ScheduleList> scheduleList;
     }
 
     public static ArrayList<Group> groups;
@@ -74,32 +72,59 @@ public class GroupModel {
     }
 
     /**
-     * Получение всех академических групп. Если групп не существует - они выгружаются с сервера, иначе отдаются сразу же
+     * Получение только имен групп с сервера (или с устройства если уже скачаны)
      *
      * @param exCallable - колбек
      */
-    public Thread getAllGroups(final ExCallable<ArrayList<Group>> exCallable) {
-        return (new Thread() {
-            @Override
-            public void run() {
-                if (!groups.isEmpty()) {
-                    exCallable.call(groups);
-                    return;
-                }
+    public void getGroupNames(final ExCallable<ArrayList<Group>> exCallable) {
+        if (!groups.isEmpty()) {
+            exCallable.call(groups);
+            return;
+        }
 
-                GroupApi groupApi = retrofit.create(GroupApi.class);
-                Call<ArrayList<Group>> call = groupApi.allGroups();
-                try {
-                    groups = call.execute().body();
-                    save();
-                    exCallable.call(groups);
-                } catch (IOException e) {
-                    exCallable.fail(R.string.no_connection_server);
-                    Log.d("ERROR_API", e.toString());
-                }
+        GroupApi groupApi = retrofit.create(GroupApi.class);
+        Call<ArrayList<Group>> call = groupApi.getGroupNames();
+        call.enqueue(new Callback<ArrayList<Group>>() {
+
+            @Override
+            public void onResponse(Call<ArrayList<Group>> call, Response<ArrayList<Group>> response) {
+                groups = response.body();
+                save();
+                exCallable.call(groups);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Group>> call, Throwable t) {
+                exCallable.fail(R.string.no_connection_server);
+                Log.d("ERROR_API", t.toString());
             }
         });
+    }
 
+    /**
+     * Получение всех академических групп.
+     *
+     * @param exCallable - колбек
+     */
+    public void getAllGroups(final ExCallable<ArrayList<Group>> exCallable) {
+        GroupApi groupApi = retrofit.create(GroupApi.class);
+        Call<ArrayList<Group>> call = groupApi.allGroups();
+
+        call.enqueue(new Callback<ArrayList<Group>>() {
+            @Override
+            public void onResponse(@NotNull Call<ArrayList<Group>> call, @NotNull retrofit2.Response<ArrayList<Group>> response) {
+                groups = response.body();
+                save();
+                exCallable.call(groups);
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ArrayList<Group>> call, @NotNull Throwable t) {
+                exCallable.fail(R.string.no_connection_server);
+                Log.d("ERROR_API", t.toString());
+            }
+        });
     }
 
     /**
@@ -117,34 +142,6 @@ public class GroupModel {
         }
 
         return grOnCourse;
-    }
-
-    /**
-     * Загрузка рассписания для всех групп
-     */
-    public Thread loadSchedule(final ExCallable<Integer> exCallable) {
-        return (new Thread() {
-            @Override
-            public void run() {
-                GroupApi groupApi = retrofit.create(GroupApi.class);
-
-                for (final Group group : groups) {
-                    if (!DataModel.isFailed) {
-                        Call<ArrayList<ScheduleList>> call = groupApi.scheduleByGroupId(group.id);
-
-                        try {
-                            group.scheduleList = call.execute().body();
-                            save();
-                            Log.d("CACHE_API", "downloaded schedule for group: " + group.groupName);
-                            exCallable.call(-1);
-                        } catch (IOException e) {
-                            Log.d("ERROR_API", e.toString());
-                            exCallable.fail(-1);
-                        }
-                    }
-                }
-            }
-        });
     }
 
     /**

@@ -16,6 +16,6 @@ public interface GroupApi {
     @GET(GROUP_API + "/all")
     Call<ArrayList<GroupModel.Group>> allGroups();
 
-    @GET(GROUP_API + "/{groupId}/schedule")
-    Call<ArrayList<ScheduleList>>  scheduleByGroupId(@Path("groupId") int groupId);
+    @GET(GROUP_API + "/names")
+    Call<ArrayList<GroupModel.Group>> getGroupNames();
 }

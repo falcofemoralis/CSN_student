@@ -1,9 +1,7 @@
 package com.BSLCommunity.CSN_student.Models;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.BSLCommunity.CSN_student.APIs.CacheApi;
+import com.BSLCommunity.CSN_student.Constants.ApiType;
 import com.BSLCommunity.CSN_student.Constants.CacheStatusType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
@@ -16,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +25,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class DataModel {
     public static DataModel instance = null;
-    public static boolean isFailed = false;
     public static final String DATA_FILE_NAME = "Cache";
 
     public static class Cache {
@@ -40,21 +38,21 @@ public class DataModel {
         public String teachersApi;
     }
 
-    public Cache clientCache;
-    public Cache serverCache;
-    public ArrayList<Thread> threads = new ArrayList<>();
-    private Context context;
+    public Cache clientCache; // Кеш клиента
+    public Cache serverCache; // Кеш сервера
+    public ArrayList<ApiType> dataToDownload = new ArrayList<>(); // Данные которые необходимо скачать
+    private boolean isFailed; // Булевская переменная которая показывает произошла ли ошибка
+    private int downloadedDataSize = 0; // Переменная которая показывает сколько данных мы скачали (т.к они выполняется асинхроно, нам нужно подсчитывать сколько скачалось)
 
     private Retrofit retrofit;
 
     private DataModel() {
     }
 
-    public static DataModel getDataModel(Context context) {
+    public static DataModel getDataModel() {
         if (instance == null) {
             instance = new DataModel();
             instance.init();
-            instance.context = context;
         }
         return instance;
     }
@@ -76,20 +74,22 @@ public class DataModel {
         }
     }
 
-    // проверка кеша
+    /**
+     * Проверка на валидность кеша. Идет отправка времени кеша на устройстве на сервер, где оно сверается с временем на сервере.
+     *
+     * @param exCallable - колбек
+     */
     public void checkCache(final ExCallable<CacheStatusType> exCallable) {
         if (clientCache != null) {
             CacheApi cacheApi = retrofit.create(CacheApi.class);
             Call<String> call = cacheApi.checkCache(clientCache.creationTime);
-            Log.d("CACHE_API", "cr time: " + clientCache.creationTime);
+
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                     boolean isOld = Boolean.parseBoolean(response.body());
-                    Log.d("CACHE_API", "should download: " + isOld);
-                    if (isOld) {
+                    if (isOld)
                         exCallable.call(CacheStatusType.CACHE_NEED_UPDATE);
-                    }
                 }
 
                 @Override
@@ -97,21 +97,34 @@ public class DataModel {
                 }
             });
         } else {
+            //Кеш отсуствует на устройстве и его не нужно проверять
             exCallable.call(CacheStatusType.NO_CACHE);
         }
     }
 
-    // скачивание данных
+    /**
+     * Скачивание кеш файла с сервера
+     *
+     * @param exCallable - колбек
+     */
     public void downloadCache(final ExCallable<ProgressType> exCallable) {
         CacheApi cacheApi = retrofit.create(CacheApi.class);
         Call<Cache> call = cacheApi.downloadCache();
 
-        // Скачиваем кеш файл
         call.enqueue(new Callback<Cache>() {
             @Override
             public void onResponse(@NotNull Call<Cache> call, @NotNull Response<Cache> response) {
                 serverCache = response.body();
-                Log.d("CACHE_API", "downloaded!" + serverCache);
+                if (clientCache != null) {
+                    if (!clientCache.subjectsApi.equals(serverCache.subjectsApi))
+                        dataToDownload.add(ApiType.SubjectApi);
+                    if (!clientCache.groupsApi.equals(serverCache.groupsApi))
+                        dataToDownload.add(ApiType.GroupApi);
+                    if (!clientCache.teachersApi.equals(serverCache.teachersApi))
+                        dataToDownload.add(ApiType.TeacherApi);
+                } else {
+                    dataToDownload.addAll(Arrays.asList(ApiType.values()));
+                }
                 exCallable.call(ProgressType.SET_MAX);
             }
 
@@ -119,125 +132,105 @@ public class DataModel {
             public void onFailure(@NotNull Call<Cache> call, @NotNull Throwable t) {
                 // Кеш не был скачан успешно
                 exCallable.fail(-1);
-                Log.d("CACHE_API", "Fail to get cache!" + t.toString());
             }
         });
     }
 
-    public int initDataToDownload() {
-        boolean downloadAll = false;
-
-        if (clientCache == null)
-            downloadAll = true;
-
-        if (downloadAll || !serverCache.groupsApi.equals(clientCache.groupsApi))
-            threads.add(GroupModel.getGroupModel().getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
-                @Override
-                public void call(ArrayList<GroupModel.Group> data) {
-                    Log.d("CACHE_API", "downloaded groups!");
-                }
-
-                @Override
-                public void fail(int idResString) {
-                    isFailed = true;
-                }
-            }));
-
-        if (downloadAll || !serverCache.groupsApi.equals(clientCache.groupsApi))
-            threads.add(GroupModel.getGroupModel().loadSchedule(new ExCallable<Integer>() {
-                @Override
-                public void call(Integer data) {
-                    Log.d("CACHE_API", "downloaded groups schedule!");
-                }
-
-                @Override
-                public void fail(int idResString) {
-                    isFailed = true;
-                }
-            }));
-
-        if (downloadAll || !serverCache.teachersApi.equals(clientCache.teachersApi))
-            threads.add(TeacherModel.getTeacherModel().getAllTeachers(new ExCallable<ArrayList<TeacherModel.Teacher>>() {
-                @Override
-                public void call(ArrayList<TeacherModel.Teacher> data) {
-                    Log.d("CACHE_API", "downloaded teachers!");
-                }
-
-                @Override
-                public void fail(int idResString) {
-                    isFailed = true;
-                }
-            }));
-        if (downloadAll || !serverCache.teachersApi.equals(clientCache.teachersApi))
-            threads.add(TeacherModel.getTeacherModel().loadSchedule(new ExCallable<Integer>() {
-                @Override
-                public void call(Integer data) {
-                    Log.d("CACHE_API", "downloaded teacher schedule!");
-                }
-
-                @Override
-                public void fail(int idResString) {
-                    isFailed = true;
-                }
-            }));
-        if (downloadAll || !serverCache.subjectsApi.equals(clientCache.subjectsApi))
-            threads.add(SubjectModel.getSubjectModel().getGroupSubjects(UserData.getUserData().user.getGroupId(), new ExCallable<ArrayList<Subject>>() {
-                @Override
-                public void call(ArrayList<Subject> data) {
-                    Log.d("CACHE_API", "downloaded subjects!");
-                }
-
-                @Override
-                public void fail(int idResString) {
-                    isFailed = true;
-                }
-            }));
-        if (downloadAll || !serverCache.subjectsApi.equals(clientCache.subjectsApi))
-            threads.add(SubjectModel.getSubjectModel().downloadSubjectImages(new ExCallable<Integer>() {
-                @Override
-                public void call(Integer data) {
-                    Log.d("CACHE_API", "downloaded images!");
-                }
-
-                @Override
-                public void fail(int idResString) {
-                    isFailed = true;
-                }
-            }, context));
-        return threads.size();
-    }
-
+    /**
+     * Скачиваем необходимые данные
+     *
+     * @param exCallable - колбек
+     */
     public void downloadData(final ExCallable<ProgressType> exCallable) {
-        (new Thread() {
-            @Override
-            public void run() {
-                for (int i = 0; i < threads.size(); i++) {
-                    Thread thread = threads.get(i);
-                    try {
-                        thread.run();
-                        thread.join();
-                        Log.d("CACHE_API", "downloaded!" + i);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        isFailed = false;
+        downloadedDataSize = 0;
 
-                    if (isFailed) {
-                        break;
-                    } else {
-                        Log.d("CACHE_API", "Update!" + i);
-                        exCallable.call(ProgressType.UPDATE_PROGRESS);
-                    }
-                }
-                if (isFailed) {
-                    Log.d("CACHE_API", "Failed to download");
-                    exCallable.fail(-1);
-                } else {
-                    exCallable.call(ProgressType.SET_OK);
-                }
+        for (ApiType apiType : dataToDownload) {
+            switch (apiType) {
+                case GroupApi:
+                    GroupModel.getGroupModel().getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
+                        @Override
+                        public void call(ArrayList<GroupModel.Group> data) {
+                            setSuccess(exCallable);
+                        }
+
+                        @Override
+                        public void fail(int idResString) {
+                            setFail(exCallable);
+                        }
+                    });
+                    break;
+                case TeacherApi:
+                    TeacherModel.getTeacherModel().getAllTeachers(new ExCallable<ArrayList<TeacherModel.Teacher>>() {
+                        @Override
+                        public void call(ArrayList<TeacherModel.Teacher> data) {
+                            setSuccess(exCallable);
+                        }
+
+                        @Override
+                        public void fail(int idResString) {
+                            setFail(exCallable);
+                        }
+                    });
+                    break;
+                case SubjectApi:
+                    SubjectModel.getSubjectModel().getGroupSubjects(UserData.getUserData().user.getGroupId(), new ExCallable<ArrayList<Subject>>() {
+                        @Override
+                        public void call(ArrayList<Subject> data) {
+                            SubjectModel.getSubjectModel().downloadSubjectImages(new ExCallable<Integer>() {
+                                @Override
+                                public void call(Integer data) {
+                                    setSuccess(exCallable);
+                                }
+
+                                @Override
+                                public void fail(int idResString) {
+                                    setFail(exCallable);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void fail(int idResString) {
+                            setFail(exCallable);
+                        }
+                    });
+                    break;
             }
-        }).start();
+        }
     }
 
+    /**
+     * Обновление прогресса в баре, а также проверка на окончание процесса
+     *
+     * @param exCallable - колбек
+     */
+    public void setSuccess(ExCallable<ProgressType> exCallable) {
+        if (isFailed) {
+            return;
+        }
+
+        downloadedDataSize++;
+        exCallable.call(ProgressType.UPDATE_PROGRESS);
+
+        if (downloadedDataSize == dataToDownload.size()) {
+            exCallable.call(ProgressType.SET_OK);
+        }
+    }
+
+    /**
+     * Установка ошибки
+     *
+     * @param exCallable - колбек
+     */
+    public void setFail(ExCallable<ProgressType> exCallable) {
+        isFailed = true;
+        exCallable.fail(-1);
+    }
+
+    /**
+     * Сохранение кеш файла на устройстве
+     */
     public void save() {
         try {
             String data = (new Gson()).toJson(serverCache);

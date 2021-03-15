@@ -25,7 +25,7 @@ public class EditableSubject extends Subject {
     public SubjectValue subjectValue;
 
     public EditableSubject(Subject subject) {
-        super(subject.idTeachers, subject.name, subject.imgPath, subject.img);
+        super(subject.idTeachers, subject.name, subject.imgPath);
 
         allWorks = new HashMap<>();
         allWorks.put(WorkType.LABS, new ArrayList<Work>());

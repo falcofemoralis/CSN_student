@@ -1,10 +1,8 @@
 <?php
 
 //GET запрос на расписания группы по id
-function getScheduleById($url)
+function getScheduleById($id)
 {
-    $id = explode('/', $url)[3];
-
     $query = "SELECT DISTINCT schedule_list.Day, schedule_list.Pair, schedule_list.Half, subjects.SubjectName, subjecttypes.SubjectType, schedule_list.Room
     FROM schedule_list 
     INNER JOIN subjects on subjects.Code_Subject = schedule_list.Code_Subject 
@@ -14,8 +12,7 @@ function getScheduleById($url)
     WHERE schedule_list.Code_Group = $id 
     ORDER BY schedule_list.Day, schedule_list.Pair ASC";
 
-    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
-    echo $data;
+    return json_decode(DataBase::execQuery($query, ReturnValue::GET_ARRAY));
 }
 
 //GET запрос на получение всех групп по курсу
@@ -33,6 +30,20 @@ function getGroupsOnCourse($url)
 
 //GET запрос на получение всех групп на кафедре URI: .../groups/all
 function getAllGroups()
+{
+    $query = "SELECT * 
+    FROM groups";
+
+    $groups = json_decode(DataBase::execQuery($query, ReturnValue::GET_ARRAY));
+
+    for ($i = 0; $i < count($groups); $i++) {
+        $groups[$i]->ScheduleList = getScheduleById($groups[$i]->Code_Group);
+    }
+
+    echo json_encode($groups);
+}
+
+function getGroupNames()
 {
     $query = "SELECT * 
     FROM groups";

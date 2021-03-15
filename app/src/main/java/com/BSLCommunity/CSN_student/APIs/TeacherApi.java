@@ -15,7 +15,4 @@ public interface TeacherApi {
 
     @GET(TEACHER_API + "/all")
     Call<ArrayList<TeacherModel.Teacher>> allTeachers();
-
-    @GET(TEACHER_API + "/{teacherId}/schedule")
-    Call<ArrayList<ScheduleList>> scheduleByTeacherId(@Path("teacherId") int teacherId);
 }

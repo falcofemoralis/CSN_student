@@ -8,11 +8,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.APIs.SubjectApi;
+import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,6 +25,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -61,44 +65,47 @@ public class SubjectModel {
         }
     }
 
-    /* Загрузка данных о дисциплине с сервера
-     * Параметры:
-     * context - контекст приложения или активитиы
-     * callback - дальнейшие действия которые необходимо будет выполнить после запроса
-     * */
-    public Thread getGroupSubjects(final int idGroup, final ExCallable<ArrayList<Subject>> exCallable) {
-        return (new Thread() {
+    /**
+     * Скачивание предметов группы юзера с сервера
+     *
+     * @param idGroup    - id группы
+     * @param exCallable - колбек
+     */
+    public void getGroupSubjects(final int idGroup, final ExCallable<ArrayList<Subject>> exCallable) {
+        SubjectApi subjectApi = retrofit.create(SubjectApi.class);
+        Call<ArrayList<Subject>> call = subjectApi.groupSubjects(idGroup);
+        call.enqueue(new Callback<ArrayList<Subject>>() {
             @Override
-            public void run() {
-                if (!subjects.isEmpty()) {
-                    exCallable.call(subjects);
-                    return;
-                }
+            public void onResponse(@NotNull Call<ArrayList<Subject>> call, @NotNull retrofit2.Response<ArrayList<Subject>> response) {
+                subjects = response.body();
+                save();
+                exCallable.call(subjects);
+            }
 
-                SubjectApi subjectApi = retrofit.create(SubjectApi.class);
-                Call<ArrayList<Subject>> call = subjectApi.groupSubjects(idGroup);
-                try {
-                    subjects = call.execute().body();
-                    save();
-                    exCallable.call(subjects);
-                } catch (IOException e) {
-                    exCallable.fail(R.string.no_connection_server);
-                    Log.d("ERROR_API", e.toString());
-                }
+            @Override
+            public void onFailure(Call<ArrayList<Subject>> call, Throwable t) {
+                exCallable.fail(R.string.no_connection_server);
+                Log.d("ERROR_API", t.toString());
             }
         });
     }
 
-    public Thread downloadSubjectImages(final ExCallable<Integer> exCallable, final Context context) {
-        return (new Thread() {
+    /**
+     * Скачивание изображений с сервера
+     *
+     * @param exCallable - колбек
+     */
+    public void downloadSubjectImages(final ExCallable<Integer> exCallable) {
+        (new Thread() {
             @Override
             public void run() {
+                Context context = App.getApp().context();
                 for (Subject subject : subjects) {
                     if (subject.imgPath != null) {
                         try {
-                            InputStream input = new java.net.URL(subject.imgPath).openStream();
+                            InputStream input = new java.net.URL(subject.getImgPath()).openStream();
                             Bitmap bitmap = BitmapFactory.decodeStream(input);
-                            saveImage(new BitmapDrawable(context.getResources(), bitmap), subject.img, context);
+                            saveImage(new BitmapDrawable(context.getResources(), bitmap), subject.getImgName(), context);
                             exCallable.call(-1);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -107,10 +114,12 @@ public class SubjectModel {
                     }
                 }
             }
-        });
+        }).start();
     }
 
-    // Сохраняет данные о предметах в Json файл
+    /**
+     * Сохранение предметов на устройстве
+     */
     public void save() {
         String data = (new Gson()).toJson(subjects);
         try {
@@ -120,11 +129,13 @@ public class SubjectModel {
         }
     }
 
-    /* Сохраняем изображение дисциплин в дирректорию .../files/images
-     * bmp - изображение
-     * nameImage - название изображения
-     * context - контекст приложения
-     * */
+    /**
+     * Сохранение изображения на устройстве
+     *
+     * @param bmp       - изображение
+     * @param nameImage - название изображения
+     * @param context   - контекст
+     */
     public void saveImage(BitmapDrawable bmp, String nameImage, Context context) {
         try {
             // Создаем файл изображение
@@ -135,7 +146,7 @@ public class SubjectModel {
             // Записываем изображение
             bmp.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
         } catch (IOException e) {
-            Toast.makeText(context, nameImage + " can't save", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, nameImage + " failed to save", Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -1,7 +1,6 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
-import android.content.Context;
-
+import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Constants.CacheStatusType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
@@ -16,13 +15,16 @@ public class MainPresenter {
     private final UserData userData;
     private final DataModel dataModel;
 
-    public MainPresenter(MainView mainView, Context context) {
-        FileManager.init(context);
+    public MainPresenter(MainView mainView) {
+        FileManager.init(App.getApp().context());
         this.mainView = mainView;
         this.userData = UserData.getUserData();
-        this.dataModel = DataModel.getDataModel(context);
+        this.dataModel = DataModel.getDataModel();
     }
 
+    /**
+     * Проверка авторизации пользователя. Также идет проверка кеш файла, в случае его обновления, данные будут перекачены.
+     */
     public void checkAuth() {
         if (this.userData.user.getToken() != null) {
             mainView.initActivity(this.userData.user.getGroupName(), this.userData.user.getCourse());
@@ -43,25 +45,28 @@ public class MainPresenter {
         }
     }
 
+    /**
+     * Инциализция загрузки. Устанавливается диалоговое окно. Идет подсчет данных которые должны будут скачаны
+     */
     public void initDownload() {
-        mainView.showProgressDialog(dataModel.initDataToDownload());
-
         dataModel.downloadCache(new ExCallable<ProgressType>() {
             @Override
             public void call(ProgressType data) {
+                mainView.showProgressDialog(dataModel.dataToDownload.size());
                 tryDownload();
             }
 
             @Override
             public void fail(int idResString) {
-                mainView.controlProgressDialog(ProgressType.SET_FAIL, dataModel.clientCache == null);
+                //Ошибка скачивания кеша, никак не отслеживаем
             }
         });
     }
 
-    // Попытка скачать данные
+    /**
+     * Скачивание данных с сервера
+     */
     public void tryDownload() {
-        DataModel.isFailed = false;
         mainView.showProgressDialog(-1);
 
         dataModel.downloadData(new ExCallable<ProgressType>() {

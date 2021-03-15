@@ -44,11 +44,25 @@ class ScheduleList
     }
 }
 
-// GET запрос возвращающий расписание учителя
-function viewTeacherSchedules($url)
-{
-    $id = explode('/', $url)[3];
 
+// GET запрос возвращающий всех учителей
+function getAllTeacher()
+{
+    $query = "SELECT teachers.Code_Teacher, teachers.FIO 
+    FROM teachers";
+
+    $teachers = json_decode(DataBase::execQuery($query, ReturnValue::GET_ARRAY));
+
+    for ($i = 0; $i < count($teachers); $i++) {
+        $teachers[$i]->ScheduleList = viewTeacherSchedules($teachers[$i]->Code_Teacher);
+    }
+
+    echo json_encode($teachers);
+}
+
+// GET запрос возвращающий расписание учителя
+function viewTeacherSchedules($id)
+{
     $query = "SELECT schedule_list.Day, schedule_list.Half, schedule_list.Pair, subjects.SubjectName, schedule_list.Room, subjecttypes.SubjectType, groups.GroupName
     FROM schedule_list
     INNER JOIN subjects ON subjects.Code_Subject = schedule_list.Code_Subject
@@ -86,15 +100,5 @@ function viewTeacherSchedules($url)
         }
     }
 
-    echo json_encode($scheduleLists);
-}
-
-// GET запрос возвращающий всех учителей
-function getAllTeacher()
-{
-    $query = "SELECT teachers.Code_Teacher, teachers.FIO 
-    FROM teachers";
-
-    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
-    echo $data;
+    return $scheduleLists;
 }

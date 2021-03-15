@@ -36,14 +36,14 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        mainPresenter = new MainPresenter(this, getApplicationContext());
+        mainPresenter = new MainPresenter(this);
         mainPresenter.checkAuth();
     }
 
     @Override
     public void initActivity(String groupName, int course) {
+        //Установка лаяута активити
         setContentView(R.layout.activity_main);
-
         // Установка таймера
         //таймер
         Timer timer = new Timer();
@@ -110,26 +110,21 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
 
     @Override
     public void controlProgressDialog(final ProgressType type, final boolean isFirst) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (type) {
-                    case SET_FAIL:
-                        progressDialog.setTitle("Failed to download");
-                        Log.d("CACHE_API", "isFirst =" + isFirst);
-                        progressDialog.getButton(ProgressDialog.BUTTON_POSITIVE).setEnabled(true); // Retry
-                        progressDialog.getButton(ProgressDialog.BUTTON_NEGATIVE).setEnabled(!isFirst); // Close
-                        break;
-                    case UPDATE_PROGRESS:
-                        int curProgress = progressDialog.getProgress() + 1;
-                        progressDialog.setProgress(curProgress);
-                        break;
-                    case SET_OK:
-                        progressDialog.cancel();
-                        break;
-                }
-            }
-        });
+        switch (type) {
+            case SET_FAIL:
+                progressDialog.setTitle("Failed to download");
+                Log.d("CACHE_API", "isFirst =" + isFirst);
+                progressDialog.getButton(ProgressDialog.BUTTON_POSITIVE).setEnabled(true); // Retry
+                progressDialog.getButton(ProgressDialog.BUTTON_NEGATIVE).setEnabled(!isFirst); // Close
+                break;
+            case UPDATE_PROGRESS:
+                int curProgress = progressDialog.getProgress() + 1;
+                progressDialog.setProgress(curProgress);
+                break;
+            case SET_OK:
+                progressDialog.cancel();
+                break;
+        }
     }
 
     @Override

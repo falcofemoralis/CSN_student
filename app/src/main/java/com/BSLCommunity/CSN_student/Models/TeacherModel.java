@@ -10,14 +10,17 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,13 +33,8 @@ public class TeacherModel {
         public int id;
         @SerializedName("FIO")
         public String FIO;
-
-        public ArrayList<ScheduleList> scheduleList = new ArrayList<>();
-
-        public Teacher(int id, String FIO) {
-            this.id = id;
-            this.FIO = FIO;
-        }
+        @SerializedName("ScheduleList")
+        public ArrayList<ScheduleList> scheduleList;
     }
 
     public static ArrayList<TeacherModel.Teacher> teachers;
@@ -78,55 +76,25 @@ public class TeacherModel {
      *
      * @param exCallable - колбек
      */
-    public Thread getAllTeachers(final ExCallable<ArrayList<TeacherModel.Teacher>> exCallable) {
-        return (new Thread() {
-            @Override
-            public void run() {
-                if (!teachers.isEmpty()) {
-                    exCallable.call(teachers);
-                    return;
-                }
+    public void getAllTeachers(final ExCallable<ArrayList<TeacherModel.Teacher>> exCallable) {
+        TeacherApi teacherApi = retrofit.create(TeacherApi.class);
+        Call<ArrayList<TeacherModel.Teacher>> call = teacherApi.allTeachers();
 
-                TeacherApi teacherApi = retrofit.create(TeacherApi.class);
-                Call<ArrayList<TeacherModel.Teacher>> call = teacherApi.allTeachers();
-                try {
-                    teachers = call.execute().body();
-                    save();
-                    exCallable.call(teachers);
-                } catch (IOException e) {
-                    exCallable.fail(R.string.no_connection_server);
-                    Log.d("ERROR_API", e.toString());
-                }
+        call.enqueue(new Callback<ArrayList<Teacher>>() {
+            @Override
+            public void onResponse(@NotNull Call<ArrayList<TeacherModel.Teacher>> call, @NotNull retrofit2.Response<ArrayList<TeacherModel.Teacher>> response) {
+                teachers = response.body();
+                save();
+                exCallable.call(teachers);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ArrayList<TeacherModel.Teacher>> call, @NotNull Throwable t) {
+                exCallable.fail(R.string.no_connection_server);
+                Log.d("ERROR_API", t.toString());
             }
         });
-    }
 
-    /**
-     * Загрузка рассписания для учителей
-     */
-    public Thread loadSchedule(final ExCallable<Integer> exCallable) {
-        return (new Thread() {
-            @Override
-            public void run() {
-                TeacherApi teacherApi = retrofit.create(TeacherApi.class);
-
-                for (final Teacher teacher : teachers) {
-                    if (!DataModel.isFailed) {
-                        Call<ArrayList<ScheduleList>> call = teacherApi.scheduleByTeacherId(teacher.id);
-
-                        try {
-                            teacher.scheduleList = call.execute().body();
-                            save();
-                            Log.d("CACHE_API", "downloaded schedule for teacher: " + teacher.FIO);
-                            exCallable.call(-1);
-                        } catch (IOException e) {
-                            Log.d("ERROR_API", e.toString());
-                            exCallable.fail(-1);
-                        }
-                    }
-                }
-            }
-        });
     }
 
     /**

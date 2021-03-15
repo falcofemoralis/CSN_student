@@ -147,13 +147,7 @@ public class RegistrationActivity extends BaseActivity implements RegView, Adapt
 
     @Override
     public void showToastError(final int id) {
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
-            }
-        });
+        Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -163,22 +157,16 @@ public class RegistrationActivity extends BaseActivity implements RegView, Adapt
 
     @Override
     public void setSpinnersData(final ArrayList<String> groupNames, final ArrayList<String> courses) {
-        runOnUiThread(new Runnable() {
+        int[] idSpins = new int[]{R.id.activity_registration_sp_groups, R.id.activity_registration_sp_courses};
+        ArrayList<String>[] lists = new ArrayList[]{groupNames, courses};
 
-            @Override
-            public void run() {
-                int[] idSpins = new int[]{R.id.activity_registration_sp_groups, R.id.activity_registration_sp_courses};
-                ArrayList<String>[] lists = new ArrayList[]{groupNames, courses};
-
-                for (int i = 0; i < idSpins.length; ++i) {
-                    Spinner spinner = findViewById(idSpins[i]);
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_registration_layout, lists[i]);
-                    dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_registration);
-                    spinner.setAdapter(dataAdapter);
-                    spinner.setOnItemSelectedListener(RegistrationActivity.this);
-                }
-            }
-        });
+        for (int i = 0; i < idSpins.length; ++i) {
+            Spinner spinner = findViewById(idSpins[i]);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_registration_layout, lists[i]);
+            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_registration);
+            spinner.setAdapter(dataAdapter);
+            spinner.setOnItemSelectedListener(RegistrationActivity.this);
+        }
     }
 
     @Override
@@ -192,15 +180,9 @@ public class RegistrationActivity extends BaseActivity implements RegView, Adapt
 
     @Override
     public void visibilityProgressBar(final boolean show) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int visibility = show ? ProgressBar.VISIBLE : ProgressBar.GONE;
-                groupProgressBar.setVisibility(visibility);
-                courseProgressBar.setVisibility(visibility);
-                courseText.setVisibility(show ? ProgressBar.GONE : ProgressBar.VISIBLE);
-            }
-        });
-
+        int visibility = show ? ProgressBar.VISIBLE : ProgressBar.GONE;
+        groupProgressBar.setVisibility(visibility);
+        courseProgressBar.setVisibility(visibility);
+        courseText.setVisibility(show ? ProgressBar.GONE : ProgressBar.VISIBLE);
     }
 }

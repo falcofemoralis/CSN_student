@@ -66,27 +66,23 @@ public class RegPresenter {
     public void initSpinnerData() {
         this.regView.visibilityProgressBar(true);
 
-        (this.groupModel.getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
+        this.groupModel.getGroupNames(new ExCallable<ArrayList<GroupModel.Group>>() {
             @Override
             public void call(ArrayList<GroupModel.Group> response) {
                 final int defaultCourse = 1;
 
-                ArrayList<String> groupNames = new ArrayList<>();
                 ArrayList<String> courses = new ArrayList<>();
 
                 for (int i = 0; i < response.size(); ++i) {
                     GroupModel.Group group = response.get(i);
-                    groupNames.add(group.groupName);
                     if (!courses.contains(Integer.toString(group.course))) {
                         courses.add(Integer.toString(group.course));
                     }
                 }
                 Collections.sort(courses);
 
-
                 regView.setSpinnersData(groupModel.getGroupsOnCourse(defaultCourse), courses);
                 regView.visibilityProgressBar(false);
-
             }
 
             @Override
@@ -96,7 +92,7 @@ public class RegPresenter {
                 } catch (Exception ignored) {
                 }
             }
-        })).start();
+        });
     }
 
     /**

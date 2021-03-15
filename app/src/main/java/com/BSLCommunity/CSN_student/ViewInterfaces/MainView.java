@@ -19,7 +19,7 @@ public interface MainView {
      */
     void showProgressDialog(int size);
     /**
-     * Управление диалогом
+     * Управление диалогом загрузки
      */
     void controlProgressDialog(ProgressType type, boolean isFirst);
 }

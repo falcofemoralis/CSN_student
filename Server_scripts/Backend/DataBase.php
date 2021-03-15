@@ -18,8 +18,8 @@ class DataBase
     {
         if (self::$connect == null) {
             self::$connect = mysqli_connect(self::$host, self::$username, self::$password, self::$db_name);
+            mysqli_set_charset(self::$connect, "utf8");
         }
-        mysqli_set_charset(self::$connect, "utf8");
         return self::$connect;
     }
 
@@ -30,7 +30,7 @@ class DataBase
         */
     public static function execQuery($query, int $returnValue)
     {
-        self::getConnection(); // Подключение к базе данных
+        //self::getConnection(); // Подключение к базе данных
 
         // Выполнение запроса и получение данных
         $result = mysqli_query(self::$connect, $query);
@@ -39,7 +39,7 @@ class DataBase
         if (mysqli_errno(self::$connect))
             throw new Exception(mysqli_errno(self::$connect));
 
-        mysqli_close(self::$connect);
+        //   mysqli_close(self::$connect);
 
         // Если ожидается ответ (SELECT запрос), формируется массив данных
         if ($returnValue == ReturnValue::GET_OBJECT)

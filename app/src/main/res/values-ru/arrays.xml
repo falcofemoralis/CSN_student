@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="values">
+    <string-array name="subject_values">
         <item>Экзамен</item>
         <item>Зачет</item>
         <item>Дифф.Зачет</item>

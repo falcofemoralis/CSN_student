@@ -53,7 +53,7 @@
             android:name=".Views.SubjectListActivity"
             android:theme="@style/SubjectListsActivityActionBar" />
         <activity
-            android:name=".Views.SubjectInfoFullStatisticActivity"
+            android:name=".Views.FullStatActivity"
             android:theme="@style/FullStatisticActivityActionBar" />
         <activity
             android:name=".Views.AuditoriumActivity"

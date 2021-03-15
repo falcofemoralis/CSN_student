@@ -51,13 +51,13 @@ public class EditableSubject extends Subject {
         int subjectComplete = 0;
         int sumCount = 0;
 
-        for (Map.Entry<WorkType, ArrayList<Work>> work : allWorks.entrySet()) {
-            ArrayList<Work> typeWorks = work.getValue();
+        for (Map.Entry<WorkType, ArrayList<Work>> works : allWorks.entrySet()) {
+            ArrayList<Work> oneTypeWorks = works.getValue();
+            sumCount += works.getValue().size();
 
-            for (int i = 0; i < typeWorks.size(); ++i)
-                if (typeWorks.get(i).workStatus == WorkStatus.PASSED_WITH_REPORT) {
+            for (int i = 0; i < oneTypeWorks.size(); ++i)
+                if (oneTypeWorks.get(i).workStatus == WorkStatus.PASSED_WITH_REPORT) {
                     subjectComplete++;
-                    sumCount = work.getValue().size();
                 }
         }
 

@@ -138,6 +138,7 @@ public class UserData {
      * @param subjects - текущие дисциплины пользователя, которые необходимо преобразовать
      */
     public void createEditableSubjects(ArrayList<Subject> subjects) {
+        this.editableSubjects.clear();
         for (int i = 0; i < subjects.size(); ++i) {
             this.editableSubjects.add(new EditableSubject(subjects.get(i)));
         }

@@ -18,7 +18,8 @@ public interface SubjectListView {
     void setCourse(int course);
     /**
      * Обновление прогресса на кнопках дисциплин
-     * @param editableSubjects - дисциплины с информацией пользователя о прогрессе
+     * @param subjectProgresses - прогрессы по дисциплинам
+     * @param sumProgress - суммарный прогресс
      */
-    void updateProgresses(ArrayList<EditableSubject> editableSubjects);
+    void updateProgresses(int[] subjectProgresses, int sumProgress);
 }

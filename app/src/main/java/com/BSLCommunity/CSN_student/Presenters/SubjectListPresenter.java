@@ -30,7 +30,15 @@ public class SubjectListPresenter {
     /**
      * Пользователь возвращается на окно дисциплин (обновление прогресса на каждом из предметов)
      */
-    public void resume() {
-        this.subjectListView.updateProgresses(userData.editableSubjects);
+    public void recalculateProgresses() {
+        int[] progresses = new int[this.userData.editableSubjects.size()];
+        int sumProgress = 0;
+        for (int i = 0; i < progresses.length; ++i) {
+            progresses[i] = this.userData.editableSubjects.get(i).calculateProgress();
+            sumProgress += progresses[i];
+        }
+
+        sumProgress = progresses.length != 0 ? sumProgress / progresses.length : 0;
+        this.subjectListView.updateProgresses(progresses, sumProgress);
     }
 }

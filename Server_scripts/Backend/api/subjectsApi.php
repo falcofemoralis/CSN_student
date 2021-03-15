@@ -18,6 +18,7 @@ class Subject
 function getSubjectsByGroup($url)
 {
     $id = explode('/', $url)[4];
+    $imgPath = "http://192.168.0.104:81/images/subjects/";
 
     $query = "SELECT DISTINCT subjects.SubjectName, teachers.Code_Teacher, subjects.Image
     FROM schedule_list 
@@ -43,6 +44,11 @@ function getSubjectsByGroup($url)
     }
     array_push($subjects, $subject);
 
+
+    for ($i = 0; $i < count($subjects); ++$i) {
+        if ($subjects[$i]->img)
+            $subjects[$i]->imgPath = $imgPath . $subjects[$i]->img;
+    }
     echo json_encode($subjects);
 }
 

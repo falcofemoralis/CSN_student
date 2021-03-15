@@ -1,5 +1,7 @@
 package com.BSLCommunity.CSN_student.ViewInterfaces;
 
+import com.BSLCommunity.CSN_student.Constants.ProgressType;
+
 public interface MainView {
 
     /**
@@ -12,4 +14,12 @@ public interface MainView {
      * Открытие окна логина
      */
     void openLogin();
+    /**
+     * Открытие окна загрузки файла
+     */
+    void showProgressDialog(int size);
+    /**
+     * Управление диалогом
+     */
+    void controlProgressDialog(ProgressType type, boolean isFirst);
 }

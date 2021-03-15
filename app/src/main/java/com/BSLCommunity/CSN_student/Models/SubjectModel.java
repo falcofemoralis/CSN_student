@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.BSLCommunity.CSN_student.APIs.SubjectApi;
@@ -13,17 +14,14 @@ import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -35,7 +33,9 @@ public class SubjectModel {
 
     public ArrayList<Subject> subjects;
 
-    private SubjectModel() {}
+    private SubjectModel() {
+    }
+
     public static SubjectModel getSubjectModel() {
         if (instance == null) {
             instance = new SubjectModel();
@@ -53,10 +53,10 @@ public class SubjectModel {
 
         try {
             String data = FileManager.readFile(DATA_FILE_NAME);
-            Type type = new TypeToken<ArrayList<Subject>>() {}.getType();
+            Type type = new TypeToken<ArrayList<Subject>>() {
+            }.getType();
             subjects = (new Gson()).fromJson(data, type);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             subjects = new ArrayList<>();
         }
     }
@@ -66,45 +66,48 @@ public class SubjectModel {
      * context - контекст приложения или активитиы
      * callback - дальнейшие действия которые необходимо будет выполнить после запроса
      * */
-    public void getGroupSubjects(int idGroup, final ExCallable<ArrayList<Subject>> callback) {
-        if (!subjects.isEmpty()) {
-            callback.call(subjects);
-            return;
-        }
-
-        SubjectApi subjectApi = retrofit.create(SubjectApi.class);
-
-        Call<ArrayList<Subject>> call = subjectApi.groupSubjects(idGroup);
-        call.enqueue(new Callback<ArrayList<Subject>>() {
+    public Thread getGroupSubjects(final int idGroup, final ExCallable<ArrayList<Subject>> exCallable) {
+        return (new Thread() {
             @Override
-            public void onResponse(@NotNull Call<ArrayList<Subject>> call, @NotNull Response<ArrayList<Subject>> response) {
-                subjects = response.body();
-                save();
-                callback.call(subjects);
-            }
+            public void run() {
+                if (!subjects.isEmpty()) {
+                    exCallable.call(subjects);
+                    return;
+                }
 
-            @Override
-            public void onFailure(@NotNull Call<ArrayList<Subject>> call, @NotNull Throwable t) {
-                callback.fail(R.string.no_connection_server);
+                SubjectApi subjectApi = retrofit.create(SubjectApi.class);
+                Call<ArrayList<Subject>> call = subjectApi.groupSubjects(idGroup);
+                try {
+                    subjects = call.execute().body();
+                    save();
+                    exCallable.call(subjects);
+                } catch (IOException e) {
+                    exCallable.fail(R.string.no_connection_server);
+                    Log.d("ERROR_API", e.toString());
+                }
             }
         });
     }
 
-    /* Загрузка изображения с устройства
-     * Параметры:
-     * context - контекст приложения
-     * subject - объект дисциплина, из него берется название изображени
-     * */
-    public BitmapDrawable getSubjectImage(final Context context, final Subject subject) {
-        File imageFile = new File(context.getDir("images", context.MODE_PRIVATE) + "/" + subject.imgPath);
-
-        // Если изображение найдено - возвращаем, если не найдено - его не существует для данной дисциплины
-        if (imageFile.exists()) {
-            Bitmap bmp = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            return new BitmapDrawable(bmp);
-        }
-        else
-            return null;
+    public Thread downloadSubjectImages(final ExCallable<Integer> exCallable, final Context context) {
+        return (new Thread() {
+            @Override
+            public void run() {
+                for (Subject subject : subjects) {
+                    if (subject.imgPath != null) {
+                        try {
+                            InputStream input = new java.net.URL(subject.imgPath).openStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(input);
+                            saveImage(new BitmapDrawable(context.getResources(), bitmap), subject.img, context);
+                            exCallable.call(-1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            exCallable.fail(-1);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     // Сохраняет данные о предметах в Json файл
@@ -118,12 +121,11 @@ public class SubjectModel {
     }
 
     /* Сохраняем изображение дисциплин в дирректорию .../files/images
-    * bmp - изображение
-    * nameImage - название изображения
-    *  context - контекст приложения
-    * */
+     * bmp - изображение
+     * nameImage - название изображения
+     * context - контекст приложения
+     * */
     public void saveImage(BitmapDrawable bmp, String nameImage, Context context) {
-
         try {
             // Создаем файл изображение
             File imageFile = new File(context.getDir("images", context.MODE_PRIVATE) + "/" + nameImage);

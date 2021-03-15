@@ -2,6 +2,7 @@
 
 require_once 'DataBase.php';
 require_once "./api/adminApi.php";
+require_once "./api/cacheApi.php";
 require_once "./api/groupsApi.php";
 require_once "./api/subjectsApi.php";
 require_once "./api/teachersApi.php";
@@ -46,19 +47,19 @@ $router['GET'] = [
     '/\/api\/users\/course\/(\d+)/' => ['usersViewByCourse'],
     '/\/api\/users\/(\d+)\/rating/' => ['getUserRating'],
     '/\/api\/users\/(\d+)/' => ['userViewById'],
-    '/\/api\/admin\/cache\/check/' => ['checkCacheFile'],
-    '/\/api\/admin\/cache/' => ['getCacheFile']
+    '/\/api\/cache\/check/' => ['checkCacheFile'],
+    '/\/api\/cache\/download/' => ['getCacheFile']
 ];
 $router['POST'] = [
     '/\/schedule\/upload/' => ['convertFile'],
     '/\/api\/users/' => ['createUser'],
-    '/\/api\/admin\/cache/' => ['createCacheFile']
+    '/\/api\/cache\/create/' => ['createCacheFile']
 ];
 $router['PUT'] = [
     '/\/api\/users\/(\d+)/' => ['updateUser'],
     '/\/api\/users\/(\d+)\/rating/' => ['updateUserRating'],
     '/\/schedule\/new/' => ['processSchedule'],
-    '/\/api\/admin\/cache/' => ['updateCacheFile']
+    '/\/api\/cache\/recreate/' => ['updateCacheFile']
 ];
 $router['DELETE'] = [
     '/\/schedule\/reset/' => ['clearSchedule']

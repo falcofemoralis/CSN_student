@@ -10,15 +10,14 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -79,55 +78,53 @@ public class TeacherModel {
      *
      * @param exCallable - колбек
      */
-    public void getAllTeachers(final ExCallable<ArrayList<TeacherModel.Teacher>> exCallable) {
-        if (!teachers.isEmpty()) {
-            exCallable.call(teachers);
-            return;
-        }
-
-        TeacherApi teacherApi = retrofit.create(TeacherApi.class);
-        Call<ArrayList<TeacherModel.Teacher>> call = teacherApi.allTeachers();
-
-        call.enqueue(new Callback<ArrayList<TeacherModel.Teacher>>() {
+    public Thread getAllTeachers(final ExCallable<ArrayList<TeacherModel.Teacher>> exCallable) {
+        return (new Thread() {
             @Override
-            public void onResponse(@NotNull Call<ArrayList<TeacherModel.Teacher>> call, @NotNull retrofit2.Response<ArrayList<TeacherModel.Teacher>> response) {
-                teachers = response.body();
-                exCallable.call(teachers);
-                save();
-                Log.d("DEBUG_API", teachers.toString());
-                for (TeacherModel.Teacher teacher : teachers) {
-                    loadSchedule(teacher.id);
+            public void run() {
+                if (!teachers.isEmpty()) {
+                    exCallable.call(teachers);
+                    return;
                 }
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<ArrayList<TeacherModel.Teacher>> call, @NotNull Throwable t) {
-                exCallable.fail(R.string.no_connection_server);
-                Log.d("ERROR_API", t.toString());
+                TeacherApi teacherApi = retrofit.create(TeacherApi.class);
+                Call<ArrayList<TeacherModel.Teacher>> call = teacherApi.allTeachers();
+                try {
+                    teachers = call.execute().body();
+                    save();
+                    exCallable.call(teachers);
+                } catch (IOException e) {
+                    exCallable.fail(R.string.no_connection_server);
+                    Log.d("ERROR_API", e.toString());
+                }
             }
         });
     }
 
     /**
-     * Загрузка рассписания по id
-     *
-     * @param teacherId - id преподавателя для которой необходимо рассписание
+     * Загрузка рассписания для учителей
      */
-    public void loadSchedule(final int teacherId) {
-        final TeacherModel.Teacher teacher = this.findById(teacherId);
-
-        TeacherApi teacherApi = retrofit.create(TeacherApi.class);
-        Call<ArrayList<ScheduleList>> call = teacherApi.scheduleByTeacherId(teacherId);
-        call.enqueue(new Callback<ArrayList<ScheduleList>>() {
+    public Thread loadSchedule(final ExCallable<Integer> exCallable) {
+        return (new Thread() {
             @Override
-            public void onResponse(@NotNull Call<ArrayList<ScheduleList>> call, @NotNull retrofit2.Response<ArrayList<ScheduleList>> response) {
-                teacher.scheduleList = response.body();
-                save();
-            }
+            public void run() {
+                TeacherApi teacherApi = retrofit.create(TeacherApi.class);
 
-            @Override
-            public void onFailure(@NotNull Call<ArrayList<ScheduleList>> call, @NotNull Throwable t) {
-                Log.d("ERROR_API", t.toString());
+                for (final Teacher teacher : teachers) {
+                    if (!DataModel.isFailed) {
+                        Call<ArrayList<ScheduleList>> call = teacherApi.scheduleByTeacherId(teacher.id);
+
+                        try {
+                            teacher.scheduleList = call.execute().body();
+                            save();
+                            Log.d("CACHE_API", "downloaded schedule for teacher: " + teacher.FIO);
+                            exCallable.call(-1);
+                        } catch (IOException e) {
+                            Log.d("ERROR_API", e.toString());
+                            exCallable.fail(-1);
+                        }
+                    }
+                }
             }
         });
     }

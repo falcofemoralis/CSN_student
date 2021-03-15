@@ -18,8 +18,8 @@ import java.lang.reflect.Type;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
-public class AppData {
-    public static transient AppData instance = null;
+public class UserData {
+    public static transient UserData instance = null;
     public final String FILE_NAME_SUBJECT_INFO = "subjectsInfo";
 
     /**
@@ -51,13 +51,13 @@ public class AppData {
     public transient ArrayList<Pair<String, String>> languages = new ArrayList<>(); //
     public transient SharedPreferences encryptedSharedPreferences;
 
-    public User userData;
+    public User user;
     public ArrayList<EditableSubject> editableSubjects;
 
-    private AppData() {}
-    public static AppData getAppData() {
+    private UserData() {}
+    public static UserData getUserData() {
         if (instance == null) {
-            instance = new AppData();
+            instance = new UserData();
             instance.init();
         }
         return instance;
@@ -77,16 +77,16 @@ public class AppData {
 
         try {
             SharedPreferences pref = this.encryptedSharedPreferences;
-            this.userData = new User();
-            this.userData.setNickName(pref.getString(PrefKeys.NICKNAME.getKey(), null));
-            this.userData.setPassword(pref.getString(PrefKeys.PASSWORD.getKey(), null));
-            this.userData.setGroupId(pref.getInt(PrefKeys.GROUP_ID.getKey(), -1));
-            this.userData.setGroupName(pref.getString(PrefKeys.GROUP.getKey(), null));
-            this.userData.setCourse(pref.getInt(PrefKeys.COURSE.getKey(), -1));
-            this.userData.setToken(pref.getString(PrefKeys.TOKEN.getKey(), null));
+            this.user = new User();
+            this.user.setNickName(pref.getString(PrefKeys.NICKNAME.getKey(), null));
+            this.user.setPassword(pref.getString(PrefKeys.PASSWORD.getKey(), null));
+            this.user.setGroupId(pref.getInt(PrefKeys.GROUP_ID.getKey(), -1));
+            this.user.setGroupName(pref.getString(PrefKeys.GROUP.getKey(), null));
+            this.user.setCourse(pref.getInt(PrefKeys.COURSE.getKey(), -1));
+            this.user.setToken(pref.getString(PrefKeys.TOKEN.getKey(), null));
         }
         catch (Exception ignored) {
-            this.userData = new User();
+            this.user = new User();
         }
 
         try {
@@ -103,13 +103,13 @@ public class AppData {
      * Обновление данных пользователя (полное обновление)
      * @param newUserData - новые данные
      */
-    public void setUserData(User newUserData) {
-        this.userData.setNickName(newUserData.getNickName());
-        this.userData.setPassword(newUserData.getPassword());
-        this.userData.setGroupId(newUserData.getGroupId());
-        this.userData.setGroupName(newUserData.getGroupName());
-        this.userData.setCourse(newUserData.getCourse());
-        this.userData.setToken(newUserData.getToken());
+    public void setUser(User newUserData) {
+        this.user.setNickName(newUserData.getNickName());
+        this.user.setPassword(newUserData.getPassword());
+        this.user.setGroupId(newUserData.getGroupId());
+        this.user.setGroupName(newUserData.getGroupName());
+        this.user.setCourse(newUserData.getCourse());
+        this.user.setToken(newUserData.getToken());
 
         this.saveData();
     }
@@ -120,8 +120,8 @@ public class AppData {
      * @param password - пароль
      */
     public void updateUserData(String nickName, String password) {
-        this.userData.setNickName(nickName);
-        this.userData.setNickName(password);
+        this.user.setNickName(nickName);
+        this.user.setNickName(password);
         this.saveData();
     }
 
@@ -173,12 +173,12 @@ public class AppData {
     public void saveData() {
         // Сохранение данных пользователя и настроек в SharedPreferences
         SharedPreferences.Editor prefEditor = this.encryptedSharedPreferences.edit();
-        prefEditor.putString(PrefKeys.NICKNAME.getKey(), this.userData.getNickName());
-        prefEditor.putString(PrefKeys.PASSWORD.getKey(), this.userData.getPassword());
-        prefEditor.putString(PrefKeys.GROUP.getKey(), this.userData.getGroupName());
-        prefEditor.putInt(PrefKeys.GROUP_ID.getKey(), this.userData.getGroupId());
-        prefEditor.putInt(PrefKeys.COURSE.getKey(), this.userData.getCourse());
-        prefEditor.putString(PrefKeys.TOKEN.getKey(), this.userData.getToken());
+        prefEditor.putString(PrefKeys.NICKNAME.getKey(), this.user.getNickName());
+        prefEditor.putString(PrefKeys.PASSWORD.getKey(), this.user.getPassword());
+        prefEditor.putString(PrefKeys.GROUP.getKey(), this.user.getGroupName());
+        prefEditor.putInt(PrefKeys.GROUP_ID.getKey(), this.user.getGroupId());
+        prefEditor.putInt(PrefKeys.COURSE.getKey(), this.user.getCourse());
+        prefEditor.putString(PrefKeys.TOKEN.getKey(), this.user.getToken());
         prefEditor.apply();
 
         if (editableSubjects != null) {

@@ -1,50 +1,36 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
-import com.BSLCommunity.CSN_student.Models.AppData;
-import com.BSLCommunity.CSN_student.Models.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
-import com.BSLCommunity.CSN_student.lib.ExCallable;
-
-import java.util.ArrayList;
 
 public class SubjectListPresenter {
 
     private final SubjectListView subjectListView;
     private final SubjectModel subjectModel;
-    private final AppData appData;
+    private final UserData userData;
 
     public SubjectListPresenter(final SubjectListView subjectListView) {
         this.subjectListView = subjectListView;
         this.subjectModel = SubjectModel.getSubjectModel();
-        this.appData = AppData.getAppData();
+        this.userData = UserData.getUserData();
 
         initData();
     }
 
     /**
-     * Инициализация данныз для отображение на эекране
+     * Инициализация данных для отображение на эекране
      */
     private void initData() {
-        this.subjectModel.getGroupSubjects(this.appData.userData.getGroupId(), new ExCallable<ArrayList<Subject>>() {
-            @Override
-            public void call(ArrayList<Subject> data) {
-                appData.createEditableSubjects(data);
-                subjectListView.setTableSubjects(appData.editableSubjects);
-            }
-
-            @Override
-            public void fail(int idResString) {
-
-            }
-        });
-        this.subjectListView.setCourse(this.appData.userData.getCourse());
+        userData.createEditableSubjects(this.subjectModel.subjects);
+        subjectListView.setTableSubjects(userData.editableSubjects);
+        this.subjectListView.setCourse(this.userData.user.getCourse());
     }
 
     /**
      * Пользователь возвращается на окно дисциплин (обновление прогресса на каждом из предметов)
      */
     public void resume() {
-        this.subjectListView.updateProgresses(appData.editableSubjects);
+        this.subjectListView.updateProgresses(userData.editableSubjects);
     }
 }

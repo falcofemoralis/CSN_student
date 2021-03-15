@@ -3,7 +3,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
-import com.BSLCommunity.CSN_student.Models.AppData;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectEditorView;
 import com.google.gson.Gson;
@@ -14,12 +14,12 @@ import java.lang.reflect.Type;
 public class SubjectEditorPresenter {
 
     SubjectEditorView subjectEditorView;
-    AppData appData;
+    UserData userData;
     EditableSubject copyEdSubject;
 
     public SubjectEditorPresenter(SubjectEditorView subjectEditorView, String intentData) {
         this.subjectEditorView = subjectEditorView;
-        this.appData = AppData.getAppData();
+        this.userData = UserData.getUserData();
 
         Type type = new TypeToken<EditableSubject>(){}.getType();
         this.copyEdSubject = (new Gson()).fromJson(intentData, type);
@@ -50,15 +50,15 @@ public class SubjectEditorPresenter {
 
     public void finishEdit() {
         int index = -1;
-        for (int i = 0; i < this.appData.editableSubjects.size(); ++i) {
-            if (this.appData.editableSubjects.get(i).name.equals(this.copyEdSubject.name)) {
+        for (int i = 0; i < this.userData.editableSubjects.size(); ++i) {
+            if (this.userData.editableSubjects.get(i).name.equals(this.copyEdSubject.name)) {
                 index = i;
                 break;
             }
         }
 
-        this.appData.editableSubjects.get(index).allWorks = this.copyEdSubject.allWorks;
-        this.appData.editableSubjects.get(index).subjectValue = this.copyEdSubject.subjectValue;
-        this.appData.saveData();
+        this.userData.editableSubjects.get(index).allWorks = this.copyEdSubject.allWorks;
+        this.userData.editableSubjects.get(index).subjectValue = this.copyEdSubject.subjectValue;
+        this.userData.saveData();
     }
 }

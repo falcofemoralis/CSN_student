@@ -85,5 +85,6 @@
     <string name="no_auth">You are not authorized</string>
     <string name="no_auditorium">Such an audience does not exist</string>
     <string name="default_text">default text</string>
+    <string name="download_dialog_title">Downloading files</string>
 </resources>
 

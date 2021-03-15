@@ -1,7 +1,7 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
 import com.BSLCommunity.CSN_student.Models.User;
-import com.BSLCommunity.CSN_student.Models.AppData;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.LoginView;
@@ -12,12 +12,12 @@ public class LoginPresenter {
     private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9])+"; // Регулярка для проверки валидации
     private final LoginView loginView; // View регистрации
     private final UserModel userModel; // Модель пользователя, нужна для логина
-    private final AppData appData;
+    private final UserData userData;
 
     public LoginPresenter(LoginView loginView) {
         this.loginView = loginView;
         this.userModel = UserModel.getUserModel();
-        this.appData = AppData.getAppData();
+        this.userData = UserData.getUserData();
     }
 
     /**
@@ -34,7 +34,7 @@ public class LoginPresenter {
                 @Override
                 public void call(User data) {
                     try {
-                        appData.setUserData(data);
+                        userData.setUser(data);
                         loginView.openMain();
                     } catch (Exception ignored) {}
                 }

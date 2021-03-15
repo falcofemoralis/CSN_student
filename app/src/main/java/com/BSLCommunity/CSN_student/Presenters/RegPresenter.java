@@ -2,7 +2,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.User;
-import com.BSLCommunity.CSN_student.Models.AppData;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.RegView;
@@ -17,43 +17,44 @@ public class RegPresenter {
     private final RegView regView; // View регистрации
     private final GroupModel groupModel; // Модель групп, нужна для получения информации о группах для выбора при регистрации
     private final UserModel userModel; // Модель пользователя, нужна для регистрации
-    private final AppData appData;
+    private final UserData userData;
 
     public RegPresenter(RegView regView) {
         this.regView = regView;
         this.groupModel = GroupModel.getGroupModel();
-        this.userModel= UserModel.getUserModel();
-        this.appData = AppData.getAppData();
+        this.userModel = UserModel.getUserModel();
+        this.userData = UserData.getUserData();
     }
 
     /**
      * Попытка регистрации нового пользователя. Проверка валидации и при успешной валидации - регистрация
-     * @param nickname - никнейм
-     * @param password - пароль
+     *
+     * @param nickname     - никнейм
+     * @param password     - пароль
      * @param confPassword - подтверджение пароля
      */
     public void tryRegistration(String nickname, String password, String confPassword, String groupName) {
         if (!nickname.matches(validRegEx) || !password.matches(validRegEx) || !confPassword.matches(validRegEx)) {
             this.regView.showToastError(R.string.invalid_data);
-        }
-        else if (!password.equals(confPassword))  {
+        } else if (!password.equals(confPassword)) {
             this.regView.showToastError(R.string.passwords_do_not_match);
-        }
-        else {
+        } else {
             this.userModel.registration(nickname, password, groupName, new ExCallable<User>() {
                 @Override
                 public void call(User data) {
                     try {
-                        appData.setUserData(data);
+                        userData.setUser(data);
                         regView.openMain();
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
 
                 @Override
                 public void fail(int idResString) {
                     try {
                         regView.showToastError(idResString);
-                    } catch (Exception ignored){}
+                    } catch (Exception ignored) {
+                    }
                 }
             });
         }
@@ -65,7 +66,7 @@ public class RegPresenter {
     public void initSpinnerData() {
         this.regView.visibilityProgressBar(true);
 
-        this.groupModel.getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
+        (this.groupModel.getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
             @Override
             public void call(ArrayList<GroupModel.Group> response) {
                 final int defaultCourse = 1;
@@ -82,28 +83,29 @@ public class RegPresenter {
                 }
                 Collections.sort(courses);
 
-                try {
-                    regView.setSpinnersData(groupModel.getGroupsOnCourse(defaultCourse), courses);
-                    regView.visibilityProgressBar(false);
-                } catch (Exception ignored) {}
+
+                regView.setSpinnersData(groupModel.getGroupsOnCourse(defaultCourse), courses);
+                regView.visibilityProgressBar(false);
+
             }
 
             @Override
             public void fail(int idResString) {
                 try {
                     regView.showToastError(idResString);
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
-        });
+        })).start();
     }
 
     /**
      * Загрузка групп опредленного курса
+     *
      * @param course - номер курса
      */
     public void chosenCourse(int course) {
         ArrayList<String> groupsName = this.groupModel.getGroupsOnCourse(course);
         this.regView.setGroupNamesSpinner(groupsName);
     }
-
 }

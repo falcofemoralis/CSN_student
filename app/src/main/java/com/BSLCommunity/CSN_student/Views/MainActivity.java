@@ -2,69 +2,48 @@ package com.BSLCommunity.CSN_student.Views;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.BSLCommunity.CSN_student.Constants.ProgressType;
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
-import com.BSLCommunity.CSN_student.Managers.FileManager;
-import com.BSLCommunity.CSN_student.Models.GroupModel;
-import com.BSLCommunity.CSN_student.Models.TeacherModel;
 import com.BSLCommunity.CSN_student.Models.Timer;
 import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
-import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
-import com.BSLCommunity.CSN_student.lib.ExCallable;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements View.OnTouchListener, MainView {
     private MainPresenter mainPresenter;
+    private ProgressDialog progressDialog;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //TODO перенести инициализацию в сервис
-        FileManager.init(getApplicationContext());
-        TeacherModel.getTeacherModel().getAllTeachers(new ExCallable<ArrayList<TeacherModel.Teacher>>() {
-            @Override
-            public void call(ArrayList<TeacherModel.Teacher> data) {
-            }
-
-            @Override
-            public void fail(int idResString) {
-            }
-        });
-       GroupModel.getGroupModel().getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
-            @Override
-            public void call(ArrayList<GroupModel.Group> response) {
-            }
-
-            @Override
-            public void fail(int idResString) {
-            }
-        });
-
-
-        mainPresenter = new MainPresenter(this);
+        mainPresenter = new MainPresenter(this, getApplicationContext());
         mainPresenter.checkAuth();
     }
 
     @Override
     public void initActivity(String groupName, int course) {
+        setContentView(R.layout.activity_main);
+
         // Установка таймера
         //таймер
         Timer timer = new Timer();
@@ -91,6 +70,66 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
     @Override
     public void openLogin() {
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    @Override
+    public void showProgressDialog(final int size) {
+        // Диалог прогресса скачивания файлов
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMax(size);
+            progressDialog.setButton(ProgressDialog.BUTTON_POSITIVE, "Retry", (DialogInterface.OnClickListener) null);
+            progressDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "Close", (DialogInterface.OnClickListener) null);
+            progressDialog.setTitle(getString(R.string.download_dialog_title));
+            progressDialog.show();
+
+            Button retryBtn = progressDialog.getButton(ProgressDialog.BUTTON_POSITIVE);
+            retryBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainPresenter.tryDownload();
+                }
+            });
+
+            Button closeBtn = progressDialog.getButton(ProgressDialog.BUTTON_NEGATIVE);
+            closeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    progressDialog.cancel();
+                }
+            });
+        } else {
+            progressDialog.setTitle(getString(R.string.download_dialog_title));
+            progressDialog.setProgress(0);
+        }
+        progressDialog.getButton(ProgressDialog.BUTTON_POSITIVE).setEnabled(false);
+        progressDialog.getButton(ProgressDialog.BUTTON_NEGATIVE).setEnabled(false);
+    }
+
+    @Override
+    public void controlProgressDialog(final ProgressType type, final boolean isFirst) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (type) {
+                    case SET_FAIL:
+                        progressDialog.setTitle("Failed to download");
+                        Log.d("CACHE_API", "isFirst =" + isFirst);
+                        progressDialog.getButton(ProgressDialog.BUTTON_POSITIVE).setEnabled(true); // Retry
+                        progressDialog.getButton(ProgressDialog.BUTTON_NEGATIVE).setEnabled(!isFirst); // Close
+                        break;
+                    case UPDATE_PROGRESS:
+                        int curProgress = progressDialog.getProgress() + 1;
+                        progressDialog.setProgress(curProgress);
+                        break;
+                    case SET_OK:
+                        progressDialog.cancel();
+                        break;
+                }
+            }
+        });
     }
 
     @Override

@@ -101,10 +101,10 @@ export default class App extends Component {
                 <h4 className="sub-headerText">Настройка кеша</h4>
                 <div>
                   <div className="controls">
-                    <button onClick={() => { this.handleBtn("/api/admin/cache", "POST") }}>Создать кеш</button>
-                    <button onClick={() => { this.handleBtn("/api/admin/cache", "PUT", "groupsApi") }}>Обновить группы</button>
-                    <button onClick={() => { this.handleBtn("/api/admin/cache", "PUT", "subjectsApi") }}>Обновить предметы</button>
-                    <button onClick={() => { this.handleBtn("/api/admin/cache", "PUT", "teachersApi") }}>Обновить преподов</button>
+                    <button onClick={() => { this.handleBtn("/api/cache/create", "POST") }}>Создать кеш</button>
+                    <button onClick={() => { this.handleBtn("/api/cache/recreate", "PUT", "groupsApi") }}>Обновить группы</button>
+                    <button onClick={() => { this.handleBtn("/api/cache/recreate", "PUT", "subjectsApi") }}>Обновить предметы</button>
+                    <button onClick={() => { this.handleBtn("/api/cache/recreate", "PUT", "teachersApi") }}>Обновить преподов</button>
                   </div>
                 </div>
               </div>

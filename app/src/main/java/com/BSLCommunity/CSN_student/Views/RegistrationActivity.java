@@ -34,10 +34,12 @@ import com.github.ybq.android.spinkit.style.ThreeBounce;
 import java.util.ArrayList;
 
 // Форма регистрации пользователя
-public class RegistrationActivity extends BaseActivity implements  RegView, AdapterView.OnItemSelectedListener, View.OnTouchListener {
+public class RegistrationActivity extends BaseActivity implements RegView, AdapterView.OnItemSelectedListener, View.OnTouchListener {
 
     String groupName; //выбранный код группы со спиннера
-    ProgressBar progressBar; //анимация загрузки в спиннере групп
+    ProgressBar groupProgressBar; //анимация загрузки в спиннере групп
+    ProgressBar courseProgressBar; //анимация загрузки в спиннере курсов
+    TextView courseText; // Надпись курс
     private RegPresenter regPresenter;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -48,8 +50,11 @@ public class RegistrationActivity extends BaseActivity implements  RegView, Adap
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         AnimationManager.setAnimation(getWindow(), this);
-        progressBar = (ProgressBar) findViewById(R.id.activity_registration_pb_groups);
-        progressBar.setIndeterminateDrawable(new ThreeBounce());
+        groupProgressBar = (ProgressBar) findViewById(R.id.activity_registration_pb_groups);
+        groupProgressBar.setIndeterminateDrawable(new ThreeBounce());
+        courseProgressBar = (ProgressBar) findViewById(R.id.activity_registration_pb_courses);
+        courseProgressBar.setIndeterminateDrawable(new ThreeBounce());
+        courseText = (TextView) findViewById(R.id.activity_registration_tv_course);
 
         this.createClickableSpan();
         ((Button) findViewById(R.id.activity_registration_bt_register)).setOnTouchListener(this);
@@ -68,23 +73,22 @@ public class RegistrationActivity extends BaseActivity implements  RegView, Adap
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-            TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+        TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                transitionDrawable.startTransition(150);
-                view.startAnimation(AnimationUtils.loadAnimation(RegistrationActivity.this, R.anim.btn_pressed));
-            }
-            else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                EditText nickName = (EditText) findViewById(R.id.activity_registration_et_nickname);
-                EditText password = (EditText) findViewById(R.id.activity_registration_et_password);
-                EditText repeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            transitionDrawable.startTransition(150);
+            view.startAnimation(AnimationUtils.loadAnimation(RegistrationActivity.this, R.anim.btn_pressed));
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            EditText nickName = (EditText) findViewById(R.id.activity_registration_et_nickname);
+            EditText password = (EditText) findViewById(R.id.activity_registration_et_password);
+            EditText repeatPassword = (EditText) findViewById(R.id.activity_registration_et_passwordRe);
 
-                this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString(), this.groupName);
+            this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString(), this.groupName);
 
-                transitionDrawable.reverseTransition(150);
-                view.startAnimation(AnimationUtils.loadAnimation(RegistrationActivity.this, R.anim.btn_unpressed));
-            }
-            return false;
+            transitionDrawable.reverseTransition(150);
+            view.startAnimation(AnimationUtils.loadAnimation(RegistrationActivity.this, R.anim.btn_unpressed));
+        }
+        return false;
     }
 
     /**
@@ -95,8 +99,7 @@ public class RegistrationActivity extends BaseActivity implements  RegView, Adap
         if (parent.getId() == R.id.activity_registration_sp_courses) {
             int course = Integer.parseInt(parent.getItemAtPosition(position).toString());
             this.regPresenter.chosenCourse(course);
-        }
-        else if (parent.getId() == R.id.activity_registration_sp_groups) {
+        } else if (parent.getId() == R.id.activity_registration_sp_groups) {
             groupName = parent.getItemAtPosition(position).toString();
         }
     }
@@ -143,8 +146,14 @@ public class RegistrationActivity extends BaseActivity implements  RegView, Adap
     }
 
     @Override
-    public void showToastError(int id) {
-        Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
+    public void showToastError(final int id) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -153,17 +162,23 @@ public class RegistrationActivity extends BaseActivity implements  RegView, Adap
     }
 
     @Override
-    public void setSpinnersData(ArrayList<String> groupNames, ArrayList<String> courses) {
-        int[] idSpins = new int[] {R.id.activity_registration_sp_groups, R.id.activity_registration_sp_courses};
-        ArrayList<String>[] lists = new ArrayList[] {groupNames, courses};
+    public void setSpinnersData(final ArrayList<String> groupNames, final ArrayList<String> courses) {
+        runOnUiThread(new Runnable() {
 
-        for (int i = 0; i < idSpins.length; ++i) {
-            Spinner spinner = findViewById(idSpins[i]);
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_registration_layout, lists[i]);
-            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_registration);
-            spinner.setAdapter(dataAdapter);
-            spinner.setOnItemSelectedListener(this);
-        }
+            @Override
+            public void run() {
+                int[] idSpins = new int[]{R.id.activity_registration_sp_groups, R.id.activity_registration_sp_courses};
+                ArrayList<String>[] lists = new ArrayList[]{groupNames, courses};
+
+                for (int i = 0; i < idSpins.length; ++i) {
+                    Spinner spinner = findViewById(idSpins[i]);
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_registration_layout, lists[i]);
+                    dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_registration);
+                    spinner.setAdapter(dataAdapter);
+                    spinner.setOnItemSelectedListener(RegistrationActivity.this);
+                }
+            }
+        });
     }
 
     @Override
@@ -176,8 +191,16 @@ public class RegistrationActivity extends BaseActivity implements  RegView, Adap
     }
 
     @Override
-    public void visibilityProgressBar(boolean show) {
-        int visibility = show ? ProgressBar.VISIBLE : ProgressBar.GONE;
-        progressBar.setVisibility(visibility);
+    public void visibilityProgressBar(final boolean show) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int visibility = show ? ProgressBar.VISIBLE : ProgressBar.GONE;
+                groupProgressBar.setVisibility(visibility);
+                courseProgressBar.setVisibility(visibility);
+                courseText.setVisibility(show ? ProgressBar.GONE : ProgressBar.VISIBLE);
+            }
+        });
+
     }
 }

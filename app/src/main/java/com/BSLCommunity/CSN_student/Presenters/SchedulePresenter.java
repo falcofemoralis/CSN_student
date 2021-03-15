@@ -3,7 +3,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
-import com.BSLCommunity.CSN_student.Models.AppData;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
 import com.BSLCommunity.CSN_student.Models.TeacherModel;
@@ -18,7 +18,7 @@ public class SchedulePresenter {
     private final ScheduleType type; // Выбранный тип расписания
     private final GroupModel groupModel; // Модель групп, нужна для получения групп по курсу и их расписания
     private final TeacherModel teacherModel; // Модель преподов, нужна для получения всех преподов и их расписания
-    private final AppData appData; // Доступ к данным пользователя
+    private final UserData userData; // Доступ к данным пользователя
     private final String lang; // Текущий язык в приложении
     private final ScheduleView scheduleView;
     private int selectedHalf; // Выбранная тип недели (0-Числитель\1-Знаменатель)
@@ -35,7 +35,7 @@ public class SchedulePresenter {
         this.scheduleView = scheduleView;
         this.type = type;
         this.groupModel = GroupModel.getGroupModel();
-        this.appData = AppData.getAppData();
+        this.userData = UserData.getUserData();
         this.teacherModel = TeacherModel.getTeacherModel();
         this.lang = lang;
     }
@@ -48,9 +48,9 @@ public class SchedulePresenter {
         ArrayList<String> entities;
 
         if (type == ScheduleType.GROUPS) {
-            entities = groupModel.getGroupsOnCourse(appData.userData.getCourse());
+            entities = groupModel.getGroupsOnCourse(userData.user.getCourse());
             for (int i = 0; i < entities.size(); ++i) {
-                if (entities.get(i).equals(appData.userData.getGroupName())) {
+                if (entities.get(i).equals(userData.user.getGroupName())) {
                     defaultItem = i;
                     break;
                 }
@@ -79,7 +79,7 @@ public class SchedulePresenter {
      */
     public void initSchedule() {
         if (type == ScheduleType.GROUPS)
-            scheduleList = groupModel.findById(appData.userData.getGroupId()).scheduleList;
+            scheduleList = groupModel.findById(userData.user.getGroupId()).scheduleList;
         else
             scheduleList = teacherModel.findById(1).scheduleList;
 

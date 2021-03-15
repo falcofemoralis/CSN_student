@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.BSLCommunity.CSN_student.Models.AnotherUserList;
 import com.BSLCommunity.CSN_student.R;
 
 public class RatingUsersListActivity extends AppCompatActivity {
@@ -24,7 +23,7 @@ public class RatingUsersListActivity extends AppCompatActivity {
     }
 
     protected void drawUsersList() {
-        LinearLayout listLL = findViewById(R.id.activity_rating_users_list_ll_list_users);
+/*        LinearLayout listLL = findViewById(R.id.activity_rating_users_list_ll_list_users);
 
         for (int i = 0; i < AnotherUserList.users.size(); ++i) {
 
@@ -38,7 +37,7 @@ public class RatingUsersListActivity extends AppCompatActivity {
             ((TextView) userRL.getChildAt(2)).setText( "Group : " + user.groupName);
 
             listLL.addView(userLayout);
-        }
+        }*/
     }
 
 }

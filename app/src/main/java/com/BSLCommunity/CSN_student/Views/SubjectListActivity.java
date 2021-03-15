@@ -3,6 +3,7 @@ package com.BSLCommunity.CSN_student.Views;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
@@ -21,8 +23,6 @@ import com.BSLCommunity.CSN_student.Presenters.SubjectListPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
 import com.google.gson.Gson;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,34 +83,31 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
     /**
      * Создание кнопки дисциплины
+     *
      * @param editableSubject - дисциплина
-     * @param container - строка которая будет содержать кнопку
+     * @param container       - строка которая будет содержать кнопку
      */
     @SuppressLint("ClickableViewAccessibility")
     private void createSubject(final EditableSubject editableSubject, LinearLayout container) {
-        final LinearLayout subjectView =  (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
+        final LinearLayout subjectView = (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
 
         // Установка имени дисциплины
         try {
             String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(this));
-            ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(subjectName);
+            ((TextView) subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(subjectName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(editableSubject.calculateProgress() + "%");
+        ((TextView) subjectView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(editableSubject.calculateProgress() + "%");
         ImageView subjectImgView = (ImageView) subjectView.findViewById(R.id.inflate_subject_img);
-        Picasso.get().load(editableSubject.imgPath).into(subjectImgView, new Callback() {
-            @Override
-            public void onSuccess() {
-                subjectView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        });
+        BitmapDrawable img = editableSubject.getSubjectImage(getApplicationContext());
+        if (img != null) {
+            subjectImgView.setImageDrawable(img);
+        } else {
+            subjectImgView.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_no_subjecticon));
+        }
+        subjectView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
 
         subjectView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -119,8 +116,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     transitionDrawable.startTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
-                }
-                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     Intent intent = new Intent(getBaseContext(), SubjectEditorActivity.class);
                     intent.putExtra("Subject", (new Gson()).toJson(editableSubject));
                     startActivity(intent);
@@ -139,12 +135,13 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
     /**
      * Создание кнопки полной статистики
+     *
      * @param container - строка которая будет содержать кнопку
      */
     @SuppressLint("ClickableViewAccessibility")
     private void createFullStatistics(LinearLayout container) {
-        final LinearLayout subjectView =  (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
-        ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(R.string.full_statistic);
+        final LinearLayout subjectView = (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
+        ((TextView) subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(R.string.full_statistic);
         ImageView subjectImgView = (ImageView) subjectView.findViewById(R.id.inflate_subject_img);
         subjectImgView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_statistics, null));
         subjectView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
@@ -156,8 +153,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     transitionDrawable.startTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
-                }
-                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     Intent intent = new Intent(getBaseContext(), SubjectInfoFullStatisticActivity.class);
                     startActivity(intent);
 
@@ -177,7 +173,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
     @Override
     public void setCourse(int course) {
         TextView tvCourse = findViewById(R.id.activity_subject_list_tv_course);
-        tvCourse.setText(String.format(Locale.getDefault(), "%s %d", tvCourse.getText(), course) );
+        tvCourse.setText(String.format(Locale.getDefault(), "%s %d", tvCourse.getText(), course));
     }
 
     /**
@@ -186,7 +182,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
     @Override
     public void updateProgresses(ArrayList<EditableSubject> editableSubjects) {
         for (int i = 0; i < subjectViews.size(); ++i)
-            ((TextView)subjectViews.get(i).findViewById(R.id.inflate_subject_tv_percent_progress))
+            ((TextView) subjectViews.get(i).findViewById(R.id.inflate_subject_tv_percent_progress))
                     .setText(editableSubjects.get(i).calculateProgress() + "%");
     }
 }

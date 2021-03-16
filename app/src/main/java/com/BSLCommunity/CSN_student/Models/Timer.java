@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Views.ScheduleBell;
+import com.BSLCommunity.CSN_student.Views.Fragments.ScheduleBell;
 
 import java.util.Calendar;
 

@@ -1,9 +1,11 @@
-package com.BSLCommunity.CSN_student.Views;
+package com.BSLCommunity.CSN_student.Views.Fragments;
 
-import android.content.pm.ActivityInfo;
+import android.content.Context;
 import android.os.Bundle;
 import android.transition.TransitionManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -11,13 +13,16 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.BSLCommunity.CSN_student.Managers.AnimationManager;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
 import com.BSLCommunity.CSN_student.Models.TeachersModel;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.ThreeBounce;
 
@@ -28,7 +33,7 @@ import java.util.List;
 
 
 //форма расписание предметов группы
-public class ScheduleActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
+public class ScheduleFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     final int MAX_PAIR = 5; //кол-во пар в активити
     final int MAX_DAYS = 5; //кол-во дней в активити
 
@@ -43,27 +48,33 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
 
     ProgressBar progressBar; //анимация загрузки в спиннере
 
+    View currentFragment;
+    OnFragmentInteractionListener fragmentListener;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getIntent().getExtras().getString("typeSchedule").equals("Teachers")) entity = "teachers";
-        else entity = "groups";
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentListener = (OnFragmentInteractionListener) context;
+    }
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        AnimationManager.setAnimation(getWindow(), this);
-        setContentView(R.layout.activity_lessons_schedule);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        currentFragment = inflater.inflate(R.layout.fragment_lessons_schedule, container, false);
+        entity = getArguments().getString("typeSchedule");
 
-        progressBar = (ProgressBar) findViewById(R.id.activity_lessons_schedule_pb_main);
+        progressBar = currentFragment.findViewById(R.id.activity_lessons_schedule_pb_main);
         Sprite iIndeterminateDrawable = new ThreeBounce();
-        iIndeterminateDrawable.setColor(getColor(R.color.white));
+        iIndeterminateDrawable.setColor(getActivity().getColor(R.color.white));
         progressBar.setIndeterminateDrawable(iIndeterminateDrawable);
 
-        spinner = findViewById(R.id.activity_lessons_schedule_sp_main);
+        spinner = currentFragment.findViewById(R.id.activity_lessons_schedule_sp_main);
         spinner.setEnabled(false);
 
         createSpinner();
         getScheduleElements();
+        return currentFragment;
     }
+
 
     //создание спиннера групп
     protected void createSpinner() {
@@ -88,7 +99,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                         JSONObject FIOJson = new JSONObject(TeachersModel.teacherLists.get(j).FIO);
 
                         // Разбиение ФИО на составные и установка с инициалами
-                        String[] fioStrs = FIOJson.getString(LocaleHelper.getLanguage(this)).split(" ");
+                        String[] fioStrs = FIOJson.getString(LocaleHelper.getLanguage(getContext())).split(" ");
                         listAdapter.add(fioStrs[2] + " " + fioStrs[0].charAt(0) + ". " + fioStrs[1].charAt(0));
                     }
                     catch (Exception e) {}
@@ -96,7 +107,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                 }
                 spinner.setPrompt(getString(R.string.teachers_prompt));
                 spinner.setEnabled(true);
-                dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_layout, listAdapter);
+                dataAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_schedule_layout, listAdapter);
                 dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
                 spinner.setAdapter(dataAdapter);
                 // Выбор первого учителя не имеет смысла
@@ -123,7 +134,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                 }
                 spinner.setPrompt(getString(R.string.group_prompt));
                 spinner.setEnabled(true);
-                dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_schedule_groups_layout, listAdapter);
+                dataAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_schedule_groups_layout, listAdapter);
                 dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
                 spinner.setAdapter(dataAdapter);
             } else {
@@ -155,7 +166,7 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
 
     //меняем тип недели
     public void changeTypeWeek(View v) {
-        TransitionManager.beginDelayedTransition((LinearLayout) findViewById(R.id.activity_lessons_schedule_ll_main));
+        TransitionManager.beginDelayedTransition((LinearLayout) currentFragment.findViewById(R.id.activity_lessons_schedule_ll_main));
 
         if (type_week.getText().equals(getResources().getString(R.string.denominator)))
             type_week.setText(getResources().getString(R.string.numerator));
@@ -170,13 +181,13 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
 
     //получение необходимых полей с активити расписание
     protected void getScheduleElements() {
-        type_week = findViewById(R.id.activity_lessons_schedule_bt_weekType);
+        type_week = currentFragment.findViewById(R.id.activity_lessons_schedule_bt_weekType);
 
         //получеам id текстовых полей с activity_lessons_schedule и сохраняем их в массиве schedule[][]
         //i - пары, j - дни
         for (int i = 0; i < MAX_DAYS; ++i) {
             for (int j = 0; j < MAX_PAIR; ++j) {
-                scheduleTextView[i][j] = findViewById(getResources().getIdentifier("text_" + i + "_" + j, "id", getApplicationContext().getPackageName()));
+                scheduleTextView[i][j] = currentFragment.findViewById(getResources().getIdentifier("text_" + i + "_" + j, "id", getActivity().getPackageName()));
             }
         }
     }
@@ -197,10 +208,10 @@ public class ScheduleActivity extends BaseActivity implements AdapterView.OnItem
                 try {
                     //парсим предмет по установленому языку в приложении
                     JSONObject subjectJSONObject = new JSONObject(list.subject);
-                    String subject = subjectJSONObject.getString(LocaleHelper.getLanguage(this));
+                    String subject = subjectJSONObject.getString(LocaleHelper.getLanguage(getContext()));
 
                     JSONObject typeJSONObject = new JSONObject(list.type);
-                    String type = typeJSONObject.getString(LocaleHelper.getLanguage(this));
+                    String type = typeJSONObject.getString(LocaleHelper.getLanguage(getContext()));
 
                     scheduleTextView[list.day][list.pair].setText(subject + " " + type + " (" + list.room + ")");
                 } catch (Exception e) {

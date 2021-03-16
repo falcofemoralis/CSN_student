@@ -1,25 +1,30 @@
-package com.BSLCommunity.CSN_student.Views;
+package com.BSLCommunity.CSN_student.Views.Fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 
-import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Presenters.SubjectListPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -30,7 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class SubjectListActivity extends BaseActivity implements SubjectListView {
+public class SubjectListFragment extends Fragment implements SubjectListView {
     private final int SUBJECT_ROW_COUNT = 3;
     private final int SUBJECT_COLUMN_COUNT = 3;
 
@@ -40,20 +45,44 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
     ArrayList<LinearLayout> subjectViews;
     LinearLayout fullStatView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), this);
-        setContentView(R.layout.activity_subject_list);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    final Fragment thisFragment = this;
+    View currentFragment;
+    OnFragmentInteractionListener fragmentListener;
 
-        tableSubjects = findViewById(R.id.activity_subject_list_ll_table_subjects);
-        subjectViews = new ArrayList<>();
-        this.subjectListPresenter = new SubjectListPresenter(this);
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
-    protected void onResume() {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        currentFragment = inflater.inflate(R.layout.fragment_subject_list, container, false);
+
+        setRetainInstance(true);
+
+        tableSubjects = currentFragment.findViewById(R.id.activity_subject_list_ll_table_subjects);
+        subjectViews = new ArrayList<>();
+        this.subjectListPresenter = new SubjectListPresenter(this);
+
+        return currentFragment;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden && getActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        super.onHiddenChanged(hidden);
+    }
+
+    @Override
+    public void onResume() {
         this.subjectListPresenter.recalculateProgresses();
         super.onResume();
     }
@@ -93,13 +122,13 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
         // Установка имени дисциплины
         try {
-            String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(this));
+            String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(getContext()));
             ((TextView)subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(subjectName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ImageView subjectImgView = (ImageView) subjectView.findViewById(R.id.inflate_subject_img);
+        ImageView subjectImgView = subjectView.findViewById(R.id.inflate_subject_img);
         Picasso.get().load(editableSubject.imgPath).into(subjectImgView, new Callback() {
             @Override
             public void onSuccess() {
@@ -111,23 +140,28 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
             }
         });
+
+
         subjectView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     transitionDrawable.startTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
+                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Intent intent = new Intent(getBaseContext(), SubjectEditorActivity.class);
-                    intent.putExtra("Subject", (new Gson()).toJson(editableSubject));
-                    startActivity(intent);
+                    Bundle data = new Bundle();
+                    data.putString("Subject", new Gson().toJson(editableSubject));
 
-                    transitionDrawable.reverseTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
+                    fragmentListener.onFragmentInteraction(thisFragment, new SubjectEditorFragment(),
+                            OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
 
+                    transitionDrawable.reverseTransition(100);
+                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
                 }
+
                 return true;
             }
         });
@@ -154,14 +188,11 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                 TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     transitionDrawable.startTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_pressed));
+                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Intent intent = new Intent(getBaseContext(), FullStatActivity.class);
-                    startActivity(intent);
-
-                    transitionDrawable.reverseTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(SubjectListActivity.this, R.anim.btn_unpressed));
+                    fragmentListener.onFragmentInteraction(thisFragment, new FullStatFragment(),
+                            OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
 
                 }
                 return true;
@@ -177,7 +208,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
      */
     @Override
     public void setCourse(int course) {
-        TextView tvCourse = findViewById(R.id.activity_subject_list_tv_course);
+        TextView tvCourse = currentFragment.findViewById(R.id.activity_subject_list_tv_course);
         tvCourse.setText(String.format(Locale.getDefault(), "%s %d", tvCourse.getText(), course) );
     }
 

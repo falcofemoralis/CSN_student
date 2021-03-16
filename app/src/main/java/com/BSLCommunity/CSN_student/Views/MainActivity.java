@@ -1,112 +1,86 @@
 package com.BSLCommunity.CSN_student.Views;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
-import android.content.Intent;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.BSLCommunity.CSN_student.Models.Timer;
-import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
+import com.BSLCommunity.CSN_student.Views.Fragments.MainFragment;
 
-import java.util.Locale;
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
-public class MainActivity extends BaseActivity implements View.OnTouchListener, MainView {
-    private MainPresenter mainPresenter;
+    private FragmentManager fragmentManager;
+    private static Fragment  mainFragment;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelper.onAttach(base));
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.main_activity);
 
-        mainPresenter = new MainPresenter(this);
-        mainPresenter.checkAuth();
-    }
+        fragmentManager = getSupportFragmentManager();
 
-    @Override
-    public void initActivity(String groupName, int course) {
-        // Установка таймера
-        //таймер
-        Timer timer = new Timer();
-        TextView time = findViewById(R.id.activity_main_tv_timerCounter);
-        //переменные таймера
-        TextView timeUntil = findViewById(R.id.activity_main_tv_timer_text);
-        timer.checkTimer(timeUntil, time, getResources());
+        if (savedInstanceState == null) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        // Устновка обработчиков нажатий для кнопок
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.activity_main_ll_main);
-        for (int i = 5; i < linearLayout.getChildCount(); i += 2) {
-            TableRow tableRow = (TableRow) linearLayout.getChildAt(i);
-            tableRow.getChildAt(0).setOnTouchListener(this);
-            tableRow.getChildAt(2).setOnTouchListener(this);
+            // Инициализация менеджера смены фрагментов
+            mainFragment = new MainFragment();
+
+            // Открытие фрагмента главного меню
+            fragmentManager.beginTransaction()
+                    .add(R.id.activity_main_ll_container, mainFragment)
+                    .commit();
         }
-
-        // Установка текстовых полей (группы и курса)
-        TextView courseTextView = findViewById(R.id.activity_main_tv_course);
-        TextView groupTextView = findViewById(R.id.activity_main_tv_group);
-        courseTextView.setText(String.format(Locale.getDefault(), "%d %s", course, courseTextView.getText()));
-        groupTextView.setText(String.format(Locale.getDefault(), "%s %s", groupName, groupTextView.getText()));
     }
 
     @Override
-    public void openLogin() {
-        startActivity(new Intent(this, LoginActivity.class));
-    }
+    public void onFragmentInteraction(Fragment fragmentSource, Fragment fragmentReceiver, OnFragmentInteractionListener.Action action, Bundle data, String backStackTag) {
+        FragmentTransaction fTrans = fragmentManager.beginTransaction();//.setCustomAnimations(R.anim.flip_fragment_in, R.anim.flip_fragment_out,  R.anim.flip_fragment_in, R.anim.flip_fragment_out);
+        if (fragmentReceiver != null)
+            fragmentReceiver.setArguments(data);
 
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+        switch (action)
+        {
+            case NEXT_FRAGMENT_HIDE:
+                if (mainFragment.isVisible())
+                    fTrans.hide(mainFragment);
+                else
+                    fTrans.hide(fragmentSource);
 
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            transitionDrawable.startTransition(150);
-            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_pressed));
+                fTrans.add(R.id.activity_main_ll_container, fragmentReceiver);
+                fTrans.addToBackStack(backStackTag);   // Добавление изменнений в стек
+                fTrans.commit();
+                break;
+            case NEXT_FRAGMENT_REPLACE:
+                fTrans.replace(R.id.activity_main_ll_container, fragmentReceiver);
+                fTrans.addToBackStack(backStackTag);   // Добавление изменнений в стек
+                fTrans.commit();
+                break;
+            case RETURN_FRAGMENT_BY_TAG:
+                fragmentManager.popBackStack(backStackTag, 0);
+                break;
+            case POP_BACK_STACK:
+                fragmentManager.popBackStack();
+                break;
         }
-        else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Intent intent = null;
-            int id = view.getId();
-
-            if (id == R.id.activity_main_bt_subjects) {
-                intent = new Intent(this, SubjectListActivity.class);
-            }
-            else if (id == R.id.activity_main_bt_auditorium) {
-                intent = new Intent(this, AuditoriumActivity.class);
-            }
-            else if (id == R.id.activity_main_bt_lessonsShedule) {
-                intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Groups");
-            }
-            else if (id == R.id.activity_main_bt_settings) {
-                intent = new Intent(this, SettingsActivity.class);
-            }
-            else if (id == R.id.activity_main_bt_teachersSchedule) {
-                intent = new Intent(this, ScheduleActivity.class).putExtra("typeSchedule", "Teachers");
-            }
-            else if (id == R.id.activity_main_bt_schedule_bell) {
-                intent = new Intent(this, ScheduleBell.class);
-            }
-
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
-            startActivity(intent, options.toBundle());
-
-            transitionDrawable.reverseTransition(150);
-            view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.btn_unpressed));
-        }
-        return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
+    // Отклик на BackPressed во фрагментах.
+    public interface onBackPressedListener {
+        // Обработка BackPressed во фрагмента. Возврат : true - фрагмент можно закрыть, false - фрагмент должен жить
+        // Если onBackPressed() возвращает false, то фрагмент сам должен позаботится о освобождении backStack-а
+        boolean onBackPressed();
     }
 }

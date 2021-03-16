@@ -1,21 +1,27 @@
-package com.BSLCommunity.CSN_student.Views;
+package com.BSLCommunity.CSN_student.Views.Fragments;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.BSLCommunity.CSN_student.Constants.WorkType;
-import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Presenters.FullStatPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.FullStatView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class FullStatActivity extends BaseActivity implements FullStatView {
+public class FullStatFragment extends Fragment implements FullStatView {
     TableLayout worksTL;
     final int TYPES_WORKS_COUNT = WorkType.values().length;
 
@@ -37,44 +43,53 @@ public class FullStatActivity extends BaseActivity implements FullStatView {
             R.color.done_with_report,
             R.color.waiting_acceptation,
             R.color.passed_without_report,
-            R.color.passed_with_report};;
+            R.color.passed_with_report };
 
     FullStatPresenter fullStatPresenter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), this);
-        setContentView(R.layout.activity_subject_info_full_statistic);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    View currentFragment;
+    OnFragmentInteractionListener fragmentListener;
 
-        worksTL = findViewById(R.id.activity_subject_info_full_tl_works);
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentListener = (OnFragmentInteractionListener) context;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        currentFragment = inflater.inflate(R.layout.fragment_full_statistic, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        worksTL = currentFragment.findViewById(R.id.activity_subject_info_full_tl_works);
 
         subjectValues = getResources().getStringArray(R.array.subject_values);
         workStatuses = getResources().getStringArray(R.array.work_statuses);
 
         fullStatPresenter = new FullStatPresenter(this);
+        return currentFragment;
     }
+
 
     @Override
     public void addSubjectRow(String subjectName, int idSubjectValue, HashMap<WorkType, ArrayList<EditableSubject.Work>> allWorks, int[] maxWorks) {
-        TableRow tableRow = new TableRow(this);
+        TableRow tableRow = new TableRow(getContext());
 
         // Добавление ценности предмета
         TextView subjectValueTv = inflateTextView(R.layout.inflate_statistic_view);
         subjectValueTv.setText(subjectValues[idSubjectValue]);
-        subjectValueTv.setTextColor(getColor(R.color.white));
+        subjectValueTv.setTextColor(getActivity().getColor(R.color.white));
         tableRow.addView(subjectValueTv);
 
         // Добавление названия дисциплины
         TextView subjectNameTv = inflateTextView(R.layout.inflate_statistic_view);
         try {
             JSONObject jsonSubjectName = new JSONObject(subjectName);
-            subjectNameTv.setText(jsonSubjectName.getString(LocaleHelper.getLanguage(this)));
+            subjectNameTv.setText(jsonSubjectName.getString(LocaleHelper.getLanguage(getContext())));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        subjectNameTv.setTextColor(getColor(R.color.white));
+        subjectNameTv.setTextColor(getActivity().getColor(R.color.white));
         subjectNameTv.setGravity(Gravity.START);
         tableRow.addView(subjectNameTv);
 
@@ -88,10 +103,10 @@ public class FullStatActivity extends BaseActivity implements FullStatView {
                     int idWorkStatus = works.get(j).workStatus.ordinal();
 
                     workTv.setText(workStatuses[idWorkStatus]);
-                    workTv.setTextColor(getColor(R.color.white));
-                    Drawable drawable = getDrawable(R.drawable.inflate_drawable_statistic_view);
+                    workTv.setTextColor(getActivity().getColor(R.color.white));
+                    Drawable drawable = getActivity().getDrawable(R.drawable.inflate_drawable_statistic_view);
                     drawable.mutate();
-                    drawable.setTint(getColor(wordStatusColors[idWorkStatus]));
+                    drawable.setTint(getActivity().getColor(wordStatusColors[idWorkStatus]));
                     workTv.setBackground(drawable);
                 }
 
@@ -104,7 +119,7 @@ public class FullStatActivity extends BaseActivity implements FullStatView {
 
     @Override
     public void addWorksHeaders(int[] maxWorks) {
-        TableRow worksHeadersRow = findViewById(R.id.activity_subject_info_full_tr_works_numbers);
+        TableRow worksHeadersRow = currentFragment.findViewById(R.id.activity_subject_info_full_tr_works_numbers);
 
         // Заголовок ценности работ
         TextView valueHeader =  inflateTextView(R.layout.inflate_statistic_view_header);
@@ -122,7 +137,7 @@ public class FullStatActivity extends BaseActivity implements FullStatView {
             for (int j = 0; j < maxWorks[i]; ++j) {
                 TextView textView = inflateTextView(R.layout.inflate_statistic_view_header);
                 textView.setText(String.format(Locale.getDefault(), "%s %d", getString(workHeader[i]), j + 1));
-                textView.setTextColor(getColor(R.color.white));
+                textView.setTextColor(getActivity().getColor(R.color.white));
                 worksHeadersRow.addView(textView);
             }
         }
@@ -134,7 +149,6 @@ public class FullStatActivity extends BaseActivity implements FullStatView {
      * @return елемент TextView
      */
     private TextView inflateTextView(int id){
-        TextView textView = (TextView) LayoutInflater.from(this).inflate(id, null);
-        return textView;
+        return (TextView) LayoutInflater.from(getContext()).inflate(id, null);
     }
 }

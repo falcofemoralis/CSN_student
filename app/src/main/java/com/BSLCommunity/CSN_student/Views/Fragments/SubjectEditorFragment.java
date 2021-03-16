@@ -1,9 +1,11 @@
-package com.BSLCommunity.CSN_student.Views;
+package com.BSLCommunity.CSN_student.Views.Fragments;
 
-import android.content.pm.ActivityInfo;
+import android.content.Context;
 import android.os.Bundle;
 import android.transition.TransitionManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,22 +16,25 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
-import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Presenters.SubjectEditorPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectEditorView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SubjectEditorActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, View.OnFocusChangeListener, SubjectEditorView {
+public class SubjectEditorFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnFocusChangeListener, SubjectEditorView {
     LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
     TableLayout labsListTL, ihwListTL, othersListTL; // Списки работ
     LinearLayout rootContainer; //элемент в котором находятся все объекты
@@ -48,38 +53,68 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
     TableRow focusedRow = null;
     SubjectEditorPresenter subjectEditorPresenter;
 
+    View currentFragment;
+    OnFragmentInteractionListener fragmentListener;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), this);
-        setContentView(R.layout.activity_subject_info);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentListener = (OnFragmentInteractionListener) context;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        currentFragment = inflater.inflate(R.layout.fragment_subject_info, container, false);
 
         // Контейнеры которые содержат списки работ и кнопки для отображения/добавления работ
-        labsLL = findViewById(R.id.activity_subject_info_ll_labs);
-        ihwLL = findViewById(R.id.activity_subject_info_ll_ihw);
-        otherLL = findViewById(R.id.activity_subject_info_ll_other);
+        labsLL = currentFragment.findViewById(R.id.activity_subject_info_ll_labs);
+        ihwLL = currentFragment.findViewById(R.id.activity_subject_info_ll_ihw);
+        otherLL = currentFragment.findViewById(R.id.activity_subject_info_ll_other);
 
         // Списки работ
-        labsListTL = findViewById(R.id.activity_subject_info_tl_labs_data);
-        ihwListTL = findViewById(R.id.activity_subject_info_tl_ihw_data);
-        othersListTL = findViewById(R.id.activity_subject_info_tl_other_data);
+        labsListTL = currentFragment.findViewById(R.id.activity_subject_info_tl_labs_data);
+        ihwListTL = currentFragment.findViewById(R.id.activity_subject_info_tl_ihw_data);
+        othersListTL = currentFragment.findViewById(R.id.activity_subject_info_tl_other_data);
 
         // Главный контейнер для анимации
-        rootContainer = findViewById(R.id.activity_subject_info_ll_main);
+        rootContainer = currentFragment.findViewById(R.id.activity_subject_info_ll_main);
 
         // Константы статусов и цветов бекграунда для них
         workStatuses = getResources().getStringArray(R.array.work_statuses);
 
-        Spinner valueSpinner = findViewById(R.id.activity_subject_info_sp_values);
+        // Установка обработчиков кнопок на добавление работ и скрытие/раскрытие блоков
+        int[] ids = new int[]{R.id.activity_subject_info_bt_add_lab, R.id.activity_subject_info_bt_add_ihw, R.id.activity_subject_info_bt_add_other};
+        for (int i = 0; i < ids.length; ++i) {
+            currentFragment.findViewById(ids[i]).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addElementWork(v);
+                }
+            });
+        }
+
+        ids = new int[]{R.id.activity_subject_info_bt_labs, R.id.activity_subject_info_bt_ihw, R.id.activity_subject_info_bt_other};
+        for (int i = 0; i < ids.length; ++i) {
+            currentFragment.findViewById(ids[i]).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openWork(v);
+                }
+            });
+        }
+
+        Spinner valueSpinner = currentFragment.findViewById(R.id.activity_subject_info_sp_values);
         createSpinnerAdapter(valueSpinner, R.array.subject_values, SubjectValue.EXAM.ordinal());
 
-        String intentDataSubject = getIntent().getStringExtra("Subject");
+
+        String intentDataSubject = getArguments().getString("Subject");
         this.subjectEditorPresenter = new SubjectEditorPresenter(this, intentDataSubject);
+
+        return currentFragment;
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         if (focusedRow != null)
             saveChanges(focusedRow);
 
@@ -95,7 +130,7 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
      */
     private void createSpinnerAdapter(Spinner spinner, int resArray, int defSelection) {
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this,
+                getContext(),
                 resArray,
                 R.layout.spinner_subjectinfo_layout
         );
@@ -121,8 +156,8 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
 
         // Установка имени дисциплины
         try {
-            String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(this));
-            ((TextView)findViewById(R.id.activity_subject_info_bt_subjectName)).setText(subjectName);
+            String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(getContext()));
+            ((TextView)currentFragment.findViewById(R.id.activity_subject_info_bt_subjectName)).setText(subjectName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -132,14 +167,14 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
             if (i < editableSubject.idTeachers.length) {
                 // TODO получение преподов по id
                 try {
-                    String teacherName = new JSONObject(Integer.toString(editableSubject.idTeachers[i])).getString(LocaleHelper.getLanguage(this));
-                    ((Button)findViewById(idTeachers[i])).setText(teacherName);
+                    String teacherName = new JSONObject(Integer.toString(editableSubject.idTeachers[i])).getString(LocaleHelper.getLanguage(getContext()));
+                    ((Button)currentFragment.findViewById(idTeachers[i])).setText(teacherName);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
             else {
-                ((Button)findViewById(idTeachers[i])).setVisibility(View.GONE);
+                currentFragment.findViewById(idTeachers[i]).setVisibility(View.GONE);
             }
         }
 
@@ -162,7 +197,7 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
      */
     @Override
     public void setWorkProgress(int progress) {
-        ((Button) findViewById(R.id.activity_subject_info_bt_progress)).setText(progress + "%");
+        ((Button) currentFragment.findViewById(R.id.activity_subject_info_bt_progress)).setText(progress + "%");
     }
 
     /**
@@ -208,15 +243,15 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
         int id = view.getId();
         if (id == R.id.activity_subject_info_bt_add_lab) {
             workType = WorkType.LABS;
-            infoTL = findViewById(R.id.activity_subject_info_tl_labs_data);
+            infoTL = currentFragment.findViewById(R.id.activity_subject_info_tl_labs_data);
         }
         else if (id == R.id.activity_subject_info_bt_add_ihw) {
             workType = WorkType.IHW;
-            infoTL = findViewById(R.id.activity_subject_info_tl_ihw_data);
+            infoTL = currentFragment.findViewById(R.id.activity_subject_info_tl_ihw_data);
         }
         else if (id == R.id.activity_subject_info_bt_add_other) {
             workType = WorkType.OTHERS;
-            infoTL = findViewById(R.id.activity_subject_info_tl_other_data);
+            infoTL = currentFragment.findViewById(R.id.activity_subject_info_tl_other_data);
         }
 
         this.subjectEditorPresenter.addWork(workType);
@@ -231,11 +266,11 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
         int id = view.getId();
 
         if (id == R.id.activity_subject_info_bt_labs) {
-            changeVisibleWork((Button) findViewById(R.id.activity_subject_info_bt_add_lab), labsListTL);
+            changeVisibleWork((Button) currentFragment.findViewById(R.id.activity_subject_info_bt_add_lab), labsListTL);
         } else if (id == R.id.activity_subject_info_bt_ihw) {
-            changeVisibleWork((Button) findViewById(R.id.activity_subject_info_bt_add_ihw), ihwListTL);
+            changeVisibleWork((Button) currentFragment.findViewById(R.id.activity_subject_info_bt_add_ihw), ihwListTL);
         } else if (id == R.id.activity_subject_info_bt_other) {
-            changeVisibleWork((Button) findViewById(R.id.activity_subject_info_bt_add_other), othersListTL);
+            changeVisibleWork((Button) currentFragment.findViewById(R.id.activity_subject_info_bt_add_other), othersListTL);
         }
     }
 

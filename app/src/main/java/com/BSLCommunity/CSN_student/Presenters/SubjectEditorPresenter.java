@@ -23,7 +23,6 @@ public class SubjectEditorPresenter {
 
         Type type = new TypeToken<EditableSubject>(){}.getType();
         this.copyEdSubject = (new Gson()).fromJson(intentData, type);
-
         this.subjectEditorView.setSubjectData(this.copyEdSubject);
     }
 

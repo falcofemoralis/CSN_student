@@ -18,6 +18,7 @@
         <item name="colorPrimary">@color/background</item>
         <item name="colorPrimaryDark">@color/background</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="SubjectListsActivityActionBar" parent="@style/AppTheme">

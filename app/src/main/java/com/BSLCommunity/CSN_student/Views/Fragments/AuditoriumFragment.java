@@ -1,11 +1,12 @@
-package com.BSLCommunity.CSN_student.Views;
+package com.BSLCommunity.CSN_student.Views.Fragments;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -13,16 +14,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
-import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Models.AuditoriumsList;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.otaliastudios.zoom.ZoomImageView;
 
-public class AuditoriumActivity extends BaseActivity {
+public class AuditoriumFragment extends Fragment {
     ZoomImageView selectedBuildingImage; //view выбранного корпуса(этажа)
     int[][] buildingsMaps; //карты корпусов(этажей), где [1][0] - 3 корпус 1 этаж (нету плана 2-ого корпуса)
     int selectedBuilding, selectedFloor; //индекс выбранного корпуса
@@ -48,18 +53,32 @@ public class AuditoriumActivity extends BaseActivity {
             {new ImageScale(0, 400, 64, 536), new ImageScale(0, 400, 84, 517), new ImageScale(0, 400, 88, 511), new ImageScale(0, 400, 88, 511)},
             {new ImageScale(121, 278, 0, 600), new ImageScale(101, 299, 0, 600), new ImageScale(101, 299, 0, 600), new ImageScale(101, 299, 0, 600)}};
 
+    View currentFragment;
+    OnFragmentInteractionListener fragmentListener;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), this);
-        setContentView(R.layout.activity_auditorium);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setTitle(getString(R.string.auditoriums_search));
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentListener = (OnFragmentInteractionListener) context;
+    }
+
+    public static Context wrapContextTheme(Activity activity, @StyleRes int styleRes) {
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(activity, styleRes);
+        return contextThemeWrapper;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LayoutInflater themedInflater = inflater.cloneInContext(wrapContextTheme(getActivity(), R.style.AuditoriumSearchActionBar));
+        currentFragment = themedInflater.inflate(R.layout.fragment_auditorium, container, false);
+
+        getActivity().setTitle(getString(R.string.auditoriums_search));
+        getActivity().setTheme(R.style.AuditoriumSearchActionBar);
 
         //получаем необходимые объекты
-        selectedBuildingImage = findViewById(R.id.selectedBuilding);
-        building_tl = findViewById(R.id.building_tl);
-        floor_tl = findViewById(R.id.floor_tl);
+        selectedBuildingImage = currentFragment.findViewById(R.id.selectedBuilding);
+        building_tl = currentFragment.findViewById(R.id.building_tl);
+        floor_tl = currentFragment.findViewById(R.id.floor_tl);
         buildingsMaps = new int[][]{
                 {R.drawable.building1_1, R.drawable.building1_2, R.drawable.building1_3},
                 {R.drawable.building3_1, R.drawable.building3_2, R.drawable.building3_3, R.drawable.building3_4, R.drawable.building3_5},
@@ -69,17 +88,17 @@ public class AuditoriumActivity extends BaseActivity {
         //устанавливаем максимальное приближение для зума 5 (стандартное 2.5)
         selectedBuildingImage.setMaxZoom(5);
         selectedBuildingImage.setMinZoom(1);
-        selectedBuildingImage.setImageDrawable(getDrawable(R.drawable.building1_1));
+        selectedBuildingImage.setImageDrawable(getActivity().getDrawable(R.drawable.building1_1));
         setFloorTabs();
 
-        auditoriumsList = new AuditoriumsList(this);
+        auditoriumsList = new AuditoriumsList(getContext());
 
         //ставим листенер на вкладки корпусов
         building_tl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //устанавливаем изображение корпуса (1 этажа) и сохраняем индекс корпуса
-                selectedBuildingImage.setImageDrawable(getDrawable(buildingsMaps[building_tl.getSelectedTabPosition()][0]));
+                selectedBuildingImage.setImageDrawable(getActivity().getDrawable(buildingsMaps[building_tl.getSelectedTabPosition()][0]));
                 selectedBuilding = building_tl.getSelectedTabPosition();
                 selectedBuildingImage.zoomTo(1, false);
 
@@ -101,7 +120,7 @@ public class AuditoriumActivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //устанавливаем изображение этажа (по выбранному корпусу) и сохраняем индекс этажа
-                selectedBuildingImage.setImageDrawable(getDrawable(buildingsMaps[selectedBuilding][floor_tl.getSelectedTabPosition()]));
+                selectedBuildingImage.setImageDrawable(getActivity().getDrawable(buildingsMaps[selectedBuilding][floor_tl.getSelectedTabPosition()]));
                 selectedFloor = floor_tl.getSelectedTabPosition();
                 selectedBuildingImage.zoomTo(1, false);
             }
@@ -114,18 +133,19 @@ public class AuditoriumActivity extends BaseActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        return currentFragment;
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //создаем меню поиска
-        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
 
         //устанавливаем конфигурацию для SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setQueryHint(getString(R.string.aud_search_hint)); //hint
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(false);
@@ -155,9 +175,9 @@ public class AuditoriumActivity extends BaseActivity {
                     TabLayout.Tab floorTab = floor_tl.getTabAt(audFloor);
                     floorTab.select();
 
-                    final Drawable bottomDrawable = ContextCompat.getDrawable(getApplicationContext(), buildingsMaps[audBuilding][audFloor]);
-                    Drawable topDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.auditoriumsquare);
-                    topDrawable.setTint(getColor(R.color.main_color_3));
+                    final Drawable bottomDrawable = ContextCompat.getDrawable(getContext(), buildingsMaps[audBuilding][audFloor]);
+                    Drawable topDrawable = ContextCompat.getDrawable(getContext(), R.drawable.auditoriumsquare);
+                    topDrawable.setTint(getActivity().getColor(R.color.main_color_3));
                     final LayerDrawable layer = new LayerDrawable(new Drawable[]{topDrawable, bottomDrawable});
                     selectedBuildingImage.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
@@ -182,7 +202,7 @@ public class AuditoriumActivity extends BaseActivity {
                 } else {
                     //убираем вью аудитории
                     try {
-                        selectedBuildingImage.setImageDrawable(getDrawable(buildingsMaps[audBuilding][audFloor]));
+                        selectedBuildingImage.setImageDrawable(getActivity().getDrawable(buildingsMaps[audBuilding][audFloor]));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -195,25 +215,25 @@ public class AuditoriumActivity extends BaseActivity {
                 return false;
             }
         });
-        return true;
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     //перевод dp  в пиксели
     private int getPxFromDp(int dp) {
-        final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
+        final float scale = getActivity().getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
 
     //перевод пикселей  в dp
     private int getDpFromPx(int px) {
-        final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
+        final float scale = getActivity().getResources().getDisplayMetrics().density;
         return (int) ((px - 0.5f) / scale);
     }
 
     //считаем кол-во этажей и устанавливаем их вкладки
     private void setFloorTabs() {
         for (int i = 0; i < buildingsMaps[building_tl.getSelectedTabPosition()].length; ++i) {
-            TabItem tabItem = new TabItem(AuditoriumActivity.this);
+            TabItem tabItem = new TabItem(getContext());
             tabItem.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             floor_tl.addView(tabItem);
             floor_tl.getTabAt(i).setText(getString(R.string.floor) + (i + 1));

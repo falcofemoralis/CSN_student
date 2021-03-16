@@ -14,11 +14,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UserApi {
-    String API_URL = "http://192.168.0.100:81/api/users/";
+    String API_URL = "http://192.168.1.3/api/users/";
 
     @GET("login")
     Call<User> login(@Query("nickname") String nickname, @Query("password") String password);

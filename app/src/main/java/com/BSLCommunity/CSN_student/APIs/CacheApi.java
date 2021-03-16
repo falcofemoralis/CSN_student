@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface CacheApi {
-    String BASE_URL = "http://192.168.0.100:81/";
+    String BASE_URL = "http://192.168.1.3/";
     String CACHE_API = "api/cache";
 
     @GET(CACHE_API + "/check")

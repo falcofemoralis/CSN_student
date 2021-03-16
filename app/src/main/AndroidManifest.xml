@@ -16,8 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".Services.DownloadService" />
-
         <activity
             android:name=".Views.MainActivity"
             android:theme="@style/MainActivityActionBar">
@@ -27,41 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Views.RegistrationActivity"
-            android:theme="@style/TransparentActionBar" />
-        <activity
-            android:name=".Views.LoginActivity"
-            android:theme="@style/TransparentActionBar" />
-        <activity
-            android:name=".Views.ScheduleActivity"
-            android:theme="@style/TransparentActionBar" />
-        <activity
-            android:name=".Views.SubjectEditorActivity"
-            android:theme="@style/SubjectInfoActivityActionBar" />
-        <activity
-            android:name=".Views.RatingActivity"
-            android:theme="@style/NoActionBar" />
-        <activity
-            android:name=".Views.RatingUsersListActivity"
-            android:theme="@style/SubjectInfoActivityActionBar" />
-        <activity
-            android:name=".Views.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/TransparentActionBar" />
-        <activity
-            android:name=".Views.SubjectListActivity"
-            android:theme="@style/SubjectListsActivityActionBar" />
-        <activity
-            android:name=".Views.FullStatActivity"
-            android:theme="@style/FullStatisticActivityActionBar" />
-        <activity
-            android:name=".Views.AuditoriumActivity"
-            android:label="@string/auditoriums_search"
-            android:theme="@style/AuditoriumSearchActionBar" />
-        <activity
-            android:name=".Views.ScheduleBell"
-            android:theme="@style/ScheduleBellActivityActionBar" />
     </application>
 
 </manifest>

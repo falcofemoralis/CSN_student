@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student.Views;
+package com.BSLCommunity.CSN_student.Views.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

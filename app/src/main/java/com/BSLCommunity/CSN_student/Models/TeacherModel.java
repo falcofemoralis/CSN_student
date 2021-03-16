@@ -14,10 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,8 +61,7 @@ public class TeacherModel {
 
         try {
             String data = FileManager.readFile(DATA_FILE_NAME);
-            Type type = new TypeToken<ArrayList<TeacherModel.Teacher>>() {
-            }.getType();
+            Type type = new TypeToken<ArrayList<TeacherModel.Teacher>>() {}.getType();
             teachers = (new Gson()).fromJson(data, type);
         } catch (Exception e) {
             teachers = new ArrayList<>();

@@ -1,10 +1,10 @@
-package com.BSLCommunity.CSN_student.Views;
+package com.BSLCommunity.CSN_student.Views.Fragments;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -13,38 +13,47 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
-import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Models.AuditoriumModel;
 import com.BSLCommunity.CSN_student.Presenters.AuditoriumPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.AuditoriumView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.otaliastudios.zoom.ZoomImageView;
 
 // Форма аудиторий в университете
-public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
+public class AuditoriumFragment extends Fragment implements AuditoriumView {
     private ZoomImageView selectedBuildingImage; // View выбранного корпуса (этажа)
     private TabLayout buildingTabs, floorTabs; // Лаяуты выбора коруса, этажа
     private AuditoriumPresenter auditoriumPresenter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AnimationManager.setAnimation(getWindow(), this);
-        setContentView(R.layout.activity_auditorium);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setTitle(getString(R.string.auditoriums_search));
+    View currentFragment;
+    OnFragmentInteractionListener fragmentListener;
 
-        buildingTabs = findViewById(R.id.building_tl);
-        floorTabs = findViewById(R.id.floor_tl);
-        selectedBuildingImage = findViewById(R.id.selectedBuilding);
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentListener = (OnFragmentInteractionListener) context;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        currentFragment = inflater.inflate(R.layout.fragment_auditorium, container, false);
+
+        getActivity().setTitle(getString(R.string.auditoriums_search));
+
+        buildingTabs = currentFragment.findViewById(R.id.building_tl);
+        floorTabs = currentFragment.findViewById(R.id.floor_tl);
+        selectedBuildingImage = currentFragment.findViewById(R.id.selectedBuilding);
         selectedBuildingImage.setMaxZoom(5); // Устанавливаем максимальное приближение для зума 5 (стандартное 2.5)
         selectedBuildingImage.setMinZoom(1); // Минимальный зум
 
-        auditoriumPresenter = new AuditoriumPresenter(this, getApplicationContext());
+        auditoriumPresenter = new AuditoriumPresenter(this, getContext());
         auditoriumPresenter.changeMap(0, 0);
 
         buildingTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -77,23 +86,25 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        return currentFragment;
     }
 
     /**
      * Строка поиска аудитории
      * @param menu - меню
-     * @return true если было создано меню
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
         // Создаем меню поиска
-        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
 
         // Устанавливаем конфигурацию для SearchView
-        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setQueryHint(getString(R.string.aud_search_hint));
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(false);
@@ -107,9 +118,9 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
                 AuditoriumModel.Auditorium auditorium = auditoriumPresenter.searchAuditorium(s);
 
                 if (auditorium != null)
-                    auditoriumPresenter.changeAuditoriumMap(auditorium, getApplicationContext());
+                    auditoriumPresenter.changeAuditoriumMap(auditorium, getContext());
                 else
-                    Toast.makeText(getApplicationContext(), R.string.no_auditorium, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.no_auditorium, Toast.LENGTH_SHORT).show();
 
                 return false;
             }
@@ -119,7 +130,6 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
                 return false;
             }
         });
-        return true;
     }
 
     @Override
@@ -130,7 +140,7 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
 
     @Override
     public void updateMap(int drawableMapId) {
-        selectedBuildingImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), drawableMapId));
+        selectedBuildingImage.setImageDrawable(ContextCompat.getDrawable(getContext(), drawableMapId));
         selectedBuildingImage.zoomTo(1, false);
     }
 
@@ -151,7 +161,7 @@ public class AuditoriumActivity extends BaseActivity implements AuditoriumView {
         floorTabs.removeAllTabs();
 
         for (int i = 0; i < numberOfFloors; ++i) {
-            TabItem tabItem = new TabItem(getApplicationContext());
+            TabItem tabItem = new TabItem(getContext());
             tabItem.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             floorTabs.addView(tabItem);
             floorTabs.getTabAt(i).setText(getString(R.string.floor) + (i + 1));

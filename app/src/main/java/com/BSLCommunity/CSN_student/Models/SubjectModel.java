@@ -157,7 +157,6 @@ public class SubjectModel {
 
     }
 
-
     /**
      * Поиск предмета по id
      *

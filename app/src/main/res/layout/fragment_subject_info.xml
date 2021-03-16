@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
-                        android:text="@string/teacher"
+                        android:text="@string/lector"
                         android:textColor="@color/white" />
 
                     <Space
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
-                        android:text="@string/teacher"
+                        android:text="@string/practice"
                         android:textColor="@color/white" />
 
                     <Space
@@ -139,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
-                        android:text="@string/teacher"
+                        android:text="@string/assistant"
                         android:textColor="@color/white" />
 
                     <Space

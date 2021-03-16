@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.35"
                 android:background="@color/main_color_2"
-                android:onClick="changeWeekType"
+                android:onClick="changeTypeWeek"
                 android:text="@string/numerator"
                 android:textAllCaps="true"
                 android:textColor="@color/white"

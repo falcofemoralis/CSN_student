@@ -85,6 +85,7 @@ public class ScheduleFragment extends Fragment implements AdapterView.OnItemSele
 
     /**
      * Обработчик нажатия на кнопку типа недели
+     *
      * @param v - вью кнопки
      */
     @Override

@@ -3,8 +3,11 @@ package com.BSLCommunity.CSN_student.Views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,21 +17,28 @@ import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Views.Fragments.MainFragment;
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, OnFragmentActionBarChangeListener {
 
     private FragmentManager fragmentManager;
-    private static Fragment  mainFragment;
+    private static Fragment mainFragment;
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleHelper.onAttach(base));
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#21c5df")));
+        }
+
 
         fragmentManager = getSupportFragmentManager();
 
@@ -51,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         if (fragmentReceiver != null)
             fragmentReceiver.setArguments(data);
 
-        switch (action)
-        {
+        switch (action) {
             case NEXT_FRAGMENT_HIDE:
                 if (mainFragment.isVisible())
                     fTrans.hide(mainFragment);
@@ -75,6 +84,30 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 fragmentManager.popBackStack();
                 break;
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public void changeActionBarState(boolean state) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            if (state) {
+                actionBar.show();
+            } else {
+                actionBar.setShowHideAnimationEnabled(false);
+                actionBar.hide();
+            }
+        }
+    }
+
+    @Override
+    public void setActionBarColor(int color) {
+        getWindow().setStatusBarColor(getColor(color));
+    }
+
+    @Override
+    public void setNavBarColor(int color) {
+        getWindow().setNavigationBarColor(getColor(color));
     }
 
     // Отклик на BackPressed во фрагментах.

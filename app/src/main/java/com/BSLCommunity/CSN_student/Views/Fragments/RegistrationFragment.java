@@ -70,9 +70,6 @@ public class RegistrationFragment extends Fragment implements  RegView, AdapterV
             EditText repeatPassword = currentFragment.findViewById(R.id.activity_registration_et_passwordRe);
 
             this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString(), this.groupName);
-
-            fragmentListener.onFragmentInteraction(this, new LoginFragment(),
-                    OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
         }
         return false;
     }

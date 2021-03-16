@@ -28,6 +28,7 @@ import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Presenters.SubjectListPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 import com.google.gson.Gson;
 
@@ -50,17 +51,20 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
 
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
+    OnFragmentActionBarChangeListener actionBarChangeListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         fragmentListener = (OnFragmentInteractionListener) context;
+        actionBarChangeListener = (OnFragmentActionBarChangeListener) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_subject_list, container, false);
-        setRetainInstance(true);
+        actionBarChangeListener.setActionBarColor(R.color.dark_blue);
+        actionBarChangeListener.setNavBarColor(R.color.dark_red);
 
         tableSubjects = currentFragment.findViewById(R.id.activity_subject_list_ll_table_subjects);
         subjectViews = new ArrayList<>();
@@ -218,6 +222,13 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
         }
         ((TextView) fullStatView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(sumProgress + "%");
         ((Button) currentFragment.findViewById(R.id.activity_subject_list_bt_progress)).setText(sumProgress + "%");
+    }
+
+    @Override
+    public void onDetach() {
+        actionBarChangeListener.setActionBarColor(R.color.background);
+        actionBarChangeListener.setNavBarColor(R.color.background);
+        super.onDetach();
     }
 }
 

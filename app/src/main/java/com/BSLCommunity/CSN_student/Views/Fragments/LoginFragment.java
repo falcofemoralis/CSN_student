@@ -93,9 +93,6 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
             EditText password = (EditText) currentFragment.findViewById(R.id.activity_login_et_password);
 
             this.loginPresenter.tryLogin(nickname.getText().toString(), password.getText().toString());
-
-            fragmentListener.onFragmentInteraction(this, new LoginFragment(),
-                    OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
         }
         return false;
     }

@@ -21,6 +21,7 @@ import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Presenters.FullStatPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.FullStatView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 
 import org.json.JSONException;
@@ -49,17 +50,20 @@ public class FullStatFragment extends Fragment implements FullStatView {
 
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
+    OnFragmentActionBarChangeListener actionBarChangeListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         fragmentListener = (OnFragmentInteractionListener) context;
+        actionBarChangeListener = (OnFragmentActionBarChangeListener) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_full_statistic, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        actionBarChangeListener.setActionBarColor(R.color.dark_red);
 
         worksTL = currentFragment.findViewById(R.id.activity_subject_info_full_tl_works);
 
@@ -150,5 +154,11 @@ public class FullStatFragment extends Fragment implements FullStatView {
      */
     private TextView inflateTextView(int id){
         return (TextView) LayoutInflater.from(getContext()).inflate(id, null);
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        actionBarChangeListener.setActionBarColor(R.color.dark_blue);
+        super.onDestroyOptionsMenu();
     }
 }

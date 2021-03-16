@@ -1,68 +1,11 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowLightStatusBar">false</item>
-        <item name="colorPrimary">@color/schedule_color_1</item>
+        <item name="colorPrimary">@color/background</item>
         <item name="colorPrimaryDark">@color/background</item>
         <item name="colorAccent">@color/main_color_3</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowBackground">#00000000</item>
-    </style>
-
-    <style name="NoActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/white</item>
-    </style>
-
-    <style name="MainActivityActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">@color/background</item>
-        <item name="colorPrimaryDark">@color/background</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:fitsSystemWindows">true</item>
-    </style>
-
-    <style name="SubjectListsActivityActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">#198A9C</item>
-        <item name="colorPrimaryDark">#198A9C</item>
-        <item name="android:navigationBarColor">#CC363C</item>
-    </style>
-
-    <style name="SubjectInfoActivityActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">@color/background</item>
-        <item name="colorPrimaryDark">@color/background</item>
-        <item name="android:navigationBarColor">#CC363C</item>
-    </style>
-
-    <style name="TransparentActionBar" parent="@style/AppTheme" tools:keep="@style/TransparentActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
-
-    <style name="TransparentStatusBar" parent="@style/AppTheme" tools:keep="@style/TransparentStatusBar">
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="TransparentNavigationBar" parent="@style/AppTheme" tools:keep="@style/TransparentNavigationBar">
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
-
-    <style name="FullStatisticActivityActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">@color/background</item>
-        <item name="colorPrimaryDark">@color/background</item>
-        <item name="android:navigationBarColor">@color/background</item>
-    </style>
-    <style name="AuditoriumSearchActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="colorPrimary">@color/main_color_2</item>
-        <item name="colorPrimaryDark">#198A9C</item>
-        <item name="colorAccent">@color/main_color_3</item>
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowBackground">#00000000</item>
-        <item name="android:navigationBarColor">#000713</item>
-    </style>
-    <style name="ScheduleBellActivityActionBar" parent="@style/AppTheme">
-        <item name="colorPrimary">#198A9C</item>
-        <item name="colorPrimaryDark">#198A9C</item>
         <item name="android:navigationBarColor">#000713</item>
     </style>
 </resources>

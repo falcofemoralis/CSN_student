@@ -73,7 +73,7 @@ public class TeacherModel {
      *
      * @param exCallable - колбек
      */
-    public void getAllTeachers(final ExCallable<ArrayList<TeacherModel.Teacher>> exCallable) {
+    public void getAllTeachers(final ExCallable<ArrayList<Teacher>> exCallable) {
         TeacherApi teacherApi = retrofit.create(TeacherApi.class);
         Call<ArrayList<TeacherModel.Teacher>> call = teacherApi.allTeachers();
 

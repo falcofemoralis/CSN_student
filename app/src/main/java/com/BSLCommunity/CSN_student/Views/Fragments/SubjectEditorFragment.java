@@ -30,6 +30,7 @@ import com.BSLCommunity.CSN_student.Models.TeacherModel;
 import com.BSLCommunity.CSN_student.Presenters.SubjectEditorPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectEditorView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 
 import org.json.JSONException;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SubjectEditorFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnFocusChangeListener, SubjectEditorView {
-      LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
+    LinearLayout labsLL, ihwLL, otherLL;   // Выпадающие списки работ
     TableLayout labsListTL, ihwListTL, othersListTL; // Списки работ
     LinearLayout rootContainer; //элемент в котором находятся все объекты
 
@@ -58,16 +59,19 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     SubjectEditorPresenter subjectEditorPresenter;
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
+    OnFragmentActionBarChangeListener actionBarChangeListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         fragmentListener = (OnFragmentInteractionListener) context;
+        actionBarChangeListener = (OnFragmentActionBarChangeListener) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_subject_info, container, false);
+        actionBarChangeListener.setActionBarColor(R.color.background);
 
         // Контейнеры которые содержат списки работ и кнопки для отображения/добавления работ
         labsLL = currentFragment.findViewById(R.id.activity_subject_info_ll_labs);
@@ -126,8 +130,9 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Создание адаптера для спиннера
-     * @param spinner - объект спиннера
-     * @param resArray - id ресурса массиво из res
+     *
+     * @param spinner      - объект спиннера
+     * @param resArray     - id ресурса массиво из res
      * @param defSelection - номер значения по умолчанию
      */
     private void createSpinnerAdapter(Spinner spinner, int resArray, int defSelection) {
@@ -150,6 +155,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Установка информации о редактируемой дисциплине
+     *
      * @param editableSubject - редактируемая дисциплина
      */
     @Override
@@ -159,7 +165,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         // Установка имени дисциплины
         try {
             String subjectName = new JSONObject(subject.name).getString(LocaleHelper.getLanguage(getContext()));
-            ((TextView)currentFragment.findViewById(R.id.activity_subject_info_bt_subjectName)).setText(subjectName);
+            ((TextView) currentFragment.findViewById(R.id.activity_subject_info_bt_subjectName)).setText(subjectName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -170,13 +176,12 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
             if (i < subject.idTeachers.length) {
                 try {
                     String teacherName = new JSONObject(teacherModel.findById(subject.idTeachers[i]).FIO).getString(LocaleHelper.getLanguage(getContext()));
-                    ((Button)currentFragment.findViewById(idTeachers[i])).setText(teacherName);
+                    ((Button) currentFragment.findViewById(idTeachers[i])).setText(teacherName);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
-                ((TableRow)(currentFragment.findViewById(idTeachers[i])).getParent()).setVisibility(View.GONE);
+            } else {
+                ((TableRow) (currentFragment.findViewById(idTeachers[i])).getParent()).setVisibility(View.GONE);
             }
         }
 
@@ -195,6 +200,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Установка прогресса для все дисциплины
+     *
      * @param progress - прогресс в процентах
      */
     @Override
@@ -204,8 +210,9 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Отрисовка строки работы в блоке работ
+     *
      * @param infoTL - блок работ в который добавляется элемент
-     * @param work - работа пользователя
+     * @param work   - работа пользователя
      */
     private void drawElementWork(TableLayout infoTL, EditableSubject.Work work) {
         TableRow elementWork = (TableRow) getLayoutInflater().inflate(R.layout.inflate_work_element, infoTL, false); // Строка работы
@@ -223,7 +230,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         markEt.setText(work.mark);
         markEt.setOnFocusChangeListener(this);
 
-        ((Button)elementWork.findViewById(R.id.inflate_work_element_bt_delete)).setOnClickListener(new View.OnClickListener() {
+        ((Button) elementWork.findViewById(R.id.inflate_work_element_bt_delete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteElementWork(v);
@@ -235,6 +242,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Обработчик нажатия на кнопки создания новой работы в списке работ
+     *
      * @param view - кнопка добавления
      */
     public void addElementWork(View view) {
@@ -246,12 +254,10 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         if (id == R.id.activity_subject_info_bt_add_lab) {
             workType = WorkType.LABS;
             infoTL = currentFragment.findViewById(R.id.activity_subject_info_tl_labs_data);
-        }
-        else if (id == R.id.activity_subject_info_bt_add_ihw) {
+        } else if (id == R.id.activity_subject_info_bt_add_ihw) {
             workType = WorkType.IHW;
             infoTL = currentFragment.findViewById(R.id.activity_subject_info_tl_ihw_data);
-        }
-        else if (id == R.id.activity_subject_info_bt_add_other) {
+        } else if (id == R.id.activity_subject_info_bt_add_other) {
             workType = WorkType.OTHERS;
             infoTL = currentFragment.findViewById(R.id.activity_subject_info_tl_other_data);
         }
@@ -262,6 +268,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Обработчик нажатия на кнопки категории работ для скрытия или отображения работ
+     *
      * @param view - нажатый елемент вью
      */
     public void openWork(View view) {
@@ -278,7 +285,8 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Управление видимостью списка (открытие и скрытие). Скрывает если открыто и наоборот
-     * @param addBt - кнопка которая находится в блоке для добавления работ
+     *
+     * @param addBt      - кнопка которая находится в блоке для добавления работ
      * @param infoListTL - список с работами
      */
     private void changeVisibleWork(final Button addBt, final TableLayout infoListTL) {
@@ -292,11 +300,12 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * ОБработчик нажатия на кнопку удаления
+     *
      * @param view - кнопка
      */
     public void deleteElementWork(View view) {
-        final TableRow workRow = (TableRow)(view.getParent()); // Строчка работы в списке
-        final TableLayout infoTL = ((TableLayout)(workRow.getParent())); // Группа
+        final TableRow workRow = (TableRow) (view.getParent()); // Строчка работы в списке
+        final TableLayout infoTL = ((TableLayout) (workRow.getParent())); // Группа
 
         WorkType workType = getWorkType(infoTL.getId());
         int index = infoTL.indexOfChild(workRow);
@@ -308,6 +317,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Получение всех полей из строки работы с дальнейшем сохранение через презентер
+     *
      * @param elementWork - строка предмета (TableRow)
      */
     public void saveChanges(TableRow elementWork) {
@@ -315,28 +325,29 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
         WorkType workType = getWorkType(parentTL.getId());
         int index = parentTL.indexOfChild(elementWork);
-        String name = ((TextView)elementWork.findViewById(R.id.inflate_work_element_et_name_work)).getText().toString();
-        String mark = ((TextView)elementWork.findViewById(R.id.inflate_work_element_et_mark)).getText().toString();
-        long id = ((Spinner)elementWork.findViewById(R.id.inflate_work_element_spin_work_status)).getSelectedItemId();
+        String name = ((TextView) elementWork.findViewById(R.id.inflate_work_element_et_name_work)).getText().toString();
+        String mark = ((TextView) elementWork.findViewById(R.id.inflate_work_element_et_mark)).getText().toString();
+        long id = ((Spinner) elementWork.findViewById(R.id.inflate_work_element_spin_work_status)).getSelectedItemId();
 
-        this.subjectEditorPresenter.changeWork(workType, index, name, WorkStatus.values()[(int)id], mark);
+        this.subjectEditorPresenter.changeWork(workType, index, name, WorkStatus.values()[(int) id], mark);
     }
 
     /**
      * Обработчик нажатия на спиннеры (всей дисциплины и всех предметов)
+     *
      * @see android.widget.AdapterView.OnItemSelectedListener
      */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Вызов был инициирован спиннером выбора статуса предмета - устаналиваем статус (экз, зачет, диф зачет)
         if (parent.getId() == R.id.activity_subject_info_sp_values) {
-            this.subjectEditorPresenter.changeSubjectValue(SubjectValue.values()[(int)id]);
+            this.subjectEditorPresenter.changeSubjectValue(SubjectValue.values()[(int) id]);
             return;
         }
 
         // Вызов был инициирован спиннером выбора статуса какой либо из работы
         TableRow elementWork = (TableRow) parent.getParent(); // Получаем сам элемент
-        parent.setBackgroundResource(wordStatusColors[(int)id]); // Устанавка цвета относительно выбранного варианта
+        parent.setBackgroundResource(wordStatusColors[(int) id]); // Устанавка цвета относительно выбранного варианта
         saveChanges(elementWork);
     }
 
@@ -349,18 +360,17 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     /**
      * Определения типа работы по id TableLayout
+     *
      * @param resId - id TableLayout
      * @return - константа типа работы
      */
     private WorkType getWorkType(int resId) {
         if (resId == R.id.activity_subject_info_tl_labs_data) {
             return WorkType.LABS;
-        }
-        else if (resId == R.id.activity_subject_info_tl_ihw_data) {
+        } else if (resId == R.id.activity_subject_info_tl_ihw_data) {
             return WorkType.IHW;
-        }
-        else if (resId == R.id.activity_subject_info_tl_other_data) {
-            return  WorkType.OTHERS;
+        } else if (resId == R.id.activity_subject_info_tl_other_data) {
+            return WorkType.OTHERS;
         }
 
         return null;
@@ -371,8 +381,14 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         if (!hasFocus) {
             saveChanges(focusedRow);
             focusedRow = null;
-        } else  {
+        } else {
             focusedRow = (TableRow) v.getParent();
         }
+    }
+
+    @Override
+    public void onDetach() {
+        actionBarChangeListener.setActionBarColor(R.color.dark_blue);
+        super.onDetach();
     }
 }

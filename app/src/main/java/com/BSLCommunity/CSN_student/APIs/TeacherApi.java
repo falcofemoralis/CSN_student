@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface TeacherApi {
-    String BASE_URL = "http://192.168.1.3/";
+    String BASE_URL = "http://192.168.0.100:81/";
     String TEACHER_API = "api/teachers";
 
     @GET(TEACHER_API + "/all")

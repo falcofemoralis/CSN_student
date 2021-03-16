@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -21,6 +23,7 @@ import com.BSLCommunity.CSN_student.Models.AuditoriumModel;
 import com.BSLCommunity.CSN_student.Presenters.AuditoriumPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.AuditoriumView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -34,16 +37,29 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
 
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
+    SearchView searchView = null;
+    OnFragmentActionBarChangeListener actionBarChangeListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         fragmentListener = (OnFragmentInteractionListener) context;
+        actionBarChangeListener = (OnFragmentActionBarChangeListener) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_auditorium, container, false);
+        if (actionBarChangeListener != null) {
+            actionBarChangeListener.changeActionBarState(true);
+            actionBarChangeListener.setActionBarColor(R.color.dark_blue);
+        }
 
         getActivity().setTitle(getString(R.string.auditoriums_search));
 
@@ -96,40 +112,45 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
      */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
         // Создаем меню поиска
         inflater.inflate(R.menu.menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        // Устанавливаем конфигурацию для SearchView
-        final SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        final SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        searchView.setQueryHint(getString(R.string.aud_search_hint));
-        searchView.setIconified(false);
-        searchView.setIconifiedByDefault(false);
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setSubmitButtonEnabled(true);
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
 
-        // Обработчик поиска
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(final String s) {
-                AuditoriumModel.Auditorium auditorium = auditoriumPresenter.searchAuditorium(s);
+        if (searchView != null) {
+            // Устанавливаем конфигурацию для SearchView
+            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setQueryHint(getString(R.string.aud_search_hint));
+            searchView.setIconified(false);
+            searchView.setIconifiedByDefault(false);
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+            searchView.setSubmitButtonEnabled(true);
 
-                if (auditorium != null)
-                    auditoriumPresenter.changeAuditoriumMap(auditorium, getContext());
-                else
-                    Toast.makeText(getContext(), R.string.no_auditorium, Toast.LENGTH_SHORT).show();
+            // Обработчик поиска
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(final String s) {
+                    AuditoriumModel.Auditorium auditorium = auditoriumPresenter.searchAuditorium(s);
 
-                return false;
-            }
+                    if (auditorium != null)
+                        auditoriumPresenter.changeAuditoriumMap(auditorium, getContext());
+                    else
+                        Toast.makeText(getContext(), R.string.no_auditorium, Toast.LENGTH_SHORT).show();
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -166,5 +187,12 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             floorTabs.addView(tabItem);
             floorTabs.getTabAt(i).setText(getString(R.string.floor) + (i + 1));
         }
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        actionBarChangeListener.changeActionBarState(false);
+        actionBarChangeListener.setActionBarColor(R.color.background);
+        super.onDestroyOptionsMenu();
     }
 }

@@ -10,7 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface GroupApi {
-    String BASE_URL = "http://192.168.0.104:81/";
+    String BASE_URL = "http://192.168.0.100:81/";
     String GROUP_API = "api/groups";
 
     @GET(GROUP_API + "/all")

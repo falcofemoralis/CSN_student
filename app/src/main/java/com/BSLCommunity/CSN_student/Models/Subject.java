@@ -11,6 +11,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.File;
 
 public class Subject {
+    @SerializedName("id")
+    public int idSubject;
     @SerializedName("teachers")
     public int[] idTeachers;
     @SerializedName("name")

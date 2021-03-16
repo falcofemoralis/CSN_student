@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditableSubject extends Subject {
+public class EditableSubject {
     public static class Work {
         public String name; // Название каждой работы
         public String mark; // Оценка за каждую работу
@@ -20,12 +20,13 @@ public class EditableSubject extends Subject {
             this.workStatus = WorkStatus.NOT_PASSED;
         }
     }
-
+    public int idSubject;
     public HashMap<WorkType, ArrayList<Work>> allWorks;
     public SubjectValue subjectValue;
 
-    public EditableSubject(Subject subject) {
-        super(subject.idTeachers, subject.name, subject.imgPath);
+    public EditableSubject(int idSubject) {
+        //super(subject.idTeachers, subject.name, subject.imgPath);
+        this.idSubject = idSubject;
 
         allWorks = new HashMap<>();
         allWorks.put(WorkType.LABS, new ArrayList<Work>());
@@ -45,6 +46,7 @@ public class EditableSubject extends Subject {
 
     /**
      * Подсчет прогресса по все дисциплине
+     *
      * @return - прогресс в процентах
      */
     public int calculateProgress() {

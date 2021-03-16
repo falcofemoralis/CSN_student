@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class UserData {
     public static transient UserData instance = null;
-    public final String FILE_NAME_SUBJECT_INFO = "subjectsInfo";
+    public final String FILE_NAME_SUBJECT_INFO = "EditableSubjects";
 
     /**
      * PrefKeys - Строковые константы - ключи, по которым хранятся все данные в файле настроек
@@ -40,6 +40,7 @@ public class UserData {
         LANGUAGE("language");
 
         private String value;
+
         private PrefKeys(String value) {
             this.value = value;
         }
@@ -48,13 +49,16 @@ public class UserData {
             return value;
         }
     }
+
     public transient ArrayList<Pair<String, String>> languages = new ArrayList<>(); //
     public transient SharedPreferences encryptedSharedPreferences;
 
     public User user;
     public ArrayList<EditableSubject> editableSubjects;
 
-    private UserData() {}
+    private UserData() {
+    }
+
     public static UserData getUserData() {
         if (instance == null) {
             instance = new UserData();
@@ -71,9 +75,9 @@ public class UserData {
 
         // Добавление языков
         String[] languagesArray = App.getApp().getApplicationContext().getResources().getStringArray(R.array.languages);
-        languages.add(new Pair<>(languagesArray[0],"en"));
-        languages.add(new Pair<>(languagesArray[1],"ru"));
-        languages.add(new Pair<>(languagesArray[2],"uk"));
+        languages.add(new Pair<>(languagesArray[0], "en"));
+        languages.add(new Pair<>(languagesArray[1], "ru"));
+        languages.add(new Pair<>(languagesArray[2], "uk"));
 
         try {
             SharedPreferences pref = this.encryptedSharedPreferences;
@@ -84,23 +88,16 @@ public class UserData {
             this.user.setGroupName(pref.getString(PrefKeys.GROUP.getKey(), null));
             this.user.setCourse(pref.getInt(PrefKeys.COURSE.getKey(), -1));
             this.user.setToken(pref.getString(PrefKeys.TOKEN.getKey(), null));
-        }
-        catch (Exception ignored) {
+        } catch (Exception ignored) {
             this.user = new User();
         }
 
-        try {
-            String jsonSubjectInfo = FileManager.readFile(FILE_NAME_SUBJECT_INFO);
-            Type type = new TypeToken<ArrayList<EditableSubject>>() {}.getType();
-            this.editableSubjects = (new Gson()).fromJson(jsonSubjectInfo, type);
-        }
-        catch (Exception ignored) {
-            this.editableSubjects = new ArrayList<>();
-        }
+        setEditableSubjects();
     }
 
     /**
      * Обновление данных пользователя (полное обновление)
+     *
      * @param newUserData - новые данные
      */
     public void setUser(User newUserData) {
@@ -116,6 +113,7 @@ public class UserData {
 
     /**
      * Обновление данных пользователя (никнейм и пароль)
+     *
      * @param nickName - никнейм
      * @param password - пароль
      */
@@ -126,26 +124,36 @@ public class UserData {
     }
 
     /**
-     * Установка редактируемых дисциплин
-     * @param editableSubjects - редакутируемые дисциплины
-     */
-    public void setEditableSubjects(ArrayList<EditableSubject> editableSubjects) {
-        this.editableSubjects = editableSubjects;
+     * Установка редактируемых дисциплин из файла
+     **/
+    public void setEditableSubjects() {
+        try {
+            String data = FileManager.readFile(FILE_NAME_SUBJECT_INFO);
+            Type type = new TypeToken<ArrayList<EditableSubject>>() {
+            }.getType();
+            editableSubjects = (new Gson()).fromJson(data, type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Создание новых редактируемых дисциплин исходя из текущих дисциплин пользователя на курсе
+     *
      * @param subjects - текущие дисциплины пользователя, которые необходимо преобразовать
      */
     public void createEditableSubjects(ArrayList<Subject> subjects) {
-        this.editableSubjects.clear();
-        for (int i = 0; i < subjects.size(); ++i) {
-            this.editableSubjects.add(new EditableSubject(subjects.get(i)));
+        if (this.editableSubjects == null) {
+            this.editableSubjects = new ArrayList<>();
+            for (int i = 0; i < subjects.size(); ++i) {
+                this.editableSubjects.add(new EditableSubject(subjects.get(i).idSubject));
+            }
         }
     }
 
     /**
      * Инициализация SharedPreferences
+     *
      * @param context - контекст приложения
      */
     private void setSettingsFile(Context context) {
@@ -159,7 +167,7 @@ public class UserData {
         }
 
         try {
-            this.encryptedSharedPreferences = EncryptedSharedPreferences.create(context,"settings_data",masterKey,
+            this.encryptedSharedPreferences = EncryptedSharedPreferences.create(context, "settings_data", masterKey,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
@@ -183,8 +191,16 @@ public class UserData {
         prefEditor.apply();
 
         if (editableSubjects != null) {
+            saveRating();
+            UserModel.getUserModel().updateRating(user.getToken(), editableSubjects);
+        }
+    }
+
+    public void saveRating() {
+        if (editableSubjects.size() > 0) {
             Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<EditableSubject>>(){}.getType();
+            Type type = new TypeToken<ArrayList<EditableSubject>>() {
+            }.getType();
             String jsonString = gson.toJson(editableSubjects, type);
 
             try {

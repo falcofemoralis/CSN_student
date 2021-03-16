@@ -100,6 +100,8 @@ public class SubjectModel {
             @Override
             public void run() {
                 Context context = App.getApp().context();
+                boolean isFailed = false;
+
                 for (Subject subject : subjects) {
                     if (subject.imgPath != null) {
                         try {
@@ -112,6 +114,10 @@ public class SubjectModel {
                             exCallable.fail(-1);
                         }
                     }
+                }
+
+                if (!isFailed) {
+                    exCallable.call(-1);
                 }
             }
         }).start();
@@ -151,4 +157,17 @@ public class SubjectModel {
 
     }
 
+
+    /**
+     * Поиск предмета по id
+     *
+     * @param id - id предмета
+     * @return найденный предмет или null если он не существет
+     */
+    public Subject findById(int id) {
+        for (int i = 0; i < subjects.size(); ++i)
+            if (subjects.get(i).idSubject == id)
+                return subjects.get(i);
+        return null;
+    }
 }

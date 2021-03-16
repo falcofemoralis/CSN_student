@@ -3,6 +3,8 @@ package com.BSLCommunity.CSN_student.Presenters;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
+import com.BSLCommunity.CSN_student.Models.Subject;
+import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectEditorView;
@@ -53,7 +55,8 @@ public class SubjectEditorPresenter {
     public void finishEdit() {
         int index = -1;
         for (int i = 0; i < this.userData.editableSubjects.size(); ++i) {
-            if (this.userData.editableSubjects.get(i).name.equals(this.copyEdSubject.name)) {
+            SubjectModel subjectModel = SubjectModel.getSubjectModel();
+            if (subjectModel.findById(this.userData.editableSubjects.get(i).idSubject).name.equals(subjectModel.findById(this.copyEdSubject.idSubject).name)) {
                 index = i;
                 break;
             }

@@ -20,6 +20,9 @@ import com.BSLCommunity.CSN_student.Constants.WorkType;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Subject;
+import com.BSLCommunity.CSN_student.Models.SubjectModel;
+import com.BSLCommunity.CSN_student.Models.TeacherModel;
 import com.BSLCommunity.CSN_student.Presenters.SubjectEditorPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectEditorView;
@@ -118,21 +121,21 @@ public class SubjectEditorActivity extends BaseActivity implements AdapterView.O
     @Override
     public void setSubjectData(EditableSubject editableSubject) {
         int[] idTeachers = {R.id.activity_subject_info_bt_lector, R.id.activity_subject_info_bt_practice, R.id.activity_subject_info_bt_assistant};
-
+        Subject subject = SubjectModel.getSubjectModel().findById(editableSubject.idSubject);
         // Установка имени дисциплины
         try {
-            String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(this));
+            String subjectName = new JSONObject(subject.name).getString(LocaleHelper.getLanguage(this));
             ((TextView)findViewById(R.id.activity_subject_info_bt_subjectName)).setText(subjectName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         // Установка ФИО преподавателей, пустые поля (где нету преподавателей) удаляются
+        TeacherModel teacherModel = TeacherModel.getTeacherModel();
         for (int i = 0; i < idTeachers.length; ++i) {
-            if (i < editableSubject.idTeachers.length) {
-                // TODO получение преподов по id
+            if (i < subject.idTeachers.length) {
                 try {
-                    String teacherName = new JSONObject(Integer.toString(editableSubject.idTeachers[i])).getString(LocaleHelper.getLanguage(this));
+                    String teacherName = new JSONObject(teacherModel.findById(subject.idTeachers[i]).FIO).getString(LocaleHelper.getLanguage(this));
                     ((Button)findViewById(idTeachers[i])).setText(teacherName);
                 } catch (JSONException e) {
                     e.printStackTrace();

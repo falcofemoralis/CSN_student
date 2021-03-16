@@ -19,6 +19,8 @@ import androidx.core.content.res.ResourcesCompat;
 import com.BSLCommunity.CSN_student.Managers.AnimationManager;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Subject;
+import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Presenters.SubjectListPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
@@ -64,7 +66,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void setTableSubjects(ArrayList<EditableSubject> editableSubjects) {
-
+        SubjectModel subjectModel = SubjectModel.getSubjectModel();
         for (int i = 0; i < SUBJECT_ROW_COUNT; ++i) {
             LinearLayout subjectRow = (LinearLayout) tableSubjects.getChildAt(i);
 
@@ -76,8 +78,9 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
                     return;
                 }
 
-                final EditableSubject subject = editableSubjects.get(index);
-                createSubject(subject, subjectRow);
+                final EditableSubject editableSubject = editableSubjects.get(index);
+                final Subject subject = subjectModel.findById(editableSubject.idSubject);
+                createSubject(editableSubject, subject, subjectRow);
             }
         }
     }
@@ -89,12 +92,12 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
      * @param container       - строка которая будет содержать кнопку
      */
     @SuppressLint("ClickableViewAccessibility")
-    private void createSubject(final EditableSubject editableSubject, LinearLayout container) {
+    private void createSubject(final EditableSubject editableSubject, final Subject subject, LinearLayout container) {
         final LinearLayout subjectView = (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
 
         // Установка имени дисциплины
         try {
-            String subjectName = new JSONObject(editableSubject.name).getString(LocaleHelper.getLanguage(this));
+            String subjectName = new JSONObject(subject.name).getString(LocaleHelper.getLanguage(this));
             ((TextView) subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(subjectName);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -102,7 +105,7 @@ public class SubjectListActivity extends BaseActivity implements SubjectListView
 
         ((TextView) subjectView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(editableSubject.calculateProgress() + "%");
         ImageView subjectImgView = (ImageView) subjectView.findViewById(R.id.inflate_subject_img);
-        BitmapDrawable img = editableSubject.getSubjectImage(getApplicationContext());
+        BitmapDrawable img = subject.getSubjectImage(getApplicationContext());
         if (img != null) {
             subjectImgView.setImageDrawable(img);
         } else {

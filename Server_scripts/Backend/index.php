@@ -46,7 +46,7 @@ $router['GET'] = [
     '/\/api\/users\/login/' => ['login'],
     '/\/api\/users\/all/' => ['getAllUsers'],
     '/\/api\/users\/course\/(\d+)/' => ['usersViewByCourse'],
-    '/\/api\/users\/(\d+)\/rating/' => ['getUserRating'],
+    '/\/api\/users\/rating/' => ['getUserRating'],
     '/\/api\/users\/(\d+)/' => ['userViewById'],
     '/\/api\/cache\/check/' => ['checkCacheFile'],
     '/\/api\/cache\/download/' => ['getCacheFile']
@@ -58,7 +58,7 @@ $router['POST'] = [
 ];
 $router['PUT'] = [
     '/\/api\/users\/(\d+)/' => ['updateUser'],
-    '/\/api\/users\/(\d+)\/rating/' => ['updateUserRating'],
+    '/\/api\/users\/rating/' => ['updateUserRating'],
     '/\/schedule\/new/' => ['processSchedule'],
     '/\/api\/cache\/recreate/' => ['updateCacheFile']
 ];

@@ -86,5 +86,6 @@
     <string name="no_auditorium">Such an audience does not exist</string>
     <string name="default_text">default text</string>
     <string name="download_dialog_title">Downloading files</string>
+    <string name="teacher">Teacher</string>
 </resources>
 

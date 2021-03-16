@@ -1,6 +1,6 @@
 package com.BSLCommunity.CSN_student.Models;
 
-import android.content.Context;
+import android.util.Log;
 
 import com.BSLCommunity.CSN_student.APIs.UserApi;
 import com.BSLCommunity.CSN_student.R;
@@ -8,7 +8,8 @@ import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,7 +23,9 @@ public class UserModel {
     public static UserModel instance = null;
     private Retrofit retrofit;
 
-    private UserModel() {}
+    private UserModel() {
+    }
+
     public static UserModel getUserModel() {
         if (instance == null) {
             instance = new UserModel();
@@ -44,8 +47,9 @@ public class UserModel {
 
     /**
      * Логин пользователя
-     * @param nickname - никнейм
-     * @param password - пароль
+     *
+     * @param nickname   - никнейм
+     * @param password   - пароль
      * @param exCallable - колбек, call - не возвращает ничего, fail - возврат ошибки
      */
     public void login(final String nickname, final String password, final ExCallable<User> exCallable) {
@@ -78,9 +82,10 @@ public class UserModel {
 
     /**
      * Регистрация нового пользователя, при успешной регистрации устанавливается токен
-     * @param nickname - никнейм
-     * @param password - пароль
-     * @param groupName - название группы
+     *
+     * @param nickname   - никнейм
+     * @param password   - пароль
+     * @param groupName  - название группы
      * @param exCallable - колбек, call - не возвращает ничего, fail - возврат ошибки
      */
     public void registration(final String nickname, final String password, final String groupName, final ExCallable<User> exCallable) {
@@ -112,8 +117,9 @@ public class UserModel {
 
     /**
      * Обновление данных пользователя
-     * @param nickName - новый никнейм
-     * @param password - новый пароль
+     *
+     * @param nickName   - новый никнейм
+     * @param password   - новый пароль
      * @param exCallable - колбек
      */
     public void update(String nickName, String password, String token, final ExCallable<Void> exCallable) {
@@ -145,13 +151,55 @@ public class UserModel {
 
     }
 
-    //TODO
-    public static void updateRating(final Context context, final String JSONString) throws JSONException {
+    /**
+     * Обновление рейтинга на сервере
+     *
+     * @param token - token юзера
+     */
+    public void updateRating(String token, ArrayList<EditableSubject> editableSubjects) {
+        Log.d("USER_API", "updateRating: " + token);
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<Void> call = userApi.updateUserRating(token, editableSubjects);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                Log.d("USER_API", "updated");
+                //Также никак не сообщаем
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                Log.d("USER_API", "failed");
+                //Нету связи или интернета, никак не сообщаем
+            }
+        });
 
     }
 
-    //TODO
-    public static void downloadRating(final Context context) throws JSONException {
+    /**
+     * Скачивание рейтинга юзера
+     *
+     * @param token - token юзера
+     */
+    public void downloadRating(String token, final ExCallable<Void> exCallable) {
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<ArrayList<EditableSubject>> call = userApi.getUserRating(token);
 
+        call.enqueue(new Callback<ArrayList<EditableSubject>>() {
+            @Override
+            public void onResponse(@NotNull Call<ArrayList<EditableSubject>> call, @NotNull Response<ArrayList<EditableSubject>> response) {
+                UserData userData = UserData.getUserData();
+                if(response.code() != 404){
+                    userData.editableSubjects = response.body();
+                    userData.saveRating();
+                }
+                exCallable.call(null);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ArrayList<EditableSubject>> call, @NotNull Throwable t) {
+                exCallable.fail(-1);
+            }
+        });
     }
 }

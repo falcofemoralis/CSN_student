@@ -1,5 +1,7 @@
 package com.BSLCommunity.CSN_student.Models;
 
+import android.util.Log;
+
 import com.BSLCommunity.CSN_student.APIs.CacheApi;
 import com.BSLCommunity.CSN_student.Constants.ApiType;
 import com.BSLCommunity.CSN_student.Constants.CacheStatusType;
@@ -151,6 +153,7 @@ public class DataModel {
                     GroupModel.getGroupModel().getAllGroups(new ExCallable<ArrayList<GroupModel.Group>>() {
                         @Override
                         public void call(ArrayList<GroupModel.Group> data) {
+                            Log.d("TEST_API", "DOWNLOADED groups");
                             setSuccess(exCallable);
                         }
 
@@ -164,6 +167,7 @@ public class DataModel {
                     TeacherModel.getTeacherModel().getAllTeachers(new ExCallable<ArrayList<TeacherModel.Teacher>>() {
                         @Override
                         public void call(ArrayList<TeacherModel.Teacher> data) {
+                            Log.d("TEST_API", "DOWNLOADED teachers");
                             setSuccess(exCallable);
                         }
 
@@ -177,9 +181,11 @@ public class DataModel {
                     SubjectModel.getSubjectModel().getGroupSubjects(UserData.getUserData().user.getGroupId(), new ExCallable<ArrayList<Subject>>() {
                         @Override
                         public void call(ArrayList<Subject> data) {
+
                             SubjectModel.getSubjectModel().downloadSubjectImages(new ExCallable<Integer>() {
                                 @Override
                                 public void call(Integer data) {
+                                    Log.d("TEST_API", "DOWNLOADED subjects");
                                     setSuccess(exCallable);
                                 }
 
@@ -188,6 +194,20 @@ public class DataModel {
                                     setFail(exCallable);
                                 }
                             });
+                        }
+
+                        @Override
+                        public void fail(int idResString) {
+                            setFail(exCallable);
+                        }
+                    });
+                    break;
+                case UserApi:
+                    UserModel.getUserModel().downloadRating(UserData.getUserData().user.getToken(), new ExCallable<Void>() {
+                        @Override
+                        public void call(Void data) {
+                            Log.d("TEST_API", "DOWNLOADED rating");
+                            setSuccess(exCallable);
                         }
 
                         @Override
@@ -213,6 +233,7 @@ public class DataModel {
         downloadedDataSize++;
         exCallable.call(ProgressType.UPDATE_PROGRESS);
 
+        Log.d("TEST_API", "setSuccess: " + downloadedDataSize);
         if (downloadedDataSize == dataToDownload.size()) {
             exCallable.call(ProgressType.SET_OK);
         }

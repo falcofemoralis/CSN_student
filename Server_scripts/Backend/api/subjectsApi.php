@@ -2,12 +2,14 @@
 
 class Subject
 {
+    public $id;
     public $name;
     public $imgPath;
     public $teachers;
 
-    function __construct($name, $img)
+    function __construct($id, $name, $img)
     {
+        $this->id = $id;
         $this->name = $name;
         $this->imgPath = $img;
         $this->teachers = array();
@@ -19,7 +21,7 @@ function getSubjectsByGroup($url)
 {
     $id = explode('/', $url)[4];
 
-    $query = "SELECT DISTINCT subjects.SubjectName, teachers.Code_Teacher, subjects.Image
+    $query = "SELECT DISTINCT subjects.Code_Subject, subjects.SubjectName, teachers.Code_Teacher, subjects.Image
     FROM schedule_list 
     INNER JOIN subjects on subjects.Code_Subject = schedule_list.Code_Subject 
     INNER JOIN schedule on schedule.Code_Schedule = schedule_list.Code_Schedule
@@ -32,12 +34,12 @@ function getSubjectsByGroup($url)
     // Группировка учителей по дисциплинам
     $subjects = array();
 
-    $subject = new Subject($data[0]->SubjectName, $data[0]->Image);
+    $subject = new Subject($data[0]->Code_Subject, $data[0]->SubjectName, $data[0]->Image);
     array_push($subject->teachers, $data[0]->Code_Teacher);
     for ($i = 1; $i < count($data); ++$i) {
         if ($data[$i]->SubjectName !== $subject->name) {
             array_push($subjects, $subject);
-            $subject = new Subject($data[$i]->SubjectName, $data[$i]->Image);
+            $subject = new Subject($data[$i]->Code_Subject, $data[$i]->SubjectName, $data[$i]->Image);
         }
         array_push($subject->teachers, $data[$i]->Code_Teacher);
     }

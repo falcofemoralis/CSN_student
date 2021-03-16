@@ -14,7 +14,6 @@ function login()
 function readUser($nickName, $password)
 {
     $query = "  SELECT users.Code_User, users.NickName, users.Password,  groups.Course, groups.GroupName, groups.Code_Group as group_id FROM users
-                JOIN rating ON rating.Code_User = users.Code_User
                 JOIN groups ON groups.Code_Group = users.Code_Group
                 WHERE users.NickName = '$nickName' AND users.Password = '$password'";
 
@@ -31,15 +30,21 @@ function readUser($nickName, $password)
 }
 
 //GET запрос на получение рейтинга юзера по id
-function getUserRating($url)
+function getUserRating()
 {
-    $id = explode('/', $url)[3];
+    $headers = getallheaders();
+    $id = checkAuth($headers['token']);
 
     $query = "  SELECT rating.JSON_RATING FROM rating
                 WHERE rating.Code_User = '$id'";
 
-    $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
-    echo $data;
+    $data = json_decode(DataBase::execQuery($query, ReturnValue::GET_OBJECT));
+    if ($data->JSON_RATING) {
+        echo $data->JSON_RATING;
+    } else {
+        http_response_code(404);
+        die();
+    }
 }
 
 //GET запрос на получение публичных данных юзера по id
@@ -103,7 +108,7 @@ function createUser()
 
     // Добавляет пустой рейтинг юзера
     $query = "  INSERT INTO rating(Code_User, JSON_RATING)
-                VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), '0')";
+                VALUES ((SELECT Code_User FROM users WHERE users.NickName = '$nickName'), null)";
 
     try {
         DataBase::execQuery($query, ReturnValue::GET_NOTHING);
@@ -150,15 +155,15 @@ function updateUser($url)
  * JSON данные:
  * $rating - JSON строка информации о рейтинге юзера
  */
-function updateUserRating($url)
+function updateUserRating()
 {
-    $id = explode('/', $url)[3];
+    $headers = getallheaders();
+    $id = checkAuth($headers['token']);
 
     $rating = file_get_contents('php://input');
 
     // Проверка на то, все ли данные пришли
     if ($rating == NULL) {
-        echo "ERROR";
         return;
     }
 

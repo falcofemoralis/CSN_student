@@ -1,7 +1,10 @@
 package com.BSLCommunity.CSN_student.APIs;
 
+import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.User;
 import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -11,10 +14,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UserApi {
-    String API_URL = "http://192.168.0.104:81/api/users/";
+    String API_URL = "http://192.168.0.100:81/api/users/";
 
     @GET("login")
     Call<User> login(@Query("nickname") String nickname, @Query("password") String password);
@@ -25,4 +29,10 @@ public interface UserApi {
 
     @PUT(".")
     Call<Void> updateUserData(@Header("token") String token, @Body JsonObject data);
+
+    @GET("rating")
+    Call<ArrayList<EditableSubject>> getUserRating(@Header("token") String token);
+
+    @PUT("rating")
+    Call<Void> updateUserRating(@Header("token") String token, @Body ArrayList<EditableSubject> data);
 }

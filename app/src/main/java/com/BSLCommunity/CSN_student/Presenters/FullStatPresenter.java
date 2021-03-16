@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 
 import com.BSLCommunity.CSN_student.Constants.WorkType;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.ViewInterfaces.FullStatView;
 
@@ -29,7 +30,7 @@ public class FullStatPresenter {
             EditableSubject edSubject = this.userData.editableSubjects.get(i);
 
             int idSubjectValue = edSubject.subjectValue.ordinal();
-            this.fullStatView.addSubjectRow(edSubject.name, idSubjectValue, edSubject.allWorks, maxWorks);
+            this.fullStatView.addSubjectRow(SubjectModel.getSubjectModel().findById(edSubject.idSubject).name, idSubjectValue, edSubject.allWorks, maxWorks);
         }
     }
 

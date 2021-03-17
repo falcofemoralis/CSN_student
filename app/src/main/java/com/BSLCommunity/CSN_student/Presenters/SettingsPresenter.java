@@ -21,7 +21,7 @@ public class SettingsPresenter {
         Password
     }
 
-    private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9])+"; // Регулярка для проверки валидации
+    private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9]|_)+"; // Регулярка для проверки валидации
     SettingsView settingsView; // View
     UserData userData; // Локальные данные
     UserModel userModel; // Модель пользователя, нужна для обновления данных в базе

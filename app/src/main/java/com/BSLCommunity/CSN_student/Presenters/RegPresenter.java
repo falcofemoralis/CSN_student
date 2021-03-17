@@ -13,7 +13,7 @@ import java.util.Collections;
 
 public class RegPresenter {
 
-    private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9])+"; // Регулярка для проверки валидации
+    private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9]|_)+"; // Регулярка для проверки валидации
     private final RegView regView; // View регистрации
     private final GroupModel groupModel; // Модель групп, нужна для получения информации о группах для выбора при регистрации
     private final UserModel userModel; // Модель пользователя, нужна для регистрации

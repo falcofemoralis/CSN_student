@@ -152,7 +152,9 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             transitionDrawable.startTransition(150);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP ||
+                motionEvent.getAction() == MotionEvent.ACTION_MOVE ||
+                motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
             Fragment nextFragment = null;
             int id = view.getId();
 

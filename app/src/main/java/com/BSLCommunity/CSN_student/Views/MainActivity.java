@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -46,13 +45,17 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         fragmentManager = getSupportFragmentManager();
 
-        // Инициализация менеджера смены фрагментов
-        mainFragment = new MainFragment();
+        if (savedInstanceState == null) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        // Открытие фрагмента главного меню
-        fragmentManager.beginTransaction()
-                .add(R.id.activity_main_ll_container, mainFragment)
-                .commit();
+            // Инициализация менеджера смены фрагментов
+            mainFragment = new MainFragment();
+
+            // Открытие фрагмента главного меню
+            fragmentManager.beginTransaction()
+                    .add(R.id.activity_main_ll_container, mainFragment)
+                    .commit();
+        }
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.BSLCommunity.CSN_student.lib.ExCallable;
 
 public class LoginPresenter {
 
-    private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9])+"; // Регулярка для проверки валидации
+    private final String validRegEx = "([A-Z,a-z]|[А-Я,а-я]|[ІЇЄiїєЁё]|[0-9]|_)+"; // Регулярка для проверки валидации
     private final LoginView loginView; // View регистрации
     private final UserModel userModel; // Модель пользователя, нужна для логина
     private final UserData userData;

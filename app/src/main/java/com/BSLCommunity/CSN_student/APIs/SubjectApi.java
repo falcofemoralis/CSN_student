@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface SubjectApi {
-    String BASE_URL = "http://192.168.0.100:81/";
+    String BASE_URL = "http://192.168.0.104:81/";
     String SUBJECT_API = "api/subjects";
 
     @GET(SUBJECT_API + "/group/{id}")

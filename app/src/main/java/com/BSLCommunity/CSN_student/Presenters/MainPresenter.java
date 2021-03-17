@@ -40,6 +40,7 @@ public class MainPresenter {
                 public void fail(int idResString) {
                 }
             });
+            userData.setUserOpens();
         } else {
             mainView.openLogin();
         }

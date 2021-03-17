@@ -186,3 +186,21 @@ function getAllUsers()
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }
+
+/** PUT запрос на обновления числа открытий приложения у юзера */
+function updateUserOpen()
+{
+    $headers = getallheaders();
+    $id = checkAuth($headers['token']);
+
+    $count = file_get_contents('php://input');
+
+    $get = "SELECT Visits FROM users WHERE users.Code_User = $id";
+
+    $data  = json_decode(DataBase::execQuery($get, ReturnValue::GET_OBJECT));
+    $visits = $data->Visits + $count;
+
+    $update = "UPDATE users SET users.Visits=$visits WHERE users.Code_User = $id";
+
+    DataBase::execQuery($update, ReturnValue::GET_NOTHING);
+}

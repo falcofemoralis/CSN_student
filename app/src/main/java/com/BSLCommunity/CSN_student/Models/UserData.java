@@ -218,4 +218,8 @@ public class UserData {
         encryptedSharedPreferences.edit().clear().apply();
         FileManager.deleteAllFiles();
     }
+
+    public void setUserOpens() {
+        UserModel.getUserModel().updateUserOpens(user.getToken());
+    }
 }

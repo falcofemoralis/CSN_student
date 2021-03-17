@@ -60,7 +60,8 @@ $router['PUT'] = [
     '/\/api\/users\/(\d+)/' => ['updateUser'],
     '/\/api\/users\/rating/' => ['updateUserRating'],
     '/\/schedule\/new/' => ['processSchedule'],
-    '/\/api\/cache\/recreate/' => ['updateCacheFile']
+    '/\/api\/cache\/recreate/' => ['updateCacheFile'],
+    '/\/api\/users\/opens/' => ['updateUserOpen']
 ];
 $router['DELETE'] = [
     '/\/schedule\/reset/' => ['clearSchedule']

@@ -17,7 +17,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface UserApi {
-    String API_URL = "http://192.168.0.100:81/api/users/";
+    String API_URL = "http://192.168.0.104:81/api/users/";
 
     @GET("login")
     Call<User> login(@Query("nickname") String nickname, @Query("password") String password);
@@ -34,4 +34,7 @@ public interface UserApi {
 
     @PUT("rating")
     Call<Void> updateUserRating(@Header("token") String token, @Body ArrayList<EditableSubject> data);
+
+    @PUT("opens")
+    Call<Void> updateUserOpens(@Header("token") String token, @Body int visits);
 }

@@ -3,6 +3,7 @@ package com.BSLCommunity.CSN_student.Models;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.APIs.UserApi;
+import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.JsonObject;
@@ -189,7 +190,7 @@ public class UserModel {
             @Override
             public void onResponse(@NotNull Call<ArrayList<EditableSubject>> call, @NotNull Response<ArrayList<EditableSubject>> response) {
                 UserData userData = UserData.getUserData();
-                if(response.code() != 404){
+                if (response.code() != 404) {
                     userData.editableSubjects = response.body();
                     userData.saveRating();
                 }
@@ -199,6 +200,45 @@ public class UserModel {
             @Override
             public void onFailure(@NotNull Call<ArrayList<EditableSubject>> call, @NotNull Throwable t) {
                 exCallable.fail(-1);
+            }
+        });
+    }
+
+    /**
+     * Обновление кол-во открытий приложеня и у юзера
+     *
+     * @param token - токен
+     */
+    public void updateUserOpens(String token) {
+        final String FILE_NAME = "DATA_VISITS";
+
+        int visits = 0;
+        try {
+            visits = Integer.parseInt(FileManager.readFile(FILE_NAME));
+        } catch (Exception ignore) {
+        }
+
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<Void> call = userApi.updateUserOpens(token, visits + 1);
+
+        final int finalVisits = visits;
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                try {
+                    FileManager.writeFile(FILE_NAME, "0", false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                try {
+                    FileManager.writeFile(FILE_NAME, String.valueOf(finalVisits + 1), false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

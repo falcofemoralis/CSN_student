@@ -25,6 +25,7 @@ import com.BSLCommunity.CSN_student.Models.Timer;
 import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
+import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 
 import java.util.Locale;
@@ -35,11 +36,13 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
 
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
+    OnFragmentActionBarChangeListener onFragmentActionBarChangeListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         fragmentListener = (OnFragmentInteractionListener) context;
+        onFragmentActionBarChangeListener = (OnFragmentActionBarChangeListener) context;
     }
 
     @Override
@@ -149,8 +152,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             transitionDrawable.startTransition(150);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
-        }
-        else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             Fragment nextFragment = null;
             int id = view.getId();
 
@@ -159,24 +161,19 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
             if (id == R.id.activity_main_bt_subjects) {
                 nextFragment = new SubjectListFragment();
 
-            }
-            else if (id == R.id.activity_main_bt_auditorium) {
+            } else if (id == R.id.activity_main_bt_auditorium) {
                 nextFragment = new AuditoriumFragment();
-            }
-            else if (id == R.id.activity_main_bt_lessonsShedule) {
+            } else if (id == R.id.activity_main_bt_lessonsShedule) {
                 nextFragment = new ScheduleFragment();
                 data = new Bundle();
                 data.putInt("ScheduleType", ScheduleType.GROUPS.ordinal());
-            }
-            else if (id == R.id.activity_main_bt_settings) {
+            } else if (id == R.id.activity_main_bt_settings) {
                 nextFragment = new SettingsFragment();
-            }
-            else if (id == R.id.activity_main_bt_teachersSchedule) {
+            } else if (id == R.id.activity_main_bt_teachersSchedule) {
                 nextFragment = new ScheduleFragment();
                 data = new Bundle();
                 data.putInt("ScheduleType", ScheduleType.TEACHERS.ordinal());
-            }
-            else if (id == R.id.activity_main_bt_schedule_bell) {
+            } else if (id == R.id.activity_main_bt_schedule_bell) {
                 nextFragment = new ScheduleBell();
             }
 

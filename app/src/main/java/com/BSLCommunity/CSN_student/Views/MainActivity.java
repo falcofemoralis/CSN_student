@@ -20,11 +20,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.R;
-import com.BSLCommunity.CSN_student.Views.Fragments.AuditoriumFragment;
 import com.BSLCommunity.CSN_student.Views.Fragments.MainFragment;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, OnFragmentActionBarChangeListener {
-
     private FragmentManager fragmentManager;
     private static Fragment mainFragment;
 
@@ -38,17 +36,18 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setShowHideAnimationEnabled(true);
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#21c5df")));
+            actionBar.setShowHideAnimationEnabled(false);
+            actionBar.hide();
+            actionBar.setShowHideAnimationEnabled(true);
+            actionBar.show(); //т.к 1 раз не показывается, показываем и скрываем обратно
             actionBar.hide();
         }
 
         fragmentManager = getSupportFragmentManager();
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Инициализация менеджера смены фрагментов
         mainFragment = new MainFragment();
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         FragmentTransaction fTrans = fragmentManager.beginTransaction();
         if (fragmentReceiver != null)
             fragmentReceiver.setArguments(data);
-
 
         int animIn = R.anim.fade_in, animOut = R.anim.fade_out;
 
@@ -101,15 +99,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void changeActionBarState(boolean state) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            if (state) {
-                actionBar.show();
-            } else {
-                actionBar.hide();
-            }
+        if (state) {
+            getSupportActionBar().show();
+        } else {
+            getSupportActionBar().hide();
         }
     }
 

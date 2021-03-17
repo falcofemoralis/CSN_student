@@ -12,13 +12,26 @@ import java.io.FileWriter;
 public class FileManager {
     private static String ROOT_FILES;
     private static String ROOT_IMAGES;
+    private static FileManager instance;
 
-    public static void init(Context context) {
+
+    private FileManager() {
+    }
+
+    public static FileManager getFileManager(Context context) {
+        if (instance == null) {
+            instance = new FileManager();
+            instance.init(context);
+        }
+        return instance;
+    }
+
+    public void init(Context context) {
         FileManager.ROOT_FILES = context.getFilesDir().toString();
         FileManager.ROOT_IMAGES = context.getFilesDir().toString() + "/images";
     }
 
-    public static String readFile(String src) throws Exception {
+    public String readFile(String src) throws Exception {
         File file = new File(ROOT_FILES, src);
         StringBuilder data = new StringBuilder();
 
@@ -32,7 +45,7 @@ public class FileManager {
         return data.toString();
     }
 
-    public static void writeFile(String src, String content, boolean append) throws Exception {
+    public void writeFile(String src, String content, boolean append) throws Exception {
         File file = new File(ROOT_FILES, src);
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(file, append));
@@ -43,7 +56,7 @@ public class FileManager {
     /**
      * Удаление файлов пользователя
      */
-    public static void deleteAllFiles() {
+    public void deleteAllFiles() {
         for (int i = 0; i < 2; ++i) {
             String path = i == 0 ? ROOT_FILES : ROOT_IMAGES;
 

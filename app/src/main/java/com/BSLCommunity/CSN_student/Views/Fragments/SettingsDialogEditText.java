@@ -2,7 +2,6 @@ package com.BSLCommunity.CSN_student.Views.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Pair;
@@ -16,12 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.R;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.BSLCommunity.CSN_student.Models.Settings.languages;
 
 public class SettingsDialogEditText extends AppCompatDialogFragment {
     private EditText EditText;
@@ -43,8 +43,9 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
         this.password = password;
     }
 
-    public void setApplyKey(int applyKey) {
+    public void setApplyKey(int applyKey, DialogListener listener) {
         this.applyKey = applyKey;
+        this.listener = listener;
     }
 
     @NonNull
@@ -52,66 +53,53 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view;
+        View view = null;
 
         if (applyKey == R.id.activity_settings_ll_nickname) {
             view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
             EditText = view.findViewById(R.id.activity_settings_et_dialog);
             EditText.setText(this.nickName);
             title = getResources().getString(R.string.nickname);
-        }
-        else if (applyKey == R.id.activity_settings_ll_password) {
+        } else if (applyKey == R.id.activity_settings_ll_password) {
             view = inflater.inflate(R.layout.dialog_settings_et_password, null);
             EditText = view.findViewById(R.id.activity_settings_et_dialog);
             EditText.setText(this.password);
             title = getResources().getString(R.string.password);
-        }
-        else if  (applyKey == R.id.activity_settings_ll_group) {
+        } else if (applyKey == R.id.activity_settings_ll_group) {
             // TODO
-            view = inflater.inflate(R.layout.dialog_settings_sp_groups, null);
-//            ProgressBar groupProgressBar = view.findViewById(R.id.activity_settings_pb_groups);
-//            Sprite iIndeterminateDrawable = new ThreeBounce();
-//            iIndeterminateDrawable.setColor(getContext().getColor(R.color.main_color_3));
-//            groupProgressBar.setIndeterminateDrawable(iIndeterminateDrawable);
-//
-//            try {
-//                groupSpinner = view.findViewById(R.id.activity_settings_sp_groups);
-//
-//                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_dropdown_settings, groupsAdapter);
-//                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
-//                groupSpinner.setAdapter(dataAdapter);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            title = getResources().getString(R.string.group);
-        }
-        else if (applyKey == R.id.activity_settings_ll_language) {
-            view = inflater.inflate(R.layout.dialog_settings_sp_languages, null);
+/*            view = inflater.inflate(R.layout.dialog_settings_sp_groups, null);
+            ProgressBar groupProgressBar = view.findViewById(R.id.activity_settings_pb_groups);
+            Sprite iIndeterminateDrawable = new ThreeBounce();
+            iIndeterminateDrawable.setColor(getContext().getColor(R.color.main_color_3));
+            groupProgressBar.setIndeterminateDrawable(iIndeterminateDrawable);
 
             try {
-                languageSpinner = view.findViewById(R.id.activity_settings_sp_languages);
+                groupSpinner = view.findViewById(R.id.activity_settings_sp_groups);
 
-                //устанавливаем спинер выбора групп
-                ArrayAdapter  languagesAdapter = ArrayAdapter.createFromResource(
-                        getContext(),
-                        R.array.languages,
-                        R.layout.spinner_dropdown_settings
-                );
-                languagesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
-                languageSpinner.setAdapter(languagesAdapter);
-
-                for (Pair<String,String> element : languages){
-                    if (element.second.contains(LocaleHelper.getLanguage(getContext()))){
-                        languageSpinner.setSelection(languages.indexOf(element));
-                    }
-                }
-
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_dropdown_settings, groupsAdapter);
+                dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
+                groupSpinner.setAdapter(dataAdapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            title = getResources().getString(R.string.group);*/
+        } else if (applyKey == R.id.activity_settings_ll_language) {
+            view = inflater.inflate(R.layout.dialog_settings_sp_languages, null);
+            languageSpinner = view.findViewById(R.id.activity_settings_sp_languages);
+
+            //устанавливаем спинер выбора групп
+            ArrayAdapter<CharSequence> languagesAdapter = ArrayAdapter.createFromResource(getContext(), R.array.languages, R.layout.spinner_dropdown_settings);
+            languagesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
+            languageSpinner.setAdapter(languagesAdapter);
+
+            ArrayList<Pair<String, String>> languages = LocaleHelper.getLanguages(App.getApp().context());
+            for (Pair<String, String> element : languages) {
+                if (element.second.contains(LocaleHelper.getLanguage(getContext()))) {
+                    languageSpinner.setSelection(languages.indexOf(element));
+                }
+            }
             title = getResources().getString(R.string.language);
-        }
-        else {
+        } else {
             view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
             title = "";
         }
@@ -130,14 +118,11 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                         String text;
                         if (applyKey == R.id.activity_settings_ll_nickname || applyKey == R.id.activity_settings_ll_password) {
                             text = EditText.getText().toString();
-                        }
-                        else if (applyKey == R.id.activity_settings_ll_group) {
+                        } else if (applyKey == R.id.activity_settings_ll_group) {
                             text = groupSpinner.getSelectedItem().toString();
-                        }
-                        else if (applyKey == R.id.activity_settings_ll_language) {
+                        } else if (applyKey == R.id.activity_settings_ll_language) {
                             text = Integer.toString(languageSpinner.getSelectedItemPosition());
-                        }
-                        else {
+                        } else {
                             text = "";
                         }
 
@@ -148,16 +133,16 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
         return builder.create();
     }
 
-    @Override
+/*    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
             listener = (DialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement DialogListener");
+            throw new ClassCastException(context.toString() + " must implement DialogListener");
         }
-    }
+    }*/
 
     public interface DialogListener {
         void applyText(String text, int key);

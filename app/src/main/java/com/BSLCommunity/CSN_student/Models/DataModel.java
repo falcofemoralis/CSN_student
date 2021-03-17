@@ -3,6 +3,7 @@ package com.BSLCommunity.CSN_student.Models;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.APIs.CacheApi;
+import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Constants.ApiType;
 import com.BSLCommunity.CSN_student.Constants.CacheStatusType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
@@ -67,7 +68,7 @@ public class DataModel {
                 .build();
 
         try {
-            String data = FileManager.readFile(DATA_FILE_NAME);
+            String data = FileManager.getFileManager(App.getApp().context()).readFile(DATA_FILE_NAME);
             Type type = new TypeToken<Cache>() {
             }.getType();
             clientCache = (new Gson()).fromJson(data, type);
@@ -92,6 +93,8 @@ public class DataModel {
                     boolean isOld = Boolean.parseBoolean(response.body());
                     if (isOld)
                         exCallable.call(CacheStatusType.CACHE_NEED_UPDATE);
+                    Log.d("CACHE_API", "update?" + isOld);
+
                 }
 
                 @Override
@@ -255,7 +258,7 @@ public class DataModel {
     public void save() {
         try {
             String data = (new Gson()).toJson(serverCache);
-            FileManager.writeFile(DATA_FILE_NAME, data, false);
+            FileManager.getFileManager(App.getApp().context()).writeFile(DATA_FILE_NAME, data, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package com.BSLCommunity.CSN_student.Models;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.APIs.UserApi;
+import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
@@ -210,11 +211,11 @@ public class UserModel {
      * @param token - токен
      */
     public void updateUserOpens(String token) {
-        final String FILE_NAME = "DATA_VISITS";
+        final String FILE_NAME = "Visits";
 
         int visits = 0;
         try {
-            visits = Integer.parseInt(FileManager.readFile(FILE_NAME));
+            visits = Integer.parseInt(FileManager.getFileManager(App.getApp().context()).readFile(FILE_NAME));
         } catch (Exception ignore) {
         }
 
@@ -226,7 +227,7 @@ public class UserModel {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
                 try {
-                    FileManager.writeFile(FILE_NAME, "0", false);
+                    FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME, "0", false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -235,7 +236,7 @@ public class UserModel {
             @Override
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
                 try {
-                    FileManager.writeFile(FILE_NAME, String.valueOf(finalVisits + 1), false);
+                    FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME, String.valueOf(finalVisits + 1), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

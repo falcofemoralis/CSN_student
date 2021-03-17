@@ -2,6 +2,10 @@ package com.BSLCommunity.CSN_student.Presenters;
 
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Models.DataModel;
+import com.BSLCommunity.CSN_student.Models.GroupModel;
+import com.BSLCommunity.CSN_student.Models.SubjectModel;
+import com.BSLCommunity.CSN_student.Models.TeacherModel;
 import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;
@@ -32,13 +36,13 @@ public class SettingsPresenter {
         dataToUpdate.put(DataKey.NickName.toString(), this.userData.user.getNickName());
         dataToUpdate.put(DataKey.Password.toString(), this.userData.user.getPassword());
 
-        settingsView.setDataToSettings(this.userData.user.getNickName(), this.userData.user.getPassword(),
-                this.userData.user.getGroupName(), this.userData.languages);
+        settingsView.setDataToSettings(this.userData.user.getNickName(), this.userData.user.getPassword(), this.userData.user.getGroupName());
     }
 
     /**
      * Добавление изменений в аккаунте
-     * @param key - атрибут
+     *
+     * @param key   - атрибут
      * @param value - значение
      */
     public void addNewValue(DataKey key, String value) {
@@ -54,7 +58,8 @@ public class SettingsPresenter {
      */
     public void logOut() {
         this.userData.clearData();
-        settingsView.openLogin();
+        resetSingletons();
+        settingsView.reloadActivity();
     }
 
     /**
@@ -87,10 +92,26 @@ public class SettingsPresenter {
 
     /**
      * Изменение языка в приложении
-     * @param index - индекс в массиве языков
+     *
+     * @param i - индекс в массиве языков
      */
-    public void changeLanguage(int index) {
-        LocaleHelper.setLocale(App.getApp().getApplicationContext(), this.userData.languages.get(index).second);
-        this.settingsView.reloadActivity();
+    public void changeLanguage(int i) {
+        try {
+            LocaleHelper.changeLanguage(App.getApp().context(), LocaleHelper.getLanguages(App.getApp().context()).get(i).second);
+            resetSingletons();
+            this.settingsView.reloadActivity();
+        } catch (Exception e) {
+            e.printStackTrace();
+            settingsView.showToast(R.string.save_error);
+        }
+    }
+
+    public void resetSingletons(){
+        GroupModel.instance = null;
+        UserData.instance = null;
+        TeacherModel.instance = null;
+        SubjectModel.instance = null;
+        UserModel.instance = null;
+        DataModel.instance = null;
     }
 }

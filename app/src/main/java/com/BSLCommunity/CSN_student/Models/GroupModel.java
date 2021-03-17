@@ -3,6 +3,7 @@ package com.BSLCommunity.CSN_student.Models;
 import android.util.Log;
 
 import com.BSLCommunity.CSN_student.APIs.GroupApi;
+import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
@@ -62,7 +63,7 @@ public class GroupModel {
                 .build();
 
         try {
-            String data = FileManager.readFile(DATA_FILE_NAME);
+            String data = FileManager.getFileManager(App.getApp().context()).readFile(DATA_FILE_NAME);
             Type type = new TypeToken<ArrayList<Group>>() {
             }.getType();
             groups = (new Gson()).fromJson(data, type);
@@ -150,7 +151,7 @@ public class GroupModel {
     public void save() {
         String data = (new Gson()).toJson(groups);
         try {
-            FileManager.writeFile(DATA_FILE_NAME, data, false);
+            FileManager.getFileManager(App.getApp().context()).writeFile(DATA_FILE_NAME, data, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

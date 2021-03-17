@@ -32,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SubjectModel {
     public final String DATA_FILE_NAME = "Subjects";
 
-    private static SubjectModel instance;
+    public static SubjectModel instance;
     private Retrofit retrofit;
 
     public ArrayList<Subject> subjects;
@@ -56,7 +56,7 @@ public class SubjectModel {
                 .build();
 
         try {
-            String data = FileManager.readFile(DATA_FILE_NAME);
+            String data = FileManager.getFileManager(App.getApp().context()).readFile(DATA_FILE_NAME);
             Type type = new TypeToken<ArrayList<Subject>>() {
             }.getType();
             subjects = (new Gson()).fromJson(data, type);
@@ -129,7 +129,7 @@ public class SubjectModel {
     public void save() {
         String data = (new Gson()).toJson(subjects);
         try {
-            FileManager.writeFile(DATA_FILE_NAME, data, false);
+            FileManager.getFileManager(App.getApp().context()).writeFile(DATA_FILE_NAME, data, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

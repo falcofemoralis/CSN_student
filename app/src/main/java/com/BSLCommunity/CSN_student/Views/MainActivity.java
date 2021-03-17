@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.Views.Fragments.AuditoriumFragment;
 import com.BSLCommunity.CSN_student.Views.Fragments.MainFragment;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, OnFragmentActionBarChangeListener {
@@ -28,11 +29,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private static Fragment mainFragment;
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleHelper.onAttach(base));
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(LocaleHelper.onAttach(context));
     }
 
-    @SuppressLint({"ClickableViewAccessibility"})
+    @SuppressLint({"ClickableViewAccessibility", "RestrictedApi"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,23 +41,23 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.hide();
+            actionBar.setShowHideAnimationEnabled(true);
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#21c5df")));
+            actionBar.hide();
         }
 
         fragmentManager = getSupportFragmentManager();
 
-        if (savedInstanceState == null) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-            // Инициализация менеджера смены фрагментов
-            mainFragment = new MainFragment();
+        // Инициализация менеджера смены фрагментов
+        mainFragment = new MainFragment();
 
-            // Открытие фрагмента главного меню
-            fragmentManager.beginTransaction()
-                    .add(R.id.activity_main_ll_container, mainFragment)
-                    .commit();
-        }
+        // Открытие фрагмента главного меню
+        fragmentManager.beginTransaction()
+                .add(R.id.activity_main_ll_container, mainFragment)
+                .commit();
+
     }
 
     @Override
@@ -65,6 +66,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         if (fragmentReceiver != null)
             fragmentReceiver.setArguments(data);
 
+
+        int animIn = R.anim.fade_in, animOut = R.anim.fade_out;
+
+/*        if (fragmentReceiver.getClass() == AuditoriumFragment.class) {
+            animIn = R.anim.falling_up;
+            animOut = R.anim.falling_down;
+        }*/
+
+        fTrans.setCustomAnimations(animIn, animOut, animIn, animOut);
+
         switch (action) {
             case NEXT_FRAGMENT_HIDE:
                 if (mainFragment.isVisible())
@@ -72,13 +83,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 else
                     fTrans.hide(fragmentSource);
 
-                fTrans.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
                 fTrans.add(R.id.activity_main_ll_container, fragmentReceiver);
                 fTrans.addToBackStack(backStackTag);   // Добавление изменнений в стек
                 fTrans.commit();
                 break;
             case NEXT_FRAGMENT_REPLACE:
-                fTrans.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
                 fTrans.replace(R.id.activity_main_ll_container, fragmentReceiver);
                 fTrans.addToBackStack(backStackTag);   // Добавление изменнений в стек
                 fTrans.commit();
@@ -92,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
     public void changeActionBarState(boolean state) {
         ActionBar actionBar = getSupportActionBar();
@@ -100,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             if (state) {
                 actionBar.show();
             } else {
-                //actionBar.setShowHideAnimationEnabled(false);
                 actionBar.hide();
             }
         }

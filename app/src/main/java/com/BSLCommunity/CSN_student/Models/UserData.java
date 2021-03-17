@@ -2,14 +2,12 @@ package com.BSLCommunity.CSN_student.Models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Pair;
 
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
-import com.BSLCommunity.CSN_student.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -21,27 +19,22 @@ import java.util.ArrayList;
 public class UserData {
     public static transient UserData instance = null;
     public final String FILE_NAME_SUBJECT_INFO = "EditableSubjects";
+    public static final String DATA_FILE_NAME = "user_data";
 
     /**
      * PrefKeys - Строковые константы - ключи, по которым хранятся все данные в файле настроек
-     * languages - название языков, где пара <название языка, его код>;
-     * encryptedSharedPreferences - файл пользовательских настроек и данных
      */
     public enum PrefKeys {
-        USER_ID("user_id"),
         NICKNAME("nickname"),
         PASSWORD("password"),
         GROUP("group"),
         GROUP_ID("group_id"),
         COURSE("course"),
-        TOKEN("token"),
-        OFFLINE_DATA("offline_data"),
-        TIMER_SWITCH("timer_switch"),
-        LANGUAGE("language");
+        TOKEN("token");
 
         private String value;
 
-        private PrefKeys(String value) {
+        PrefKeys(String value) {
             this.value = value;
         }
 
@@ -50,7 +43,6 @@ public class UserData {
         }
     }
 
-    public transient ArrayList<Pair<String, String>> languages = new ArrayList<>(); //
     public transient SharedPreferences encryptedSharedPreferences;
 
     public User user;
@@ -72,12 +64,6 @@ public class UserData {
      */
     private void init() {
         setSettingsFile(App.getApp().getApplicationContext());
-
-        // Добавление языков
-        String[] languagesArray = App.getApp().getApplicationContext().getResources().getStringArray(R.array.languages);
-        languages.add(new Pair<>(languagesArray[0], "en"));
-        languages.add(new Pair<>(languagesArray[1], "ru"));
-        languages.add(new Pair<>(languagesArray[2], "uk"));
 
         try {
             SharedPreferences pref = this.encryptedSharedPreferences;
@@ -128,7 +114,7 @@ public class UserData {
      **/
     public void setEditableSubjects() {
         try {
-            String data = FileManager.readFile(FILE_NAME_SUBJECT_INFO);
+            String data = FileManager.getFileManager(App.getApp().context()).readFile(FILE_NAME_SUBJECT_INFO);
             Type type = new TypeToken<ArrayList<EditableSubject>>() {
             }.getType();
             editableSubjects = (new Gson()).fromJson(data, type);
@@ -167,7 +153,7 @@ public class UserData {
         }
 
         try {
-            this.encryptedSharedPreferences = EncryptedSharedPreferences.create(context, "settings_data", masterKey,
+            this.encryptedSharedPreferences = EncryptedSharedPreferences.create(context, DATA_FILE_NAME, masterKey,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
@@ -204,7 +190,7 @@ public class UserData {
             String jsonString = gson.toJson(editableSubjects, type);
 
             try {
-                FileManager.writeFile(FILE_NAME_SUBJECT_INFO, jsonString, false);
+                FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME_SUBJECT_INFO, jsonString, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -216,7 +202,7 @@ public class UserData {
      */
     public void clearData() {
         encryptedSharedPreferences.edit().clear().apply();
-        FileManager.deleteAllFiles();
+        FileManager.getFileManager(App.getApp().context()).deleteAllFiles();
     }
 
     public void setUserOpens() {

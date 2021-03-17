@@ -87,5 +87,6 @@
     <string name="default_text">default text</string>
     <string name="download_dialog_title">Downloading files</string>
     <string name="teacher">Teacher</string>
+    <string name="save_error">Failed to apply</string>
 </resources>
 

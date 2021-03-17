@@ -1,5 +1,7 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
+import android.util.Log;
+
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Constants.CacheStatusType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
@@ -16,7 +18,6 @@ public class MainPresenter {
     private final DataModel dataModel;
 
     public MainPresenter(MainView mainView) {
-        FileManager.init(App.getApp().context());
         this.mainView = mainView;
         this.userData = UserData.getUserData();
         this.dataModel = DataModel.getDataModel();

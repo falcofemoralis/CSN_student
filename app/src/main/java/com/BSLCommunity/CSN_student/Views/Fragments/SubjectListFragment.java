@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.Subject;
@@ -53,6 +54,7 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener actionBarChangeListener;
 
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -63,8 +65,6 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_subject_list, container, false);
-        actionBarChangeListener.setActionBarColor(R.color.dark_blue);
-        actionBarChangeListener.setNavBarColor(R.color.dark_red);
 
         tableSubjects = currentFragment.findViewById(R.id.activity_subject_list_ll_table_subjects);
         subjectViews = new ArrayList<>();
@@ -83,6 +83,8 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     @Override
     public void onResume() {
         this.subjectListPresenter.recalculateProgresses();
+        actionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
+        actionBarChangeListener.setActionBarColor(R.color.dark_red, ActionBarType.NAVIGATION_BAR);
         super.onResume();
     }
 
@@ -225,10 +227,10 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     }
 
     @Override
-    public void onDetach() {
-        actionBarChangeListener.setActionBarColor(R.color.background);
-        actionBarChangeListener.setNavBarColor(R.color.background);
-        super.onDetach();
+    public void onPause() {
+        actionBarChangeListener.setActionBarColor(R.color.background, ActionBarType.STATUS_BAR);
+        actionBarChangeListener.setActionBarColor(R.color.background, ActionBarType.NAVIGATION_BAR);
+        super.onPause();
     }
 }
 

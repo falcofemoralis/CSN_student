@@ -100,7 +100,7 @@ public class RegistrationFragment extends Fragment implements  RegView, AdapterV
      * Переход в активити логина
      */
     public void toLogin() {
-        fragmentListener.onFragmentInteraction(this, new RegistrationFragment(),
+        fragmentListener.onFragmentInteraction(this, new LoginFragment(),
                 OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
     }
 

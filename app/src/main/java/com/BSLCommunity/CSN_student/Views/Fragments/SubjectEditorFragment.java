@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
@@ -71,7 +72,6 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_subject_info, container, false);
-        actionBarChangeListener.setActionBarColor(R.color.background);
 
         // Контейнеры которые содержат списки работ и кнопки для отображения/добавления работ
         labsLL = currentFragment.findViewById(R.id.activity_subject_info_ll_labs);
@@ -120,11 +120,18 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     }
 
     @Override
+    public void onResume() {
+        actionBarChangeListener.setActionBarColor(R.color.background, ActionBarType.STATUS_BAR);
+        super.onResume();
+    }
+
+    @Override
     public void onPause() {
         if (focusedRow != null)
             saveChanges(focusedRow);
 
         this.subjectEditorPresenter.finishEdit();
+        actionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
         super.onPause();
     }
 
@@ -384,11 +391,5 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         } else {
             focusedRow = (TableRow) v.getParent();
         }
-    }
-
-    @Override
-    public void onDetach() {
-        actionBarChangeListener.setActionBarColor(R.color.dark_blue);
-        super.onDetach();
     }
 }

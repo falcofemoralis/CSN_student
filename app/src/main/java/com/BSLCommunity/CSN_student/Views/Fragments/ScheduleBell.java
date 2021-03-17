@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 
@@ -30,7 +31,6 @@ public class ScheduleBell extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_schedule_bell, container, false);
-        onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_blue);
 
         TableLayout tl = currentFragment.findViewById(R.id.activity_schedule_bell_tl_schedule);
 
@@ -44,8 +44,14 @@ public class ScheduleBell extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        onFragmentActionBarChangeListener.setActionBarColor(R.color.background);
-        super.onDetach();
+    public void onResume() {
+        onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        onFragmentActionBarChangeListener.setActionBarColor(R.color.background, ActionBarType.STATUS_BAR);
+        super.onPause();
     }
 }

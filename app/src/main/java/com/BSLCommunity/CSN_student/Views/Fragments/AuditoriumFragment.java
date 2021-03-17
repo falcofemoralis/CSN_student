@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Models.AuditoriumModel;
 import com.BSLCommunity.CSN_student.Presenters.AuditoriumPresenter;
 import com.BSLCommunity.CSN_student.R;
@@ -56,11 +57,6 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_auditorium, container, false);
-        if (actionBarChangeListener != null) {
-            actionBarChangeListener.changeActionBarState(true);
-            actionBarChangeListener.setActionBarColor(R.color.dark_blue);
-        }
-
         getActivity().setTitle(getString(R.string.auditoriums_search));
 
         buildingTabs = currentFragment.findViewById(R.id.building_tl);
@@ -106,8 +102,16 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
         return currentFragment;
     }
 
+    @Override
+    public void onResume() {
+        actionBarChangeListener.changeActionBarState(true);
+        actionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
+        super.onResume();
+    }
+
     /**
      * Строка поиска аудитории
+     *
      * @param menu - меню
      */
     @Override
@@ -190,9 +194,9 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
     }
 
     @Override
-    public void onDestroyOptionsMenu() {
+    public void onPause() {
         actionBarChangeListener.changeActionBarState(false);
-        actionBarChangeListener.setActionBarColor(R.color.background);
-        super.onDestroyOptionsMenu();
+        actionBarChangeListener.setActionBarColor(R.color.background, ActionBarType.STATUS_BAR);
+        super.onPause();
     }
 }

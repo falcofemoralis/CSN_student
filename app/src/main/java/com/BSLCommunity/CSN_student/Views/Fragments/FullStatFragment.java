@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
@@ -44,7 +45,7 @@ public class FullStatFragment extends Fragment implements FullStatView {
             R.color.done_with_report,
             R.color.waiting_acceptation,
             R.color.passed_without_report,
-            R.color.passed_with_report };
+            R.color.passed_with_report};
 
     FullStatPresenter fullStatPresenter;
 
@@ -63,7 +64,6 @@ public class FullStatFragment extends Fragment implements FullStatView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_full_statistic, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        actionBarChangeListener.setActionBarColor(R.color.dark_red);
 
         worksTL = currentFragment.findViewById(R.id.activity_subject_info_full_tl_works);
 
@@ -74,6 +74,12 @@ public class FullStatFragment extends Fragment implements FullStatView {
         return currentFragment;
     }
 
+    @Override
+    public void onResume() {
+        actionBarChangeListener.setActionBarColor(R.color.dark_red, ActionBarType.STATUS_BAR);
+        actionBarChangeListener.setActionBarColor(R.color.dark_red, ActionBarType.NAVIGATION_BAR);
+        super.onResume();
+    }
 
     @Override
     public void addSubjectRow(String subjectName, int idSubjectValue, HashMap<WorkType, ArrayList<EditableSubject.Work>> allWorks, int[] maxWorks) {
@@ -126,7 +132,7 @@ public class FullStatFragment extends Fragment implements FullStatView {
         TableRow worksHeadersRow = currentFragment.findViewById(R.id.activity_subject_info_full_tr_works_numbers);
 
         // Заголовок ценности работ
-        TextView valueHeader =  inflateTextView(R.layout.inflate_statistic_view_header);
+        TextView valueHeader = inflateTextView(R.layout.inflate_statistic_view_header);
         valueHeader.setText(R.string.value);
         worksHeadersRow.addView(valueHeader);
 
@@ -136,8 +142,8 @@ public class FullStatFragment extends Fragment implements FullStatView {
         worksHeadersRow.addView(subjectHeader);
 
         // Заголовки работ
-        int [] workHeader = {R.string.lab, R.string.ihw, R.string.other};
-        for (int i=0;i<TYPES_WORKS_COUNT;++i) {
+        int[] workHeader = {R.string.lab, R.string.ihw, R.string.other};
+        for (int i = 0; i < TYPES_WORKS_COUNT; ++i) {
             for (int j = 0; j < maxWorks[i]; ++j) {
                 TextView textView = inflateTextView(R.layout.inflate_statistic_view_header);
                 textView.setText(String.format(Locale.getDefault(), "%s %d", getString(workHeader[i]), j + 1));
@@ -149,16 +155,17 @@ public class FullStatFragment extends Fragment implements FullStatView {
 
     /**
      * Загрузка TextView из шаблонов (inflate) по id
+     *
      * @param id - id лаяута который загружается из ресурсов
      * @return елемент TextView
      */
-    private TextView inflateTextView(int id){
+    private TextView inflateTextView(int id) {
         return (TextView) LayoutInflater.from(getContext()).inflate(id, null);
     }
 
     @Override
-    public void onDestroyOptionsMenu() {
-        actionBarChangeListener.setActionBarColor(R.color.dark_blue);
-        super.onDestroyOptionsMenu();
+    public void onPause() {
+        actionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
+        super.onPause();
     }
 }

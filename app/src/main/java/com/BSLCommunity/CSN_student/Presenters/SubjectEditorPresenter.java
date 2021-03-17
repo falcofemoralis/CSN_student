@@ -3,10 +3,9 @@ package com.BSLCommunity.CSN_student.Presenters;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
-import com.BSLCommunity.CSN_student.Models.Subject;
+import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.UserData;
-import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectEditorView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,8 +34,11 @@ public class SubjectEditorPresenter {
     }
 
     public void deleteWork(WorkType workType, int index) {
-        this.copyEdSubject.allWorks.get(workType).remove(index);
-        this.subjectEditorView.setWorkProgress(this.copyEdSubject.calculateProgress());
+        try {
+            this.copyEdSubject.allWorks.get(workType).remove(index);
+            this.subjectEditorView.setWorkProgress(this.copyEdSubject.calculateProgress());
+            this.subjectEditorView.deleteWorkRow(workType, index);
+        } catch (Exception ignored) {}
     }
 
     public void changeWork(WorkType workType, int index, String name, WorkStatus workStatus, String mark) {

@@ -58,6 +58,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
 
     TableRow focusedRow = null;
     SubjectEditorPresenter subjectEditorPresenter;
+
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener actionBarChangeListener;
@@ -240,7 +241,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         ((Button) elementWork.findViewById(R.id.inflate_work_element_bt_delete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteElementWork(v);
+                deleteWork(v);
             }
         });
 
@@ -310,16 +311,35 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
      *
      * @param view - кнопка
      */
-    public void deleteElementWork(View view) {
-        final TableRow workRow = (TableRow) (view.getParent()); // Строчка работы в списке
-        final TableLayout infoTL = ((TableLayout) (workRow.getParent())); // Группа
+
+    public void deleteWork(View view) {
+        final TableRow workRow = (TableRow)(view.getParent()); // Строчка работы в списке
+        final TableLayout infoTL = ((TableLayout)(workRow.getParent())); // Группа
 
         WorkType workType = getWorkType(infoTL.getId());
         int index = infoTL.indexOfChild(workRow);
 
         this.subjectEditorPresenter.deleteWork(workType, index);
+    }
+
+    @Override
+    public void deleteWorkRow(WorkType workType, int index) {
+        TableLayout parentTL = null;
+        switch (workType) {
+            case LABS:
+                parentTL = currentFragment.findViewById(R.id.activity_subject_info_tl_labs_data);
+                break;
+            case IHW:
+                parentTL = currentFragment.findViewById(R.id.activity_subject_info_tl_ihw_data);
+                break;
+            case OTHERS:
+                parentTL = currentFragment.findViewById(R.id.activity_subject_info_tl_other_data);
+                break;
+        }
+
         TransitionManager.beginDelayedTransition(rootContainer);
-        infoTL.removeView(workRow);
+        TableRow row = (TableRow) parentTL.getChildAt(index);
+        parentTL.removeView(row);
     }
 
     /**

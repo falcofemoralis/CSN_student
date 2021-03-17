@@ -60,3 +60,9 @@ function cors()
         exit(0);
     }
 }
+
+function getSecretPanel()
+{
+    $panel = file_get_contents("./front/index.html");
+    echo $panel;
+}

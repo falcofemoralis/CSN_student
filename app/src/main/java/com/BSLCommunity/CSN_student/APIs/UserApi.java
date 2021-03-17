@@ -17,7 +17,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface UserApi {
-    String API_URL = "http://192.168.0.104:81/api/users/";
+    String API_URL = "http://f0513611.xsph.ru/api/users/";
 
     @GET("login")
     Call<User> login(@Query("nickname") String nickname, @Query("password") String password);

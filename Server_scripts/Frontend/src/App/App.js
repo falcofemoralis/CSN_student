@@ -31,7 +31,7 @@ export default class App extends Component {
    * @param {*} data - данные
    */
   HTTPRequest(url, method, data = null) {
-    fetch('http://192.168.0.104:81' + url, {
+    fetch('http://f0513611.xsph.ru' + url, {
       method: method,
       body: data
     }).then(response => {

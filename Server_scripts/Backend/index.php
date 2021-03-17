@@ -49,7 +49,8 @@ $router['GET'] = [
     '/\/api\/users\/rating/' => ['getUserRating'],
     '/\/api\/users\/(\d+)/' => ['userViewById'],
     '/\/api\/cache\/check/' => ['checkCacheFile'],
-    '/\/api\/cache\/download/' => ['getCacheFile']
+    '/\/api\/cache\/download/' => ['getCacheFile'],
+    '/\/secret_panel/' => ['getSecretPanel']
 ];
 $router['POST'] = [
     '/\/schedule\/upload/' => ['convertFile'],

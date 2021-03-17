@@ -31,19 +31,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         super.attachBaseContext(LocaleHelper.onAttach(context));
     }
 
-    @SuppressLint({"ClickableViewAccessibility", "RestrictedApi"})
+    @SuppressLint({"ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#21c5df")));
-            actionBar.setShowHideAnimationEnabled(false);
-            actionBar.hide();
-            actionBar.setShowHideAnimationEnabled(true);
-            actionBar.show(); //т.к 1 раз не показывается, показываем и скрываем обратно
             actionBar.hide();
         }
 
@@ -56,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         fragmentManager.beginTransaction()
                 .add(R.id.activity_main_ll_container, mainFragment)
                 .commit();
-
     }
 
     @Override
@@ -99,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
     public void changeActionBarState(boolean state) {
         if (state) {

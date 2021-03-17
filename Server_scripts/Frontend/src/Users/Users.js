@@ -8,7 +8,7 @@ export default class Users extends Component {
     }
 
     componentDidMount() {
-        fetch('http://192.168.0.104:81/api/users/all', {
+        fetch('http://f0513611.xsph.ru/api/users/all', {
             method: 'GET'
         }).then(response => {
             if (response.ok) {

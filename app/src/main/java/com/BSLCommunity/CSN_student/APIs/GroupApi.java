@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface GroupApi {
-    String BASE_URL = "http://192.168.0.104:81/";
+    String BASE_URL = "http://f0513611.xsph.ru/";
     String GROUP_API = "api/groups";
 
     @GET(GROUP_API + "/all")

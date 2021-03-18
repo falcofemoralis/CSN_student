@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -115,6 +116,7 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
 
     /**
      * Создание кнопки дисциплины
+     *
      * @param editableSubject - дисциплина
      * @param container       - строка которая будет содержать кнопку
      */
@@ -125,7 +127,10 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
         // Установка имени дисциплины
         try {
             String subjectName = new JSONObject(subject.name).getString(LocaleHelper.getLanguage(getContext()));
-            ((TextView) subjectView.findViewById(R.id.inflate_subject_tv_name)).setText(subjectName);
+            TextView subjectNameTV = subjectView.findViewById(R.id.inflate_subject_tv_name);
+            if (subjectName.length() > 38)
+                subjectNameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, getContext().getResources().getDimension(R.dimen._3ssp));
+            subjectNameTV.setText(subjectName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -147,8 +152,7 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     transitionDrawable.startTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
-                }
-                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     Bundle data = new Bundle();
                     data.putString("Subject", new Gson().toJson(editableSubject));
                     fragmentListener.onFragmentInteraction(thisFragment, new SubjectEditorFragment(),

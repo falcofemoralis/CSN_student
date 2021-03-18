@@ -10,8 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -191,7 +189,7 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             TabItem tabItem = new TabItem(getContext());
             tabItem.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             floorTabs.addView(tabItem);
-            floorTabs.getTabAt(i).setText(getString(R.string.floor) + (i + 1));
+            floorTabs.getTabAt(i).setText(getString(R.string.floor) + " " + (i + 1));
         }
     }
 

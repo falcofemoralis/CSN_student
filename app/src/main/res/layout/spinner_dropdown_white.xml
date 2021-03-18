@@ -4,14 +4,13 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:gravity="center"
-    android:paddingStart="25dp"
+    android:paddingStart="15dp"
     android:paddingTop="10dp"
+    android:paddingEnd="15dp"
     android:paddingBottom="10dp"
     android:text="debug"
     android:textAlignment="viewStart"
     android:textColor="@color/schedule_color_1"
-    android:textSize="18sp"
-
-    >
+    android:textSize="18sp">
 
 </TextView>

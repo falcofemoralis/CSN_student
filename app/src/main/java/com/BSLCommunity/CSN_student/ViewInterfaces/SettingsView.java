@@ -32,6 +32,11 @@ public interface SettingsView {
     void reloadActivity();
 
     /**
+     * Обновления интерфейса в соотвествии с языком
+     */
+    void updateUI();
+
+    /**
      * Обновление данных во View
      *
      * @param nickName - никнейм

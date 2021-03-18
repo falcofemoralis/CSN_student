@@ -101,8 +101,8 @@ public class SettingsPresenter {
     public void changeLanguage(int i) {
         try {
             LocaleHelper.changeLanguage(App.getApp().context(), LocaleHelper.getLanguages(App.getApp().context()).get(i).second);
+            this.settingsView.updateUI();
             resetSingletons();
-            this.settingsView.reloadActivity();
         } catch (Exception e) {
             e.printStackTrace();
             settingsView.showToast(R.string.save_error);

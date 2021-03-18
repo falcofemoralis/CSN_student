@@ -66,11 +66,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         int animIn = R.anim.fade_in, animOut = R.anim.fade_out;
 
-/*        if (fragmentReceiver.getClass() == AuditoriumFragment.class) {
-            animIn = R.anim.falling_up;
-            animOut = R.anim.falling_down;
-        }*/
-
         fTrans.setCustomAnimations(animIn, animOut, animIn, animOut);
 
         switch (action) {

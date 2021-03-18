@@ -1,11 +1,7 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
-import android.util.Log;
-
-import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Constants.CacheStatusType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
-import com.BSLCommunity.CSN_student.Managers.FileManager;
 import com.BSLCommunity.CSN_student.Models.DataModel;
 import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
@@ -28,7 +24,7 @@ public class MainPresenter {
      */
     public void checkAuth() {
         if (this.userData.user.getToken() != null) {
-            mainView.initActivity(this.userData.user.getGroupName(), this.userData.user.getCourse());
+            mainView.initFragment(this.userData.user.getGroupName(), this.userData.user.getCourse());
             dataModel.checkCache(new ExCallable<CacheStatusType>() {
                 @Override
                 public void call(CacheStatusType cacheStatus) {

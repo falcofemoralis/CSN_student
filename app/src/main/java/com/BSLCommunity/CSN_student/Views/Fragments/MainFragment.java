@@ -60,7 +60,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
     }
 
     @Override
-    public void initActivity(String groupName, int course) {
+    public void initFragment(String groupName, int course) {
         // Установка таймера
         //таймер
         Timer timer = new Timer();
@@ -83,7 +83,6 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         courseTextView.setText(String.format(Locale.getDefault(), "%d %s", course, courseTextView.getText()));
         groupTextView.setText(String.format(Locale.getDefault(), "%s %s", groupName, groupTextView.getText()));
     }
-
 
     @Override
     public void showProgressDialog(final int size) {
@@ -152,9 +151,8 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             transitionDrawable.startTransition(150);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP ||
-                motionEvent.getAction() == MotionEvent.ACTION_MOVE ||
-                motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+        }
+        else if (motionEvent.getAction() == MotionEvent.ACTION_UP ) {
             Fragment nextFragment = null;
             int id = view.getId();
 
@@ -183,8 +181,11 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
             fragmentListener.onFragmentInteraction(this, nextFragment, OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
         }
+        else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+            transitionDrawable.reverseTransition(100);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
+        }
 
         return true;
     }
-
 }

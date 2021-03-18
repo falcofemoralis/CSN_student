@@ -9,7 +9,7 @@ public interface MainView {
      * @param groupName - имя группы
      * @param course - номер курса
      */
-    void initActivity(String groupName, int course);
+    void initFragment(String groupName, int course);
     /**
      * Открытие окна логина
      */

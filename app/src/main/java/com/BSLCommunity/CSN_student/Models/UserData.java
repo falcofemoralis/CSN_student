@@ -105,7 +105,7 @@ public class UserData {
      */
     public void updateUserData(String nickName, String password) {
         this.user.setNickName(nickName);
-        this.user.setNickName(password);
+        this.user.setPassword(password);
         this.saveData();
     }
 

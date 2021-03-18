@@ -67,27 +67,30 @@ public class SettingsPresenter {
      * При успешно обновлении обновляются локальные данные и отображение во View
      */
     public void updateData() {
-        this.userModel.update(dataToUpdate.get(DataKey.NickName.toString()), dataToUpdate.get(DataKey.Password.toString()), this.userData.user.getToken(), new ExCallable<Void>() {
-            @Override
-            public void call(Void data) {
-                String nickName = dataToUpdate.get(DataKey.NickName.toString());
-                String password = dataToUpdate.get(DataKey.Password.toString());
+        String nickName = dataToUpdate.get(DataKey.NickName.toString());
+        String password = dataToUpdate.get(DataKey.Password.toString());
 
-                userData.updateUserData(nickName, password);
-                settingsView.updateData(nickName, password);
-                settingsView.showToast(R.string.datachanged);
-            }
+        if (!nickName.equals(userData.user.getNickName()) || !password.equals(userData.user.getPassword())) {
+            this.userModel.update(nickName, password, this.userData.user.getToken(), new ExCallable<Void>() {
+                @Override
+                public void call(Void data) {
+                    String nickName = dataToUpdate.get(DataKey.NickName.toString());
+                    String password = dataToUpdate.get(DataKey.Password.toString());
 
-            @Override
-            public void fail(int idResString) {
-                if (idResString != R.string.no_auth) {
-                    settingsView.showToast(idResString);
-                } else {
-                    settingsView.showToast(idResString);
-                    settingsView.openLogin();
+                    userData.updateUserData(nickName, password);
+                    settingsView.updateData(nickName, password);
+                    settingsView.showToast(R.string.datachanged);
                 }
-            }
-        });
+
+                @Override
+                public void fail(int idResString) {
+                    settingsView.showToast(idResString);
+                    if (idResString == R.string.no_auth) {
+                        settingsView.openLogin();
+                    }
+                }
+            });
+        }
     }
 
     /**

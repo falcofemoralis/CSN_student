@@ -84,7 +84,6 @@ public class UserModel {
 
     /**
      * Регистрация нового пользователя, при успешной регистрации устанавливается токен
-     *
      * @param nickname   - никнейм
      * @param password   - пароль
      * @param groupName  - название группы
@@ -119,7 +118,6 @@ public class UserModel {
 
     /**
      * Обновление данных пользователя
-     *
      * @param nickName   - новый никнейм
      * @param password   - новый пароль
      * @param exCallable - колбек
@@ -139,6 +137,9 @@ public class UserModel {
                     case 200:
                         exCallable.call(null);
                         break;
+                    case 409:
+                        exCallable.fail(R.string.user_exist);
+                        break;
                     case 401:
                         exCallable.fail(R.string.no_auth);
                         break;
@@ -150,7 +151,6 @@ public class UserModel {
                 exCallable.fail(R.string.no_connection_server);
             }
         });
-
     }
 
     /**

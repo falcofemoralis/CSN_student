@@ -1,6 +1,7 @@
 package com.BSLCommunity.CSN_student.Views.Fragments;
 
 import android.content.Context;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -31,10 +33,10 @@ import com.github.ybq.android.spinkit.style.ThreeBounce;
 import java.util.ArrayList;
 
 // Форма регистрации пользователя
-public class RegistrationFragment extends Fragment implements  RegView, AdapterView.OnItemSelectedListener, View.OnTouchListener {
+public class RegistrationFragment extends Fragment implements RegView, AdapterView.OnItemSelectedListener, View.OnTouchListener {
 
     String groupName; //выбранный код группы со спиннера
-    ProgressBar progressBar; //анимация загрузки в спиннере групп
+    ProgressBar progressBarGroups, progressBarCourses; //анимация загрузки
     private RegPresenter regPresenter;
 
     View currentFragment;
@@ -50,8 +52,10 @@ public class RegistrationFragment extends Fragment implements  RegView, AdapterV
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentFragment = inflater.inflate(R.layout.fragment_registration, container, false);
 
-        progressBar = currentFragment.findViewById(R.id.activity_registration_pb_groups);
-        progressBar.setIndeterminateDrawable(new ThreeBounce());
+        progressBarGroups = currentFragment.findViewById(R.id.activity_registration_pb_groups);
+        progressBarGroups.setIndeterminateDrawable(new ThreeBounce());
+        progressBarCourses = currentFragment.findViewById(R.id.activity_registration_pb_courses);
+        progressBarCourses.setIndeterminateDrawable(new ThreeBounce());
 
         this.createClickableSpan();
         currentFragment.findViewById(R.id.activity_registration_bt_register).setOnTouchListener(this);
@@ -64,11 +68,18 @@ public class RegistrationFragment extends Fragment implements  RegView, AdapterV
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
+
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            transitionDrawable.startTransition(150);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             EditText nickName = currentFragment.findViewById(R.id.activity_registration_et_nickname);
             EditText password = currentFragment.findViewById(R.id.activity_registration_et_password);
             EditText repeatPassword = currentFragment.findViewById(R.id.activity_registration_et_passwordRe);
 
+            transitionDrawable.reverseTransition(100);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
             this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString(), this.groupName);
         }
         return false;
@@ -80,10 +91,9 @@ public class RegistrationFragment extends Fragment implements  RegView, AdapterV
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.activity_registration_sp_courses) {
-            int course = Integer.parseInt(parent.getItemAtPosition(position).toString());
+            int course = Integer.parseInt(parent.getItemAtPosition(position).toString().split(" ")[1]);
             this.regPresenter.chosenCourse(course);
-        }
-        else if (parent.getId() == R.id.activity_registration_sp_groups) {
+        } else if (parent.getId() == R.id.activity_registration_sp_groups) {
             groupName = parent.getItemAtPosition(position).toString();
         }
     }
@@ -142,8 +152,12 @@ public class RegistrationFragment extends Fragment implements  RegView, AdapterV
 
     @Override
     public void setSpinnersData(ArrayList<String> groupNames, ArrayList<String> courses) {
-        int[] idSpins = new int[] {R.id.activity_registration_sp_groups, R.id.activity_registration_sp_courses};
-        ArrayList<String>[] lists = new ArrayList[] {groupNames, courses};
+        int[] idSpins = new int[]{R.id.activity_registration_sp_groups, R.id.activity_registration_sp_courses};
+        for (int i = 0; i < courses.size(); ++i) {
+            courses.set(i, getString(R.string.course) + " " + courses.get(i));
+        }
+
+        ArrayList<String>[] lists = new ArrayList[]{groupNames, courses};
 
         for (int i = 0; i < idSpins.length; ++i) {
             Spinner spinner = currentFragment.findViewById(idSpins[i]);
@@ -166,6 +180,7 @@ public class RegistrationFragment extends Fragment implements  RegView, AdapterV
     @Override
     public void visibilityProgressBar(boolean show) {
         int visibility = show ? ProgressBar.VISIBLE : ProgressBar.GONE;
-        progressBar.setVisibility(visibility);
+        progressBarGroups.setVisibility(visibility);
+        progressBarCourses.setVisibility(visibility);
     }
 }

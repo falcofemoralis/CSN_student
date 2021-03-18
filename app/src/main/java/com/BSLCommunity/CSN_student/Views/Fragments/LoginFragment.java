@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -88,10 +89,15 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
     public boolean onTouch(View view, MotionEvent motionEvent) {
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
-       if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            transitionDrawable.startTransition(150);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             EditText nickname = (EditText) currentFragment.findViewById(R.id.activity_login_et_nickname);
             EditText password = (EditText) currentFragment.findViewById(R.id.activity_login_et_password);
 
+            transitionDrawable.reverseTransition(100);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
             this.loginPresenter.tryLogin(nickname.getText().toString(), password.getText().toString());
         }
         return false;

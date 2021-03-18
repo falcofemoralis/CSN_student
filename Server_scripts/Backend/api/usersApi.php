@@ -127,18 +127,18 @@ function createUser()
  */
 function updateUser($url)
 {
-    $id = explode('/', $url)[3];
+    $headers = getallheaders();
+    $id = checkAuth($headers['token']);
 
     $string = file_get_contents('php://input');
-    parse_str($string, $data);
+    $data = json_decode($string);
 
     // Получаем данные
-    $nickName = $data['NickName'];
-    $password = $data['Password'];
-    $oldPassword = $data['OldPassword'];
+    $nickName = $data->NickName;
+    $password = $data->Password;
 
     // Проверка на то, все ли данные пришли
-    if ($nickName == NULL || $password == NULL || $oldPassword == NULL) {
+    if ($nickName == NULL || $password == NULL) {
         echo "ERROR";
         return;
     }
@@ -146,16 +146,23 @@ function updateUser($url)
     $query = "  UPDATE `users`
                 SET `NickName`='$nickName',
                     `Password`='$password'
-                    WHERE Code_User = '$id' AND Password = '$oldPassword'";
+                    WHERE Code_User = '$id'";
 
-    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+    try {
+        DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+    } catch (Exception $e) {
+        if ($e->getMessage() == '1062') {
+            http_response_code(409);
+        }
+        die();
+    }
 }
 
 /* PUT запрос обновления рейтинга
  * JSON данные:
  * $rating - JSON строка информации о рейтинге юзера
  */
-function updateUserRating()
+function updateUserRating($url)
 {
     $headers = getallheaders();
     $id = checkAuth($headers['token']);

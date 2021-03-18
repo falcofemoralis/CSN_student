@@ -20,12 +20,5 @@
         <item>Russian</item>
         <item>Ukrainian</item>
     </string-array>
-
-    <array name="autosize_text_sizes">
-        <item>8sp</item>
-        <item>12sp</item>
-        <item>14sp</item>
-        <item>16sp</item>
-    </array>
 </resources>
 

@@ -58,11 +58,11 @@ $router['POST'] = [
     '/\/api\/cache\/create/' => ['createCacheFile']
 ];
 $router['PUT'] = [
-    '/\/api\/users\/(\d+)/' => ['updateUser'],
     '/\/api\/users\/rating/' => ['updateUserRating'],
     '/\/schedule\/new/' => ['processSchedule'],
     '/\/api\/cache\/recreate/' => ['updateCacheFile'],
-    '/\/api\/users\/opens/' => ['updateUserOpen']
+    '/\/api\/users\/opens/' => ['updateUserOpen'],
+    '/\/api\/users/' => ['updateUser']
 ];
 $router['DELETE'] = [
     '/\/schedule\/reset/' => ['clearSchedule']

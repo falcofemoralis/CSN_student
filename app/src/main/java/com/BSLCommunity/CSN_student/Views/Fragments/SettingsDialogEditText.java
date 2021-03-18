@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
-import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.R;
 
 import java.util.ArrayList;
@@ -32,6 +31,10 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
 
     String nickName, password;
     List<String> groupsAdapter;
+    Dialog dialog;
+
+    public SettingsDialogEditText() {
+    }
 
     SettingsDialogEditText(String nickName, String password) {
         this.nickName = nickName;
@@ -99,50 +102,36 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 }
             }
             title = getResources().getString(R.string.language);
-        } else {
-            view = inflater.inflate(R.layout.dialog_settings_et_nickname, null);
-            title = "";
         }
 
-        builder.setView(view)
-                .setTitle(title)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        if (view != null) {
+            builder.setView(view)
+                    .setTitle(title)
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text;
-                        if (applyKey == R.id.activity_settings_ll_nickname || applyKey == R.id.activity_settings_ll_password) {
-                            text = EditText.getText().toString();
-                        } else if (applyKey == R.id.activity_settings_ll_group) {
-                            text = groupSpinner.getSelectedItem().toString();
-                        } else if (applyKey == R.id.activity_settings_ll_language) {
-                            text = Integer.toString(languageSpinner.getSelectedItemPosition());
-                        } else {
-                            text = "";
                         }
+                    })
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String text = null;
+                            if (applyKey == R.id.activity_settings_ll_nickname || applyKey == R.id.activity_settings_ll_password) {
+                                text = EditText.getText().toString();
+                            } else if (applyKey == R.id.activity_settings_ll_group) {
+                                text = groupSpinner.getSelectedItem().toString();
+                            } else if (applyKey == R.id.activity_settings_ll_language) {
+                                text = Integer.toString(languageSpinner.getSelectedItemPosition());
+                            }
 
-                        listener.applyText(text, applyKey);
-                    }
-                });
-
-        return builder.create();
-    }
-
-/*    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            listener = (DialogListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement DialogListener");
+                            listener.applyText(text, applyKey);
+                        }
+                    });
         }
-    }*/
+        dialog = builder.create();
+        return dialog;
+    }
 
     public interface DialogListener {
         void applyText(String text, int key);

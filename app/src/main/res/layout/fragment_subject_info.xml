@@ -24,6 +24,7 @@
                 android:background="@drawable/activity_button_unpressed"
                 android:gravity="center"
                 android:text="@string/default_text"
+                android:textSize="@dimen/_10ssp"
                 android:textColor="@color/white" />
 
             <TableLayout
@@ -43,7 +44,8 @@
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
                         android:text="@string/value"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"  />
 
                     <Space
                         android:layout_width="0dp"
@@ -73,7 +75,8 @@
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
                         android:text="@string/teacher"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp" />
 
                     <Space
                         android:layout_width="0dp"
@@ -107,7 +110,8 @@
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
                         android:text="@string/teacher"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"  />
 
                     <Space
                         android:layout_width="0dp"
@@ -140,6 +144,7 @@
                         android:layout_weight="0.32"
                         android:background="@drawable/activity_button_unpressed"
                         android:text="@string/teacher"
+                        android:textSize="@dimen/_10ssp"
                         android:textColor="@color/white" />
 
                     <Space

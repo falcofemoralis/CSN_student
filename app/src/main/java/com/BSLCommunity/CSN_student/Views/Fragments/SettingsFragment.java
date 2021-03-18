@@ -94,17 +94,21 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
      */
     @Override
     public void applyText(String text, int applyKey) {
-        if (applyKey == R.id.activity_settings_ll_nickname) {
-            this.settingsPresenter.addNewValue(SettingsPresenter.DataKey.NickName, text);
-        } else if (applyKey == R.id.activity_settings_ll_password) {
-            this.settingsPresenter.addNewValue(SettingsPresenter.DataKey.Password, text);
-        } else if (applyKey == R.id.activity_settings_ll_group) {
-            // TODO смена группы пользователя
-        } else if (applyKey == R.id.activity_settings_ll_language) {
-            this.settingsPresenter.changeLanguage(Integer.parseInt(text));
-        }
+        if (text != null) {
+            if (applyKey == R.id.activity_settings_ll_nickname) {
+                this.settingsPresenter.addNewValue(SettingsPresenter.DataKey.NickName, text);
+            } else if (applyKey == R.id.activity_settings_ll_password) {
+                this.settingsPresenter.addNewValue(SettingsPresenter.DataKey.Password, text);
+            } else if (applyKey == R.id.activity_settings_ll_group) {
+                // TODO смена группы пользователя
+            } else if (applyKey == R.id.activity_settings_ll_language) {
+                settingsDialogEditText.dialog.dismiss();
+                this.settingsPresenter.changeLanguage(Integer.parseInt(text));
+                return;
+            }
 
-        settingsPresenter.updateData();
+            settingsPresenter.updateData();
+        }
     }
 
     /**
@@ -160,6 +164,11 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
     public void reloadActivity() {
         this.startActivity(new Intent(getContext(), MainActivity.class));
         getActivity().finishAffinity();
+    }
+
+    @Override
+    public void updateUI() {
+        getActivity().recreate();
     }
 
     /**

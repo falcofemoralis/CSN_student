@@ -88,5 +88,6 @@
     <string name="download_dialog_title">Downloading files</string>
     <string name="teacher">Teacher</string>
     <string name="save_error">Failed to apply</string>
+    <string name="reload_hint">Reload application</string>
 </resources>
 

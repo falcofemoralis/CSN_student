@@ -151,8 +151,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             transitionDrawable.startTransition(150);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
-        }
-        else if (motionEvent.getAction() == MotionEvent.ACTION_UP ) {
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             Fragment nextFragment = null;
             int id = view.getId();
 
@@ -180,8 +179,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
             transitionDrawable.reverseTransition(100);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
             fragmentListener.onFragmentInteraction(this, nextFragment, OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
-        }
-        else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
             transitionDrawable.reverseTransition(100);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
         }

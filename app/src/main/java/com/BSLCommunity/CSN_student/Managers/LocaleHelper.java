@@ -1,9 +1,7 @@
 package com.BSLCommunity.CSN_student.Managers;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.util.Pair;
 
@@ -25,6 +23,15 @@ public class LocaleHelper {
         return setLocale(context, getLanguage(context));
     }
 
+    public static Configuration applyOverrideConfiguration(Context context, Configuration overrideConfiguration) {
+        if (overrideConfiguration != null && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            int uiMode = overrideConfiguration.uiMode;
+            overrideConfiguration.setTo(context.getResources().getConfiguration());
+            overrideConfiguration.uiMode = uiMode;
+        }
+        return overrideConfiguration;
+    }
+
     /**
      * Установка языка
      *
@@ -33,7 +40,7 @@ public class LocaleHelper {
      * @return - новый контекст
      */
     public static Context setLocale(Context context, String language) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             return updateResources(context, language);
         }
         return updateResourcesLegacy(context, language);
@@ -66,7 +73,6 @@ public class LocaleHelper {
      * @param language - язык
      * @return - новый контекст
      */
-    @TargetApi(Build.VERSION_CODES.N)
     private static Context updateResources(Context context, String language) {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
@@ -89,12 +95,10 @@ public class LocaleHelper {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
 
-        Resources resources = context.getResources();
-        Configuration configuration = resources.getConfiguration();
+        Configuration configuration = context.getResources().getConfiguration();
         configuration.locale = locale;
         configuration.setLayoutDirection(locale);
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-
+        context.getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
         return context;
     }
 
@@ -117,12 +121,12 @@ public class LocaleHelper {
 
     /**
      * Изменение и сохранение языка в приложении
+     *
      * @param context - контекст
-     * @param lang - новый язык
+     * @param lang    - новый язык
      * @throws Exception - в случе если не удалось сохранить
      */
     public static void changeLanguage(Context context, String lang) throws Exception {
         FileManager.getFileManager(context).writeFile(DATA_FILE_NAME, lang, false);
-      //  setLocale(context, lang);
     }
 }

@@ -15,7 +15,7 @@
 
     <ImageView
         android:layout_width="254dp"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_weight="0.08"
         android:elevation="100dp"
@@ -44,7 +44,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.03"
+        android:layout_weight="0.01"
         android:orientation="horizontal">
 
         <Space
@@ -55,7 +55,7 @@
         <EditText
             android:id="@+id/activity_login_et_nickname"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/auth_button_size"
             android:layout_gravity="center"
             android:layout_weight="0.65"
             android:background="@drawable/activity_text_style"
@@ -72,15 +72,10 @@
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.01" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.03"
+        android:layout_weight="0.01"
         android:orientation="horizontal">
 
         <Space
@@ -91,7 +86,7 @@
         <EditText
             android:id="@+id/activity_login_et_password"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/auth_button_size"
             android:layout_gravity="center"
             android:layout_weight="0.65"
             android:background="@drawable/activity_text_style"
@@ -109,15 +104,10 @@
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.02" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.03"
+        android:layout_weight="0.01"
         android:orientation="horizontal">
 
         <Space
@@ -128,7 +118,7 @@
         <Button
             android:id="@+id/activity_login_bt_login"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/auth_button_size"
             android:layout_gravity="center"
             android:layout_weight="0.65"
             android:background="@drawable/activity_button2"
@@ -136,7 +126,7 @@
             android:stateListAnimator="@null"
             android:text="@string/login"
             android:textColor="#FFFFFFFF"
-            android:textSize="20sp" />
+            android:textSize="@dimen/_18ssp" />
 
         <Space
             android:layout_width="wrap_content"

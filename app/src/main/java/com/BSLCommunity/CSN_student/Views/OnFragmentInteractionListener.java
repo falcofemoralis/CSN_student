@@ -18,13 +18,14 @@ public interface OnFragmentInteractionListener {
         POP_BACK_STACK
     }
 
-    /* Метод для общения между фрагментами
+    /**
+     * Метод для общения между фрагментами
      * Параметры:
      * fragmentSource - фрагмент который вызвал метод
      * fragmentReceiver - Фрагмент с которым хотят взаимодействовать
      * data - данные, если они необходимы
      * action - одна из констант действий
      * backStackTag - тег для стека вызовов фрагментов
-     * */
+     */
     void onFragmentInteraction(Fragment fragmentSource, Fragment fragmentReceiver, Action action, Bundle data, String backStackTag);
 }

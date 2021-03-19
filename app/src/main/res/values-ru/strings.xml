@@ -88,4 +88,5 @@
     <string name="download_dialog_title">Загрузка файлов</string>
     <string name="teacher">Преподаватель</string>
     <string name="save_error">Не удалось применить</string>
+    <string name="reload_hint">Перезагрузите приложение</string>
 </resources>

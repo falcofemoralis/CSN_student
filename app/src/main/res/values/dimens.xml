@@ -7,4 +7,5 @@
     <dimen name="settings_contact_button_text_size">14sp</dimen>
     <dimen name="settings_contact_button_text_min_size">6sp</dimen>
     <dimen name="subject_text_size">14sp</dimen>
+    <dimen name="auth_button_size">55dp</dimen>
 </resources>

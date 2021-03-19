@@ -6,11 +6,13 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,16 +27,22 @@ import com.BSLCommunity.CSN_student.Views.Fragments.MainFragment;
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, OnFragmentActionBarChangeListener {
     private FragmentManager fragmentManager;
     private static Fragment mainFragment;
+    private static boolean isFirstLoad = true;
 
     @Override
     protected void attachBaseContext(Context context) {
         super.attachBaseContext(LocaleHelper.onAttach(context));
+        LocaleHelper.applyOverrideConfiguration(context, getResources().getConfiguration());
     }
 
     @SuppressLint({"ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (isFirstLoad) {
+            LocaleHelper.onAttach(this);
+            isFirstLoad = false;
+        }
         setContentView(R.layout.main_activity);
 
         ActionBar actionBar = getSupportActionBar();

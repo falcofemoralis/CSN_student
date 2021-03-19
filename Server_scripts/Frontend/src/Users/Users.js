@@ -14,6 +14,7 @@ export default class Users extends Component {
             if (response.ok) {
                 response.json().then((users) => {
                     this.setState({ users: users });
+                    console.log(users);
                 });
             }
         });
@@ -26,11 +27,13 @@ export default class Users extends Component {
                     <li className="users__list-item">
                         <p className="users__list-item-name">Никнейм</p>
                         <p className="users__list-item-opens">Кол-во входов</p>
+                        <p className="users__list-item-opens">Последний вход</p>
                     </li>
                     {this.state.users.map((user) =>
                         <li className="users__list-item" key={user.NickName}>
                             <p className="users__list-item-name table-text">{user.NickName}</p>
                             <p className="users__list-item-opens table-text">{user.Visits}</p>
+                            <p className="users__list-item-opens table-text">{user.LastOpen ?? "Не входил"}</p>
                         </li>
                     )}
                 </ul>

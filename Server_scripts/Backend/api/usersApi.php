@@ -186,9 +186,9 @@ function updateUserRating($url)
  */
 function getAllUsers()
 {
-    $query = "SELECT users.NickName, users.Visits 
+    $query = "SELECT users.NickName, users.Visits, users.LastOpen 
     FROM users 
-    ORDER BY Visits DESC";
+    ORDER BY LastOpen DESC";
 
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
@@ -207,7 +207,8 @@ function updateUserOpen()
     $data  = json_decode(DataBase::execQuery($get, ReturnValue::GET_OBJECT));
     $visits = $data->Visits + $count;
 
-    $update = "UPDATE users SET users.Visits=$visits WHERE users.Code_User = $id";
+    $update = "UPDATE users SET users.Visits=$visits, users.LastOpen=CONVERT_TZ(NOW(),'SYSTEM','+2:00') WHERE users.Code_User = $id";
+
 
     DataBase::execQuery($update, ReturnValue::GET_NOTHING);
 }

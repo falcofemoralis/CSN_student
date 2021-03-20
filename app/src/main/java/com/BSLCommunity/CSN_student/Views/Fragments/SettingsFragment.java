@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -126,7 +125,7 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
     @Override
     public void openLogin() {
         fragmentListener.onFragmentInteraction(this, new LoginFragment(),
-                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
+                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_NO_BACK_STACK, null, null);
     }
 
     /**
@@ -169,11 +168,7 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
 
     @Override
     public void updateUI() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-            Toast.makeText(getContext(), R.string.reload_hint, Toast.LENGTH_SHORT).show();
-        } else {
-            getActivity().recreate();
-        }
+        getActivity().recreate();
     }
 
     /**

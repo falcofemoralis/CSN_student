@@ -111,7 +111,7 @@ public class RegistrationFragment extends Fragment implements RegView, AdapterVi
      */
     public void toLogin() {
         fragmentListener.onFragmentInteraction(this, new LoginFragment(),
-                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
+                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_NO_BACK_STACK, null, null);
     }
 
     /**
@@ -147,7 +147,7 @@ public class RegistrationFragment extends Fragment implements RegView, AdapterVi
     @Override
     public void openMain() {
         fragmentListener.onFragmentInteraction(this, new MainFragment(),
-                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
+                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_NO_BACK_STACK, null, null);
     }
 
     @Override

@@ -90,8 +90,6 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         // Константы статусов и цветов бекграунда для них
         workStatuses = getResources().getStringArray(R.array.work_statuses);
 
-        Spinner valueSpinner = currentFragment.findViewById(R.id.activity_subject_info_sp_values);
-        createSpinnerAdapter(valueSpinner, R.array.subject_values, SubjectValue.EXAM.ordinal());
 
         // Установка обработчиков кнопок на добавление работ и скрытие/раскрытие блоков
         int[] ids = new int[]{R.id.activity_subject_info_bt_add_lab, R.id.activity_subject_info_bt_add_ihw, R.id.activity_subject_info_bt_add_other};
@@ -168,6 +166,9 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
      */
     @Override
     public void setSubjectData(EditableSubject editableSubject) {
+        Spinner valueSpinner = currentFragment.findViewById(R.id.activity_subject_info_sp_values);
+        createSpinnerAdapter(valueSpinner, R.array.subject_values, editableSubject.subjectValue.ordinal());
+
         int[] idTeachers = {R.id.activity_subject_info_bt_lector, R.id.activity_subject_info_bt_practice, R.id.activity_subject_info_bt_assistant};
         Subject subject = SubjectModel.getSubjectModel().findById(editableSubject.idSubject);
         // Установка имени дисциплины

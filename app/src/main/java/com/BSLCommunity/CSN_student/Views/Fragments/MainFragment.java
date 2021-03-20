@@ -141,7 +141,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
     @Override
     public void openLogin() {
         fragmentListener.onFragmentInteraction(this, new LoginFragment(),
-                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
+                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_NO_BACK_STACK, null, null);
     }
 
     @Override

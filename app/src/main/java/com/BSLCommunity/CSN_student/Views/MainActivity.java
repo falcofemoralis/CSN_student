@@ -6,13 +6,11 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Window;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -77,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         fTrans.setCustomAnimations(animIn, animOut, animIn, animOut);
 
         switch (action) {
+            case NEXT_FRAGMENT_NO_BACK_STACK:
+                fTrans.replace(R.id.activity_main_ll_container, fragmentReceiver);
+                fTrans.commit();
+                break;
             case NEXT_FRAGMENT_HIDE:
                 if (mainFragment.isVisible())
                     fTrans.hide(mainFragment);

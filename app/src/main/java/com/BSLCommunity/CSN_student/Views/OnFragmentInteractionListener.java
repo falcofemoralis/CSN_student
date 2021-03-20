@@ -13,6 +13,7 @@ public interface OnFragmentInteractionListener {
      * */
     enum Action {
         NEXT_FRAGMENT_HIDE,
+        NEXT_FRAGMENT_NO_BACK_STACK,
         NEXT_FRAGMENT_REPLACE,
         RETURN_FRAGMENT_BY_TAG,
         POP_BACK_STACK

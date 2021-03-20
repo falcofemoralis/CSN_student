@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main_menu_bottom_navigator_action_subjects"
+        android:title="@string/subjects"
+        android:enabled="true"
+        android:icon="@drawable/ic_subjects_24"/>
+
+    <item
+        android:id="@+id/main_menu_bottom_navigator_action_schedule"
+        android:title="@string/Lessons_schedule"
+        android:enabled="true"
+        android:icon="@drawable/ic_subjects_schedule_24"/>
+
+    <item
+        android:id="@+id/main_menu_bottom_navigator_action_schedule_bell"
+        android:title="@string/schedule_bell"
+        android:enabled="true"
+        android:icon="@drawable/ic_time_24" />
+
+    <item
+        android:id="@+id/main_menu_bottom_navigator_action_auditorium"
+        android:title="@string/auditoriums_search"
+        android:enabled="true"
+        android:icon="@drawable/ic_apartment_24"/>
+
+</menu>

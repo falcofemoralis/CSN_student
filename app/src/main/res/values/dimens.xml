@@ -8,4 +8,10 @@
     <dimen name="settings_contact_button_text_min_size">6sp</dimen>
     <dimen name="subject_text_size">14sp</dimen>
     <dimen name="auth_button_size">55dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">0dp</dimen>
 </resources>

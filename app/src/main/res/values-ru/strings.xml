@@ -6,10 +6,8 @@
     <string name="title_activity_settings">Настройки</string>
     <string name="Base_settings">Настройка юзера</string>
     <string name="group_prompt">Выберите группу</string>
-    <string name="timeUntil">Конец пары</string>
-    <string name="start">Начало</string>
-    <string name="lesson">пары в</string>
-    <string name="first_lesson">Начало 1 пары</string>
+    <string name="timeUntil">Конец %s пары</string>
+    <string name="timeStart">Начало %s пары</string>
     <string name="sign_in">Войти!</string>
     <string name="login">Вход </string>
     <string name="enter_nickname">Введите никнейм</string>

@@ -6,10 +6,8 @@
     <string name="title_activity_settings">Налаштування</string>
     <string name="Base_settings">Налаштування юзера</string>
     <string name="group_prompt"> Виберіть групу</string>
-    <string name="timeUntil">Кінець пари</string>
-    <string name="start">Початок</string>
-    <string name="lesson">пара в</string>
-    <string name="first_lesson">Початок 1 пари в</string>
+    <string name="timeUntil">Кінець %s пари</string>
+    <string name="timeStart">Початок %s пари</string>
     <string name="sign_in">Увійти!</string>
     <string name="login">Вхід</string>
     <string name="enter_nickname">Введіть псевдонім</string>

@@ -15,18 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Расчет рейтинговой оценки для 100 и 5 балльной систем происходит в своих системах.\n\nФормула: средний балл за экзаменационные предметаы x 0.9\n\nСтипендия начисляется от среднего балла 4-х бальной системы от 4.0 и выше при условии что нету 3-ек. Повышенная стипендия дается от 5.0\n\nТаблица перевода баллов из 100 в 5:\n
-        0-59=2\n
-        60-74=3\n
-        75-89=4\n
-        90-100\n\nТаблица перевода баллов из 100 в буквы:\n
-        0-34=F\n
-        35-59=FX (имеется право возможность пересдать)\n
-        60-74=E\n
-        75-84=C\n
-        85-89=B\n
-        90-100=A\n
-        "
+            android:text="@string/calculator_hint_info"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     </ScrollView>

@@ -94,4 +94,7 @@
     <string name="mark5">5 бальна</string>
     <string name="markismore100">Помилка! Одна або кілька оцінок перевищують 100!</string>
     <string name="exam_failed">Один з іспитів провалений</string>
+    <string name="high_grant">Підвищена стипендія</string>
+    <string name="regular_grant">Звичайна стипендія</string>
+    <string name="no_grant">Без стипендії</string>
 </resources>

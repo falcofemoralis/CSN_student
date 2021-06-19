@@ -97,5 +97,8 @@
     <string name="mark5">5 point</string>
     <string name="markismore100">Error! One or more marks are above 100!</string>
     <string name="exam_failed">Exams failed!</string>
+    <string name="no_grant">No grant</string>
+    <string name="regular_grant">Regular grant</string>
+    <string name="high_grant">High grant</string>
 </resources>
 

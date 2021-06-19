@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,9 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="0.9"
-        android:gravity="center"
-        android:layout_marginRight="10dp">
+        android:gravity="center">
 
         <TableRow
             android:layout_width="match_parent"
@@ -56,8 +55,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/main_color_3"
                 android:gravity="center"
                 android:text="@string/pair"
@@ -67,8 +66,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/main_color_3"
                 android:gravity="center"
                 android:text="@string/start_lesson"
@@ -78,11 +77,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/main_color_3"
                 android:gravity="center"
                 android:text="@string/end_lesson"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
+                android:background="@color/main_color_3"
+                android:gravity="center"
+                android:text="@string/schedule_break"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -90,13 +100,14 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text="I"
@@ -106,8 +117,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -117,8 +128,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
+                android:background="@color/button"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -129,13 +151,14 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text="II"
@@ -145,8 +168,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -156,25 +179,36 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
+                android:background="@color/button"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="20sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text="III"
@@ -184,8 +218,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -195,8 +229,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
+                android:background="@color/button"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -207,13 +252,14 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text="IV"
@@ -223,8 +269,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -234,8 +280,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
+                android:background="@color/button"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -246,13 +303,14 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.1"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text="V"
@@ -262,8 +320,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -273,47 +331,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.45"
                 android:layout_margin="@dimen/schedule_bounds"
+                android:layout_weight="0.4"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/schedule_bounds"
                 android:layout_weight="0.1"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text="VI"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.45"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.45"
-                android:layout_margin="@dimen/schedule_bounds"
                 android:background="@color/button"
                 android:gravity="center"
                 android:text=""
@@ -321,85 +351,6 @@
                 android:textSize="20sp" />
 
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.1"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text="VII"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.45"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.45"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.1"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text="VIII"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.45"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.45"
-                android:layout_margin="@dimen/schedule_bounds"
-                android:background="@color/button"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-        </TableRow>
-
     </TableLayout>
 
 

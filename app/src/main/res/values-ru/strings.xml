@@ -6,10 +6,8 @@
     <string name="title_activity_settings">Настройки</string>
     <string name="Base_settings">Настройка юзера</string>
     <string name="group_prompt">Выберите группу</string>
-    <string name="timeUntil">Конец пары</string>
-    <string name="start">Начало</string>
-    <string name="lesson">пары в</string>
-    <string name="first_lesson">Начало 1 пары</string>
+    <string name="timeUntil">Конец %s пары</string>
+    <string name="timeStart">Начало %s пары</string>
     <string name="sign_in">Войти!</string>
     <string name="login">Вход </string>
     <string name="enter_nickname">Введите никнейм</string>
@@ -89,4 +87,11 @@
     <string name="teacher">Преподаватель</string>
     <string name="save_error">Не удалось применить</string>
     <string name="reload_hint">Перезагрузите приложение</string>
+    <string name="calculator">Калькулятор оценок</string>
+    <string name="result_grade">Итоговый рейтинг</string>
+    <string name="calculate">Расчитать</string>
+    <string name="mark100">100 балльная</string>
+    <string name="mark5">5 балльная</string>
+    <string name="markismore100">Ошибка! Одна или несколько оценок превышают 100!</string>
+    <string name="exam_failed">Один из экзаменов провален</string>
 </resources>

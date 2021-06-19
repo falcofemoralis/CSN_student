@@ -6,10 +6,8 @@
     <string name="title_activity_settings">Settings</string>
     <string name="Base_settings">User settings</string>
     <string name="group_prompt">Choose a group</string>
-    <string name="timeUntil">The end of the pair</string>
-    <string name="start">Start of </string>
-    <string name="lesson">pair in</string>
-    <string name="first_lesson">Start of 1 pair in </string>
+    <string name="timeUntil">The end of the %s pair</string>
+    <string name="timeStart">Start of %s pair</string>
     <string name="sign_in">Sign in!</string>
     <string name="login">Login</string>
     <string name="enter_nickname">Enter nickname</string>
@@ -89,5 +87,15 @@
     <string name="teacher">Teacher</string>
     <string name="save_error">Failed to apply</string>
     <string name="reload_hint">Reload application</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="schedule_break">Break</string>
+    <string name="calculator">Grade calculator</string>
+    <string name="result_grade">Result grade</string>
+    <string name="calculate">Calculate</string>
+    <string name="mark100">100 point</string>
+    <string name="mark5">5 point</string>
+    <string name="markismore100">Error! One or more marks are above 100!</string>
+    <string name="exam_failed">Exams failed!</string>
 </resources>
 

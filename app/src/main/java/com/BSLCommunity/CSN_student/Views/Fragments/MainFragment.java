@@ -30,9 +30,10 @@ import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 
 import java.util.Locale;
 
-public class MainFragment extends Fragment implements View.OnTouchListener, MainView {
+public class MainFragment extends Fragment implements View.OnTouchListener, MainView, Timer.ITimer {
     private MainPresenter mainPresenter;
     private ProgressDialog progressDialog;
+    private TextView timerText, timerCounter;
 
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
@@ -61,13 +62,12 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
 
     @Override
     public void initFragment(String groupName, int course) {
-        // Установка таймера
-        //таймер
-        Timer timer = new Timer();
-        TextView time = currentFragment.findViewById(R.id.activity_main_tv_timerCounter);
         //переменные таймера
-        TextView timeUntil = currentFragment.findViewById(R.id.activity_main_tv_timer_text);
-        timer.checkTimer(timeUntil, time, getResources());
+        timerText = currentFragment.findViewById(R.id.activity_main_tv_timerText);
+        timerCounter = currentFragment.findViewById(R.id.activity_main_tv_timerCounter);
+
+        // Запуск таймера
+        new Timer(this);
 
         // Устновка обработчиков нажатий для кнопок
         LinearLayout linearLayout = currentFragment.findViewById(R.id.activity_main_ll_main);
@@ -159,7 +159,6 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
 
             if (id == R.id.activity_main_bt_subjects) {
                 nextFragment = new SubjectListFragment();
-
             } else if (id == R.id.activity_main_bt_auditorium) {
                 nextFragment = new AuditoriumFragment();
             } else if (id == R.id.activity_main_bt_lessonsShedule) {
@@ -174,6 +173,8 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
                 data.putInt("ScheduleType", ScheduleType.TEACHERS.ordinal());
             } else if (id == R.id.activity_main_bt_schedule_bell) {
                 nextFragment = new ScheduleBell();
+            } else if(id == R.id.activity_main_bt_calculator){
+                nextFragment = new GradeCalculatorFragment();
             }
 
             transitionDrawable.reverseTransition(100);
@@ -185,5 +186,21 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         }
 
         return true;
+    }
+
+    @Override
+    public void updateTime(String time) {
+        timerCounter.setText(time);
+    }
+
+    @Override
+    public void updatePair(int pair, Timer.TimeType type) {
+        String pairRome = Timer.getRomePair(pair);
+
+        if (type == Timer.TimeType.UNTIL_START) {
+            timerText.setText(getResources().getString(R.string.timeStart, pairRome));
+        } else {
+            timerText.setText(getResources().getString(R.string.timeUntil, pairRome));
+        }
     }
 }

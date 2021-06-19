@@ -188,7 +188,7 @@
                     android:id="@+id/activity_subject_info_tl_labs_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"></TableLayout>
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/activity_subject_info_bt_add_lab"

@@ -20,10 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
@@ -97,6 +99,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
             currentFragment.findViewById(ids[i]).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LogsManager.getInstance().updateLogs(LogType.CREATE_WORK);
                     addElementWork(v);
                 }
             });
@@ -107,6 +110,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
             currentFragment.findViewById(ids[i]).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LogsManager.getInstance().updateLogs(LogType.OPENED_WORK);
                     openWork(v);
                 }
             });
@@ -242,6 +246,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         ((Button) elementWork.findViewById(R.id.inflate_work_element_bt_delete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogsManager.getInstance().updateLogs(LogType.DELETE_WORK);
                 deleteWork(v);
             }
         });
@@ -369,11 +374,13 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Вызов был инициирован спиннером выбора статуса предмета - устаналиваем статус (экз, зачет, диф зачет)
         if (parent.getId() == R.id.activity_subject_info_sp_values) {
+            LogsManager.getInstance().updateLogs(LogType.CHANGED_SUBJECT_VALUE);
             this.subjectEditorPresenter.changeSubjectValue(SubjectValue.values()[(int) id]);
             return;
         }
 
         // Вызов был инициирован спиннером выбора статуса какой либо из работы
+        LogsManager.getInstance().updateLogs(LogType.CHANGED_WORK_STATE);
         TableRow elementWork = (TableRow) parent.getParent(); // Получаем сам элемент
         parent.setBackgroundResource(wordStatusColors[(int) id]); // Устанавка цвета относительно выбранного варианта
         saveChanges(elementWork);

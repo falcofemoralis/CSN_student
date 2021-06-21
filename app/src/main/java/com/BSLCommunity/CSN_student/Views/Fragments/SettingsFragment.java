@@ -18,7 +18,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Presenters.SettingsPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SettingsView;
@@ -97,12 +99,15 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
     public void applyText(String text, int applyKey) {
         if (text != null) {
             if (applyKey == R.id.activity_settings_ll_nickname) {
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_NICKNAME);
                 this.settingsPresenter.addNewValue(SettingsPresenter.DataKey.NickName, text);
             } else if (applyKey == R.id.activity_settings_ll_password) {
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_PASSWORD);
                 this.settingsPresenter.addNewValue(SettingsPresenter.DataKey.Password, text);
             } else if (applyKey == R.id.activity_settings_ll_group) {
                 // TODO смена группы пользователя
             } else if (applyKey == R.id.activity_settings_ll_language) {
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_LANGUAGE);
                 settingsDialogEditText.dialog.dismiss();
                 this.settingsPresenter.changeLanguage(Integer.parseInt(text));
                 return;
@@ -214,6 +219,7 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
         githubBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LogsManager.getInstance().updateLogs(LogType.OPENED_GITHUB);
                 Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubURL));
                 startActivity(linkIntent);
             }
@@ -222,6 +228,7 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
         telegramBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LogsManager.getInstance().updateLogs(LogType.OPENED_TELEGRAM);
                 Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(telegramURL));
                 startActivity(linkIntent);
             }

@@ -33,7 +33,7 @@ public class EditableSubject {
         allWorks.put(WorkType.IHW, new ArrayList<Work>());
         allWorks.put(WorkType.OTHERS, new ArrayList<Work>());
 
-        this.subjectValue = SubjectValue.EXAM;
+        this.subjectValue = SubjectValue.TEST;
     }
 
     public void setSubjectValue(SubjectValue subjectValue) {

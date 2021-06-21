@@ -62,6 +62,7 @@ $router['PUT'] = [
     '/\/schedule\/new/' => ['processSchedule'],
     '/\/api\/cache\/recreate/' => ['updateCacheFile'],
     '/\/api\/users\/opens/' => ['updateUserOpen'],
+	    '/\/api\/users\/activity/' => ['updateUserActivity'],
     '/\/api\/users/' => ['updateUser']
 ];
 $router['DELETE'] = [

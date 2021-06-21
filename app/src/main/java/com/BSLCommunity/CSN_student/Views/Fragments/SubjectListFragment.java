@@ -23,7 +23,9 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
@@ -155,6 +157,7 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     Bundle data = new Bundle();
                     data.putString("Subject", new Gson().toJson(editableSubject));
+                    LogsManager.getInstance().updateLogs(LogType.OPENED_SUBJECT);
                     fragmentListener.onFragmentInteraction(thisFragment, new SubjectEditorFragment(),
                             OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
 
@@ -194,6 +197,8 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
 
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    LogsManager.getInstance().updateLogs(LogType.ENTER_FULL_STAT);
+
                     fragmentListener.onFragmentInteraction(thisFragment, new FullStatFragment(),
                             OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
 

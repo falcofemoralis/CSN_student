@@ -28,13 +28,16 @@ import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Constants.GrantType;
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.MarkErrorType;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Presenters.GradeCalculatorPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.GradeCalculatorView;
 import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
+import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,10 +51,12 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
     private TableLayout subjectsContainer;
     private ArrayList<TableRow> subjectsViews;
     private OnFragmentActionBarChangeListener onFragmentActionBarChangeListener;
+    private OnFragmentInteractionListener fragmentListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        fragmentListener = (OnFragmentInteractionListener) context;
         onFragmentActionBarChangeListener = (OnFragmentActionBarChangeListener) context;
     }
 
@@ -65,13 +70,14 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
         gradeCalculatorPresenter = new GradeCalculatorPresenter(this);
 
         createHintMenu();
+        createNoSubjectsHint();
+        initSubjects();
         return currentFragment;
     }
 
     @Override
     public void onResume() {
-        onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
-        onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_red, ActionBarType.NAVIGATION_BAR);
+        initActionBar();
         super.onResume();
     }
 
@@ -82,6 +88,17 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
         super.onPause();
     }
 
+    public void initSubjects() {
+        subjectsViews.clear();
+        subjectsContainer.removeAllViews();
+        gradeCalculatorPresenter.initSubjects();
+    }
+
+    public void initActionBar(){
+        onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
+        onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_red, ActionBarType.NAVIGATION_BAR);
+    }
+
     public void createHintMenu() {
         TextView text = currentFragment.findViewById(R.id.gradecalculator_tv_hint);
 
@@ -90,6 +107,8 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
+                LogsManager.getInstance().updateLogs(LogType.OPENED_GRADE_HINT);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 ViewGroup viewGroup = currentFragment.findViewById(android.R.id.content);
                 View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_calculator_hint, viewGroup, false);
@@ -117,6 +136,7 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
         text.setText(ss);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
 
     @Override
     public void setSubject(String name, SubjectValue type) {
@@ -178,6 +198,7 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
 
             gradeCalculatorPresenter.calculateResult(marks);
 
+            LogsManager.getInstance().updateLogs(LogType.CALCULATED_GRADE);
             transitionDrawable.reverseTransition(100);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
         }
@@ -218,5 +239,36 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
                 break;
         }
         ((TextView) currentFragment.findViewById(R.id.gradecalculator_tv_grant)).setText(text);
+    }
+
+    public void createNoSubjectsHint() {
+        final Fragment fragment = this;
+        TextView text = currentFragment.findViewById(R.id.gradecalculator_tv_no_subjects_menu);
+        SpannableString ss = new SpannableString(text.getText());
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                LogsManager.getInstance().updateLogs(LogType.OPENED_SUBJECTS);
+                fragmentListener.onFragmentInteraction(fragment, new SubjectListFragment(), OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, "subjects_hint");
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(0xFF5EE656);
+            }
+        };
+        ss.setSpan(clickableSpan, 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        text.setText(ss);
+        text.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    public void showSubjects() {
+        currentFragment.findViewById(R.id.gradecalculator_ll_no_subjects).setVisibility(View.GONE);
+        subjectsContainer.setVisibility(View.VISIBLE);
+        currentFragment.findViewById(R.id.gradecalculator_tv_hint).setVisibility(View.VISIBLE);
     }
 }

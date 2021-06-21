@@ -212,3 +212,32 @@ function updateUserOpen()
 
     DataBase::execQuery($update, ReturnValue::GET_NOTHING);
 }
+
+function updateUserActivity()
+{
+    $headers = getallheaders();
+    $id = checkAuth($headers['token']);
+
+    $dataJson = file_get_contents('php://input');
+    $data = json_decode($dataJson, true);
+
+    $insert = "INSERT INTO logs (Code_User, LogType, Info, PerformedOn) VALUES ";
+    for($i=0; $i<count($data); ++$i){
+        $type = $data[$i]["type"];
+        $info = $data[$i]["info"];
+        $time = $data[$i]["time"];
+
+        if($info == null){
+            $info = "null";
+        } else{
+            $info = "'$info'";
+        }
+        $insert .= "($id, $type, $info, '$time')";  
+
+        if($i != count($data) - 1){
+            $insert .= ",";
+        }   
+    }
+
+    DataBase::execQuery($insert, ReturnValue::GET_NOTHING);
+}

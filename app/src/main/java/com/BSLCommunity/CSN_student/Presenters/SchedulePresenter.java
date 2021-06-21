@@ -2,11 +2,13 @@ package com.BSLCommunity.CSN_student.Presenters;
 
 import android.util.Log;
 
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
-import com.BSLCommunity.CSN_student.Models.UserData;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
 import com.BSLCommunity.CSN_student.Models.TeacherModel;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.ViewInterfaces.ScheduleView;
 
 import org.json.JSONException;
@@ -23,6 +25,8 @@ public class SchedulePresenter {
     private final ScheduleView scheduleView;
     private int selectedHalf; // Выбранная тип недели (0-Числитель\1-Знаменатель)
     private ArrayList<ScheduleList> scheduleList; // Текущее расписание
+    private final LogsManager logsManager;
+    private boolean isInit;
 
     /**
      * Конструток для презентера расписаний
@@ -38,6 +42,8 @@ public class SchedulePresenter {
         this.userData = UserData.getUserData();
         this.teacherModel = TeacherModel.getTeacherModel();
         this.lang = lang;
+        this.logsManager = LogsManager.getInstance();
+        this.isInit = true;
     }
 
     /**
@@ -89,6 +95,7 @@ public class SchedulePresenter {
             updateSchedule(scheduleList, 0);
         else
             scheduleView.showToastError();
+
     }
 
     /**
@@ -97,6 +104,12 @@ public class SchedulePresenter {
      * @param item - выбранный элемент в спинере
      */
     public void changeItem(String item) {
+        if (!isInit) {
+            logsManager.updateLogs(LogType.CHANGED_SCHEDULE, String.valueOf(type.ordinal()));
+        } else {
+            isInit = false;
+        }
+
         if (type == ScheduleType.GROUPS) {
             scheduleList = groupModel.findByName(item).scheduleList;
         } else {
@@ -106,7 +119,6 @@ public class SchedulePresenter {
                 e.printStackTrace();
             }
         }
-
         updateSchedule(scheduleList, selectedHalf);
     }
 
@@ -116,6 +128,7 @@ public class SchedulePresenter {
      * @param half - новый тип недели (0\1)
      */
     public void changeHalf(int half) {
+        logsManager.updateLogs(LogType.CHANGED_HALF, type.name());
         this.selectedHalf = half;
         scheduleView.setSchedule(scheduleList, selectedHalf, type);
     }

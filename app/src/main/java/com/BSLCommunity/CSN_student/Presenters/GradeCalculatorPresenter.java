@@ -21,20 +21,25 @@ public class GradeCalculatorPresenter {
     public GradeCalculatorPresenter(GradeCalculatorView gradeCalculatorView) {
         this.gradeCalculatorView = gradeCalculatorView;
         this.subjectModel = SubjectModel.getSubjectModel();
-
-        initSubjects();
     }
 
     public void initSubjects() {
         ArrayList<EditableSubject> editableSubjects = UserData.getUserData().editableSubjects;
         ArrayList<Subject> subjects = subjectModel.subjects;
+        int count = 0;
 
-        for (EditableSubject editableSubject : editableSubjects) {
-            for (Subject subject : subjects) {
-                if (subject.idSubject == editableSubject.idSubject && editableSubject.subjectValue != SubjectValue.TEST) {
-                    gradeCalculatorView.setSubject(subject.name, editableSubject.subjectValue);
-                    break;
+        if(editableSubjects != null) {
+            for (EditableSubject editableSubject : editableSubjects) {
+                for (Subject subject : subjects) {
+                    if (subject.idSubject == editableSubject.idSubject && editableSubject.subjectValue != SubjectValue.TEST) {
+                        count++;
+                        gradeCalculatorView.setSubject(subject.name, editableSubject.subjectValue);
+                        break;
+                    }
                 }
+            }
+            if(count > 0) {
+                gradeCalculatorView.showSubjects();
             }
         }
     }

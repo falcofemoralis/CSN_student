@@ -1,16 +1,21 @@
 package com.BSLCommunity.CSN_student.Models;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.BSLCommunity.CSN_student.APIs.UserApi;
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -84,6 +89,7 @@ public class UserModel {
 
     /**
      * Регистрация нового пользователя, при успешной регистрации устанавливается токен
+     *
      * @param nickname   - никнейм
      * @param password   - пароль
      * @param groupName  - название группы
@@ -118,6 +124,7 @@ public class UserModel {
 
     /**
      * Обновление данных пользователя
+     *
      * @param nickName   - новый никнейм
      * @param password   - новый пароль
      * @param exCallable - колбек
@@ -237,6 +244,51 @@ public class UserModel {
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
                 try {
                     FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME, String.valueOf(finalVisits + 1), false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void updateUserActivity(String token) {
+        final String FILE_NAME = "logs";
+        final LogsManager logsManager = LogsManager.getInstance();
+        final Gson gson = new Gson();
+
+        ArrayList<UserLog> localLogs = null, currentLogs = logsManager.getLogs();
+        Type listType = new TypeToken<ArrayList<Pair<Integer, String>>>() {
+        }.getType();
+        try {
+            localLogs = gson.fromJson(FileManager.getFileManager(App.getApp().context()).readFile(FILE_NAME), listType);
+        } catch (Exception ignore) {
+        }
+
+        if (localLogs == null) {
+            localLogs = new ArrayList<>();
+        }
+
+        localLogs.addAll(currentLogs);
+
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<Void> call = userApi.updateUserActivity(token, localLogs);
+        final ArrayList<UserLog> finalLocalLogs = localLogs;
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                logsManager.clearLogs();
+                try {
+                    FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME, "", false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                logsManager.clearLogs();
+                try {
+                    FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME, gson.toJson(finalLocalLogs), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

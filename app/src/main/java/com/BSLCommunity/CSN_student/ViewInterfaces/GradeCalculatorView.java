@@ -33,4 +33,9 @@ public interface GradeCalculatorView {
      * @param type - вид стипендии
      */
     void setGrant(GrantType type);
+
+    /**
+     * Установка отображение предметов
+     */
+    void showSubjects();
 }

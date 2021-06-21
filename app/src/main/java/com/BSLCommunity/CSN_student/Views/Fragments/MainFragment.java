@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,8 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Models.Timer;
 import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
 import com.BSLCommunity.CSN_student.R;
@@ -124,7 +127,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
     public void controlProgressDialog(final ProgressType type, final boolean isFirst) {
         switch (type) {
             case SET_FAIL:
-                progressDialog.setTitle("Failed to download");
+                progressDialog.setTitle(getString(R.string.failed_to_download));
                 progressDialog.getButton(ProgressDialog.BUTTON_POSITIVE).setEnabled(true); // Retry
                 progressDialog.getButton(ProgressDialog.BUTTON_NEGATIVE).setEnabled(!isFirst); // Close
                 break;
@@ -156,27 +159,41 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
             int id = view.getId();
 
             Bundle data = null;
+            LogType logType = null;
+            String logInfo = null;
 
             if (id == R.id.activity_main_bt_subjects) {
                 nextFragment = new SubjectListFragment();
+                logType = LogType.OPENED_SUBJECTS;
             } else if (id == R.id.activity_main_bt_auditorium) {
                 nextFragment = new AuditoriumFragment();
+                logType = LogType.OPENED_AUDS;
             } else if (id == R.id.activity_main_bt_lessonsShedule) {
                 nextFragment = new ScheduleFragment();
                 data = new Bundle();
-                data.putInt("ScheduleType", ScheduleType.GROUPS.ordinal());
+                int scheduleType = ScheduleType.GROUPS.ordinal();
+                data.putInt("ScheduleType", scheduleType);
+                logType = LogType.OPENED_SCHEDULE;
+                logInfo = String.valueOf(scheduleType);
             } else if (id == R.id.activity_main_bt_settings) {
                 nextFragment = new SettingsFragment();
+                logType = LogType.OPENED_SETTINGS;
             } else if (id == R.id.activity_main_bt_teachersSchedule) {
                 nextFragment = new ScheduleFragment();
                 data = new Bundle();
-                data.putInt("ScheduleType", ScheduleType.TEACHERS.ordinal());
+                int scheduleType = ScheduleType.GROUPS.ordinal();
+                data.putInt("ScheduleType", scheduleType);
+                logType = LogType.OPENED_SCHEDULE;
+                logInfo = String.valueOf(scheduleType);
             } else if (id == R.id.activity_main_bt_schedule_bell) {
                 nextFragment = new ScheduleBell();
+                logType = LogType.OPENED_BELLS;
             } else if(id == R.id.activity_main_bt_calculator){
                 nextFragment = new GradeCalculatorFragment();
+                logType = LogType.OPENED_GRADE_CALCULATOR;
             }
 
+            LogsManager.getInstance().updateLogs(logType, logInfo);
             transitionDrawable.reverseTransition(100);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
             fragmentListener.onFragmentInteraction(this, nextFragment, OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);

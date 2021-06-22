@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -204,11 +205,11 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         ArrayList<EditableSubject.Work> others = editableSubject.allWorks.get(WorkType.OTHERS);
 
         for (int i = 0; i < labs.size(); ++i)
-            drawElementWork(labsListTL, labs.get(i));
+            drawElementWork(labsListTL, labs.get(i), WorkType.LABS);
         for (int i = 0; i < ihw.size(); ++i)
-            drawElementWork(ihwListTL, ihw.get(i));
+            drawElementWork(ihwListTL, ihw.get(i), WorkType.IHW);
         for (int i = 0; i < others.size(); ++i)
-            drawElementWork(othersListTL, others.get(i));
+            drawElementWork(othersListTL, others.get(i), WorkType.OTHERS);
     }
 
     /**
@@ -227,8 +228,8 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
      * @param infoTL - блок работ в который добавляется элемент
      * @param work   - работа пользователя
      */
-    private void drawElementWork(TableLayout infoTL, EditableSubject.Work work) {
-        TableRow elementWork = (TableRow) getLayoutInflater().inflate(R.layout.inflate_work_element, infoTL, false); // Строка работы
+    private void drawElementWork(TableLayout infoTL, EditableSubject.Work work, WorkType workType) {
+        final TableRow elementWork = (TableRow) getLayoutInflater().inflate(R.layout.inflate_work_element, infoTL, false); // Строка работы
 
         EditText nameWorkEt = elementWork.findViewById(R.id.inflate_work_element_et_name_work);
         nameWorkEt.setText(work.name);
@@ -250,6 +251,22 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
                 deleteWork(v);
             }
         });
+
+        if (workType == WorkType.OTHERS) {
+            TableRow.LayoutParams params = new TableRow.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.weight = (float) 0.25;
+
+            spinner.setLayoutParams(params);
+            ToggleButton toggleButton = elementWork.findViewById(R.id.inflate_work_element_tb_isExam);
+            toggleButton.setVisibility(View.VISIBLE);
+            toggleButton.setChecked(work.isExam);
+            toggleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveChanges(elementWork);
+                }
+            });
+        }
 
         infoTL.addView(elementWork);
     }
@@ -277,7 +294,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         }
 
         this.subjectEditorPresenter.addWork(workType);
-        this.drawElementWork(infoTL, new EditableSubject.Work());
+        this.drawElementWork(infoTL, new EditableSubject.Work(), workType);
     }
 
     /**
@@ -319,8 +336,8 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
      */
 
     public void deleteWork(View view) {
-        final TableRow workRow = (TableRow)(view.getParent()); // Строчка работы в списке
-        final TableLayout infoTL = ((TableLayout)(workRow.getParent())); // Группа
+        final TableRow workRow = (TableRow) (view.getParent()); // Строчка работы в списке
+        final TableLayout infoTL = ((TableLayout) (workRow.getParent())); // Группа
 
         WorkType workType = getWorkType(infoTL.getId());
         int index = infoTL.indexOfChild(workRow);
@@ -360,9 +377,13 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         int index = parentTL.indexOfChild(elementWork);
         String name = ((TextView) elementWork.findViewById(R.id.inflate_work_element_et_name_work)).getText().toString();
         String mark = ((TextView) elementWork.findViewById(R.id.inflate_work_element_et_mark)).getText().toString();
+        boolean isExamWork = false;
+        if (workType == WorkType.OTHERS) {
+            isExamWork = ((ToggleButton) elementWork.findViewById(R.id.inflate_work_element_tb_isExam)).isChecked();
+        }
         long id = ((Spinner) elementWork.findViewById(R.id.inflate_work_element_spin_work_status)).getSelectedItemId();
 
-        this.subjectEditorPresenter.changeWork(workType, index, name, WorkStatus.values()[(int) id], mark);
+        this.subjectEditorPresenter.changeWork(workType, index, name, WorkStatus.values()[(int) id], mark, isExamWork);
     }
 
     /**

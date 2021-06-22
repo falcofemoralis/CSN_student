@@ -104,5 +104,7 @@
     <string name="hint_name">How is the calculation done?</string>
     <string name="failed_to_download">Failed to download</string>
     <string name="subjects_hint">"No subjects. Setup exams in </string>
+    <string name="test">Test</string>
+    <string name="exam">Exam</string>
 </resources>
 

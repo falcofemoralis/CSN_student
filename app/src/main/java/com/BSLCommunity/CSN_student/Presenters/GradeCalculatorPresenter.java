@@ -3,6 +3,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 import com.BSLCommunity.CSN_student.Constants.GrantType;
 import com.BSLCommunity.CSN_student.Constants.MarkErrorType;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
+import com.BSLCommunity.CSN_student.Constants.WorkType;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
@@ -28,17 +29,29 @@ public class GradeCalculatorPresenter {
         ArrayList<Subject> subjects = subjectModel.subjects;
         int count = 0;
 
-        if(editableSubjects != null) {
+        if (editableSubjects != null) {
             for (EditableSubject editableSubject : editableSubjects) {
                 for (Subject subject : subjects) {
-                    if (subject.idSubject == editableSubject.idSubject && editableSubject.subjectValue != SubjectValue.TEST) {
-                        count++;
-                        gradeCalculatorView.setSubject(subject.name, editableSubject.subjectValue);
+                    if (subject.idSubject == editableSubject.idSubject) {
+                        if (editableSubject.subjectValue != SubjectValue.TEST) {
+                            count++;
+                            gradeCalculatorView.setSubject(subject.name);
+                        }
+
+                        ArrayList<EditableSubject.Work> works = editableSubject.allWorks.get(WorkType.OTHERS);
+                        if (works != null) {
+                            for (EditableSubject.Work work : works) {
+                                if (work.isExam) {
+                                    count++;
+                                    gradeCalculatorView.setSubject(subject.name, work.name);
+                                }
+                            }
+                        }
                         break;
                     }
                 }
             }
-            if(count > 0) {
+            if (count > 0) {
                 gradeCalculatorView.showSubjects();
             }
         }

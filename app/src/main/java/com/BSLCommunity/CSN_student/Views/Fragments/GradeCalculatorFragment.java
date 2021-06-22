@@ -30,7 +30,6 @@ import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Constants.GrantType;
 import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.MarkErrorType;
-import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Presenters.GradeCalculatorPresenter;
@@ -94,7 +93,7 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
         gradeCalculatorPresenter.initSubjects();
     }
 
-    public void initActionBar(){
+    public void initActionBar() {
         onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
         onFragmentActionBarChangeListener.setActionBarColor(R.color.dark_red, ActionBarType.NAVIGATION_BAR);
     }
@@ -139,7 +138,7 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
 
 
     @Override
-    public void setSubject(String name, SubjectValue type) {
+    public void setSubject(String name, String... workname) {
         final TableRow subjectView = (TableRow) getLayoutInflater().inflate(R.layout.inflate_calculator_subject, subjectsContainer, false);
         final TextView subjectNameTV = subjectView.findViewById(R.id.inflate_calculator_tv_name);
         final TextView subjectMarkLetter = subjectView.findViewById(R.id.inflate_calculator_tv_mark_type);
@@ -151,6 +150,9 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
         }
         if (name.length() > 38)
             subjectNameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, getContext().getResources().getDimension(R.dimen._3ssp));
+        if (workname.length > 0) {
+            name += ": " + workname[0];
+        }
         subjectNameTV.setText(name);
 
         ((EditText) subjectView.findViewById(R.id.inflate_calculator_et_mark)).addTextChangedListener(new TextWatcher() {
@@ -243,8 +245,9 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
 
     public void createNoSubjectsHint() {
         final Fragment fragment = this;
-        TextView text = currentFragment.findViewById(R.id.gradecalculator_tv_no_subjects_menu);
-        SpannableString ss = new SpannableString(text.getText());
+        TextView textView = currentFragment.findViewById(R.id.gradecalculator_tv_no_subjects_hint);
+        String text = getString(R.string.subjects);
+        SpannableString ss = new SpannableString(textView.getText() + " " + text);
 
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
@@ -259,11 +262,13 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
                 ds.setColor(0xFF5EE656);
             }
         };
-        ss.setSpan(clickableSpan, 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        int start = textView.getText().length();
+        ss.setSpan(clickableSpan, start + 1, start + text.length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        text.setText(ss);
-        text.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setText(ss);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
 
     @Override
     public void showSubjects() {

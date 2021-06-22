@@ -65,6 +65,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener actionBarChangeListener;
+    boolean isValueSet = false, isWorkSet = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -395,13 +396,22 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Вызов был инициирован спиннером выбора статуса предмета - устаналиваем статус (экз, зачет, диф зачет)
         if (parent.getId() == R.id.activity_subject_info_sp_values) {
-            LogsManager.getInstance().updateLogs(LogType.CHANGED_SUBJECT_VALUE);
+            if(isValueSet){
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_SUBJECT_VALUE);
+            } else{
+                this.isValueSet = true;
+            }
             this.subjectEditorPresenter.changeSubjectValue(SubjectValue.values()[(int) id]);
             return;
         }
 
         // Вызов был инициирован спиннером выбора статуса какой либо из работы
-        LogsManager.getInstance().updateLogs(LogType.CHANGED_WORK_STATE);
+        if(isWorkSet){
+            LogsManager.getInstance().updateLogs(LogType.CHANGED_WORK_STATE);
+        } else{
+            this.isWorkSet = true;
+        }
+
         TableRow elementWork = (TableRow) parent.getParent(); // Получаем сам элемент
         parent.setBackgroundResource(wordStatusColors[(int) id]); // Устанавка цвета относительно выбранного варианта
         saveChanges(elementWork);

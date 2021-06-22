@@ -46,6 +46,7 @@ $router['GET'] = [
     '/\/api\/users\/login/' => ['login'],
     '/\/api\/users\/all/' => ['getAllUsers'],
     '/\/api\/users\/course\/(\d+)/' => ['usersViewByCourse'],
+    '/\/api\/users\/logs\/(\d+)/' => ['getUserLogs'],
     '/\/api\/users\/rating/' => ['getUserRating'],
     '/\/api\/users\/(\d+)/' => ['userViewById'],
     '/\/api\/cache\/check/' => ['checkCacheFile'],

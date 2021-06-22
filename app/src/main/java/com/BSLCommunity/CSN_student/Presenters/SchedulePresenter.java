@@ -128,7 +128,7 @@ public class SchedulePresenter {
      * @param half - новый тип недели (0\1)
      */
     public void changeHalf(int half) {
-        logsManager.updateLogs(LogType.CHANGED_HALF, type.name());
+        logsManager.updateLogs(LogType.CHANGED_HALF, String.valueOf(type.ordinal()));
         this.selectedHalf = half;
         scheduleView.setSchedule(scheduleList, selectedHalf, type);
     }

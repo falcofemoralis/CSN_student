@@ -186,7 +186,7 @@ function updateUserRating($url)
  */
 function getAllUsers()
 {
-    $query = "SELECT users.NickName, users.Visits, users.LastOpen 
+    $query = "SELECT users.Code_User, users.NickName, users.Visits, users.LastOpen 
     FROM users 
     ORDER BY LastOpen DESC";
 
@@ -240,4 +240,13 @@ function updateUserActivity()
     }
 
     DataBase::execQuery($insert, ReturnValue::GET_NOTHING);
+}
+
+function getUserLogs($url){
+   $id = explode('/', $url)[4];
+
+   $get = "SELECT * FROM logs WHERE logs.Code_User = $id";
+
+   $data = DataBase::execQuery($get, ReturnValue::GET_ARRAY);
+   echo $data;
 }

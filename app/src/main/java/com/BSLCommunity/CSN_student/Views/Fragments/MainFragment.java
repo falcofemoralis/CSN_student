@@ -181,7 +181,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
             } else if (id == R.id.activity_main_bt_teachersSchedule) {
                 nextFragment = new ScheduleFragment();
                 data = new Bundle();
-                int scheduleType = ScheduleType.GROUPS.ordinal();
+                int scheduleType = ScheduleType.TEACHERS.ordinal();
                 data.putInt("ScheduleType", scheduleType);
                 logType = LogType.OPENED_SCHEDULE;
                 logInfo = String.valueOf(scheduleType);

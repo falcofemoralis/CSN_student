@@ -74,8 +74,9 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Устанавливаем изображение выбраного корпуса, 1 этажа
-                LogsManager.getInstance().updateLogs(LogType.CHANGED_BUILDING_TAB);
-                auditoriumPresenter.changeMap(buildingTabs.getSelectedTabPosition(), 0);
+                int building = buildingTabs.getSelectedTabPosition();
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_BUILDING_TAB, String.valueOf(building));
+                auditoriumPresenter.changeMap(building, 0);
             }
 
             @Override
@@ -90,8 +91,9 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Устанавливаем изображение этажа (по выбранному корпусу)
-                LogsManager.getInstance().updateLogs(LogType.CHANGED_FLOOR_TAB);
-                auditoriumPresenter.changeMap(auditoriumPresenter.selectedBuilding, floorTabs.getSelectedTabPosition());
+                int floor = floorTabs.getSelectedTabPosition();
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_FLOOR_TAB, String.valueOf(floor));
+                auditoriumPresenter.changeMap(auditoriumPresenter.selectedBuilding, floor);
             }
 
             @Override

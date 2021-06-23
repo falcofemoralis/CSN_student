@@ -148,8 +148,7 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (name.length() > 38)
-            subjectNameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, getContext().getResources().getDimension(R.dimen._3ssp));
+
         if (workname.length > 0) {
             name += ": " + workname[0];
         }
@@ -199,8 +198,6 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
             }
 
             gradeCalculatorPresenter.calculateResult(marks);
-
-            LogsManager.getInstance().updateLogs(LogType.CALCULATED_GRADE);
             transitionDrawable.reverseTransition(100);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
         }
@@ -210,6 +207,7 @@ public class GradeCalculatorFragment extends Fragment implements GradeCalculator
     public void showResult(float result100, float result5) {
         final NumberFormat numFormat = NumberFormat.getNumberInstance();
         numFormat.setMaximumFractionDigits(3);
+        LogsManager.getInstance().updateLogs(LogType.CALCULATED_GRADE, numFormat.format(result100));
         ((TextView) currentFragment.findViewById(R.id.gradecalculator_tv_result_100)).setText(numFormat.format(result100));
         ((TextView) currentFragment.findViewById(R.id.gradecalculator_tv_result_5)).setText(numFormat.format(result5));
     }

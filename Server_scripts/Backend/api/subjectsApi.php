@@ -78,9 +78,7 @@ function getImageSubject()
 //GET запрос на все предметы
 function getShortAllSubjects()
 {
-    $query = " SELECT subjects.Code_Subject as id, subjects.SubjectName
-    FROM subjects";
-
+    $query = "SELECT subjects.Code_Subject as id, subjects.SubjectName FROM subjects";
     $data = DataBase::execQuery($query, ReturnValue::GET_ARRAY);
     echo $data;
 }

@@ -245,7 +245,7 @@ function updateUserActivity()
 function getUserLogs($url){
    $id = explode('/', $url)[4];
 
-   $get = "SELECT * FROM logs WHERE logs.Code_User = $id";
+   $get = "SELECT * FROM logs WHERE logs.Code_User = $id ORDER BY logs.PerformedOn DESC";
 
    $data = DataBase::execQuery($get, ReturnValue::GET_ARRAY);
    echo $data;

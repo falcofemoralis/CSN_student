@@ -105,7 +105,7 @@ public class SchedulePresenter {
      */
     public void changeItem(String item) {
         if (!isInit) {
-            logsManager.updateLogs(LogType.CHANGED_SCHEDULE, String.valueOf(type.ordinal()));
+            logsManager.updateLogs(LogType.CHANGED_SCHEDULE, item);
         } else {
             isInit = false;
         }

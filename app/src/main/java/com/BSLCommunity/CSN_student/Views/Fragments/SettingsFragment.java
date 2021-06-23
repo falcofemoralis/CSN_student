@@ -219,7 +219,7 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
         githubBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LogsManager.getInstance().updateLogs(LogType.OPENED_GITHUB);
+                LogsManager.getInstance().updateLogs(LogType.OPENED_GITHUB, githubURL);
                 Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubURL));
                 startActivity(linkIntent);
             }
@@ -228,7 +228,7 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
         telegramBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LogsManager.getInstance().updateLogs(LogType.OPENED_TELEGRAM);
+                LogsManager.getInstance().updateLogs(LogType.OPENED_TELEGRAM, telegramURL);
                 Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(telegramURL));
                 startActivity(linkIntent);
             }

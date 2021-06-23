@@ -157,7 +157,7 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     Bundle data = new Bundle();
                     data.putString("Subject", new Gson().toJson(editableSubject));
-                    LogsManager.getInstance().updateLogs(LogType.OPENED_SUBJECT);
+                    LogsManager.getInstance().updateLogs(LogType.OPENED_SUBJECT, String.valueOf(editableSubject.idSubject));
                     fragmentListener.onFragmentInteraction(thisFragment, new SubjectEditorFragment(),
                             OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
 

@@ -5,7 +5,7 @@ $days = ["пн", "вт", "ср", "чт", "пт"]; // Название дней �
 $pairs = ["I", "II", "III", "IV", "V", "VI"]; // Название пар в файле
 $pair_info = ["предмет", "аудитория", "группа", "тип"]; // Название аттрибутов в итоговом файле
 $pair_type = ["лк", "пр"]; // Тип пары
-$no_auditorium = ["з-д", "ск", "каф.", "ДО"]; // Тип, который не есть аудиторией
+$no_auditorium = ["з-д", "ск", "каф.", "ДО", "с\/к", "с/к"]; // Тип, который не есть аудиторией
 $dataToReplace = ["П О Н Е Д I Л О К", "В I В Т О Р О К", "С Е Р Е Д А", "Ч Е Т В Е Р", "П' Я Т Н И Ц Я"]; // Данные которые нужно заменить
 $week_types = ["chisl", "znam", "obe"]; // Тип недели
 $schedule = null; // JSON расписание
@@ -22,13 +22,28 @@ $departmentLinks = [
     "каф.прикладноїматематики" => "44",
     "каф.прикладноїматематики(ПожуєваІ.С.)" => "38",
     "каф.іноземнихмов" => "35",
-    "каф.Фізики(КурбацькийВ.П.)" => "45"
+    "каф.Фізики(КурбацькийВ.П.)" => "45",
+    "каф.українознавстватаЗМП" => "46",
+    "каф.прикладноїматематики(ЛевицькаТ.І.)" => "47",
+    "каф.політологіїтаправа(СоколенкоЮ.М.)" => "48",
+    "каф.політологіїтаправа" => "49",
+    "каф.економічноїтеоріїтапідприємництва" => "50",
+    "\"каф.українознавстватаЗМП(ЧерноваІ.С.)\"" => "51"
+];
+
+$subjectLinks = [
+    "Програм." => "18",
+    "Прогр" => "18",
+    "Прогр.МК" => "40",
+    "ПрМК" => "40",
+    "Пр.асс." => "38"
 ];
 
 function inserInDatabase()
 {
     global $pair_info;
     global $departmentLinks;
+    global $subjectLinks;
     global $encoding;
     global $isError;
     global $week_types;
@@ -43,7 +58,7 @@ function inserInDatabase()
         $name = $FIOArr[1];
         $otchstvo = $FIOArr[2];
 
-        if ($surname == "Каф.") {
+        if ($surname == "Каф." || $surname == "каф." || $surname == "\"Каф." || $surname == "\"каф." || $surname == "\"Каф" || $surname == "\"каф") {
             // Получение id кафедры
             $codeTeacher = $departmentLinks[str_replace(" ", "", $FIO)];
         } else {
@@ -76,7 +91,12 @@ function inserInDatabase()
                                 $codeSubject =  mysqli_fetch_assoc(mysqli_query($connection, "SELECT subjects.Code_Subject FROM subjects WHERE subjects.abbreviation = '$value'"))['Code_Subject'];
 
                                 if ($codeSubject == null) {
-                                    showError("Subject $value doesn't exist");
+                                    // correction
+                                    $codeSubject = $subjectLinks[$value];
+
+                                    if ($codeSubject == null) {
+                                        showError("Subject $value doesn't exist");
+                                    }
                                 }
                                 break;
                             case $pair_info[1]:
@@ -113,6 +133,7 @@ function inserInDatabase()
                             $codeGroup = $codesGroup[$i];
                             $query =  "INSERT INTO `schedule_list`(`Code_Schedule`, `Day`, `Pair`, `Half`, `Code_Subject`, `Code_Group`, `Room`, `Code_SubjectType`) 
                             VALUES ($codeSchedule, $day,$pair,$half,$codeSubject,$codeGroup,'$room',$codeSubjectType)";
+                            echo $query;
                             mysqli_query($connection, $query) or showError("Ошибка " . mysqli_error($connection));
                         }
                     }

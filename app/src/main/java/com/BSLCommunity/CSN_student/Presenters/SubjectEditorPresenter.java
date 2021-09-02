@@ -41,11 +41,14 @@ public class SubjectEditorPresenter {
         } catch (Exception ignored) {}
     }
 
-    public void changeWork(WorkType workType, int index, String name, WorkStatus workStatus, String mark) {
+    public void changeWork(WorkType workType, int index, String name, WorkStatus workStatus, String mark, boolean isExamWork) {
         EditableSubject.Work editableWork = this.copyEdSubject.allWorks.get(workType).get(index);
         editableWork.name = name;
         editableWork.workStatus = workStatus;
         editableWork.mark = mark;
+        if(workType == WorkType.OTHERS){
+            editableWork.isExam = isExamWork;
+        }
 
         this.subjectEditorView.setWorkProgress(this.copyEdSubject.calculateProgress());
     }

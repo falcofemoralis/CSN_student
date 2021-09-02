@@ -13,13 +13,16 @@ public class EditableSubject {
         public String name; // Название каждой работы
         public String mark; // Оценка за каждую работу
         public WorkStatus workStatus;
+        public boolean isExam;
 
         public Work() {
             this.name = "";
             this.mark = "";
             this.workStatus = WorkStatus.NOT_PASSED;
+            this.isExam = false;
         }
     }
+
     public int idSubject;
     public HashMap<WorkType, ArrayList<Work>> allWorks;
     public SubjectValue subjectValue;
@@ -33,7 +36,7 @@ public class EditableSubject {
         allWorks.put(WorkType.IHW, new ArrayList<Work>());
         allWorks.put(WorkType.OTHERS, new ArrayList<Work>());
 
-        this.subjectValue = SubjectValue.EXAM;
+        this.subjectValue = SubjectValue.TEST;
     }
 
     public void setSubjectValue(SubjectValue subjectValue) {

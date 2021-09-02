@@ -100,6 +100,11 @@
     <string name="no_grant">No grant</string>
     <string name="regular_grant">Regular grant</string>
     <string name="high_grant">High grant</string>
-    <string name="calculator_hint_info">The calculation of the rating score for 100 and 5 point systems occurs in their respective systems.\n\nFormula: average score for examination subjects x 0.9\n\nThe scholarship is awarded from the average score of the 4-point system from 4.0 and above, provided that there is no 3-marks. An increased scholarship is given from 5.0\n\nTable to convert points from 100 to 5:\n0-59 = 2\n60-74 = 3\n75-89 = 4\n90-100\n\nTable to convert points from 100 to letters:\n0-34 = F\n35-59 = FX (you have the right to repass exams)\n60-74 = E\n75-84 = C\n85-89 = B\n90-100 = A\n</string>
+    <string name="calculator_hint_info">The calculation of the rating score for 100 and 5 point systems occurs in their respective systems.\n\nFormula: average score for examination subjects(100) x 0.9\n\nThe scholarship is awarded from the average score of the 4-point system from 4.0 and above, provided that there is no 3-marks. An increased scholarship is given from 5.0\n\nTable to convert points from 100 to 5:\n0-59 = 2\n60-74 = 3\n75-89 = 4\n90-100 = 5\n\nTable to convert points from 100 to letters:\n0-34 = F\n35-59 = FX (you have the right to repass exams)\n60-74 = E\n75-84 = C\n85-89 = B\n90-100 = A\n</string>
+    <string name="hint_name">How is the calculation done?</string>
+    <string name="failed_to_download">Failed to download</string>
+    <string name="subjects_hint">"No subjects. Setup exams in </string>
+    <string name="test">Test</string>
+    <string name="exam">Exam</string>
 </resources>
 

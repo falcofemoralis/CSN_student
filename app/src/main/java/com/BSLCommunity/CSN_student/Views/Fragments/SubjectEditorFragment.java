@@ -15,15 +15,18 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
@@ -62,6 +65,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener actionBarChangeListener;
+    boolean isValueSet = false, isWorkSet = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -97,6 +101,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
             currentFragment.findViewById(ids[i]).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LogsManager.getInstance().updateLogs(LogType.CREATE_WORK);
                     addElementWork(v);
                 }
             });
@@ -107,6 +112,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
             currentFragment.findViewById(ids[i]).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LogsManager.getInstance().updateLogs(LogType.OPENED_WORK);
                     openWork(v);
                 }
             });
@@ -200,11 +206,11 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         ArrayList<EditableSubject.Work> others = editableSubject.allWorks.get(WorkType.OTHERS);
 
         for (int i = 0; i < labs.size(); ++i)
-            drawElementWork(labsListTL, labs.get(i));
+            drawElementWork(labsListTL, labs.get(i), WorkType.LABS);
         for (int i = 0; i < ihw.size(); ++i)
-            drawElementWork(ihwListTL, ihw.get(i));
+            drawElementWork(ihwListTL, ihw.get(i), WorkType.IHW);
         for (int i = 0; i < others.size(); ++i)
-            drawElementWork(othersListTL, others.get(i));
+            drawElementWork(othersListTL, others.get(i), WorkType.OTHERS);
     }
 
     /**
@@ -223,8 +229,8 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
      * @param infoTL - блок работ в который добавляется элемент
      * @param work   - работа пользователя
      */
-    private void drawElementWork(TableLayout infoTL, EditableSubject.Work work) {
-        TableRow elementWork = (TableRow) getLayoutInflater().inflate(R.layout.inflate_work_element, infoTL, false); // Строка работы
+    private void drawElementWork(TableLayout infoTL, EditableSubject.Work work, WorkType workType) {
+        final TableRow elementWork = (TableRow) getLayoutInflater().inflate(R.layout.inflate_work_element, infoTL, false); // Строка работы
 
         EditText nameWorkEt = elementWork.findViewById(R.id.inflate_work_element_et_name_work);
         nameWorkEt.setText(work.name);
@@ -242,9 +248,26 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         ((Button) elementWork.findViewById(R.id.inflate_work_element_bt_delete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogsManager.getInstance().updateLogs(LogType.DELETE_WORK);
                 deleteWork(v);
             }
         });
+
+        if (workType == WorkType.OTHERS) {
+            TableRow.LayoutParams params = new TableRow.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.weight = (float) 0.25;
+
+            spinner.setLayoutParams(params);
+            ToggleButton toggleButton = elementWork.findViewById(R.id.inflate_work_element_tb_isExam);
+            toggleButton.setVisibility(View.VISIBLE);
+            toggleButton.setChecked(work.isExam);
+            toggleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveChanges(elementWork);
+                }
+            });
+        }
 
         infoTL.addView(elementWork);
     }
@@ -272,7 +295,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         }
 
         this.subjectEditorPresenter.addWork(workType);
-        this.drawElementWork(infoTL, new EditableSubject.Work());
+        this.drawElementWork(infoTL, new EditableSubject.Work(), workType);
     }
 
     /**
@@ -314,8 +337,8 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
      */
 
     public void deleteWork(View view) {
-        final TableRow workRow = (TableRow)(view.getParent()); // Строчка работы в списке
-        final TableLayout infoTL = ((TableLayout)(workRow.getParent())); // Группа
+        final TableRow workRow = (TableRow) (view.getParent()); // Строчка работы в списке
+        final TableLayout infoTL = ((TableLayout) (workRow.getParent())); // Группа
 
         WorkType workType = getWorkType(infoTL.getId());
         int index = infoTL.indexOfChild(workRow);
@@ -355,9 +378,13 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         int index = parentTL.indexOfChild(elementWork);
         String name = ((TextView) elementWork.findViewById(R.id.inflate_work_element_et_name_work)).getText().toString();
         String mark = ((TextView) elementWork.findViewById(R.id.inflate_work_element_et_mark)).getText().toString();
+        boolean isExamWork = false;
+        if (workType == WorkType.OTHERS) {
+            isExamWork = ((ToggleButton) elementWork.findViewById(R.id.inflate_work_element_tb_isExam)).isChecked();
+        }
         long id = ((Spinner) elementWork.findViewById(R.id.inflate_work_element_spin_work_status)).getSelectedItemId();
 
-        this.subjectEditorPresenter.changeWork(workType, index, name, WorkStatus.values()[(int) id], mark);
+        this.subjectEditorPresenter.changeWork(workType, index, name, WorkStatus.values()[(int) id], mark, isExamWork);
     }
 
     /**
@@ -369,11 +396,22 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Вызов был инициирован спиннером выбора статуса предмета - устаналиваем статус (экз, зачет, диф зачет)
         if (parent.getId() == R.id.activity_subject_info_sp_values) {
+            if(isValueSet){
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_SUBJECT_VALUE);
+            } else{
+                this.isValueSet = true;
+            }
             this.subjectEditorPresenter.changeSubjectValue(SubjectValue.values()[(int) id]);
             return;
         }
 
         // Вызов был инициирован спиннером выбора статуса какой либо из работы
+        if(isWorkSet){
+            LogsManager.getInstance().updateLogs(LogType.CHANGED_WORK_STATE);
+        } else{
+            this.isWorkSet = true;
+        }
+
         TableRow elementWork = (TableRow) parent.getParent(); // Получаем сам элемент
         parent.setBackgroundResource(wordStatusColors[(int) id]); // Устанавка цвета относительно выбранного варианта
         saveChanges(elementWork);

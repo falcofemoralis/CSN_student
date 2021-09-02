@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.APIs;
 
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.User;
+import com.BSLCommunity.CSN_student.Models.UserLog;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -37,4 +38,7 @@ public interface UserApi {
 
     @PUT("opens")
     Call<Void> updateUserOpens(@Header("token") String token, @Body int visits);
+
+    @PUT("activity")
+    Call<Void> updateUserActivity(@Header("token") String token, @Body ArrayList<UserLog> logs);
 }

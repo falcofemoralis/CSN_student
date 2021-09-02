@@ -186,7 +186,7 @@ function updateUserRating($url)
  */
 function getAllUsers()
 {
-    $query = "SELECT users.NickName, users.Visits, users.LastOpen 
+    $query = "SELECT users.Code_User, users.NickName, users.Visits, users.LastOpen 
     FROM users 
     ORDER BY LastOpen DESC";
 
@@ -211,4 +211,42 @@ function updateUserOpen()
 
 
     DataBase::execQuery($update, ReturnValue::GET_NOTHING);
+}
+
+function updateUserActivity()
+{
+    $headers = getallheaders();
+    $id = checkAuth($headers['token']);
+
+    $dataJson = file_get_contents('php://input');
+    $data = json_decode($dataJson, true);
+
+    $insert = "INSERT INTO logs (Code_User, LogType, Info, PerformedOn) VALUES ";
+    for($i=0; $i<count($data); ++$i){
+        $type = $data[$i]["type"];
+        $info = $data[$i]["info"];
+        $time = $data[$i]["time"];
+
+        if($info == null){
+            $info = "null";
+        } else{
+            $info = "'$info'";
+        }
+        $insert .= "($id, $type, $info, '$time')";  
+
+        if($i != count($data) - 1){
+            $insert .= ",";
+        }   
+    }
+
+    DataBase::execQuery($insert, ReturnValue::GET_NOTHING);
+}
+
+function getUserLogs($url){
+   $id = explode('/', $url)[4];
+
+   $get = "SELECT * FROM logs WHERE logs.Code_User = $id ORDER BY logs.PerformedOn DESC";
+
+   $data = DataBase::execQuery($get, ReturnValue::GET_ARRAY);
+   echo $data;
 }

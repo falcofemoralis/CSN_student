@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +19,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.R;
+import com.BSLCommunity.CSN_student.ViewInterfaces.GradeCalculatorView;
+import com.BSLCommunity.CSN_student.Views.Fragments.GradeCalculatorFragment;
 import com.BSLCommunity.CSN_student.Views.Fragments.MainFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, OnFragmentActionBarChangeListener {
     private FragmentManager fragmentManager;
@@ -39,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         super.onCreate(savedInstanceState);
         if (isFirstLoad) {
             LocaleHelper.onAttach(this);
+            LogsManager.getInstance().updateLogs(LogType.OPENED_APP);
             isFirstLoad = false;
         }
         setContentView(R.layout.main_activity);
@@ -137,5 +147,24 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         // Обработка BackPressed во фрагмента. Возврат : true - фрагмент можно закрыть, false - фрагмент должен жить
         // Если onBackPressed() возвращает false, то фрагмент сам должен позаботится о освобождении backStack-а
         boolean onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for(Fragment fragment : fragments){
+            if(fragment.getClass() == GradeCalculatorFragment.class){
+                GradeCalculatorFragment gradeCalculatorFragment = (GradeCalculatorFragment) fragment;
+                gradeCalculatorFragment.initSubjects();
+                gradeCalculatorFragment.initActionBar();
+            }
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        UserData.getUserData().setUserActivity();
+        super.onPause();
     }
 }

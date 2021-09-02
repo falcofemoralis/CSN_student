@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
+import com.BSLCommunity.CSN_student.Constants.LogType;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Models.AuditoriumModel;
 import com.BSLCommunity.CSN_student.Presenters.AuditoriumPresenter;
 import com.BSLCommunity.CSN_student.R;
@@ -72,7 +74,9 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Устанавливаем изображение выбраного корпуса, 1 этажа
-                auditoriumPresenter.changeMap(buildingTabs.getSelectedTabPosition(), 0);
+                int building = buildingTabs.getSelectedTabPosition();
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_BUILDING_TAB, String.valueOf(building));
+                auditoriumPresenter.changeMap(building, 0);
             }
 
             @Override
@@ -87,7 +91,9 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Устанавливаем изображение этажа (по выбранному корпусу)
-                auditoriumPresenter.changeMap(auditoriumPresenter.selectedBuilding, floorTabs.getSelectedTabPosition());
+                int floor = floorTabs.getSelectedTabPosition();
+                LogsManager.getInstance().updateLogs(LogType.CHANGED_FLOOR_TAB, String.valueOf(floor));
+                auditoriumPresenter.changeMap(auditoriumPresenter.selectedBuilding, floor);
             }
 
             @Override
@@ -139,6 +145,7 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
                 @Override
                 public boolean onQueryTextSubmit(final String s) {
                     AuditoriumModel.Auditorium auditorium = auditoriumPresenter.searchAuditorium(s);
+                    LogsManager.getInstance().updateLogs(LogType.SEARCH_ROOM, s);
 
                     if (auditorium != null)
                         auditoriumPresenter.changeAuditoriumMap(auditorium, getContext());

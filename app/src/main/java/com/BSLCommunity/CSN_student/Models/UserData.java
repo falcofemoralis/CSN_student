@@ -208,4 +208,8 @@ public class UserData {
     public void setUserOpens() {
         UserModel.getUserModel().updateUserOpens(user.getToken());
     }
+
+    public void setUserActivity() {
+        UserModel.getUserModel().updateUserActivity(user.getToken());
+    }
 }

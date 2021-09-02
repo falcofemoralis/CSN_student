@@ -162,6 +162,7 @@ public class DataModel {
 
                         @Override
                         public void fail(int idResString) {
+                            Log.d("TEST_API", "FAILED groups");
                             setFail(exCallable);
                         }
                     });
@@ -176,6 +177,7 @@ public class DataModel {
 
                         @Override
                         public void fail(int idResString) {
+                            Log.d("TEST_API", "FAILED teachers");
                             setFail(exCallable);
                         }
                     });
@@ -194,6 +196,7 @@ public class DataModel {
 
                                 @Override
                                 public void fail(int idResString) {
+                                    Log.d("TEST_API", "FAILED subjects");
                                     setFail(exCallable);
                                 }
                             });
@@ -215,6 +218,7 @@ public class DataModel {
 
                         @Override
                         public void fail(int idResString) {
+                            Log.d("TEST_API", "FAILED rating");
                             setFail(exCallable);
                         }
                     });

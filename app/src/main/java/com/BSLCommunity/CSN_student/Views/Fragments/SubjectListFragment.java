@@ -157,6 +157,9 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
                     transitionDrawable.reverseTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
 
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+                    transitionDrawable.reverseTransition(100);
+                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
                 }
                 return true;
             }
@@ -197,7 +200,9 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
 
                     transitionDrawable.reverseTransition(150);
                     view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
-
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
+                    transitionDrawable.reverseTransition(100);
+                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
                 }
                 return true;
             }

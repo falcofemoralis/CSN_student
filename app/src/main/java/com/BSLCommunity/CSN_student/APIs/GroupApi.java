@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface GroupApi {
+    String RESERVE_URL = "https://peaceful-springs-87108.herokuapp.com/";
     String BASE_URL = "http://f0513611.xsph.ru/";
     String GROUP_API = "api/groups";
 

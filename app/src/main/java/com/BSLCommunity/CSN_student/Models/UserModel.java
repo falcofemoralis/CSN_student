@@ -46,7 +46,7 @@ public class UserModel {
      */
     private void init() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(UserApi.API_URL)
+                .baseUrl(UserApi.RESERVE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -198,7 +198,7 @@ public class UserModel {
             @Override
             public void onResponse(@NotNull Call<ArrayList<EditableSubject>> call, @NotNull Response<ArrayList<EditableSubject>> response) {
                 UserData userData = UserData.getUserData();
-                if (response.code() != 404) {
+                if (response.code() != 404 && response.body() != null) {
                     userData.editableSubjects = response.body();
                     userData.saveRating();
                 }

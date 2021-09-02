@@ -58,7 +58,7 @@ public class GroupModel {
      */
     public void init() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(GroupApi.BASE_URL)
+                .baseUrl(GroupApi.RESERVE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

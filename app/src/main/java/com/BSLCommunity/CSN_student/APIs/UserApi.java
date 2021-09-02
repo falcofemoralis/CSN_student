@@ -18,6 +18,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface UserApi {
+    String RESERVE_URL = "https://peaceful-springs-87108.herokuapp.com/api/users/";
     String API_URL = "http://f0513611.xsph.ru/api/users/";
 
     @GET("login")

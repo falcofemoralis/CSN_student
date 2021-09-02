@@ -7,6 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface CacheApi {
+    String RESERVE_URL = "https://peaceful-springs-87108.herokuapp.com/";
     String BASE_URL = "http://f0513611.xsph.ru/";
     String CACHE_API = "api/cache";
 

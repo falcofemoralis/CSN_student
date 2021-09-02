@@ -146,18 +146,14 @@ public class UserData {
         MasterKey masterKey = null;
         try {
             masterKey = new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
 
         try {
             this.encryptedSharedPreferences = EncryptedSharedPreferences.create(context, DATA_FILE_NAME, masterKey,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
     }

@@ -11,6 +11,7 @@ require_once "./scripts/token.php";
 
 cors();
 
+
 DataBase::getConnection();
 
 if (!function_exists('getallheaders')) {
@@ -63,7 +64,7 @@ $router['PUT'] = [
     '/\/schedule\/new/' => ['processSchedule'],
     '/\/api\/cache\/recreate/' => ['updateCacheFile'],
     '/\/api\/users\/opens/' => ['updateUserOpen'],
-	    '/\/api\/users\/activity/' => ['updateUserActivity'],
+    '/\/api\/users\/activity/' => ['updateUserActivity'],
     '/\/api\/users/' => ['updateUser']
 ];
 $router['DELETE'] = [

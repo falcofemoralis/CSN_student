@@ -56,7 +56,7 @@ public class TeacherModel {
      */
     public void init() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(TeacherApi.BASE_URL)
+                .baseUrl(TeacherApi.RESERVE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

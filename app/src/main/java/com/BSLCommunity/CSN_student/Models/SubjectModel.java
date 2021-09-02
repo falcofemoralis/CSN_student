@@ -51,7 +51,7 @@ public class SubjectModel {
     // Инциализация
     public void init() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(SubjectApi.BASE_URL)
+                .baseUrl(SubjectApi.RESERVE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -108,7 +108,6 @@ public class SubjectModel {
                             InputStream input = new java.net.URL(subject.getImgPath()).openStream();
                             Bitmap bitmap = BitmapFactory.decodeStream(input);
                             saveImage(new BitmapDrawable(context.getResources(), bitmap), subject.getImgName(), context);
-                            exCallable.call(-1);
                         } catch (Exception e) {
                             e.printStackTrace();
                             exCallable.fail(-1);

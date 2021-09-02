@@ -30,7 +30,7 @@ public class Subject {
 
     public String getImgPath() {
         if (imgPath != null)
-            return SubjectApi.BASE_URL + imgPath;
+            return SubjectApi.RESERVE_URL + imgPath;
         else return null;
     }
 

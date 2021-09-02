@@ -62,7 +62,7 @@ public class DataModel {
 
     public void init() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(CacheApi.BASE_URL)
+                .baseUrl(CacheApi.RESERVE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

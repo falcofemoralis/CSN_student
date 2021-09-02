@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +22,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
-import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
@@ -34,14 +32,10 @@ import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class SubjectListFragment extends Fragment implements SubjectListView {
-    private final int SUBJECT_ROW_COUNT = 3;
     private final int SUBJECT_COLUMN_COUNT = 3;
 
     SubjectListPresenter subjectListPresenter;
@@ -54,7 +48,6 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener actionBarChangeListener;
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -90,27 +83,32 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     }
 
     /**
-     * @see SubjectListView
+     * Отрисовка всей таблицы дисциплин
+     * @param editableSubjects - дисциплины с информацией пользователя о прогрессе
      */
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void setTableSubjects(ArrayList<EditableSubject> editableSubjects) {
         SubjectModel subjectModel = SubjectModel.getSubjectModel();
-        for (int i = 0; i < SUBJECT_ROW_COUNT; ++i) {
-            LinearLayout subjectRow = (LinearLayout) tableSubjects.getChildAt(i);
+        final int rowCount = (int) Math.ceil((editableSubjects.size() + 1) * 1.0f / SUBJECT_COLUMN_COUNT);
+
+        for (int i = 0; i < rowCount; ++i) {
+            LinearLayout subjectRow =  (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_list_row, tableSubjects, false);
 
             for (int j = 0; j < SUBJECT_COLUMN_COUNT; ++j) {
                 // Получение предмета по индексу и проверка конца массива предметов
                 int index = (i * SUBJECT_COLUMN_COUNT) + j;
                 if (index >= editableSubjects.size()) {
                     createFullStatistics(subjectRow);
-                    return;
+                    break;
                 }
 
                 final EditableSubject editableSubject = editableSubjects.get(index);
                 final Subject subject = subjectModel.findById(editableSubject.idSubject);
                 createSubject(editableSubject, subject, subjectRow);
             }
+
+            tableSubjects.addView(subjectRow);
         }
     }
 
@@ -125,19 +123,13 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
         final LinearLayout subjectView = (LinearLayout) getLayoutInflater().inflate(R.layout.inflate_subject_bt, container, false);
 
         // Установка имени дисциплины
-        try {
-            String subjectName = new JSONObject(subject.name).getString(LocaleHelper.getLanguage(getContext()));
-            TextView subjectNameTV = subjectView.findViewById(R.id.inflate_subject_tv_name);
-            if (subjectName.length() > 38)
-                subjectNameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, getContext().getResources().getDimension(R.dimen._3ssp));
-            subjectNameTV.setText(subjectName);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        TextView subjectNameTV = subjectView.findViewById(R.id.inflate_subject_tv_name);
+        subjectNameTV.setText(subject.abb);
 
         ((TextView) subjectView.findViewById(R.id.inflate_subject_tv_percent_progress)).setText(editableSubject.calculateProgress() + "%");
         ImageView subjectImgView = subjectView.findViewById(R.id.inflate_subject_img);
         BitmapDrawable img = subject.getSubjectImage(getContext());
+
         if (img != null) {
             subjectImgView.setImageDrawable(img);
         } else {
@@ -210,7 +202,8 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     }
 
     /**
-     * @see SubjectListView
+     * Установка курса пользователя
+     * @param course - номер курса
      */
     @Override
     public void setCourse(int course) {
@@ -219,7 +212,9 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
     }
 
     /**
-     * @see SubjectListView
+     * Обновление прогресса на кнопках дисциплин
+     * @param subjectProgresses - прогрессы по дисциплинам
+     * @param sumProgress - суммарный прогресс
      */
     @Override
     public void updateProgresses(int[] subjectProgresses, int sumProgress) {

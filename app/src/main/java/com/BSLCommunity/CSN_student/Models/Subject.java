@@ -19,6 +19,8 @@ public class Subject {
     public String name;
     @SerializedName("imgPath")
     public String imgPath;
+    @SerializedName("abbreviation")
+    public String abb;
 
     public Subject(int[] idTeachers, String name, String imgPath) {
         this.idTeachers = idTeachers;

@@ -80,6 +80,7 @@ public class RegistrationFragment extends Fragment implements RegView, AdapterVi
 
             transitionDrawable.reverseTransition(100);
             view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
+
             this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString(), this.groupName);
         }
         return false;

@@ -45,16 +45,15 @@ public class RegPresenter {
                     try {
                         userData.setUser(data);
                         regView.openMain();
-                    } catch (Exception ignored) {
                     }
+                    catch (Exception ignored) { }
                 }
 
                 @Override
                 public void fail(int idResString) {
                     try {
                         regView.showToastError(idResString);
-                    } catch (Exception ignored) {
-                    }
+                    } catch (Exception ignored) { }
                 }
             });
         }

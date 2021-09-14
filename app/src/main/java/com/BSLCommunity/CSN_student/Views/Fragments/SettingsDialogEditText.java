@@ -27,7 +27,7 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
     private DialogListener listener;
     private String title;
     private int applyKey;
-    private Spinner groupSpinner, languageSpinner;
+    private Spinner groupSpinner;
 
     String nickName, password;
     List<String> groupsAdapter;
@@ -86,22 +86,6 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                 e.printStackTrace();
             }
             title = getResources().getString(R.string.group);*/
-        } else if (applyKey == R.id.activity_settings_ll_language) {
-            view = inflater.inflate(R.layout.dialog_settings_sp_languages, null);
-            languageSpinner = view.findViewById(R.id.activity_settings_sp_languages);
-
-            //устанавливаем спинер выбора групп
-            ArrayAdapter<CharSequence> languagesAdapter = ArrayAdapter.createFromResource(getContext(), R.array.languages, R.layout.spinner_dropdown_settings);
-            languagesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_settings);
-            languageSpinner.setAdapter(languagesAdapter);
-
-            ArrayList<Pair<String, String>> languages = LocaleHelper.getLanguages(App.getApp().context());
-            for (Pair<String, String> element : languages) {
-                if (element.second.contains(LocaleHelper.getLanguage(getContext()))) {
-                    languageSpinner.setSelection(languages.indexOf(element));
-                }
-            }
-            title = getResources().getString(R.string.language);
         }
 
         if (view != null) {
@@ -121,8 +105,6 @@ public class SettingsDialogEditText extends AppCompatDialogFragment {
                                 text = EditText.getText().toString();
                             } else if (applyKey == R.id.activity_settings_ll_group) {
                                 text = groupSpinner.getSelectedItem().toString();
-                            } else if (applyKey == R.id.activity_settings_ll_language) {
-                                text = Integer.toString(languageSpinner.getSelectedItemPosition());
                             }
 
                             listener.applyText(text, applyKey);

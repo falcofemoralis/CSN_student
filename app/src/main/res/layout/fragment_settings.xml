@@ -252,42 +252,34 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:orientation="horizontal"
             android:padding="16dp"
+            android:gravity="center"
+            android:layout_gravity="center"
             android:visibility="visible">
 
             <Space
                 android:layout_width="20dp"
                 android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/fragment_settings_sp_sort"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:orientation="vertical">
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:spinnerMode="dialog"
+                app:smsp_arrowColor="@color/white"
+                app:smsp_floatingLabelColor="@color/white"
+                app:smsp_hint="@string/language"
+                app:smsp_hintSize="18sp"
+                app:smsp_floatingLabelSize="18sp"
+                app:smsp_itemSize="18sp"
+                app:smsp_hintColor="@color/white"
+                app:smsp_itemColor="@color/white"
+                app:smsp_itemListColor="@color/black"
+                app:smsp_itemListHintColor="@color/black"
+                app:smsp_selectedItemListColor="@color/main_color_3" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:text="@string/language"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/activity_settings_tv_language"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:text="@string/not_set"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
         </LinearLayout>
 
 

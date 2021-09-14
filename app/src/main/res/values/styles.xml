@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowLightStatusBar">false</item>
         <item name="colorPrimary">@color/background</item>
@@ -9,5 +10,9 @@
         <item name="android:navigationBarColor">@color/background</item>
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
+    </style>
+
+    <style name="clickable">
+        <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 </resources>

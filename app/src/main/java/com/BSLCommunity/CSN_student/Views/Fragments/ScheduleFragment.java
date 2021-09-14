@@ -12,9 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +30,7 @@ import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.ScheduleView;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
+import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class ScheduleFragment extends Fragment implements AdapterView.OnItemSele
     private final int MAX_PAIR = 5; // Ккол-во пар в таблице
     private final int MAX_DAYS = 5; // Кол-во дней в таблице
     private final TextView[][] scheduleTextView = new TextView[MAX_DAYS][MAX_PAIR]; // Элементы таблицы
-    private Spinner spinner; // Спиннер выбора элементов
+    private SmartMaterialSpinner<String> spinner; // Спиннер выбора элементов
     private TextView weekTypeView; // Тип недели
     private SchedulePresenter schedulePresenter;
     private Fragment thisFragment;
@@ -117,18 +116,15 @@ public class ScheduleFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void setSpinnerData(ArrayList<String> entities, int defaultItem, ScheduleType type) {
         spinner = currentFragment.findViewById(R.id.activity_lessons_schedule_sp_main);
-        ArrayAdapter<String> dataAdapter;
 
         if (type == ScheduleType.GROUPS) {
             spinner.setPrompt(getString(R.string.group_prompt));
-            dataAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_schedule_groups_layout, entities);
+            spinner.setSearchable(false);
         } else {
             spinner.setPrompt(getString(R.string.teachers_prompt));
-            dataAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_schedule_layout, entities);
         }
 
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_white);
-        spinner.setAdapter(dataAdapter);
+        spinner.setItem(entities);
         spinner.setOnItemSelectedListener(this);
         spinner.setSelection(defaultItem);
     }

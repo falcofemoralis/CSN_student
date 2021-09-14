@@ -1,478 +1,482 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/activity_background"
-    android:orientation="vertical"
-    android:padding="10dp"
-    tools:context=".Views.Fragments.SettingsFragment">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/Base_settings"
-            android:textColor="@color/main_color_3"
-            android:textSize="18sp" />
-
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/activity_settings_ll_nickname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/nickname"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/activity_settings_tv_nickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/not_set"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/activity_settings_ll_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="OnClick"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/password"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/activity_settings_tv_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:inputType="textPassword"
-                android:text="@string/not_set"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/activity_settings_ll_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:visibility="gone">
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/group"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/activity_settings_tv_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/not_set"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/activity_settings_ll_exit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/account_exit"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/settings_interface"
-            android:textColor="@color/main_color_3"
-            android:textSize="18sp" />
-
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/activity_settings_ll_language"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:visibility="visible">
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/language"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/activity_settings_tv_language"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="@string/not_set"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/developers"
-            android:textColor="@color/main_color_3"
-            android:textSize="18sp" />
-
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="118dp"
-                android:layout_height="98dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/falcofemoralis_avatar"
-                tools:src="@drawable/falcofemoralis_avatar"
-                tools:srcCompat="@drawable/falcofemoralis_avatar" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="FalcoFemoralis"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/activity_background"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context=".Views.Fragments.SettingsFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/activity_settings_bt_dev1_github"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/settings_contact_button_size"
-                android:layout_weight="1"
-                android:background="@drawable/activity_button2"
-                android:drawableStart="@drawable/ic_github"
-                android:paddingStart="17dp"
-                android:paddingEnd="17dp"
-                android:text="@string/GITHUB"
-                android:textSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/activity_settings_bt_dev1_telegram"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/settings_contact_button_size"
-                android:layout_weight="1"
-                android:background="@drawable/activity_button2"
-                android:drawableStart="@drawable/ic_telegram"
-                android:paddingStart="17dp"
-                android:paddingEnd="17dp"
-                android:text="@string/Telegram"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="118dp"
-                android:layout_height="98dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/derlados_avatar"
-                tools:src="@drawable/derlados_avatar"
-                tools:srcCompat="@drawable/derlados_avatar" />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="Derlados"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
+                android:text="@string/Base_settings"
+                android:textColor="@color/main_color_3"
+                android:textSize="18sp" />
+
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/activity_settings_ll_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/nickname"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/activity_settings_tv_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/not_set"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/activity_settings_ll_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="OnClick"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/password"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/activity_settings_tv_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:inputType="textPassword"
+                    android:text="@string/not_set"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_settings_ll_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/group"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/activity_settings_tv_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/not_set"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_settings_ll_exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/account_exit"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/activity_settings_bt_dev2_github"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/settings_contact_button_size"
-                android:layout_weight="1"
-                android:background="@drawable/activity_button2"
-                android:drawableStart="@drawable/ic_github"
-                android:paddingStart="17dp"
-                android:paddingEnd="17dp"
-                android:text="@string/GITHUB"
-                android:textSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" />
 
-            <Button
-                android:id="@+id/activity_settings_bt_dev2_telegram"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/settings_contact_button_size"
                 android:layout_weight="1"
-                android:background="@drawable/activity_button2"
-                android:drawableStart="@drawable/ic_telegram"
-                android:paddingStart="17dp"
-                android:paddingEnd="17dp"
-                android:text="@string/Telegram"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
-                app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size" />
+                android:text="@string/settings_interface"
+                android:textColor="@color/main_color_3"
+                android:textSize="18sp" />
+
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
         </LinearLayout>
-    </LinearLayout>
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="25dp" />
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/activity_settings_ll_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="visible">
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/language"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/activity_settings_tv_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="@string/not_set"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/developers"
+                android:textColor="@color/main_color_3"
+                android:textSize="18sp" />
+
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="118dp"
+                    android:layout_height="98dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/falcofemoralis_avatar"
+                    tools:src="@drawable/falcofemoralis_avatar"
+                    tools:srcCompat="@drawable/falcofemoralis_avatar" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="FalcoFemoralis"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/activity_settings_bt_dev1_github"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/settings_contact_button_size"
+                    android:layout_weight="1"
+                    android:background="@drawable/activity_button2"
+                    android:drawableStart="@drawable/ic_github"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingStart="17dp"
+                    android:paddingEnd="17dp"
+                    android:text="@string/GITHUB"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size" />
+
+                <Button
+                    android:id="@+id/activity_settings_bt_dev1_telegram"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/settings_contact_button_size"
+                    android:layout_weight="1"
+                    android:background="@drawable/activity_button2"
+                    android:drawableStart="@drawable/ic_telegram"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingStart="17dp"
+                    android:paddingEnd="17dp"
+                    android:text="@string/Telegram"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="118dp"
+                    android:layout_height="98dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/derlados_avatar"
+                    tools:src="@drawable/derlados_avatar"
+                    tools:srcCompat="@drawable/derlados_avatar" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Derlados"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/activity_settings_bt_dev2_github"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/settings_contact_button_size"
+                    android:layout_weight="1"
+                    android:background="@drawable/activity_button2"
+                    android:drawableStart="@drawable/ic_github"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingStart="17dp"
+                    android:paddingEnd="17dp"
+                    android:text="@string/GITHUB"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size" />
+
+                <Button
+                    android:id="@+id/activity_settings_bt_dev2_telegram"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/settings_contact_button_size"
+                    android:layout_weight="1"
+                    android:background="@drawable/activity_button2"
+                    android:drawableStart="@drawable/ic_telegram"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingStart="17dp"
+                    android:paddingEnd="17dp"
+                    android:text="@string/Telegram"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMaxTextSize="@dimen/settings_contact_button_text_size"
+                    app:autoSizeMinTextSize="@dimen/settings_contact_button_text_min_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+    </LinearLayout>
 </ScrollView>

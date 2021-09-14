@@ -14,50 +14,48 @@
         android:background="@color/background"
         android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:layout_weight="0.1"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <RelativeLayout
-                android:layout_width="10dp"
-                android:layout_height="match_parent"
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/activity_lessons_schedule_sp_main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.55"
-                android:background="@color/main_color_2">
-
-                <Spinner
-                    android:id="@+id/activity_lessons_schedule_sp_main"
-                    style="@style/Widget.AppCompat.Spinner.Underlined"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/main_color_2"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:spinnerMode="dialog"
-                    android:textAlignment="center"
-                    android:textSize="12sp"
-                    android:visibility="visible" />
-
-            </RelativeLayout>
+                android:background="@color/main_color_2"
+                android:foreground="?attr/selectableItemBackground"
+                android:spinnerMode="dialog"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                app:smsp_arrowColor="@color/white"
+                app:smsp_enableSearchHeader="false"
+                app:smsp_floatingLabelColor="#00FFFFFF"
+                app:smsp_floatingLabelSize="0sp"
+                app:smsp_isSearchable="true"
+                app:smsp_itemColor="@color/white"
+                app:smsp_itemListHintColor="@color/white"
+                app:smsp_itemSize="16sp"
+                app:smsp_selectedItemListColor="@color/main_color_3"
+                app:smsp_underlineSize="0sp" />
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1" />
 
-
             <Button
                 android:id="@+id/activity_lessons_schedule_bt_weekType"
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0.35"
                 android:background="@color/main_color_2"
+                android:foreground="?attr/selectableItemBackground"
                 android:onClick="changeTypeWeek"
                 android:text="@string/numerator"
                 android:textAllCaps="true"

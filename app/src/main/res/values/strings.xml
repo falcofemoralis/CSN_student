@@ -106,5 +106,6 @@
     <string name="subjects_hint">"No subjects. Setup exams in </string>
     <string name="test">Test</string>
     <string name="exam">Exam</string>
+    <string name="open_subject_hint">First enter the subjects tab!</string>
 </resources>
 

@@ -66,6 +66,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener actionBarChangeListener;
     boolean isValueSet = false, isWorkSet = false;
+    boolean isOpenedExternal = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -119,6 +120,7 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
         }
 
         String dataSubject = getArguments().getString("Subject");
+        isOpenedExternal = getArguments().getBoolean("External");
         this.subjectEditorPresenter = new SubjectEditorPresenter(this, dataSubject);
 
         return currentFragment;
@@ -127,6 +129,8 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onResume() {
         actionBarChangeListener.setActionBarColor(R.color.background, ActionBarType.STATUS_BAR);
+        actionBarChangeListener.setActionBarColor(R.color.main_color_3, ActionBarType.NAVIGATION_BAR);
+
         super.onResume();
     }
 
@@ -136,7 +140,11 @@ public class SubjectEditorFragment extends Fragment implements AdapterView.OnIte
             saveChanges(focusedRow);
 
         this.subjectEditorPresenter.finishEdit();
-        actionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
+        if(isOpenedExternal){
+            actionBarChangeListener.setActionBarColor(R.color.background, ActionBarType.NAVIGATION_BAR);
+        } else{
+            actionBarChangeListener.setActionBarColor(R.color.dark_blue, ActionBarType.STATUS_BAR);
+        }
         super.onPause();
     }
 

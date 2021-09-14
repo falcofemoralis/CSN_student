@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -60,7 +61,7 @@ public class RegistrationFragment extends Fragment implements RegView, AdapterVi
         this.createClickableSpan();
         currentFragment.findViewById(R.id.activity_registration_bt_register).setOnTouchListener(this);
 
-        regPresenter = new RegPresenter(this);
+        regPresenter = new RegPresenter(this, requireContext());
         this.regPresenter.initSpinnerData();
 
         return currentFragment;
@@ -71,16 +72,17 @@ public class RegistrationFragment extends Fragment implements RegView, AdapterVi
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            transitionDrawable.startTransition(150);
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
+          //  transitionDrawable.startTransition(150);
+          //  view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             EditText nickName = currentFragment.findViewById(R.id.activity_registration_et_nickname);
             EditText password = currentFragment.findViewById(R.id.activity_registration_et_password);
             EditText repeatPassword = currentFragment.findViewById(R.id.activity_registration_et_passwordRe);
 
-            transitionDrawable.reverseTransition(100);
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
+         //   transitionDrawable.reverseTransition(100);
+          //  view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
 
+            changeProgressState(true);
             this.regPresenter.tryRegistration(nickName.getText().toString(), password.getText().toString(), repeatPassword.getText().toString(), this.groupName);
         }
         return false;
@@ -141,12 +143,33 @@ public class RegistrationFragment extends Fragment implements RegView, AdapterVi
     }
 
     @Override
-    public void showToastError(int id) {
-        Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
+    public void showToastError(String error) {
+        changeProgressState(false);
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Смена визуальной загрузки
+     *
+     * @param state - true: загрузка включена
+     */
+    public void changeProgressState(boolean state) {
+        Button registerBtn = currentFragment.findViewById(R.id.activity_registration_bt_register);
+        ProgressBar progressBar = currentFragment.findViewById(R.id.activity_login_pb_loading);
+
+        if (state) {
+            registerBtn.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            registerBtn.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void openMain() {
+        changeProgressState(false);
+
         fragmentListener.onFragmentInteraction(this, new MainFragment(),
                 OnFragmentInteractionListener.Action.NEXT_FRAGMENT_NO_BACK_STACK, null, null);
     }
@@ -184,4 +207,5 @@ public class RegistrationFragment extends Fragment implements RegView, AdapterVi
         progressBarGroups.setVisibility(visibility);
         progressBarCourses.setVisibility(visibility);
     }
+
 }

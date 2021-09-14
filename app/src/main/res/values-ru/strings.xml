@@ -103,4 +103,5 @@
     <string name="test">Зачет</string>
     <string name="exam">Экзамен</string>
     <string name="failed_to_download">Не удалось скачать</string>
+    <string name="open_subject_hint">Сначала войдите во вкладку предметов!</string>
 </resources>

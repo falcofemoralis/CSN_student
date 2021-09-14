@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -188,7 +187,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
             } else if (id == R.id.activity_main_bt_schedule_bell) {
                 nextFragment = new ScheduleBell();
                 logType = LogType.OPENED_BELLS;
-            } else if(id == R.id.activity_main_bt_calculator){
+            } else if (id == R.id.activity_main_bt_calculator) {
                 nextFragment = new GradeCalculatorFragment();
                 logType = LogType.OPENED_GRADE_CALCULATOR;
             }

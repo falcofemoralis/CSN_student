@@ -105,6 +105,13 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             }
         });
 
+        if (getArguments() != null) {
+            String aud = getArguments().getString("Aud");
+            if (aud != null) {
+                findAuditorium(aud);
+            }
+        }
+
         return currentFragment;
     }
 
@@ -144,14 +151,7 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(final String s) {
-                    AuditoriumModel.Auditorium auditorium = auditoriumPresenter.searchAuditorium(s);
-                    LogsManager.getInstance().updateLogs(LogType.SEARCH_ROOM, s);
-
-                    if (auditorium != null)
-                        auditoriumPresenter.changeAuditoriumMap(auditorium, getContext());
-                    else
-                        Toast.makeText(getContext(), R.string.no_auditorium, Toast.LENGTH_SHORT).show();
-
+                    findAuditorium(s);
                     return false;
                 }
 
@@ -162,6 +162,16 @@ public class AuditoriumFragment extends Fragment implements AuditoriumView {
             });
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void findAuditorium(String q) {
+        AuditoriumModel.Auditorium auditorium = auditoriumPresenter.searchAuditorium(q);
+        LogsManager.getInstance().updateLogs(LogType.SEARCH_ROOM, q);
+
+        if (auditorium != null)
+            auditoriumPresenter.changeAuditoriumMap(auditorium, getContext());
+        else
+            Toast.makeText(getContext(), R.string.no_auditorium, Toast.LENGTH_SHORT).show();
     }
 
     @Override

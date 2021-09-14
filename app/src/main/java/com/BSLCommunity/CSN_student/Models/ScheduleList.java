@@ -27,4 +27,6 @@ public class ScheduleList {
     public String type;
     @SerializedName("Groups")
     public String[] groups;
+    @SerializedName("Code_Subject")
+    public int idSubject;
 }

@@ -2,6 +2,11 @@ package com.BSLCommunity.CSN_student.Views.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +21,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
+import com.BSLCommunity.CSN_student.Managers.LogsManager;
+import com.BSLCommunity.CSN_student.Models.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.ScheduleList;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.ScheduleView;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -35,6 +45,7 @@ public class ScheduleFragment extends Fragment implements AdapterView.OnItemSele
     private Spinner spinner; // Спиннер выбора элементов
     private TextView weekTypeView; // Тип недели
     private SchedulePresenter schedulePresenter;
+    private Fragment thisFragment;
 
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
@@ -64,6 +75,8 @@ public class ScheduleFragment extends Fragment implements AdapterView.OnItemSele
         );
         schedulePresenter.initSpinnerData();
         schedulePresenter.initSchedule();
+
+        thisFragment = this;
 
         return currentFragment;
     }
@@ -125,24 +138,84 @@ public class ScheduleFragment extends Fragment implements AdapterView.OnItemSele
         clearSchedule();
 
         for (int i = 0; i < scheduleList.size(); ++i) {
-            ScheduleList list = scheduleList.get(i);
+            final ScheduleList list = scheduleList.get(i);
 
             if (list.half == 2 || list.half == half) {
                 String content;
+                String tmpStr = list.subject + " " + list.type;
 
                 // В зависимости от типа, будет собрана строка для отображения в таблице
                 if (type == ScheduleType.GROUPS) {
-                    content = list.subject + " " + list.type + " (" + list.room + ")";
+                    content = tmpStr + " (" + list.room + ")";
                 } else {
                     StringBuilder groups = new StringBuilder();
                     for (String group : list.groups)
                         groups.append(group).append(" ");
 
-                    content = list.subject + " " + list.type + " (" + list.room + ")\n" + groups;
+                    content = tmpStr + " (" + list.room + ")\n" + groups;
                 }
-                scheduleTextView[list.day - 1][list.pair - 1].setText(content);
+
+                SpannableString ss = new SpannableString(content);
+                ClickableSpan audSpan = new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        openAuditorium(list.room);
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        ds.setColor(0xFF5EE656);
+                    }
+                };
+                ss.setSpan(audSpan, tmpStr.length() + 2, tmpStr.length() + 1 + list.room.length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                if (type == ScheduleType.GROUPS) {
+                    ClickableSpan subjectSpan = new ClickableSpan() {
+                        @Override
+                        public void onClick(@NonNull View widget) {
+                            openSubject(list.idSubject);
+                        }
+
+                        @Override
+                        public void updateDrawState(TextPaint ds) {
+                            super.updateDrawState(ds);
+                            ds.setColor(0xFFFFFFFF);
+                            ds.setUnderlineText(false);
+                        }
+                    };
+                    ss.setSpan(subjectSpan, 0, tmpStr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                scheduleTextView[list.day - 1][list.pair - 1].setText(ss);
+                scheduleTextView[list.day - 1][list.pair - 1].setMovementMethod(LinkMovementMethod.getInstance());
+
             }
         }
+    }
+
+    private void openSubject(int idSubject) {
+        ArrayList<EditableSubject> editableSubjects = UserData.getUserData().editableSubjects;
+        if (editableSubjects != null && editableSubjects.size() > 0) {
+            for (final EditableSubject editableSubject : editableSubjects) {
+                if (editableSubject.idSubject == idSubject) {
+                    Bundle data = new Bundle();
+                    data.putString("Subject", new Gson().toJson(editableSubject));
+                    data.putBoolean("External", true);
+                    LogsManager.getInstance().updateLogs(LogType.OPENED_SUBJECT, String.valueOf(editableSubject.idSubject));
+                    fragmentListener.onFragmentInteraction(thisFragment, new SubjectEditorFragment(),
+                            OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), getString(R.string.open_subject_hint), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openAuditorium(String aud) {
+        Bundle data = new Bundle();
+        data.putString("Aud", aud);
+        fragmentListener.onFragmentInteraction(thisFragment, new AuditoriumFragment(),
+                OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
     }
 
     @Override

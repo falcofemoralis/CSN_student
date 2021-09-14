@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
     LoginPresenter loginPresenter;
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
+    Button loginButton;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,10 +48,10 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
         currentFragment = inflater.inflate(R.layout.fragment_login, container, false);
 
         createClickableSpan();
-        Button loginButton = (Button) currentFragment.findViewById(R.id.activity_login_bt_login);
+        loginButton = (Button) currentFragment.findViewById(R.id.activity_login_bt_login);
         loginButton.setOnTouchListener(this);
 
-        this.loginPresenter = new LoginPresenter(this);
+        this.loginPresenter = new LoginPresenter(this, requireContext());
 
         return currentFragment;
     }
@@ -88,24 +91,50 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
     public boolean onTouch(View view, MotionEvent motionEvent) {
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
-       if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+         //   transitionDrawable.startTransition(150);
+          //  view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        //    transitionDrawable.reverseTransition(100);
+          // view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
+
             EditText nickname = (EditText) currentFragment.findViewById(R.id.activity_login_et_nickname);
             EditText password = (EditText) currentFragment.findViewById(R.id.activity_login_et_password);
 
+            changeProgressState(true);
             this.loginPresenter.tryLogin(nickname.getText().toString(), password.getText().toString());
         }
         return false;
     }
 
     @Override
-    public void showToastError(int id) {
-        Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
+    public void showToastError(String error) {
+        changeProgressState(false);
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void openMain() {
+        changeProgressState(false);
         fragmentListener.onFragmentInteraction(this, new MainFragment(),
                 OnFragmentInteractionListener.Action.NEXT_FRAGMENT_NO_BACK_STACK, null, null);
+    }
+
+    /**
+     * Смена визуальной загрузки
+     *
+     * @param state - true: загрузка включена
+     */
+    public void changeProgressState(boolean state) {
+        ProgressBar progressBar = currentFragment.findViewById(R.id.activity_login_pb_loading);
+
+        if (state) {
+            loginButton.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            loginButton.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }
 

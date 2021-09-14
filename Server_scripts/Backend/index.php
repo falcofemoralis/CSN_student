@@ -8,9 +8,11 @@ require_once "./api/subjectsApi.php";
 require_once "./api/teachersApi.php";
 require_once "./api/usersApi.php";
 require_once "./scripts/token.php";
+include_once "scripts/php/DotEnv.php";
 
 cors();
 
+(new DotEnv('.env'))->load();
 
 DataBase::getConnection();
 

@@ -1,5 +1,7 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
+import android.content.Context;
+
 import com.BSLCommunity.CSN_student.Models.GroupModel;
 import com.BSLCommunity.CSN_student.Models.User;
 import com.BSLCommunity.CSN_student.Models.UserData;
@@ -18,12 +20,14 @@ public class RegPresenter {
     private final GroupModel groupModel; // Модель групп, нужна для получения информации о группах для выбора при регистрации
     private final UserModel userModel; // Модель пользователя, нужна для регистрации
     private final UserData userData;
+    private final Context context;
 
-    public RegPresenter(RegView regView) {
+    public RegPresenter(RegView regView, Context context) {
         this.regView = regView;
         this.groupModel = GroupModel.getGroupModel();
         this.userModel = UserModel.getUserModel();
         this.userData = UserData.getUserData();
+        this.context = context;
     }
 
     /**
@@ -35,9 +39,9 @@ public class RegPresenter {
      */
     public void tryRegistration(String nickname, String password, String confPassword, String groupName) {
         if (!nickname.matches(validRegEx) || !password.matches(validRegEx) || !confPassword.matches(validRegEx)) {
-            this.regView.showToastError(R.string.invalid_data);
+            this.regView.showToastError(context.getString(R.string.invalid_data));
         } else if (!password.equals(confPassword)) {
-            this.regView.showToastError(R.string.passwords_do_not_match);
+            this.regView.showToastError(context.getString(R.string.passwords_do_not_match));
         } else {
             this.userModel.registration(nickname, password, groupName, new ExCallable<User>() {
                 @Override
@@ -52,7 +56,7 @@ public class RegPresenter {
                 @Override
                 public void fail(int idResString) {
                     try {
-                        regView.showToastError(idResString);
+                        regView.showToastError(context.getString(idResString));
                     } catch (Exception ignored) { }
                 }
             });
@@ -87,7 +91,7 @@ public class RegPresenter {
             @Override
             public void fail(int idResString) {
                 try {
-                    regView.showToastError(idResString);
+                    regView.showToastError(context.getString(idResString));
                 } catch (Exception ignored) {
                 }
             }

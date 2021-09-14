@@ -78,7 +78,7 @@ public class GroupModel {
      * @param exCallable - колбек
      */
     public void getGroupNames(final ExCallable<ArrayList<Group>> exCallable) {
-        if (!groups.isEmpty()) {
+        if (groups != null && !groups.isEmpty()) {
             exCallable.call(groups);
             return;
         }

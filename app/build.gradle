@@ -9,8 +9,8 @@ android {
         applicationId "com.BSLCommunity.CSN_student"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 16
-        versionName '3.2.2'
+        versionCode 18
+        versionName '3.2.4-beta'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

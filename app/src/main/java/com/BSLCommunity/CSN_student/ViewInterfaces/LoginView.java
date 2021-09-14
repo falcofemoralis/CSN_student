@@ -3,9 +3,9 @@ package com.BSLCommunity.CSN_student.ViewInterfaces;
 public interface LoginView {
     /**
      * Демонстрация ошибки в тосте
-     * @param id - id текста из ресурсов
+     * @param error - текст
      */
-    void showToastError(int id);
+    void showToastError(String error);
     /**
      * Открытие главного окна приложения после удачной регистрации
      */

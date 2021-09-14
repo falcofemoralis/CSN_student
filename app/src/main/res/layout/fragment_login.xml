@@ -52,15 +52,15 @@
             android:layout_width="100dp"
             android:layout_height="@dimen/auth_button_size"
             android:layout_gravity="center"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_weight="0.65"
             android:background="@drawable/activity_text_style"
             android:hint="@string/enter_nickname"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
-            android:textSize="20sp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"/>
+            android:textSize="20sp" />
 
 
     </LinearLayout>
@@ -120,6 +120,12 @@
             android:text="@string/login"
             android:textColor="#FFFFFFFF"
             android:textSize="@dimen/_18ssp" />
+
+        <ProgressBar
+            android:id="@+id/activity_login_pb_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <Space
             android:layout_width="wrap_content"

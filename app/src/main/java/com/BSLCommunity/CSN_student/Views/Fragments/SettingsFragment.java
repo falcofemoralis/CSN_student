@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Managers.LogsManager;
@@ -26,14 +29,18 @@ import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SettingsView;
 import com.BSLCommunity.CSN_student.Views.MainActivity;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
+import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SettingsFragment extends Fragment implements SettingsView, SettingsDialogEditText.DialogListener, View.OnClickListener {
-    TextView nicknameText, passwordText, groupText, languageText; // поля в которых отображается информация юзера
+    TextView nicknameText, passwordText, groupText; // поля в которых отображается информация юзера
     SettingsPresenter settingsPresenter;
     SettingsDialogEditText settingsDialogEditText;
     ArrayList<View> layouts = new ArrayList<>();
+    SmartMaterialSpinner<String> langSpinner;
+    int check = 0;
 
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
@@ -51,10 +58,8 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
         nicknameText = currentFragment.findViewById(R.id.activity_settings_tv_nickname);
         passwordText = currentFragment.findViewById(R.id.activity_settings_tv_password);
         groupText = currentFragment.findViewById(R.id.activity_settings_tv_group);
-        languageText = currentFragment.findViewById(R.id.activity_settings_tv_language);
         layouts.add(currentFragment.findViewById(R.id.activity_settings_ll_nickname));
         layouts.add(currentFragment.findViewById(R.id.activity_settings_ll_password));
-        layouts.add(currentFragment.findViewById(R.id.activity_settings_ll_language));
 
         // Добавление гитхаб и телеграм профилей
         attachListeners(R.id.activity_settings_bt_dev1_github, R.id.activity_settings_bt_dev1_telegram, "https://github.com/falcofemoralis", "https://t.me/falcofemoralis");
@@ -70,8 +75,54 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
             }
         });
 
+        setChangeSpinner();
+
         this.settingsPresenter = new SettingsPresenter(this);
         return currentFragment;
+    }
+
+    public void setChangeSpinner() {
+        langSpinner = currentFragment.findViewById(R.id.fragment_settings_sp_sort);
+        langSpinner.setItem(Arrays.asList(getResources().getStringArray(R.array.languages)));
+
+        ArrayList<Pair<String, String>> languages = LocaleHelper.getLanguages(App.getApp().context());
+        String lang = LocaleHelper.getLanguage(getContext());
+        for (Pair<String, String> element : languages) {
+            if (element.second.contains(lang)) {
+                final int index = languages.indexOf(element);
+                langSpinner.setSelection(index);
+                langSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d("lang_test", String.valueOf(position));
+
+                        if (++check > 1) {
+                            LogsManager.getInstance().updateLogs(LogType.CHANGED_LANGUAGE);
+                            Log.d("lang_test", "changeLanguage");
+                            settingsPresenter.changeLanguage(position);
+                        } else{
+                            // fix one more call onItemSelected
+                            //2021-09-15 00:07:27.768 22728-22728/com.BSLCommunity.CSN_student D/lang_test: 2
+                            //2021-09-15 00:07:27.769 22728-22728/com.BSLCommunity.CSN_student D/lang_test: changeLanguage
+                            //2021-09-15 00:07:27.770 22728-22728/com.BSLCommunity.CSN_student D/lang_test: updateUI
+                            //2021-09-15 00:07:28.046 22728-22728/com.BSLCommunity.CSN_student D/lang_test: 0 - why ???
+                            //2021-09-15 00:07:28.086 22728-22728/com.BSLCommunity.CSN_student D/lang_test: 2
+                            if(position == 0 && index == 2 || position == 0 && index == 1){
+                                check=0;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                break;
+            }
+        }
+
+
     }
 
     /**
@@ -106,11 +157,6 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
                 this.settingsPresenter.addNewValue(SettingsPresenter.DataKey.Password, text);
             } else if (applyKey == R.id.activity_settings_ll_group) {
                 // TODO смена группы пользователя
-            } else if (applyKey == R.id.activity_settings_ll_language) {
-                LogsManager.getInstance().updateLogs(LogType.CHANGED_LANGUAGE);
-                settingsDialogEditText.dialog.dismiss();
-                this.settingsPresenter.changeLanguage(Integer.parseInt(text));
-                return;
             }
 
             settingsPresenter.updateData();
@@ -145,12 +191,6 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
         groupText.setText(group);
 
         this.settingsDialogEditText = new SettingsDialogEditText(nickName, password);
-
-        for (Pair<String, String> element : languages) {
-            if (element.second.contains(LocaleHelper.getLanguage(getContext()))) {
-                languageText.setText(element.first);
-            }
-        }
     }
 
     /**
@@ -180,10 +220,12 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
 
     @Override
     public void updateUI() {
+        Log.d("lang_test", "updateUI");
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
             Toast.makeText(getContext(), R.string.reload_hint, Toast.LENGTH_SHORT).show();
         } else {
-            getActivity().recreate();
+            requireActivity().recreate();
         }
     }
 

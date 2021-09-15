@@ -146,7 +146,7 @@ public class DataModel {
      *
      * @param exCallable - колбек
      */
-    public void downloadData(final ExCallable<ProgressType> exCallable) {
+    public void downloadData(boolean isGuest, final ExCallable<ProgressType> exCallable) {
         isFailed = false;
         downloadedDataSize = 0;
 
@@ -183,45 +183,51 @@ public class DataModel {
                     });
                     break;
                 case SubjectApi:
-                    SubjectModel.getSubjectModel().getGroupSubjects(UserData.getUserData().user.getGroupId(), new ExCallable<ArrayList<Subject>>() {
-                        @Override
-                        public void call(ArrayList<Subject> data) {
+                    if (!isGuest) {
+                        SubjectModel.getSubjectModel().getGroupSubjects(UserData.getUserData().user.getGroupId(), new ExCallable<ArrayList<Subject>>() {
+                            @Override
+                            public void call(ArrayList<Subject> data) {
 
-                            SubjectModel.getSubjectModel().downloadSubjectImages(new ExCallable<Integer>() {
-                                @Override
-                                public void call(Integer data) {
-                                    Log.d("TEST_API", "DOWNLOADED subjects");
-                                    setSuccess(exCallable);
-                                }
+                                SubjectModel.getSubjectModel().downloadSubjectImages(new ExCallable<Integer>() {
+                                    @Override
+                                    public void call(Integer data) {
+                                        Log.d("TEST_API", "DOWNLOADED subjects");
+                                        setSuccess(exCallable);
+                                    }
 
-                                @Override
-                                public void fail(int idResString) {
-                                    Log.d("TEST_API", "FAILED subjects");
-                                    setFail(exCallable);
-                                }
-                            });
-                        }
+                                    @Override
+                                    public void fail(int idResString) {
+                                        Log.d("TEST_API", "FAILED subjects");
+                                        setFail(exCallable);
+                                    }
+                                });
+                            }
 
-                        @Override
-                        public void fail(int idResString) {
-                            setFail(exCallable);
-                        }
-                    });
+                            @Override
+                            public void fail(int idResString) {
+                                setFail(exCallable);
+                            }
+                        });
+                    }
+                    setSuccess(exCallable);
                     break;
                 case UserApi:
-                    UserModel.getUserModel().downloadRating(UserData.getUserData().user.getToken(), new ExCallable<Void>() {
-                        @Override
-                        public void call(Void data) {
-                            Log.d("TEST_API", "DOWNLOADED rating");
-                            setSuccess(exCallable);
-                        }
+                    if (!isGuest) {
+                        UserModel.getUserModel().downloadRating(UserData.getUserData().user.getToken(), new ExCallable<Void>() {
+                            @Override
+                            public void call(Void data) {
+                                Log.d("TEST_API", "DOWNLOADED rating");
+                                setSuccess(exCallable);
+                            }
 
-                        @Override
-                        public void fail(int idResString) {
-                            Log.d("TEST_API", "FAILED rating");
-                            setFail(exCallable);
-                        }
-                    });
+                            @Override
+                            public void fail(int idResString) {
+                                Log.d("TEST_API", "FAILED rating");
+                                setFail(exCallable);
+                            }
+                        });
+                    }
+                    setSuccess(exCallable);
                     break;
             }
         }

@@ -17,12 +17,12 @@ public class User {
     private String token;
 
     public User() {
-        this.nickName = null;
-        this.password = null;
+        this.nickName = "";
+        this.password = "";
         this.groupId = -1;
-        this.groupName = null;
+        this.groupName = "";
         this.course = -1;
-        this.token = null;
+        this.token = "";
     }
 
     public String getNickName() {

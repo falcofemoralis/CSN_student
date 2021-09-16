@@ -47,6 +47,7 @@ public class UserData {
 
     public User user;
     public ArrayList<EditableSubject> editableSubjects;
+    public ArrayList<AchievementsModel.Achievement> achievements;
 
     private UserData() {
     }

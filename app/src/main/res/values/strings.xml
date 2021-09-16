@@ -107,5 +107,6 @@
     <string name="test">Test</string>
     <string name="exam">Exam</string>
     <string name="open_subject_hint">First enter the subjects tab!</string>
+    <string name="achievements">Achievements</string>
 </resources>
 

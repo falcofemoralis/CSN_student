@@ -94,7 +94,6 @@ public class DataModel {
                     if (isOld)
                         exCallable.call(CacheStatusType.CACHE_NEED_UPDATE);
                     Log.d("CACHE_API", "update?" + isOld);
-
                 }
 
                 @Override

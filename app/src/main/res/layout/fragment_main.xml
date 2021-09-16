@@ -294,16 +294,18 @@
                     android:layout_weight="1.7" />
 
                 <Button
-                    android:visibility="invisible"
+                    android:id="@+id/activity_main_bt_achievements"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:background="@drawable/activity_button"
+                    android:drawableTop="@drawable/ic_achievements"
                     android:elevation="10dp"
                     android:paddingTop="40dp"
                     android:paddingBottom="10dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/settings"
+                    android:text="@string/achievements"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp" />

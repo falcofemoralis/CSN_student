@@ -190,6 +190,9 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
             } else if (id == R.id.activity_main_bt_calculator) {
                 nextFragment = new GradeCalculatorFragment();
                 logType = LogType.OPENED_GRADE_CALCULATOR;
+            } else if (id == R.id.activity_main_bt_achievements) {
+                nextFragment = new AchievementsFragment();
+                logType = LogType.OPENED_ACHIEVEMENTS;
             }
 
             LogsManager.getInstance().updateLogs(logType, logInfo);

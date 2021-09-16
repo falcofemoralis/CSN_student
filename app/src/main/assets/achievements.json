@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Встретить Dungeon master",
+    "info": "Попасть на ТЕМК",
+    "completed": false
+  },
+  {
+    "name": "Не стать fucking slave",
+    "info": "Пройти без взятки ТЕМК",
+    "completed": false
+  },
+  {
+    "name": "Опаздун",
+    "info": "Опоздать на пару",
+    "completed": false
+  }
+]

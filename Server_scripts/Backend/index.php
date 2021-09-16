@@ -8,11 +8,9 @@ require_once "./api/subjectsApi.php";
 require_once "./api/teachersApi.php";
 require_once "./api/usersApi.php";
 require_once "./scripts/token.php";
-include_once "scripts/php/DotEnv.php";
+require_once "./api/achievementsApi.php";
 
 cors();
-
-(new DotEnv('.env'))->load();
 
 DataBase::getConnection();
 
@@ -51,10 +49,12 @@ $router['GET'] = [
     '/\/api\/users\/course\/(\d+)/' => ['usersViewByCourse'],
     '/\/api\/users\/logs\/(\d+)/' => ['getUserLogs'],
     '/\/api\/users\/rating/' => ['getUserRating'],
+    '/\/api\/users\/achievements/' => ['getUserAchievements'],
     '/\/api\/users\/(\d+)/' => ['userViewById'],
     '/\/api\/cache\/check/' => ['checkCacheFile'],
     '/\/api\/cache\/download/' => ['getCacheFile'],
-    '/\/secret_panel/' => ['getSecretPanel']
+    '/\/api\/achievements\/all/' => ['getAchievements'],
+    '/\/ne_lez_ona_tebya_sozhret/' => ['getSecretPanel']
 ];
 $router['POST'] = [
     '/\/schedule\/upload/' => ['convertFile'],
@@ -63,6 +63,7 @@ $router['POST'] = [
 ];
 $router['PUT'] = [
     '/\/api\/users\/rating/' => ['updateUserRating'],
+    '/\/api\/users\/achievements/' => ['updateUserAchievements'],
     '/\/schedule\/new/' => ['processSchedule'],
     '/\/api\/cache\/recreate/' => ['updateCacheFile'],
     '/\/api\/users\/opens/' => ['updateUserOpen'],

@@ -5,7 +5,7 @@ function createCacheFile()
 {
     global $cacheFile;
     $cache = array();
-    $apis = ['groupsApi', 'subjectsApi', 'teachersApi'];
+    $apis = ['groupsApi', 'subjectsApi', 'teachersApi', 'achievementApi'];
 
     $cache['creationTime'] = time();
 

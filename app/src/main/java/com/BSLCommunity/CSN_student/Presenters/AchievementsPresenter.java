@@ -1,42 +1,64 @@
 package com.BSLCommunity.CSN_student.Presenters;
 
-import android.content.Context;
-
 import com.BSLCommunity.CSN_student.Models.AchievementsModel;
+import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.ViewInterfaces.AchievementsView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class AchievementsPresenter {
     private final AchievementsView achievementsView;
     private final AchievementsModel achievementsModel;
-    private ArrayList<AchievementsModel.Achievement> achievements;
+    private final UserData userData;
 
-    public AchievementsPresenter(AchievementsView achievementsView, Context context) {
+    public AchievementsPresenter(AchievementsView achievementsView) {
         this.achievementsView = achievementsView;
-        this.achievementsModel = new AchievementsModel(context);
+        this.achievementsModel = AchievementsModel.getAchievementsModel();
+        this.userData = UserData.getUserData();
     }
 
     public void initAchievements() {
-        achievements = new ArrayList<>();
-        Collections.addAll(achievements, achievementsModel.achievements);
-        achievementsView.setAchievements(achievements);
-
+        if(userData.userAchievements == null){
+            userData.userAchievements  = new ArrayList<>();
+        }
+        achievementsView.setAchievements(achievementsModel.achievements);
         calculateCompleted();
     }
 
     public void calculateCompleted() {
         int completedCount = 0;
-
-        for (AchievementsModel.Achievement achievement : achievements) {
-            if (achievement.completed) {
+        for (AchievementsModel.UserAchievement achievement : userData.userAchievements) {
+            if (achievement.isCompleted) {
                 completedCount++;
             }
         }
 
-        achievementsView.updateProgress(completedCount, achievements.size());
+        achievementsView.updateProgress(completedCount, achievementsModel.achievements.size());
     }
 
-   // public void setCompleted()
+    public void save() {
+        UserData.getUserData().saveData();
+    }
+
+    public AchievementsModel.UserAchievement findUserAchievementById(int id) {
+        for (AchievementsModel.UserAchievement achievement : userData.userAchievements) {
+            if (achievement.id == id) {
+                return achievement;
+            }
+        }
+
+        return new AchievementsModel.UserAchievement(id, false);
+    }
+
+    public AchievementsModel.UserAchievement updateUserAchievement(AchievementsModel.UserAchievement userAchievement) {
+        userAchievement.isCompleted = !userAchievement.isCompleted;
+
+        for (AchievementsModel.UserAchievement lua : userData.userAchievements) {
+            if (lua.id == userAchievement.id) {
+                return userAchievement;
+            }
+        }
+        userData.userAchievements.add(userAchievement);
+        return userAchievement;
+    }
 }

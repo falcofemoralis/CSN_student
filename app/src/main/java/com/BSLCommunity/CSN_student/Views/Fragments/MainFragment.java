@@ -43,16 +43,16 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener onFragmentActionBarChangeListener;
 
-    private boolean isGuestMode = true;
+    private boolean isGuestMode = false;
     private final HashMap<Integer, Boolean> guestAccess = new HashMap<Integer, Boolean>() {{
         put(R.id.activity_main_bt_settings, true);
         put(R.id.activity_main_bt_auditorium, true);
         put(R.id.activity_main_bt_lessonsShedule, true);
         put(R.id.activity_main_bt_teachersSchedule, true);
         put(R.id.activity_main_bt_schedule_bell, true);
-
         put(R.id.activity_main_bt_subjects, false);
         put(R.id.activity_main_bt_calculator, false);
+        put(R.id.activity_main_bt_achievements, false);
     }};
 
     @Override
@@ -169,9 +169,6 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-
-
-
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {

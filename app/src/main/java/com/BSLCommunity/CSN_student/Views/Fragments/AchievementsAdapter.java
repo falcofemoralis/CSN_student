@@ -40,14 +40,14 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
         final AchievementsModel.Achievement achievement = achievements.get(position);
         holder.achievementName.setText(achievement.name);
         holder.achievementInfo.setText(achievement.info);
-        setLayoutColor(holder, achievement.completed);
+        final AchievementsModel.UserAchievement userAchievement = achievementsPresenter.findUserAchievementById(achievement.id);
+        setLayoutColor(holder, userAchievement.isCompleted);
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                achievement.completed = !achievement.completed;
-                achievementsPresenter.calculateCompleted();
-                setLayoutColor(holder, achievement.completed);
+                achievementsPresenter.updateUserAchievement(userAchievement);
+                setLayoutColor(holder, userAchievement.isCompleted);
             }
         });
     }

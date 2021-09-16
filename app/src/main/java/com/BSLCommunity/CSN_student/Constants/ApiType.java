@@ -4,5 +4,6 @@ public enum ApiType {
     GroupApi,
     SubjectApi,
     TeacherApi,
-    UserApi
+    UserApi,
+    AchievementApi
 }

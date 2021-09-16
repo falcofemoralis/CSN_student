@@ -94,11 +94,11 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            transitionDrawable.startTransition(150);
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
+            //      transitionDrawable.startTransition(150);
+            //       view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            transitionDrawable.reverseTransition(100);
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
+            //       transitionDrawable.reverseTransition(100);
+            //       view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
 
             if (view.getId() == R.id.activity_login_bt_guest) {
                 this.loginPresenter.loginAsGuest();
@@ -134,13 +134,16 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
      */
     public void changeProgressState(boolean state) {
         ProgressBar progressBar = currentFragment.findViewById(R.id.activity_login_pb_loading);
+        Button guestBtn = currentFragment.findViewById(R.id.activity_login_bt_guest);
 
         if (state) {
             loginButton.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
+            guestBtn.setVisibility(View.GONE);
         } else {
             loginButton.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
+            guestBtn.setVisibility(View.VISIBLE);
         }
     }
 }

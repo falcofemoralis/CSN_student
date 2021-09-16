@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal';
 import './Users.css';
+import { ServiceData } from '../Services/ServiceData';
 
 export default class Users extends Component {
 
@@ -11,12 +12,12 @@ export default class Users extends Component {
                 "Сменил состояние работы", "Удалил работу", "Изменил ценность предмета", "Открыл полную статистику", "Открыл расписание звонков", "Открыл поиск адутории",
                 "Сделал поиск комнаты", "Сменил вкладку корпуса", "Сменил вкладку этажа", "Открыл калькулятор рейтинга", "Расчитал рейтинг", "Открыл подсказку калькулятора",
                 "Открыл найстроки", "Сменил никнейм", "Сменил пароль", "Сменил язык", "Открыл профиль гитхаб", "Открыл профиль телеграм"],
-                subjects: []
+            subjects: []
         };
     }
 
     componentDidMount() {
-        fetch('http://f0513611.xsph.ru/api/users/all', {
+        fetch(ServiceData.DOMAIN + '/api/users/all', {
             method: 'GET'
         }).then(response => {
             if (response.ok) {
@@ -25,8 +26,8 @@ export default class Users extends Component {
                 });
             }
         });
-        
-        fetch(`http://f0513611.xsph.ru/api/subjects/shortAll`, {
+
+        fetch(ServiceData.DOMAIN + `/api/subjects/shortAll`, {
             method: 'GET'
         }).then(response => {
             if (response.ok) {
@@ -38,7 +39,7 @@ export default class Users extends Component {
     }
 
     getUserLogs(userId) {
-        fetch(`http://f0513611.xsph.ru/api/users/logs/${userId}`, {
+        fetch(ServiceData.DOMAIN + `/api/users/logs/${userId}`, {
             method: 'GET'
         }).then(response => {
             if (response.ok) {
@@ -61,30 +62,30 @@ export default class Users extends Component {
                 return "Расписание учителей";
             }
         }
-        else if(logType === "5"){
-           return this.getSubjectsName(logInfo);
-        } else{
+        else if (logType === "5") {
+            return this.getSubjectsName(logInfo);
+        } else {
             return logInfo;
         }
     }
 
-    getSubjectsName(id){
+    getSubjectsName(id) {
         console.log(this.state.subjects);
-        if(this.state.subjects.length > 0){
+        if (this.state.subjects.length > 0) {
             const subjects = this.state.subjects;
-            for(let i=0; i < subjects.length; ++i){
-                if(subjects[i].id == id){
+            for (let i = 0; i < subjects.length; ++i) {
+                if (subjects[i].id == id) {
                     console.log(subjects[i]);
                     return JSON.parse(subjects[i].SubjectName).ru;
                 }
             }
-        } 
+        }
     }
 
 
     convertTime(unix) {
         const date = new Date(parseInt(unix));
-        return date.toLocaleString("ru-RU", { timesoze: "Ukraine/Kiev"});
+        return date.toLocaleString("ru-RU", { timesoze: "Ukraine/Kiev" });
     }
 
     render() {
@@ -117,7 +118,7 @@ export default class Users extends Component {
                         {this.state.userlogs.map((userlog, index) =>
                             <li className="users__list-item" key={index}>
                                 <p className="users__list-item-name table-text log__item">{this.state.logTypesTexts[userlog.LogType]}</p>
-                                <p className="users__list-item-opens table-text log__item">{ this.convertLogInfo(userlog.LogType, userlog.Info)}</p>
+                                <p className="users__list-item-opens table-text log__item">{this.convertLogInfo(userlog.LogType, userlog.Info)}</p>
                                 <p className="users__list-item-opens table-text log__item">{this.convertTime(userlog.PerformedOn)
                                 }</p>
                             </li>

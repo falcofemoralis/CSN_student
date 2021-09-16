@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import Users from '../Users/Users';
 import './App.css';
+import { ServiceData } from '../Services/ServiceData';
 
 export default class App extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class App extends Component {
    * @param {*} data - данные
    */
   HTTPRequest(url, method, data = null) {
-    fetch('http://f0513611.xsph.ru' + url, {
+    fetch(ServiceData.DOMAIN + url, {
       method: method,
       body: data
     }).then(response => {

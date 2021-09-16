@@ -128,6 +128,15 @@ public class GroupModel {
         });
     }
 
+    public ArrayList<String>  getAllGroupsName() {
+        ArrayList<String> grOnCourse = new ArrayList<>();
+        for (int i = 0; i < groups.size(); ++i) {
+            grOnCourse.add(groups.get(i).groupName);
+        }
+
+        return grOnCourse;
+    }
+
     /**
      * Получение групп по курсу
      *

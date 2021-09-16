@@ -54,11 +54,16 @@ public class SchedulePresenter {
         ArrayList<String> entities;
 
         if (type == ScheduleType.GROUPS) {
-            entities = groupModel.getGroupsOnCourse(userData.user.getCourse());
-            for (int i = 0; i < entities.size(); ++i) {
-                if (entities.get(i).equals(userData.user.getGroupName())) {
-                    defaultItem = i;
-                    break;
+            if (userData.isGuest) {
+                entities = groupModel.getAllGroupsName();
+                defaultItem = 0;
+            } else {
+                entities = groupModel.getGroupsOnCourse(userData.user.getCourse());
+                for (int i = 0; i < entities.size(); ++i) {
+                    if (entities.get(i).equals(userData.user.getGroupName())) {
+                        defaultItem = i;
+                        break;
+                    }
                 }
             }
         } else {
@@ -84,10 +89,16 @@ public class SchedulePresenter {
      * Инициализация расписания при загрузке
      */
     public void initSchedule() {
-        if (type == ScheduleType.GROUPS)
-            scheduleList = groupModel.findById(userData.user.getGroupId()).scheduleList;
-        else
+        if (type == ScheduleType.GROUPS) {
+            if (userData.isGuest) {
+                scheduleList = groupModel.findById(GroupModel.groups.get(0).id).scheduleList;
+            } else {
+                scheduleList = groupModel.findById(userData.user.getGroupId()).scheduleList;
+            }
+        }
+        else {
             scheduleList = teacherModel.findById(1).scheduleList;
+        }
 
         // Установка числителя по стандарту
         // TODO сделать определение числителя и знаменателя
@@ -95,7 +106,6 @@ public class SchedulePresenter {
             updateSchedule(scheduleList, 0);
         else
             scheduleView.showToastError();
-
     }
 
     /**

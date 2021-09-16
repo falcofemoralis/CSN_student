@@ -23,24 +23,29 @@ public class MainPresenter {
      * Проверка авторизации пользователя. Также идет проверка кеш файла, в случае его обновления, данные будут перекачены.
      */
     public void checkAuth() {
-        if (this.userData.user.getToken() != null) {
-            mainView.initFragment(this.userData.user.getGroupName(), this.userData.user.getCourse());
-            dataModel.checkCache(new ExCallable<CacheStatusType>() {
-                @Override
-                public void call(CacheStatusType cacheStatus) {
-                    if (cacheStatus == CacheStatusType.NO_CACHE || cacheStatus == CacheStatusType.CACHE_NEED_UPDATE) {
-                        initDownload();
-                    }
-                }
-
-                @Override
-                public void fail(int idResString) {
-                }
-            });
-            userData.setUserOpens();
-        } else {
+        if (!this.userData.isGuest && this.userData.user.getToken() == null) {
             mainView.openLogin();
+            return;
         }
+
+        if (this.userData.isGuest) {
+            mainView.setGuestMode();
+        }
+        mainView.initFragment(this.userData.user.getGroupName(), this.userData.user.getCourse());
+        userData.setUserOpens();
+
+        dataModel.checkCache(new ExCallable<CacheStatusType>() {
+            @Override
+            public void call(CacheStatusType cacheStatus) {
+                if (cacheStatus == CacheStatusType.NO_CACHE || cacheStatus == CacheStatusType.CACHE_NEED_UPDATE) {
+                    initDownload();
+                }
+            }
+
+            @Override
+            public void fail(int idResString) {
+            }
+        });
     }
 
     /**
@@ -67,7 +72,7 @@ public class MainPresenter {
     public void tryDownload() {
         mainView.showProgressDialog(-1);
 
-        dataModel.downloadData(new ExCallable<ProgressType>() {
+        dataModel.downloadData(UserData.getUserData().isGuest, new ExCallable<ProgressType>() {
             @Override
             public void call(ProgressType data) {
                 if (data == ProgressType.SET_OK) dataModel.save();

@@ -30,7 +30,8 @@ public class UserData {
         GROUP("group"),
         GROUP_ID("group_id"),
         COURSE("course"),
-        TOKEN("token");
+        TOKEN("token"),
+        IS_GUEST("is_guest");
 
         private String value;
 
@@ -46,6 +47,7 @@ public class UserData {
     public transient SharedPreferences encryptedSharedPreferences;
 
     public User user;
+    public boolean isGuest = false;
     public ArrayList<EditableSubject> editableSubjects;
     public ArrayList<AchievementsModel.Achievement> achievements;
 
@@ -75,6 +77,7 @@ public class UserData {
             this.user.setGroupName(pref.getString(PrefKeys.GROUP.getKey(), null));
             this.user.setCourse(pref.getInt(PrefKeys.COURSE.getKey(), -1));
             this.user.setToken(pref.getString(PrefKeys.TOKEN.getKey(), null));
+            this.isGuest = pref.getBoolean(PrefKeys.IS_GUEST.getKey(), false);
         } catch (Exception ignored) {
             this.user = new User();
         }
@@ -171,6 +174,7 @@ public class UserData {
         prefEditor.putInt(PrefKeys.GROUP_ID.getKey(), this.user.getGroupId());
         prefEditor.putInt(PrefKeys.COURSE.getKey(), this.user.getCourse());
         prefEditor.putString(PrefKeys.TOKEN.getKey(), this.user.getToken());
+        prefEditor.putBoolean(PrefKeys.IS_GUEST.getKey(), this.isGuest);
         prefEditor.apply();
 
         if (editableSubjects != null) {
@@ -198,6 +202,8 @@ public class UserData {
      * Удаление всех данных на устройстве
      */
     public void clearData() {
+        isGuest = false;
+        user = null;
         encryptedSharedPreferences.edit().clear().apply();
         FileManager.getFileManager(App.getApp().context()).deleteAllFiles();
     }

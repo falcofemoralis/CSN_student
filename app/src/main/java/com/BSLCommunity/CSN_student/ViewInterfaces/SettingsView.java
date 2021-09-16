@@ -1,9 +1,5 @@
 package com.BSLCommunity.CSN_student.ViewInterfaces;
 
-import android.util.Pair;
-
-import java.util.ArrayList;
-
 public interface SettingsView {
     /**
      * Демонстрация ошибки в тосте
@@ -43,4 +39,6 @@ public interface SettingsView {
      * @param password - password
      */
     void updateData(String nickName, String password);
+
+    void setGuestMode();
 }

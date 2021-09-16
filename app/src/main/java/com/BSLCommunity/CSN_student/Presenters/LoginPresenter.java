@@ -58,4 +58,10 @@ public class LoginPresenter {
             });
         }
     }
+
+    public void loginAsGuest() {
+        userData.isGuest = true;
+        userData.setUser(new User());
+        loginView.openMain();
+    }
 }

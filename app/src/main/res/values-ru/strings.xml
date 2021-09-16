@@ -106,4 +106,6 @@
     <string name="open_subject_hint">Сначала войдите во вкладку предметов!</string>
     <string name="schedule_break">Перерыв</string>
     <string name="achievements">Достижения</string>
+    <string name="guest">Войти как гость</string>
+    <string name="you_must_be_registered">Вы должны зарегистрироваться</string>
 </resources>

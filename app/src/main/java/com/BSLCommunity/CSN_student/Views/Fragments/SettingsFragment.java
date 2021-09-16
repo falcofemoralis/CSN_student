@@ -200,6 +200,12 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
         settingsDialogEditText.updateData(nickName, password);
     }
 
+    @Override
+    public void setGuestMode() {
+        currentFragment.findViewById(R.id.activity_settings_ll_nickname).setVisibility(View.GONE);
+        currentFragment.findViewById(R.id.activity_settings_ll_password).setVisibility(View.GONE);
+    }
+
     /**
      * @see SettingsView
      */

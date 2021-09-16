@@ -22,4 +22,6 @@ public interface MainView {
      * Управление диалогом загрузки
      */
     void controlProgressDialog(ProgressType type, boolean isFirst);
+
+    void setGuestMode();
 }

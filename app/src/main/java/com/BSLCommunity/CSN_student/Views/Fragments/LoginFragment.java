@@ -34,6 +34,7 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
     View currentFragment;
     OnFragmentInteractionListener fragmentListener;
     Button loginButton;
+    Button guestLoginBt;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,6 +50,8 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
         createClickableSpan();
         loginButton = (Button) currentFragment.findViewById(R.id.activity_login_bt_login);
         loginButton.setOnTouchListener(this);
+        guestLoginBt = (Button) currentFragment.findViewById(R.id.activity_login_bt_guest);
+        guestLoginBt.setOnTouchListener(this);
 
         this.loginPresenter = new LoginPresenter(this, requireContext());
 
@@ -91,18 +94,23 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
         TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
 
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-         //   transitionDrawable.startTransition(150);
-          //  view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
+            transitionDrawable.startTransition(150);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-        //    transitionDrawable.reverseTransition(100);
-          // view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
+            transitionDrawable.reverseTransition(100);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
 
-            EditText nickname = (EditText) currentFragment.findViewById(R.id.activity_login_et_nickname);
-            EditText password = (EditText) currentFragment.findViewById(R.id.activity_login_et_password);
+            if (view.getId() == R.id.activity_login_bt_guest) {
+                this.loginPresenter.loginAsGuest();
+            } else if (view.getId() == R.id.activity_login_bt_login) {
+                EditText nickname = (EditText) currentFragment.findViewById(R.id.activity_login_et_nickname);
+                EditText password = (EditText) currentFragment.findViewById(R.id.activity_login_et_password);
 
-            changeProgressState(true);
-            this.loginPresenter.tryLogin(nickname.getText().toString(), password.getText().toString());
+                changeProgressState(true);
+                this.loginPresenter.tryLogin(nickname.getText().toString(), password.getText().toString());
+            }
         }
+
         return false;
     }
 

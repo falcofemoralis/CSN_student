@@ -36,6 +36,9 @@ public class SettingsPresenter {
         dataToUpdate.put(DataKey.NickName.toString(), this.userData.user.getNickName());
         dataToUpdate.put(DataKey.Password.toString(), this.userData.user.getPassword());
 
+        if (userData.isGuest) {
+            settingsView.setGuestMode();
+        }
         settingsView.setDataToSettings(this.userData.user.getNickName(), this.userData.user.getPassword(), this.userData.user.getGroupName());
     }
 

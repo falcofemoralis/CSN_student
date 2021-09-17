@@ -8,6 +8,7 @@ import com.BSLCommunity.CSN_student.Constants.ApiType;
 import com.BSLCommunity.CSN_student.Constants.CacheStatusType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
+import com.BSLCommunity.CSN_student.Models.Entity.Subject;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;

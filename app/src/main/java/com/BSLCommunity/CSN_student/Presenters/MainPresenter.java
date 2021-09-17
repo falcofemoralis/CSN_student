@@ -28,10 +28,11 @@ public class MainPresenter {
             return;
         }
 
+        mainView.initFragment(this.userData.user.getGroupName(), this.userData.user.getCourse());
         if (this.userData.isGuest) {
             mainView.setGuestMode();
         }
-        mainView.initFragment(this.userData.user.getGroupName(), this.userData.user.getCourse());
+
         userData.setUserOpens();
 
         dataModel.checkCache(new ExCallable<CacheStatusType>() {

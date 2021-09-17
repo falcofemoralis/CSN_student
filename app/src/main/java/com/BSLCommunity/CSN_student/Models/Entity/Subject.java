@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student.Models;
+package com.BSLCommunity.CSN_student.Models.Entity;
 
 import android.content.Context;
 import android.graphics.Bitmap;

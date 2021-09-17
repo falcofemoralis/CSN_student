@@ -1,7 +1,7 @@
 package com.BSLCommunity.CSN_student.APIs;
 
-import com.BSLCommunity.CSN_student.Models.EditableSubject;
-import com.BSLCommunity.CSN_student.Models.User;
+import com.BSLCommunity.CSN_student.Models.Entity.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Entity.User;
 import com.BSLCommunity.CSN_student.Models.UserLog;
 import com.google.gson.JsonObject;
 

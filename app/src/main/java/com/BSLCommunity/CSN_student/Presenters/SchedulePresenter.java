@@ -6,7 +6,7 @@ import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
 import com.BSLCommunity.CSN_student.Managers.LogsManager;
 import com.BSLCommunity.CSN_student.Models.GroupModel;
-import com.BSLCommunity.CSN_student.Models.ScheduleList;
+import com.BSLCommunity.CSN_student.Models.Entity.ScheduleList;
 import com.BSLCommunity.CSN_student.Models.TeacherModel;
 import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.ViewInterfaces.ScheduleView;

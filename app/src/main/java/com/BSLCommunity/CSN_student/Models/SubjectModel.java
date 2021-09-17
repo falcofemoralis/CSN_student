@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.BSLCommunity.CSN_student.APIs.SubjectApi;
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
+import com.BSLCommunity.CSN_student.Models.Entity.Subject;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.Gson;

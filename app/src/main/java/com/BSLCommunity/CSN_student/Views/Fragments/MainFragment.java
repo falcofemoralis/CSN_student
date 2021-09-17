@@ -3,13 +3,11 @@ package com.BSLCommunity.CSN_student.Views.Fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -24,15 +22,17 @@ import com.BSLCommunity.CSN_student.Constants.LogType;
 import com.BSLCommunity.CSN_student.Constants.ProgressType;
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
 import com.BSLCommunity.CSN_student.Managers.LogsManager;
-import com.BSLCommunity.CSN_student.Models.Timer;
+import com.BSLCommunity.CSN_student.Models.Entity.Timer;
 import com.BSLCommunity.CSN_student.Presenters.MainPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.MainView;
 import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
+import com.BSLCommunity.CSN_student.Views.decorators.AnimOnTouchListener;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class MainFragment extends Fragment implements View.OnTouchListener, MainView, Timer.ITimer {
     private MainPresenter mainPresenter;
@@ -43,7 +43,6 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
     OnFragmentInteractionListener fragmentListener;
     OnFragmentActionBarChangeListener onFragmentActionBarChangeListener;
 
-    private boolean isGuestMode = true;
     private final HashMap<Integer, Boolean> guestAccess = new HashMap<Integer, Boolean>() {{
         put(R.id.activity_main_bt_settings, true);
         put(R.id.activity_main_bt_auditorium, true);
@@ -89,8 +88,8 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         LinearLayout linearLayout = currentFragment.findViewById(R.id.activity_main_ll_main);
         for (int i = 5; i < linearLayout.getChildCount(); i += 2) {
             TableRow tableRow = (TableRow) linearLayout.getChildAt(i);
-            tableRow.getChildAt(0).setOnTouchListener(this);
-            tableRow.getChildAt(2).setOnTouchListener(this);
+            tableRow.getChildAt(0).setOnTouchListener(new AnimOnTouchListener(this));
+            tableRow.getChildAt(2).setOnTouchListener(new AnimOnTouchListener(this));
         }
 
         // Установка текстовых полей (группы и курса)
@@ -156,9 +155,20 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
 
     @Override
     public void setGuestMode() {
-        isGuestMode = true;
         currentFragment.findViewById(R.id.activity_main_tv_course).setVisibility(View.GONE);
         currentFragment.findViewById(R.id.activity_main_tv_group).setVisibility(View.GONE);
+
+        for (Map.Entry<Integer, Boolean> item : guestAccess.entrySet()) {
+            if (!item.getValue()) {
+                currentFragment.findViewById(item.getKey()).setOnTouchListener(new AnimOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        Toast.makeText(getContext(), R.string.you_must_be_registered, Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                }));
+            }
+        }
     }
 
     @Override
@@ -169,68 +179,46 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        Fragment nextFragment = null;
+        int id = view.getId();
 
+        Bundle data = null;
+        LogType logType = null;
+        String logInfo = null;
 
-
-        TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
-
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            transitionDrawable.startTransition(150);
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            transitionDrawable.reverseTransition(100);
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
-
-            if (isGuestMode && guestAccess.get(view.getId()) != null && !guestAccess.get(view.getId())) {
-                Toast.makeText(getContext(), R.string.you_must_be_registered, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-
-            Fragment nextFragment = null;
-            int id = view.getId();
-
-            Bundle data = null;
-            LogType logType = null;
-            String logInfo = null;
-
-            if (id == R.id.activity_main_bt_subjects) {
-                nextFragment = new SubjectListFragment();
-                logType = LogType.OPENED_SUBJECTS;
-            } else if (id == R.id.activity_main_bt_auditorium) {
-                nextFragment = new AuditoriumFragment();
-                logType = LogType.OPENED_AUDS;
-            } else if (id == R.id.activity_main_bt_lessonsShedule) {
-                nextFragment = new ScheduleFragment();
-                data = new Bundle();
-                int scheduleType = ScheduleType.GROUPS.ordinal();
-                data.putInt("ScheduleType", scheduleType);
-                logType = LogType.OPENED_SCHEDULE;
-                logInfo = String.valueOf(scheduleType);
-            } else if (id == R.id.activity_main_bt_settings) {
-                nextFragment = new SettingsFragment();
-                logType = LogType.OPENED_SETTINGS;
-            } else if (id == R.id.activity_main_bt_teachersSchedule) {
-                nextFragment = new ScheduleFragment();
-                data = new Bundle();
-                int scheduleType = ScheduleType.TEACHERS.ordinal();
-                data.putInt("ScheduleType", scheduleType);
-                logType = LogType.OPENED_SCHEDULE;
-                logInfo = String.valueOf(scheduleType);
-            } else if (id == R.id.activity_main_bt_schedule_bell) {
-                nextFragment = new ScheduleBell();
-                logType = LogType.OPENED_BELLS;
-            } else if (id == R.id.activity_main_bt_calculator) {
-                nextFragment = new GradeCalculatorFragment();
-                logType = LogType.OPENED_GRADE_CALCULATOR;
-            }
-
-            LogsManager.getInstance().updateLogs(logType, logInfo);
-            fragmentListener.onFragmentInteraction(this, nextFragment, OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
-            transitionDrawable.reverseTransition(100);
-            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
+        if (id == R.id.activity_main_bt_subjects) {
+            nextFragment = new SubjectListFragment();
+            logType = LogType.OPENED_SUBJECTS;
+        } else if (id == R.id.activity_main_bt_auditorium) {
+            nextFragment = new AuditoriumFragment();
+            logType = LogType.OPENED_AUDS;
+        } else if (id == R.id.activity_main_bt_lessonsShedule) {
+            nextFragment = new ScheduleFragment();
+            data = new Bundle();
+            int scheduleType = ScheduleType.GROUPS.ordinal();
+            data.putInt("ScheduleType", scheduleType);
+            logType = LogType.OPENED_SCHEDULE;
+            logInfo = String.valueOf(scheduleType);
+        } else if (id == R.id.activity_main_bt_settings) {
+            nextFragment = new SettingsFragment();
+            logType = LogType.OPENED_SETTINGS;
+        } else if (id == R.id.activity_main_bt_teachersSchedule) {
+            nextFragment = new ScheduleFragment();
+            data = new Bundle();
+            int scheduleType = ScheduleType.TEACHERS.ordinal();
+            data.putInt("ScheduleType", scheduleType);
+            logType = LogType.OPENED_SCHEDULE;
+            logInfo = String.valueOf(scheduleType);
+        } else if (id == R.id.activity_main_bt_schedule_bell) {
+            nextFragment = new ScheduleBell();
+            logType = LogType.OPENED_BELLS;
+        } else if (id == R.id.activity_main_bt_calculator) {
+            nextFragment = new GradeCalculatorFragment();
+            logType = LogType.OPENED_GRADE_CALCULATOR;
         }
 
+        LogsManager.getInstance().updateLogs(logType, logInfo);
+        fragmentListener.onFragmentInteraction(this, nextFragment, OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
         return true;
     }
 

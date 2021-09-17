@@ -8,6 +8,9 @@ import androidx.security.crypto.MasterKey;
 
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
+import com.BSLCommunity.CSN_student.Models.Entity.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Entity.Subject;
+import com.BSLCommunity.CSN_student.Models.Entity.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

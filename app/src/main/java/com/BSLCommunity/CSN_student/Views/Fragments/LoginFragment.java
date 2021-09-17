@@ -49,9 +49,9 @@ public class LoginFragment extends Fragment implements LoginView, View.OnTouchLi
         currentFragment = inflater.inflate(R.layout.fragment_login, container, false);
 
         createClickableSpan();
-        loginButton = (Button) currentFragment.findViewById(R.id.activity_login_bt_login);
+        loginButton = currentFragment.findViewById(R.id.activity_login_bt_login);
         loginButton.setOnTouchListener(this);
-        guestLoginBt = (Button) currentFragment.findViewById(R.id.activity_login_bt_guest);
+        guestLoginBt = currentFragment.findViewById(R.id.activity_login_bt_guest);
         guestLoginBt.setOnTouchListener(this);
 
         this.loginPresenter = new LoginPresenter(this, requireContext());

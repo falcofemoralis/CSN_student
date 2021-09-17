@@ -6,7 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.widget.RemoteViews;
 
-import com.BSLCommunity.CSN_student.Models.Timer;
+import com.BSLCommunity.CSN_student.Models.Entity.Timer;
 import com.BSLCommunity.CSN_student.R;
 
 /**

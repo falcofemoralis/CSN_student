@@ -1,6 +1,6 @@
 package com.BSLCommunity.CSN_student.ViewInterfaces;
 
-import com.BSLCommunity.CSN_student.Models.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Entity.EditableSubject;
 
 import java.util.ArrayList;
 

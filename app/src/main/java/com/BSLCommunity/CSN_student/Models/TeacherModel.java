@@ -5,6 +5,7 @@ import android.util.Log;
 import com.BSLCommunity.CSN_student.APIs.TeacherApi;
 import com.BSLCommunity.CSN_student.App;
 import com.BSLCommunity.CSN_student.Managers.FileManager;
+import com.BSLCommunity.CSN_student.Models.Entity.ScheduleList;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.lib.ExCallable;
 import com.google.gson.Gson;

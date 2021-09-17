@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student.Models;
+package com.BSLCommunity.CSN_student.Models.Entity;
 
 import android.os.CountDownTimer;
 

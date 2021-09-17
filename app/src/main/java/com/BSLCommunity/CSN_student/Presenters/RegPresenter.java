@@ -3,7 +3,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 import android.content.Context;
 
 import com.BSLCommunity.CSN_student.Models.GroupModel;
-import com.BSLCommunity.CSN_student.Models.User;
+import com.BSLCommunity.CSN_student.Models.Entity.User;
 import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.Models.UserModel;
 import com.BSLCommunity.CSN_student.R;

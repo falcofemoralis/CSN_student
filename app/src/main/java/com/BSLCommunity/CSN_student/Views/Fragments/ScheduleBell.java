@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
-import com.BSLCommunity.CSN_student.Models.Timer;
+import com.BSLCommunity.CSN_student.Models.Entity.Timer;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 

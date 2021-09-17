@@ -1,6 +1,6 @@
 package com.BSLCommunity.CSN_student.APIs;
 
-import com.BSLCommunity.CSN_student.Models.Subject;
+import com.BSLCommunity.CSN_student.Models.Entity.Subject;
 
 import java.util.ArrayList;
 

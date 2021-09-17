@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,16 +21,16 @@ import androidx.fragment.app.Fragment;
 
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Constants.LogType;
-import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
 import com.BSLCommunity.CSN_student.Managers.LogsManager;
-import com.BSLCommunity.CSN_student.Models.EditableSubject;
-import com.BSLCommunity.CSN_student.Models.Subject;
+import com.BSLCommunity.CSN_student.Models.Entity.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Entity.Subject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Presenters.SubjectListPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectListView;
 import com.BSLCommunity.CSN_student.Views.OnFragmentActionBarChangeListener;
 import com.BSLCommunity.CSN_student.Views.OnFragmentInteractionListener;
+import com.BSLCommunity.CSN_student.Views.decorators.AnimOnTouchListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -140,30 +138,17 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
         }
         subjectView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
 
-        subjectView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new View.OnTouchListener() {
+        subjectView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new AnimOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    transitionDrawable.startTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Bundle data = new Bundle();
-                    data.putString("Subject", new Gson().toJson(editableSubject));
-                    LogsManager.getInstance().updateLogs(LogType.OPENED_SUBJECT, String.valueOf(editableSubject.idSubject));
-                    fragmentListener.onFragmentInteraction(thisFragment, new SubjectEditorFragment(),
-                            OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
-
-                    transitionDrawable.reverseTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
-
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
-                    transitionDrawable.reverseTransition(100);
-                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
-                }
+                Bundle data = new Bundle();
+                data.putString("Subject", new Gson().toJson(editableSubject));
+                LogsManager.getInstance().updateLogs(LogType.OPENED_SUBJECT, String.valueOf(editableSubject.idSubject));
+                fragmentListener.onFragmentInteraction(thisFragment, new SubjectEditorFragment(),
+                        OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, data, null);
                 return true;
             }
-        });
+        }));
 
         subjectViews.add(subjectView);
         container.addView(subjectView);
@@ -184,29 +169,17 @@ public class SubjectListFragment extends Fragment implements SubjectListView {
         subjectImgView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_statistics, null));
         fullStatView.findViewById(R.id.inflate_subject_pb).setVisibility(View.GONE);
 
-        fullStatView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new View.OnTouchListener() {
+        fullStatView.findViewById(R.id.inflate_subject_rl_card).setOnTouchListener(new AnimOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                TransitionDrawable transitionDrawable = (TransitionDrawable) view.getBackground();
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    transitionDrawable.startTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_pressed));
+                LogsManager.getInstance().updateLogs(LogType.ENTER_FULL_STAT);
 
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    LogsManager.getInstance().updateLogs(LogType.ENTER_FULL_STAT);
+                fragmentListener.onFragmentInteraction(thisFragment, new FullStatFragment(),
+                        OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
 
-                    fragmentListener.onFragmentInteraction(thisFragment, new FullStatFragment(),
-                            OnFragmentInteractionListener.Action.NEXT_FRAGMENT_HIDE, null, null);
-
-                    transitionDrawable.reverseTransition(150);
-                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
-                    transitionDrawable.reverseTransition(100);
-                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.btn_unpressed));
-                }
                 return true;
             }
-        });
+        }));
 
         this.fullStatView = fullStatView;
         container.addView(fullStatView);

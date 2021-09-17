@@ -3,7 +3,7 @@ package com.BSLCommunity.CSN_student.Presenters;
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
-import com.BSLCommunity.CSN_student.Models.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Entity.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.SubjectModel;
 import com.BSLCommunity.CSN_student.Models.UserData;
 import com.BSLCommunity.CSN_student.ViewInterfaces.SubjectEditorView;

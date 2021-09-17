@@ -1,4 +1,4 @@
-package com.BSLCommunity.CSN_student.Models;
+package com.BSLCommunity.CSN_student.Models.Entity;
 
 import com.BSLCommunity.CSN_student.Constants.SubjectValue;
 import com.BSLCommunity.CSN_student.Constants.WorkStatus;

@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.BSLCommunity.CSN_student.Constants.ActionBarType;
 import com.BSLCommunity.CSN_student.Constants.WorkType;
 import com.BSLCommunity.CSN_student.Managers.LocaleHelper;
-import com.BSLCommunity.CSN_student.Models.EditableSubject;
+import com.BSLCommunity.CSN_student.Models.Entity.EditableSubject;
 import com.BSLCommunity.CSN_student.Presenters.FullStatPresenter;
 import com.BSLCommunity.CSN_student.R;
 import com.BSLCommunity.CSN_student.ViewInterfaces.FullStatView;

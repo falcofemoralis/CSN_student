@@ -1,8 +1,8 @@
-package com.BSLCommunity.CSN_student.Models;
+package com.BSLCommunity.CSN_student.Models.Entity;
 
 import com.google.gson.annotations.SerializedName;
 
-/*
+/**
  * Класс расписание
  * half - числитель/знаменатель, 0 - числитель, 1 - знаменатель
  * day - день недели (отсчет начиная с понедельника)

@@ -1,8 +1,7 @@
 package com.BSLCommunity.CSN_student.ViewInterfaces;
 
 import com.BSLCommunity.CSN_student.Constants.ScheduleType;
-import com.BSLCommunity.CSN_student.Models.ScheduleList;
-import com.BSLCommunity.CSN_student.Presenters.SchedulePresenter;
+import com.BSLCommunity.CSN_student.Models.Entity.ScheduleList;
 
 import java.util.ArrayList;
 

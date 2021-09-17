@@ -3,7 +3,7 @@
 //GET запрос на расписания группы по id
 function getScheduleById($id)
 {
-    $query = "SELECT DISTINCT schedule_list.Day, schedule_list.Pair, schedule_list.Half, subjects.SubjectName, subjecttypes.SubjectType, schedule_list.Room
+    $query = "SELECT DISTINCT subjects.Code_Subject, schedule_list.Day, schedule_list.Pair, schedule_list.Half, subjects.SubjectName, subjecttypes.SubjectType, schedule_list.Room
     FROM schedule_list 
     INNER JOIN subjects on subjects.Code_Subject = schedule_list.Code_Subject 
     INNER JOIN subjecttypes on subjecttypes.Code_SubjectType = schedule_list.Code_SubjectType 

@@ -63,6 +63,6 @@ function cors()
 
 function getSecretPanel()
 {
-    $panel = file_get_contents("./front/index.html");
+    $panel = file_get_contents("./prod/index.html");
     echo $panel;
 }

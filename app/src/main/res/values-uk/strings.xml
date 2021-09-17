@@ -105,6 +105,7 @@
     <string name="failed_to_download">Не вдалося завантажити</string>
     <string name="open_subject_hint">Спочатку увійдіть до меню предметів!</string>
     <string name="schedule_break">Перерва</string>
+    <string name="achievements">Досягнення</string>
     <string name="guest">Увійти як гість</string>
     <string name="you_must_be_registered">Ви маєте зареєструватися</string>
 </resources>

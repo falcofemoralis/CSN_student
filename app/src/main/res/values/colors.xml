@@ -3,7 +3,6 @@
     <!-- Used in rating -->
     <color name="red">#F56D6D</color>
     <color name="green">#9AFF35</color>
-
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#F1F1F1</color>
@@ -30,4 +29,6 @@
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
+    <color name="dark_background">#000919</color>
+    <color name="light_background">#162135</color>
 </resources>

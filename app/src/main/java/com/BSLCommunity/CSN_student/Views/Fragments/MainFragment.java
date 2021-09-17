@@ -49,9 +49,9 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         put(R.id.activity_main_bt_lessonsShedule, true);
         put(R.id.activity_main_bt_teachersSchedule, true);
         put(R.id.activity_main_bt_schedule_bell, true);
-
         put(R.id.activity_main_bt_subjects, false);
         put(R.id.activity_main_bt_calculator, false);
+        put(R.id.activity_main_bt_achievements, false);
     }};
 
     @Override
@@ -215,6 +215,9 @@ public class MainFragment extends Fragment implements View.OnTouchListener, Main
         } else if (id == R.id.activity_main_bt_calculator) {
             nextFragment = new GradeCalculatorFragment();
             logType = LogType.OPENED_GRADE_CALCULATOR;
+        } else if (id == R.id.activity_main_bt_achievements) {
+            nextFragment = new AchievementsFragment();
+            logType = LogType.OPENED_ACHIEVEMENTS;
         }
 
         LogsManager.getInstance().updateLogs(logType, logInfo);

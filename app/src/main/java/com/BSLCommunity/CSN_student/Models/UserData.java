@@ -23,6 +23,7 @@ public class UserData {
     public static transient UserData instance = null;
     public final String FILE_NAME_SUBJECT_INFO = "EditableSubjects";
     public static final String DATA_FILE_NAME = "user_data";
+    public final String FILE_NAME_ACHIEVEMENTS = "user_achievements";
 
     /**
      * PrefKeys - Строковые константы - ключи, по которым хранятся все данные в файле настроек
@@ -52,6 +53,7 @@ public class UserData {
     public User user;
     public boolean isGuest = false;
     public ArrayList<EditableSubject> editableSubjects;
+    public ArrayList<AchievementsModel.UserAchievement> userAchievements;
 
     private UserData() {
     }
@@ -85,6 +87,7 @@ public class UserData {
         }
 
         setEditableSubjects();
+        setAchievements();
     }
 
     /**
@@ -124,6 +127,17 @@ public class UserData {
             Type type = new TypeToken<ArrayList<EditableSubject>>() {
             }.getType();
             editableSubjects = (new Gson()).fromJson(data, type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setAchievements() {
+        try {
+            String data = FileManager.getFileManager(App.getApp().context()).readFile(FILE_NAME_ACHIEVEMENTS);
+            Type type = new TypeToken<ArrayList<AchievementsModel.UserAchievement>>() {
+            }.getType();
+            userAchievements = (new Gson()).fromJson(data, type);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,6 +197,11 @@ public class UserData {
             saveRating();
             UserModel.getUserModel().updateRating(user.getToken(), editableSubjects);
         }
+
+        if (userAchievements != null) {
+            saveAchievements();
+            UserModel.getUserModel().updateUserAchievements(user.getToken(), userAchievements);
+        }
     }
 
     public void saveRating() {
@@ -194,6 +213,21 @@ public class UserData {
 
             try {
                 FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME_SUBJECT_INFO, jsonString, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void saveAchievements() {
+        if (userAchievements.size() > 0) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<AchievementsModel.UserAchievement>>() {
+            }.getType();
+            String jsonString = gson.toJson(userAchievements, type);
+
+            try {
+                FileManager.getFileManager(App.getApp().context()).writeFile(FILE_NAME_ACHIEVEMENTS, jsonString, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

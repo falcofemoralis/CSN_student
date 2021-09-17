@@ -89,7 +89,6 @@
     <string name="reload_hint">Reload application</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
-
     <string name="schedule_break">Break</string>
     <string name="calculator">Grade calculator</string>
     <string name="result_grade">Result grade</string>
@@ -108,6 +107,7 @@
     <string name="test">Test</string>
     <string name="exam">Exam</string>
     <string name="open_subject_hint">First enter the subjects tab!</string>
+    <string name="achievements">Achievements</string>
     <string name="guest">Sign in as guest</string>
     <string name="you_must_be_registered">You must be registered </string>
 </resources>

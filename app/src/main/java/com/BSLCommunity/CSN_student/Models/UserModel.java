@@ -214,6 +214,28 @@ public class UserModel {
         });
     }
 
+    public void downloadAchievements(String token, final ExCallable<Void> exCallable) {
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<ArrayList<AchievementsModel.UserAchievement>> call = userApi.getUserAchievements(token);
+
+        call.enqueue(new Callback<ArrayList<AchievementsModel.UserAchievement>>() {
+            @Override
+            public void onResponse(@NotNull Call<ArrayList<AchievementsModel.UserAchievement>> call, @NotNull Response<ArrayList<AchievementsModel.UserAchievement>> response) {
+                UserData userData = UserData.getUserData();
+                if (response.code() != 404 && response.body() != null) {
+                    userData.userAchievements = response.body();
+                    userData.saveAchievements();
+                }
+                exCallable.call(null);
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ArrayList<AchievementsModel.UserAchievement>> call, @NotNull Throwable t) {
+                exCallable.fail(-1);
+            }
+        });
+    }
+
     /**
      * Обновление кол-во открытий приложеня и у юзера
      *
@@ -296,5 +318,20 @@ public class UserModel {
                 }
             }
         });
+    }
+
+    public void updateUserAchievements(String token, ArrayList<AchievementsModel.UserAchievement> achievements) {
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<Void> call = userApi.updateUserAchievements(token, achievements);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+            }
+        });
+
     }
 }

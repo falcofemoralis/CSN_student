@@ -2,6 +2,7 @@ package com.BSLCommunity.CSN_student.APIs;
 
 import com.BSLCommunity.CSN_student.Models.Entity.EditableSubject;
 import com.BSLCommunity.CSN_student.Models.Entity.User;
+import com.BSLCommunity.CSN_student.Models.AchievementsModel;
 import com.BSLCommunity.CSN_student.Models.UserLog;
 import com.google.gson.JsonObject;
 
@@ -18,8 +19,9 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface UserApi {
-    String RESERVE_URL = "https://peaceful-springs-87108.herokuapp.com/api/users/";
+    String RESERVE_URL = "https://csn-student.herokuapp.com/api/users/";
     String API_URL = "http://f0513611.xsph.ru/api/users/";
+    String LOCAL_URL = "http://192.168.0.100:81/api/users/";
 
     @GET("login")
     Call<User> login(@Query("nickname") String nickname, @Query("password") String password);
@@ -42,4 +44,10 @@ public interface UserApi {
 
     @PUT("activity")
     Call<Void> updateUserActivity(@Header("token") String token, @Body ArrayList<UserLog> logs);
+
+    @PUT("achievements")
+    Call<Void> updateUserAchievements(@Header("token") String token, @Body ArrayList<AchievementsModel.UserAchievement> data);
+
+    @GET("achievements")
+    Call<ArrayList<AchievementsModel.UserAchievement>> getUserAchievements(@Header("token") String token);
 }

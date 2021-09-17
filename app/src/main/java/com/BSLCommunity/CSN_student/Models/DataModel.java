@@ -40,6 +40,8 @@ public class DataModel {
         public String subjectsApi;
         @SerializedName("teachersApi")
         public String teachersApi;
+        @SerializedName("achievementApi")
+        public String achievementApi;
     }
 
     public Cache clientCache; // Кеш клиента
@@ -95,7 +97,6 @@ public class DataModel {
                     if (isOld)
                         exCallable.call(CacheStatusType.CACHE_NEED_UPDATE);
                     Log.d("CACHE_API", "update?" + isOld);
-
                 }
 
                 @Override
@@ -121,13 +122,15 @@ public class DataModel {
             @Override
             public void onResponse(@NotNull Call<Cache> call, @NotNull Response<Cache> response) {
                 serverCache = response.body();
-                if (clientCache != null) {
-                    if (!clientCache.subjectsApi.equals(serverCache.subjectsApi))
+                if (clientCache != null && serverCache != null) {
+                    if (clientCache.subjectsApi != null && !clientCache.subjectsApi.equals(serverCache.subjectsApi))
                         dataToDownload.add(ApiType.SubjectApi);
-                    if (!clientCache.groupsApi.equals(serverCache.groupsApi))
+                    if (clientCache.groupsApi != null && !clientCache.groupsApi.equals(serverCache.groupsApi))
                         dataToDownload.add(ApiType.GroupApi);
-                    if (!clientCache.teachersApi.equals(serverCache.teachersApi))
+                    if (clientCache.teachersApi != null && !clientCache.teachersApi.equals(serverCache.teachersApi))
                         dataToDownload.add(ApiType.TeacherApi);
+                    if (clientCache.achievementApi != null && !clientCache.achievementApi.equals(serverCache.achievementApi))
+                        dataToDownload.add(ApiType.AchievementApi);
                 } else {
                     dataToDownload.addAll(Arrays.asList(ApiType.values()));
                 }
@@ -218,12 +221,38 @@ public class DataModel {
                             @Override
                             public void call(Void data) {
                                 Log.d("TEST_API", "DOWNLOADED rating");
-                                setSuccess(exCallable);
+                                UserModel.getUserModel().downloadAchievements(UserData.getUserData().user.getToken(), new ExCallable<Void>() {
+                                    @Override
+                                    public void call(Void data) {
+                                        setSuccess(exCallable);
+                                    }
+
+                                    @Override
+                                    public void fail(int idResString) {
+                                        setFail(exCallable);
+                                    }
+                                });
                             }
 
                             @Override
                             public void fail(int idResString) {
                                 Log.d("TEST_API", "FAILED rating");
+                                setFail(exCallable);
+                            }
+                        });
+                    }
+                    setSuccess(exCallable);
+                    break;
+                case AchievementApi:
+                    if (!isGuest) {
+                        AchievementsModel.getAchievementsModel().getAchievements(new ExCallable<Void>() {
+                            @Override
+                            public void call(Void data) {
+                                setSuccess(exCallable);
+                            }
+
+                            @Override
+                            public void fail(int idResString) {
                                 setFail(exCallable);
                             }
                         });

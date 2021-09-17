@@ -33,7 +33,7 @@ function readUser($nickName, $password)
 function getUserRating()
 {
     $headers = getallheaders();
-    $id = checkAuth($headers['token']);
+    $id = checkAuth();
 
     $query = "  SELECT rating.JSON_RATING FROM rating
                 WHERE rating.Code_User = '$id'";
@@ -77,9 +77,6 @@ function usersViewByCourse($url)
 // POST запрос
 function createUser()
 {
-    // $arr = getallheaders();
-    // $token = $arr['token'];
-
     $nickName = $_POST["nickname"];
     $password = $_POST["password"];
     $group = $_POST["group"];
@@ -127,8 +124,7 @@ function createUser()
  */
 function updateUser($url)
 {
-    $headers = getallheaders();
-    $id = checkAuth($headers['token']);
+    $id = checkAuth();
 
     $string = file_get_contents('php://input');
     $data = json_decode($string);
@@ -164,8 +160,7 @@ function updateUser($url)
  */
 function updateUserRating($url)
 {
-    $headers = getallheaders();
-    $id = checkAuth($headers['token']);
+    $id = checkAuth();
 
     $rating = file_get_contents('php://input');
 
@@ -197,26 +192,21 @@ function getAllUsers()
 /** PUT запрос на обновления числа открытий приложения у юзера */
 function updateUserOpen()
 {
-    $headers = getallheaders();
-    $id = checkAuth($headers['token']);
-
+    $id = checkAuth();
     $count = file_get_contents('php://input');
 
     $get = "SELECT Visits FROM users WHERE users.Code_User = $id";
-
     $data  = json_decode(DataBase::execQuery($get, ReturnValue::GET_OBJECT));
+
     $visits = $data->Visits + $count;
 
     $update = "UPDATE users SET users.Visits=$visits, users.LastOpen=CONVERT_TZ(NOW(),'SYSTEM','+2:00') WHERE users.Code_User = $id";
-
-
     DataBase::execQuery($update, ReturnValue::GET_NOTHING);
 }
 
 function updateUserActivity()
 {
-    $headers = getallheaders();
-    $id = checkAuth($headers['token']);
+    $id = checkAuth();
 
     $dataJson = file_get_contents('php://input');
     $data = json_decode($dataJson, true);
@@ -249,4 +239,44 @@ function getUserLogs($url){
 
    $data = DataBase::execQuery($get, ReturnValue::GET_ARRAY);
    echo $data;
+}
+
+function updateUserAchievements($url)
+{
+    $id = checkAuth();
+
+    $achievements = file_get_contents('php://input');
+
+    if ($achievements == NULL) {
+        return;
+    }
+
+    $query = "SELECT achievements_user.Code_User FROM achievements_user WHERE Code_User = '$id'";
+    $users = DataBase::execQuery($query, ReturnValue::GET_OBJECT);
+
+    if($users == "null"){
+        $query = "INSERT INTO `achievements_user` (`Code_User`, `JSON_ACH`) VALUES ('$id', NULL)";
+        DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+    }
+
+    $query = "UPDATE achievements_user
+              SET achievements_user.JSON_ACH = '$achievements'
+              WHERE Code_User = '$id'";
+    DataBase::execQuery($query, ReturnValue::GET_NOTHING);
+}
+
+function getUserAchievements()
+{
+    $id = checkAuth();
+
+    $query = "  SELECT achievements_user.JSON_ACH FROM achievements_user
+                WHERE achievements_user.Code_User = '$id'";
+
+    $data = json_decode(DataBase::execQuery($query, ReturnValue::GET_OBJECT));
+    if ($data->JSON_ACH) {
+        echo $data->JSON_ACH;
+    } else {
+        http_response_code(404);
+        die();
+    }
 }

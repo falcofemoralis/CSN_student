@@ -62,11 +62,11 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:layout_margin="10dp"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:textAlignment="gravity"
+            android:background="@drawable/activity_button"
             android:gravity="center|start"
-            android:background="@drawable/activity_button"/>
+            android:textAlignment="gravity"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

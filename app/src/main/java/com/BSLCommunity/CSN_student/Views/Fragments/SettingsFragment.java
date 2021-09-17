@@ -94,11 +94,8 @@ public class SettingsFragment extends Fragment implements SettingsView, Settings
                 langSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Log.d("lang_test", String.valueOf(position));
-
                         if (++check > 1) {
                             LogsManager.getInstance().updateLogs(LogType.CHANGED_LANGUAGE);
-                            Log.d("lang_test", "changeLanguage");
                             settingsPresenter.changeLanguage(position);
                         } else{
                             // fix one more call onItemSelected

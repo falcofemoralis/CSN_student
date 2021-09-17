@@ -3,10 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/activity_button.xml" value="0.30833333333333335" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/activity_button2.xml" value="0.30833333333333335" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/activity_button2_pressed.xml" value="0.30833333333333335" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/activity_button2_unpressed.xml" value="0.30833333333333335" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/activity_button_pressed.xml" value="0.30833333333333335" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/activity_button_unpressed.xml" value="0.30833333333333335" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/activity_main_text.xml" value="0.30833333333333335" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/building4_3.xml" value="0.29259259259259257" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/ic_baseline_redeem_24.xml" value="0.29259259259259257" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.29259259259259257" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/drawable/ic_settings.xml" value="0.29259259259259257" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/activity_subject_list.xml" value="0.2875905797101449" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/dialog_calculator_hint.xml" value="0.2875905797101449" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/dialog_settings_et_password.xml" value="0.2875905797101449" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/dialog_settings_sp_groups.xml" value="0.2875905797101449" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/dialog_settings_sp_languages.xml" value="0.2875905797101449" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/fragment_achievement_list.xml" value="0.33697916666666666" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/fragment_achievements.xml" value="0.25" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/fragment_gradecalculator.xml" value="0.17831813576494426" />
@@ -18,7 +30,10 @@
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/fragment_settings.xml" value="0.2658514492753623" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/fragment_subject_info.xml" value="0.17831813576494426" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/fragment_subject_list.xml" value="0.17831813576494426" />
-        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/inflate_achievement.xml" value="0.33" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/inflate_achievement.xml" value="0.25" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/inflate_preview_user.xml" value="0.2875905797101449" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/inflate_subject_bt.xml" value="0.17831813576494426" />
+        <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/main_activity.xml" value="0.2875905797101449" />
         <entry key="..\:/Developer/Projects/AndroidStudio/CSN_student/app/src/main/res/layout/test.xml" value="0.2" />
       </map>
     </option>

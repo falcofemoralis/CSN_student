@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.BSLCommunity.CSN_student.Models.AchievementsModel;
@@ -53,19 +54,16 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
     }
 
     public void setLayoutColor(ViewHolder holder, boolean completed) {
-        int color;
+        int drawable;
 
         if (completed) {
-            color = R.color.main_color_3;
+            drawable = R.drawable.activity_button_pressed;
         } else {
-            if (holder.getBindingAdapterPosition() % 2 == 0) {
-                color = R.color.dark_background;
-            } else {
-                color = R.color.light_background;
-            }
+            drawable = R.drawable.activity_button_unpressed;
         }
 
-        holder.layout.setBackgroundColor(context.getColor(color));
+        holder.layout.setBackground(AppCompatResources.getDrawable(context, drawable));
+
     }
 
     @Override

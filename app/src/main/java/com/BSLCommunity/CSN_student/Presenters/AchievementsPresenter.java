@@ -18,8 +18,8 @@ public class AchievementsPresenter {
     }
 
     public void initAchievements() {
-        if(userData.userAchievements == null){
-            userData.userAchievements  = new ArrayList<>();
+        if (userData.userAchievements == null) {
+            userData.userAchievements = new ArrayList<>();
         }
         achievementsView.setAchievements(achievementsModel.achievements);
         calculateCompleted();
@@ -52,13 +52,17 @@ public class AchievementsPresenter {
 
     public AchievementsModel.UserAchievement updateUserAchievement(AchievementsModel.UserAchievement userAchievement) {
         userAchievement.isCompleted = !userAchievement.isCompleted;
+        boolean isExist = false;
 
         for (AchievementsModel.UserAchievement lua : userData.userAchievements) {
             if (lua.id == userAchievement.id) {
-                return userAchievement;
+                //return userAchievement;
+                isExist = true;
             }
         }
-        userData.userAchievements.add(userAchievement);
+        if (!isExist)
+            userData.userAchievements.add(userAchievement);
+        calculateCompleted();
         return userAchievement;
     }
 }

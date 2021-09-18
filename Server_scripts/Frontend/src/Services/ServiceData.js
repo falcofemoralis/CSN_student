@@ -1,3 +1,3 @@
 export const ServiceData = {
-    DOMAIN: "https://csn-student.herokuapp.com/"
+    DOMAIN: "https://csn-student.herokuapp.com"
 }
